@@ -45,4 +45,52 @@ void main() {
     expect(repo.reviewedOn(now), isEmpty);
     expect(repo.reviewedOn(yesterday), contains('cafe:coffee'));
   });
+
+  group('statistika', () {
+    test('toxunulan söz sayı (wordCount)', () async {
+      final repo = await ReviewRepository.load();
+      await repo.recordReview('cafe:coffee', ReviewOutcome.known, now: now);
+      await repo.recordReview('cafe:tea', ReviewOutcome.known, now: now);
+      expect(repo.wordCount, 2);
+    });
+
+    test('mənimsənilmiş söz sayı (step >= 3)', () async {
+      final repo = await ReviewRepository.load();
+      var t = now;
+      for (var i = 0; i < 3; i++) {
+        await repo.recordReview('cafe:coffee', ReviewOutcome.known, now: t);
+        t = repo.stateFor('cafe:coffee').dueAt;
+      }
+      await repo.recordReview('cafe:tea', ReviewOutcome.known, now: now);
+
+      expect(repo.masteredCount, 1); // yalnız coffee 3 addıma çatıb
+    });
+
+    test('ardıcıl gün streak-i hesablanır', () async {
+      final repo = await ReviewRepository.load();
+      final day1 = DateTime(2026, 7, 19, 9, 0);
+      final day2 = DateTime(2026, 7, 20, 9, 0);
+      final day3 = DateTime(2026, 7, 21, 9, 0);
+      await repo.recordReview('cafe:coffee', ReviewOutcome.known, now: day1);
+      await repo.recordReview('cafe:coffee', ReviewOutcome.known, now: day2);
+      await repo.recordReview('cafe:coffee', ReviewOutcome.known, now: day3);
+
+      expect(repo.currentStreak(today: day3), 3);
+    });
+
+    test('bir gün buraxılarsa streak kəsilir', () async {
+      final repo = await ReviewRepository.load();
+      final day1 = DateTime(2026, 7, 18, 9, 0);
+      final day3 = DateTime(2026, 7, 20, 9, 0); // day2 buraxılıb
+      await repo.recordReview('cafe:coffee', ReviewOutcome.known, now: day1);
+      await repo.recordReview('cafe:tea', ReviewOutcome.known, now: day3);
+
+      expect(repo.currentStreak(today: day3), 1);
+    });
+
+    test('heç review olmayıbsa streak 0-dır', () async {
+      final repo = await ReviewRepository.load();
+      expect(repo.currentStreak(today: now), 0);
+    });
+  });
 }

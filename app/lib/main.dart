@@ -150,6 +150,7 @@ class _BootstrapState extends State<_Bootstrap> {
           speaker: _speaker,
           reviewRepository: data.reviews,
           manualContextRepository: data.manualContext,
+          settingsRepository: data.settings,
         );
       },
     );
