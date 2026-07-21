@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../engine/review_engine.dart' show ReviewOutcome;
 import '../models/word.dart';
 import '../services/speaker.dart';
 
-/// İstifadəçinin söz kartına verdiyi cavab (Phase 3-də ReviewEngine bunu işlədir).
-enum ReviewOutcome { known, later }
+export '../engine/review_engine.dart' show ReviewOutcome;
 
 /// Bir sözü göstərən kart: böyük yazı + IPA + tərcümə + nümunə cümlə,
 /// səsləndirmə düyməsi və "Bilirəm / Sonra" cavab düymələri.

@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
 
-import '../models/pack.dart';
+import '../data/review_repository.dart';
+import '../models/word.dart';
 import '../services/speaker.dart';
 import 'word_card_view.dart';
 
-/// Bir paketin sözlərini bir-bir kart kimi gəzdirən sessiya.
-/// Phase 3-də `onReview` ReviewEngine-ə bağlanacaq; hazırda sadəcə irəliləyir.
+/// Sessiyada göstəriləcək bir söz — `wordKey` ReviewRepository-də unikal
+/// identifikator kimi işlədilir (adətən "packId:word").
+class SessionEntry {
+  const SessionEntry({required this.wordKey, required this.word});
+
+  final String wordKey;
+  final Word word;
+}
+
+/// Söz siyahısını bir-bir kart kimi gəzdirən sessiya (adi paket kartları
+/// və axşam təkrarı eyni bu ekranı işlədir). Hər cavab ReviewRepository-yə
+/// ReviewEngine vasitəsilə yazılır.
 class CardSessionScreen extends StatefulWidget {
   const CardSessionScreen({
     super.key,
-    required this.pack,
+    required this.title,
+    required this.entries,
     required this.speaker,
+    required this.reviewRepository,
   });
 
-  final Pack pack;
+  final String title;
+  final List<SessionEntry> entries;
   final Speaker speaker;
+  final ReviewRepository reviewRepository;
 
   @override
   State<CardSessionScreen> createState() => _CardSessionScreenState();
@@ -31,8 +46,14 @@ class _CardSessionScreenState extends State<CardSessionScreen> {
     super.dispose();
   }
 
-  void _handleReview(ReviewOutcome _) {
-    final isLast = _index >= widget.pack.words.length - 1;
+  void _handleReview(ReviewOutcome outcome) {
+    widget.reviewRepository.recordReview(
+      widget.entries[_index].wordKey,
+      outcome,
+      now: DateTime.now(),
+    );
+
+    final isLast = _index >= widget.entries.length - 1;
     if (isLast) {
       Navigator.of(context).pop();
       return;
@@ -45,25 +66,25 @@ class _CardSessionScreenState extends State<CardSessionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final words = widget.pack.words;
+    final entries = widget.entries;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.pack.titleAz),
+        title: Text(widget.title),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
           child: LinearProgressIndicator(
-            value: words.isEmpty ? 0 : (_index + 1) / words.length,
+            value: entries.isEmpty ? 0 : (_index + 1) / entries.length,
           ),
         ),
       ),
-      body: words.isEmpty
-          ? const Center(child: Text('Bu paketdə söz yoxdur.'))
+      body: entries.isEmpty
+          ? const Center(child: Text('Bu siyahıda söz yoxdur.'))
           : PageView.builder(
               controller: _controller,
               onPageChanged: (i) => setState(() => _index = i),
-              itemCount: words.length,
+              itemCount: entries.length,
               itemBuilder: (context, i) => WordCardView(
-                word: words[i],
+                word: entries[i].word,
                 speaker: widget.speaker,
                 onReview: _handleReview,
               ),
