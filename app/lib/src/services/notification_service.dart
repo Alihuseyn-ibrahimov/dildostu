@@ -47,12 +47,15 @@ class NotificationService {
 
   /// Bugünkü qalan bildirişləri ləğv edib yenidən planlaşdırır. `packIds`
   /// mövcud paketlərin siyahısıdır (time_context_rule.dart üçün);
-  /// `titleFor` hər pack_id-nin göstəriləcək adını qaytarır.
+  /// `titleFor` hər pack_id-nin göstəriləcək adını qaytarır. `firstSlotOverride`
+  /// verilibsə (manual/məkan konteksti aktivdirsə), yalnız ən yaxın bildiriş
+  /// üçün vaxt qaydası əvəzinə bu pack_id işlədilir (spec §3.2 prioritet).
   Future<void> scheduleToday(
     Settings settings,
     List<String> packIds,
-    String Function(String packId) titleFor,
-  ) async {
+    String Function(String packId) titleFor, {
+    String? firstSlotOverride,
+  }) async {
     await _plugin.cancelAll();
     if (packIds.isEmpty) return;
 
@@ -62,7 +65,9 @@ class NotificationService {
 
     for (var i = 0; i < future.length; i++) {
       final slotIndex = allTimes.indexOf(future[i]);
-      final packId = pickPackForSlot(slotIndex, allTimes.length, packIds);
+      final packId = (i == 0 && firstSlotOverride != null)
+          ? firstSlotOverride
+          : pickPackForSlot(slotIndex, allTimes.length, packIds);
       await _plugin.zonedSchedule(
         id: i,
         title: 'DilDostu',

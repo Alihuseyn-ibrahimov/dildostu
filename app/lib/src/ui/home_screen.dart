@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../data/manual_context_repository.dart';
 import '../data/pack_repository.dart';
 import '../data/review_repository.dart';
 import '../services/speaker.dart';
 import 'card_session_screen.dart';
 import 'evening_quiz_screen.dart';
+import 'manual_mode_screen.dart';
 
 /// Paket siyahısı — hər birinə toxunanda kart sessiyası açılır.
 class HomeScreen extends StatelessWidget {
@@ -13,11 +15,13 @@ class HomeScreen extends StatelessWidget {
     required this.repository,
     required this.speaker,
     required this.reviewRepository,
+    required this.manualContextRepository,
   });
 
   final PackRepository repository;
   final Speaker speaker;
   final ReviewRepository reviewRepository;
+  final ManualContextRepository manualContextRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,20 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('DilDostu'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.place_outlined),
+            tooltip: 'İndi haradayam?',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => ManualModeScreen(
+                  packRepository: repository,
+                  reviewRepository: reviewRepository,
+                  manualContextRepository: manualContextRepository,
+                  speaker: speaker,
+                ),
+              ),
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.nightlight_round),
             tooltip: 'Axşam təkrarı',
