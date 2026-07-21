@@ -1,0 +1,104 @@
+{
+  "pack_id": "airport",
+  "target_lang": "en",
+  "ui_lang": "az",
+  "title_az": "Hava limanında",
+  "words": [
+    {
+      "word": "check-in",
+      "translation_az": "check-in",
+      "ipa": "/tʃɛkˈɪn/",
+      "example": "Please go to the check-in counter.",
+      "example_az": "Check-in qutusuna gedənizi istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "boarding pass",
+      "translation_az": "bordinq passı",
+      "ipa": "/ˈbɔrdɪŋ pæs/",
+      "example": "Can I see your boarding pass?",
+      "example_az": "Bordinq passınızı görmək olar mı?",
+      "level": 1
+    },
+    {
+      "word": "security",
+      "translation_az": "təhlükəsizlik",
+      "ipa": "/sɛˈkjʊrɪti/",
+      "example": "Security checks are very strict.",
+      "example_az": "Təhlükəsizlik nəzarətləri çox sərtdir.",
+      "level": 1
+    },
+    {
+      "word": "gate",
+      "translation_az": "qapı",
+      "ipa": "/ɡeɪt/",
+      "example": "Our flight is departing from gate 17.",
+      "example_az": "Uçuşumuz qapı 17-dən gedir.",
+      "level": 1
+    },
+    {
+      "word": "baggage claim",
+      "translation_az": "bagaj alma",
+      "ipa": "/ˈbæɡɪdʒ klɛɪm/",
+      "example": "Where is the baggage claim area?",
+      "example_az": "Bagaj alma ərazisi nədir?",
+      "level": 1
+    },
+    {
+      "word": "delay",
+      "translation_az": "təxəllüs",
+      "ipa": "/dɪˈleɪ/",
+      "example": "The flight has been delayed due to bad weather.",
+      "example_az": "Uçuş təxəllüsə görə hava şəraitindən asılıdır.",
+      "level": 2
+    },
+    {
+      "word": "boarding",
+      "translation_az": "bordinq",
+      "ipa": "/ˈbɔrdɪŋ/",
+      "example": "The plane is now boarding.",
+      "example_az": "Təyyarə bordinqə hazırdır.",
+      "level": 1
+    },
+    {
+      "word": "flight number",
+      "translation_az": "uçuş nömrəsi",
+      "ipa": "/flaɪt ˈnʌm.bər/",
+      "example": "What is our flight number?",
+      "example_az": "Uçuş nömrəmiz nədir?",
+      "level": 1
+    },
+    {
+      "word": "check-in counter",
+      "translation_az": "check-in qutusu",
+      "ipa": "/tʃɛkˈɪn kəʊntər/",
+      "example": "The check-in counter is over there.",
+      "example_az": "Check-in qutusu oradadır.",
+      "level": 2
+    },
+    {
+      "word": "boarding gate",
+      "translation_az": "bordinq qapısı",
+      "ipa": "/ˈbɔrdɪŋ geɪt/",
+      "example": "The boarding gate is 12.",
+      "example_az": "Bordinq qapısı 12-dir.",
+      "level": 2
+    },
+    {
+      "word": "flight status",
+      "translation_az": "uçuş statusu",
+      "ipa": "/flaɪt ˈstætəs/",
+      "example": "What is the current flight status?",
+      "example_az": "Müasir uçuş statusu nədir?",
+      "level": 2
+    },
+    {
+      "word": "lost luggage",
+      "translation_az": "kəsilməmiş bagaj",
+      "ipa": "/lɔst ˈlʌɡdʒ/",
+      "example": "I think my luggage is lost.",
+      "example_az": "Mənə görə mənim bagajım kəsilməmişdir.",
+      "level": 2
+    }
+  ]
+}

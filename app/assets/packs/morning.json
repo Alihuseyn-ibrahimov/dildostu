@@ -1,0 +1,104 @@
+{
+  "pack_id": "morning",
+  "target_lang": "en",
+  "ui_lang": "az",
+  "title_az": "Səhər rutini",
+  "words": [
+    {
+      "word": "good morning",
+      "translation_az": "gün aydın",
+      "ipa": "/ɡʊd ˈmɔrnɪŋ/",
+      "example": "Good morning, how are you?",
+      "example_az": "Gün aydın, necəsən?",
+      "level": 1
+    },
+    {
+      "word": "breakfast",
+      "translation_az": "səhər yeməyi",
+      "ipa": "/ˈbrɛk.fəst/",
+      "example": "I'm going to have breakfast now.",
+      "example_az": "İndi səhər yeməyimi yeyəcəyəm.",
+      "level": 1
+    },
+    {
+      "word": "coffee",
+      "translation_az": "qəhvə",
+      "ipa": "/ˈkɔfi/",
+      "example": "Can I have a coffee, please?",
+      "example_az": "Mənə qəhvə verə bilərsiniz?",
+      "level": 1
+    },
+    {
+      "word": "shower",
+      "translation_az": "duş",
+      "ipa": "/ˈʃaʊər/",
+      "example": "I need to take a shower before work.",
+      "example_az": "İşə gedənə qədər duş götürməliyəm.",
+      "level": 1
+    },
+    {
+      "word": "wake up",
+      "translation_az": "oyan",
+      "ipa": "/weɪk ʌp/",
+      "example": "Wake up, it's time to go.",
+      "example_az": "Oyan, getmək vaxtıdır.",
+      "level": 1
+    },
+    {
+      "word": "alarm clock",
+      "translation_az": "signal saatı",
+      "ipa": "/əˈlɑrm klɔk/",
+      "example": "My alarm clock is ringing.",
+      "example_az": "Mənim signal saatım çalıır.",
+      "level": 2
+    },
+    {
+      "word": "get dressed",
+      "translation_az": "geyim",
+      "ipa": "/ɡɛt ˈdrɛst/",
+      "example": "Get dressed, we are going out.",
+      "example_az": "Geyim, biz çıxacağıq.",
+      "level": 1
+    },
+    {
+      "word": "brush teeth",
+      "translation_az": "dişləri yaxalamaq",
+      "ipa": "/brʌʃ tiːθ/",
+      "example": "Remember to brush your teeth.",
+      "example_az": "Dişlərini yaxalamağı unutma.",
+      "level": 1
+    },
+    {
+      "word": "have a nice day",
+      "translation_az": "yaxşı gün",
+      "ipa": "/hæv ə naɪs deɪ/",
+      "example": "Have a nice day, see you later.",
+      "example_az": "Yaxşı gün, sonra görüşərik.",
+      "level": 1
+    },
+    {
+      "word": "sleepy",
+      "translation_az": "yuxulu",
+      "ipa": "/ˈsliːpi/",
+      "example": "I'm feeling sleepy, I need to rest.",
+      "example_az": "Mən yuxulu hiss edirəm, istirahətə ehtiyacım var.",
+      "level": 2
+    },
+    {
+      "word": "morning sunshine",
+      "translation_az": "səhər günəşi",
+      "ipa": "/ˈmɔrnɪŋ ˈsʌnʃaɪn/",
+      "example": "The morning sunshine is beautiful.",
+      "example_az": "Səhər günəşi gözələdir.",
+      "level": 2
+    },
+    {
+      "word": "yogurt",
+      "translation_az": "yoğurt",
+      "ipa": "/ˈjoʊɡərt/",
+      "example": "I like to eat yogurt for breakfast.",
+      "example_az": "Mən səhər yeməyi üçün yoğurt yeyirəm.",
+      "level": 1
+    }
+  ]
+}

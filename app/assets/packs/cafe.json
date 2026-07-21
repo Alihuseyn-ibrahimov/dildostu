@@ -1,0 +1,104 @@
+{
+  "pack_id": "cafe",
+  "target_lang": "en",
+  "ui_lang": "az",
+  "title_az": "Kafedə",
+  "words": [
+    {
+      "word": "coffee",
+      "translation_az": "qəhrəman",
+      "ipa": "/ˈkɒfi/",
+      "example": "I'll have a coffee, please.",
+      "example_az": "Mən bir qəhrəman istəyirəm, lütfən.",
+      "level": 1
+    },
+    {
+      "word": "tea",
+      "translation_az": "çay",
+      "ipa": "/tiː/",
+      "example": "Do you have any tea?",
+      "example_az": "Siz çay varmı?",
+      "level": 1
+    },
+    {
+      "word": "bill",
+      "translation_az": "fatura",
+      "ipa": "/bɪl/",
+      "example": "Can I see the bill, please?",
+      "example_az": "Mən faturanı görə bilərmi, lütfən?",
+      "level": 1
+    },
+    {
+      "word": "menu",
+      "translation_az": "menü",
+      "ipa": "/ˈmeɪnu/",
+      "example": "Can I see the menu, please?",
+      "example_az": "Mən menünü görə bilərmi, lütfən?",
+      "level": 1
+    },
+    {
+      "word": "water",
+      "translation_az": "sud",
+      "ipa": "/ˈwɒtər/",
+      "example": "I'll have a glass of water, please.",
+      "example_az": "Mən bir su qəhrəmanı istəyirəm, lütfən.",
+      "level": 1
+    },
+    {
+      "word": "check",
+      "translation_az": "yoxlama",
+      "ipa": "/tʃɛk/",
+      "example": "Can I check the bill?",
+      "example_az": "Mən faturanı yoxlaya bilərmi?",
+      "level": 2
+    },
+    {
+      "word": "to go",
+      "translation_az": "getmək",
+      "ipa": "/tə ɡoʊ/",
+      "example": "I'd like to go.",
+      "example_az": "Mən getmək istəyirəm.",
+      "level": 2
+    },
+    {
+      "word": "takeaway",
+      "translation_az": "qəhrəman götürmək",
+      "ipa": "/tækəˈweɪ/",
+      "example": "Can I have a takeaway coffee?",
+      "example_az": "Mən qəhrəman götürmək istəyirəm.",
+      "level": 2
+    },
+    {
+      "word": "how much",
+      "translation_az": "ne qədər",
+      "ipa": "/haʊ ˈmʌtʃ/",
+      "example": "How much does it cost?",
+      "example_az": "Bu ne qədər məbləğə malikdir?",
+      "level": 2
+    },
+    {
+      "word": "pay",
+      "translation_az": "ödəmək",
+      "ipa": "/peɪ/",
+      "example": "I'll pay with card.",
+      "example_az": "Mən kredit kartı ilə ödəyəcəm.",
+      "level": 2
+    },
+    {
+      "word": "change",
+      "translation_az": "qarşılıq",
+      "ipa": "/tʃeɪndʒ/",
+      "example": "Can I have my change?",
+      "example_az": "Mən qarşılığı almaq istəyirəm.",
+      "level": 2
+    },
+    {
+      "word": "thank you",
+      "translation_az": "sənimə xüsusi təşəkkür",
+      "ipa": "/θæŋk juː/",
+      "example": "Thank you for the coffee.",
+      "example_az": "Sənimə xüsusi təşəkkür, qəhrəman.",
+      "level": 3
+    }
+  ]
+}

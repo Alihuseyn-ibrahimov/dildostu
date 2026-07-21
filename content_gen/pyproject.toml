@@ -1,0 +1,10 @@
+[project]
+name = "dildostu-content"
+version = "0.1.0"
+description = "DilDostu söz paketi generatoru və validatoru"
+requires-python = ">=3.11"
+dependencies = ["jsonschema>=4.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

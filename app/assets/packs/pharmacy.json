@@ -1,0 +1,104 @@
+{
+  "pack_id": "pharmacy",
+  "target_lang": "en",
+  "ui_lang": "az",
+  "title_az": "Aptekdə",
+  "words": [
+    {
+      "word": "medicine",
+      "translation_az": "dava",
+      "ipa": "/ˈmɛdɪsɪn/",
+      "example": "I need some medicine for my headache.",
+      "example_az": "Mənə baş ağrısı üçün dava lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "symptoms",
+      "translation_az": "simptomlar",
+      "ipa": "/ˈsɪmptəmz/",
+      "example": "What are the symptoms of the flu?",
+      "example_az": "Qarın qripinin simptomları nədir?",
+      "level": 2
+    },
+    {
+      "word": "dosage",
+      "translation_az": "dozaj",
+      "ipa": "/ˈdoʊsɪdʒ/",
+      "example": "The doctor told me to take the medicine in a certain dosage.",
+      "example_az": "Doktor mənə davanı müəyyən dozajda almağı sövər.",
+      "level": 2
+    },
+    {
+      "word": "prescription",
+      "translation_az": "reçələmə",
+      "ipa": "/prɪˈskrɪpʃən/",
+      "example": "I need a prescription for the medicine.",
+      "example_az": "Mənə davanın reçələməsi lazımdır.",
+      "level": 2
+    },
+    {
+      "word": "hospital",
+      "translation_az": "xəstəxana",
+      "ipa": "/hɒsˈpɪtəl/",
+      "example": "Where is the hospital located?",
+      "example_az": "Xəstəxana nə vəziyyətdədir?",
+      "level": 1
+    },
+    {
+      "word": "doctor",
+      "translation_az": "doktor",
+      "ipa": "/ˈdɒktər/",
+      "example": "I need to see a doctor about my symptoms.",
+      "example_az": "Mənə simptomlarımı doktorla danışmaq lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "insurance",
+      "translation_az": "sığorta",
+      "ipa": "/ɪnˈʃuːrəns/",
+      "example": "Do you have any health insurance?",
+      "example_az": "Sənə sağlamlıq sığortası var?",
+      "level": 2
+    },
+    {
+      "word": "cost",
+      "translation_az": "məbləğ",
+      "ipa": "/kɒst/",
+      "example": "How much will the medicine cost?",
+      "example_az": "Davanın məbləği necədir?",
+      "level": 1
+    },
+    {
+      "word": "payment",
+      "translation_az": "ödəniş",
+      "ipa": "/peɪmənt/",
+      "example": "I'd like to pay for the medicine with a credit card.",
+      "example_az": "Mən davanı kredit kartı ilə ödəmək istəyirəm.",
+      "level": 2
+    },
+    {
+      "word": "emergency",
+      "translation_az": "təcili",
+      "ipa": "/ɪˈmɜːdʒənsi/",
+      "example": "I need to go to the emergency room.",
+      "example_az": "Mənə təcili xəstəxana lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "allergy",
+      "translation_az": "allergiya",
+      "ipa": "/æˈlɛrdʒi/",
+      "example": "I have a severe allergy to certain medications.",
+      "example_az": "Mənə müəyyən davanlara qarşı alerji var.",
+      "level": 2
+    },
+    {
+      "word": "vaccination",
+      "translation_az": "vaksinasiya",
+      "ipa": "/væksɪˈneɪʃən/",
+      "example": "Do I need a vaccination before traveling?",
+      "example_az": "Səyahətə gedəndə vaksinasiya lazımdır?",
+      "level": 2
+    }
+  ]
+}

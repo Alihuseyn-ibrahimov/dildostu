@@ -1,0 +1,104 @@
+{
+  "pack_id": "evening",
+  "target_lang": "en",
+  "ui_lang": "az",
+  "title_az": "Axşam / günün sonu",
+  "words": [
+    {
+      "word": "relax",
+      "translation_az": "rəlaks",
+      "ipa": "/rɪˈlæks/",
+      "example": "I'm going to relax after dinner.",
+      "example_az": "Mən dəstərdən sonra rəlaks edəcəm.",
+      "level": 1
+    },
+    {
+      "word": "dinner",
+      "translation_az": "dəstər",
+      "ipa": "/ˈdɪnər/",
+      "example": "What time is dinner?",
+      "example_az": "Dəstər ne vaxtda?",
+      "level": 1
+    },
+    {
+      "word": "bedtime",
+      "translation_az": "yuxu vaxtı",
+      "ipa": "/ˈbɛdtaɪm/",
+      "example": "What's the bedtime routine?",
+      "example_az": "Yuxu vaxtı rejimi nədir?",
+      "level": 2
+    },
+    {
+      "word": "reflection",
+      "translation_az": "bədəl",
+      "ipa": "/rɪflekʃən/",
+      "example": "I'll do some reflection on my day.",
+      "example_az": "Mən gündəmə dair bədəl edəcəm.",
+      "level": 3
+    },
+    {
+      "word": "evening",
+      "translation_az": "axşam",
+      "ipa": "/ˈiːvənɪŋ/",
+      "example": "The evening weather is nice.",
+      "example_az": "Axşam hava xoşdur.",
+      "level": 1
+    },
+    {
+      "word": "goodnight",
+      "translation_az": "yaxşı gecə",
+      "ipa": "/ˈɡʊdnait/",
+      "example": "Goodnight, have a good sleep!",
+      "example_az": "Yaxşı gecə, yaxşı yuxula!",
+      "level": 1
+    },
+    {
+      "word": "nap",
+      "translation_az": "növbət",
+      "ipa": "/næp/",
+      "example": "I'm going to take a nap.",
+      "example_az": "Mən növbət almaq istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "chill",
+      "translation_az": "şaxtalanmaq",
+      "ipa": "/tʃɪl/",
+      "example": "Let's chill out for a while.",
+      "example_az": "Bir az şaxtalanmaq istəyirik.",
+      "level": 1
+    },
+    {
+      "word": "relieved",
+      "translation_az": "asılı qalmamış",
+      "ipa": "/rɪˈlivd/",
+      "example": "I feel relieved after the exam.",
+      "example_az": "Mən müsahibədən sonra asılı qalmamışam.",
+      "level": 2
+    },
+    {
+      "word": "dinner table",
+      "translation_az": "dəstər mərasimi",
+      "ipa": "/ˈdɪnər teɪbəl/",
+      "example": "Let's eat at the dinner table.",
+      "example_az": "Mərasim mətbəxinə yeməyə gedək.",
+      "level": 2
+    },
+    {
+      "word": "evening news",
+      "translation_az": "axşam xəbərləri",
+      "ipa": "/ˈiːvənɪŋ nuːz/",
+      "example": "I'll watch the evening news.",
+      "example_az": "Mən axşam xəbərlərini izləyəcəm.",
+      "level": 2
+    },
+    {
+      "word": "wind down",
+      "translation_az": "səyini azaltmaq",
+      "ipa": "/waɪnd daʊn/",
+      "example": "I need to wind down after work.",
+      "example_az": "Mən işdən sonra səyimi azaltmaq istəyirəm.",
+      "level": 2
+    }
+  ]
+}

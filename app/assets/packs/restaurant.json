@@ -1,0 +1,104 @@
+{
+  "pack_id": "restaurant",
+  "target_lang": "en",
+  "ui_lang": "az",
+  "title_az": "Restoranda",
+  "words": [
+    {
+      "word": "reservation",
+      "translation_az": "rezervasiya",
+      "ipa": "/ˌrɛzərˈveɪʒən/",
+      "example": "I'd like to make a reservation for tonight.",
+      "example_az": "Gecə üçün rezervasiya etmək istərdim.",
+      "level": 2
+    },
+    {
+      "word": "menu",
+      "translation_az": "menyu",
+      "ipa": "/ˈmeɪnu/",
+      "example": "Can I see the menu, please?",
+      "example_az": "Menyu görməyə bəsən?",
+      "level": 1
+    },
+    {
+      "word": "waiter",
+      "translation_az": "xidmətçi",
+      "ipa": "/ˈweɪtər/",
+      "example": "Our waiter is very friendly.",
+      "example_az": "Xidmətçi sehrəli.",
+      "level": 1
+    },
+    {
+      "word": "order",
+      "translation_az": "sifariş",
+      "ipa": "/ˈɔrdər/",
+      "example": "What would you like to order?",
+      "example_az": "Nə sifariş vermək istəyirsən?",
+      "level": 1
+    },
+    {
+      "word": "bill",
+      "translation_az": "fatura",
+      "ipa": "/bɪl/",
+      "example": "Can I see the bill, please?",
+      "example_az": "Fatura görməyə bəsən?",
+      "level": 1
+    },
+    {
+      "word": "vegetarian",
+      "translation_az": "bitkiçili",
+      "ipa": "/ˌvɛdʒɪˈtɛəriən/",
+      "example": "I'm a vegetarian, can you suggest some options?",
+      "example_az": "Bitkiçiliyəm, bəzi variantları tövsiyə edə bəsən?",
+      "level": 2
+    },
+    {
+      "word": "gluten-free",
+      "translation_az": "qənnadı-azad",
+      "ipa": "/ˈɡluːtənˌfrɪ/",
+      "example": "Do you have any gluten-free options?",
+      "example_az": "Qənnadı-azad variantlar varmı?",
+      "level": 2
+    },
+    {
+      "word": "check",
+      "translation_az": "yoxlama",
+      "ipa": "/tʃɛk/",
+      "example": "Can I check the bill, please?",
+      "example_az": "Faturanı yoxlamaq istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "tip",
+      "translation_az": "əlavə",
+      "ipa": "/tɪp/",
+      "example": "How much tip should I leave?",
+      "example_az": "Əlavə qədər necə olmalıdır?",
+      "level": 1
+    },
+    {
+      "word": "cash",
+      "translation_az": "nağd",
+      "ipa": "/kæʃ/",
+      "example": "I'd like to pay with cash.",
+      "example_az": "Nağd ödəmək istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "credit card",
+      "translation_az": "kredit kartı",
+      "ipa": "/ˈkrɛdɪt kɑrd/",
+      "example": "Can I pay with credit card?",
+      "example_az": "Kredit kartı ilə ödəmək bəsən?",
+      "level": 2
+    },
+    {
+      "word": "change",
+      "translation_az": "dəyişik",
+      "ipa": "/tʃeɪndʒ/",
+      "example": "Here's your change.",
+      "example_az": "Dəyişiklər.",
+      "level": 1
+    }
+  ]
+}

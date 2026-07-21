@@ -1,0 +1,104 @@
+{
+  "pack_id": "hotel",
+  "target_lang": "en",
+  "ui_lang": "az",
+  "title_az": "Oteldə",
+  "words": [
+    {
+      "word": "check in",
+      "translation_az": "qeydiyyatdan keçmək",
+      "ipa": "/tʃɛk ɪn/",
+      "example": "Can you help me check in?",
+      "example_az": "Siz məni qeydiyyatdan keçməyə kömək edə bilərsiniz?",
+      "level": 1
+    },
+    {
+      "word": "check out",
+      "translation_az": "qeydiyyatdan çıxmaq",
+      "ipa": "/tʃɛk aʊt/",
+      "example": "I need to check out at 10 am.",
+      "example_az": "Mən saat 10-da qeydiyyatdan çıxmaq istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "room service",
+      "translation_az": "otaq xidməti",
+      "ipa": "/ruːm ˈsɜːrvɪs/",
+      "example": "Room service is available from 6 pm to 10 pm.",
+      "example_az": "Otaq xidməti saat 18-dən 22-dək mövcuddur.",
+      "level": 2
+    },
+    {
+      "word": "help",
+      "translation_az": "yardım",
+      "ipa": "/hɛlp/",
+      "example": "Can you help me with my luggage?",
+      "example_az": "Mənim çantamı siz yardımsız edə bilərsiniz?",
+      "level": 1
+    },
+    {
+      "word": "breakfast",
+      "translation_az": "əsas",
+      "ipa": "/brekfɑːst/",
+      "example": "Breakfast is included in the price.",
+      "example_az": "Əsas xərclərə daxildir.",
+      "level": 1
+    },
+    {
+      "word": "bed",
+      "translation_az": "yataq",
+      "ipa": "/bed/",
+      "example": "The bed is very comfortable.",
+      "example_az": "Yataq çox ələqədir.",
+      "level": 1
+    },
+    {
+      "word": "shower",
+      "translation_az": "şower",
+      "ipa": "/ˈʃoʊər/",
+      "example": "The shower is not working properly.",
+      "example_az": "Şower normal işləmir.",
+      "level": 1
+    },
+    {
+      "word": "internet",
+      "translation_az": "internet",
+      "ipa": "/ˈɪntərˌnɛt/",
+      "example": "Is the internet available in the room?",
+      "example_az": "Otaqda internet mövcuddur?",
+      "level": 1
+    },
+    {
+      "word": "air conditioning",
+      "translation_az": "külək nəzarəti",
+      "ipa": "/ˌɛr ˌkɑːndɪʃəˈneɪʃən/",
+      "example": "The air conditioning is not working.",
+      "example_az": "Külək nəzarəti normal işləmir.",
+      "level": 2
+    },
+    {
+      "word": "map",
+      "translation_az": "xəritə",
+      "ipa": "/mæp/",
+      "example": "Can you give me a map of the area?",
+      "example_az": "Mənim bu ərazidəki xəritəni verə bilərsiniz?",
+      "level": 1
+    },
+    {
+      "word": "information",
+      "translation_az": "məlumat",
+      "ipa": "/ˌɪnfərˈmeɪʃən/",
+      "example": "Where can I find information about the hotel?",
+      "example_az": "Həmin otel haqqında məlumat nə place tapa bilərsən?",
+      "level": 2
+    },
+    {
+      "word": "staff",
+      "translation_az": "şəxsi heyət",
+      "ipa": "/stɑːf/",
+      "example": "The hotel staff is very friendly.",
+      "example_az": "Həmin otele aid şəxsi heyət çox ələqədir.",
+      "level": 1
+    }
+  ]
+}
