@@ -6,34 +6,34 @@
   "words": [
     {
       "word": "relax",
-      "translation_az": "rəlaks",
+      "translation_az": "rahatlanmaq",
       "ipa": "/rɪˈlæks/",
       "example": "I'm going to relax after dinner.",
-      "example_az": "Mən dəstərdən sonra rəlaks edəcəm.",
+      "example_az": "Şam yeməyindən sonra rahatlanacağam.",
       "level": 1
     },
     {
       "word": "dinner",
-      "translation_az": "dəstər",
+      "translation_az": "şam yeməyi",
       "ipa": "/ˈdɪnər/",
       "example": "What time is dinner?",
-      "example_az": "Dəstər ne vaxtda?",
+      "example_az": "Şam yeməyi neçədə olacaq?",
       "level": 1
     },
     {
       "word": "bedtime",
-      "translation_az": "yuxu vaxtı",
+      "translation_az": "yatma vaxtı",
       "ipa": "/ˈbɛdtaɪm/",
       "example": "What's the bedtime routine?",
-      "example_az": "Yuxu vaxtı rejimi nədir?",
+      "example_az": "Yatma vaxtı rejimi nədir?",
       "level": 2
     },
     {
       "word": "reflection",
-      "translation_az": "bədəl",
+      "translation_az": "düşüncə",
       "ipa": "/rɪflekʃən/",
       "example": "I'll do some reflection on my day.",
-      "example_az": "Mən gündəmə dair bədəl edəcəm.",
+      "example_az": "Gün haqqında bir az düşünəcəm.",
       "level": 3
     },
     {
@@ -46,42 +46,42 @@
     },
     {
       "word": "goodnight",
-      "translation_az": "yaxşı gecə",
+      "translation_az": "yaxşı gecələr",
       "ipa": "/ˈɡʊdnait/",
       "example": "Goodnight, have a good sleep!",
-      "example_az": "Yaxşı gecə, yaxşı yuxula!",
+      "example_az": "Yaxşı gecələr, şirin yuxular!",
       "level": 1
     },
     {
       "word": "nap",
-      "translation_az": "növbət",
+      "translation_az": "qısa yuxu",
       "ipa": "/næp/",
       "example": "I'm going to take a nap.",
-      "example_az": "Mən növbət almaq istəyirəm.",
+      "example_az": "Mən qısa bir yuxu almaq istəyirəm.",
       "level": 1
     },
     {
       "word": "chill",
-      "translation_az": "şaxtalanmaq",
+      "translation_az": "dincəlmək",
       "ipa": "/tʃɪl/",
       "example": "Let's chill out for a while.",
-      "example_az": "Bir az şaxtalanmaq istəyirik.",
+      "example_az": "Bir az dincələk.",
       "level": 1
     },
     {
       "word": "relieved",
-      "translation_az": "asılı qalmamış",
+      "translation_az": "rahatlamış",
       "ipa": "/rɪˈlivd/",
       "example": "I feel relieved after the exam.",
-      "example_az": "Mən müsahibədən sonra asılı qalmamışam.",
+      "example_az": "İmtahandan sonra rahatlamışam.",
       "level": 2
     },
     {
       "word": "dinner table",
-      "translation_az": "dəstər mərasimi",
+      "translation_az": "şam süfrəsi",
       "ipa": "/ˈdɪnər teɪbəl/",
       "example": "Let's eat at the dinner table.",
-      "example_az": "Mərasim mətbəxinə yeməyə gedək.",
+      "example_az": "Şam süfrəsində yeyək.",
       "level": 2
     },
     {
@@ -94,10 +94,10 @@
     },
     {
       "word": "wind down",
-      "translation_az": "səyini azaltmaq",
+      "translation_az": "sakitləşmək",
       "ipa": "/waɪnd daʊn/",
       "example": "I need to wind down after work.",
-      "example_az": "Mən işdən sonra səyimi azaltmaq istəyirəm.",
+      "example_az": "İşdən sonra sakitləşmək istəyirəm.",
       "level": 2
     }
   ]

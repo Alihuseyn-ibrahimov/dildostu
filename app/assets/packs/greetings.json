@@ -14,10 +14,10 @@
     },
     {
       "word": "how are you?",
-      "translation_az": "nəcəsən?",
+      "translation_az": "necəsən?",
       "ipa": "/haʊ ər juː/",
       "example": "How are you?",
-      "example_az": "Nəcəsən?",
+      "example_az": "Necəsən?",
       "level": 1
     },
     {
@@ -30,10 +30,10 @@
     },
     {
       "word": "what's your name?",
-      "translation_az": "siz nə adınız?",
+      "translation_az": "adınız nədir?",
       "ipa": "/hwæts jɔːr neɪm/",
       "example": "What's your name?",
-      "example_az": "Siz nə adınız?",
+      "example_az": "Adınız nədir?",
       "level": 1
     },
     {
@@ -41,55 +41,55 @@
       "translation_az": "adım",
       "ipa": "/maɪ neɪm ɪz/",
       "example": "My name is John.",
-      "example_az": "Adım Con.",
+      "example_az": "Adım Condur.",
       "level": 2
     },
     {
       "word": "nice to meet you",
-      "translation_az": "tanış olmaq istəyirəm",
+      "translation_az": "tanış olduğuma şadam",
       "ipa": "/naɪs tu mɪt juː/",
       "example": "Nice to meet you.",
-      "example_az": "Tanış olmaq istəyirəm.",
+      "example_az": "Tanış olduğuma şadam.",
       "level": 2
     },
     {
       "word": "goodbye",
-      "translation_az": "xəyal",
+      "translation_az": "sağ olun",
       "ipa": "/ɡʊd baɪ/",
       "example": "Goodbye.",
-      "example_az": "Xəyal.",
+      "example_az": "Sağ olun.",
       "level": 1
     },
     {
       "word": "see you later",
-      "translation_az": "sonra görüşəcəyik",
+      "translation_az": "görüşərik",
       "ipa": "/si juː ˈleɪtər/",
       "example": "See you later.",
-      "example_az": "Sonra görüşəcəyik.",
+      "example_az": "Görüşərik.",
       "level": 2
     },
     {
       "word": "where are you from?",
-      "translation_az": "siz nə yerən?",
+      "translation_az": "haradansınız?",
       "ipa": "/hwɛr ər juː frɒm/",
       "example": "Where are you from?",
-      "example_az": "Siz nə yerən?",
+      "example_az": "Haradansınız?",
       "level": 2
     },
     {
       "word": "i'm from",
-      "translation_az": "mən",
+      "translation_az": "mən ...danam",
       "ipa": "/aɪm frɒm/",
       "example": "I'm from London.",
-      "example_az": "Mən Londonda.",
+      "example_az": "Mən Londondanam.",
       "level": 2
     },
     {
       "word": "what do you do?",
-      "translation_az": "siz nə edirsiniz?",
-      "ipa": "/hwæt du uː duː/",
+      "translation_az": "nə iş görürsünüz?",
+      "ipa": "/hwæt du juː duː/",
       "example": "What do you do?",
-      "example_az": "Siz nə edirsiniz?",
+      "example_az": "Nə iş görürsünüz?",
       "level": 2
     },
     {

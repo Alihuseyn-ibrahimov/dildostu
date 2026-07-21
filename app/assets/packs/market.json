@@ -14,42 +14,42 @@
     },
     {
       "word": "how much",
-      "translation_az": "ne qədər",
+      "translation_az": "nə qədər",
       "ipa": "/haʊ mʌtʃ/",
       "example": "How much does this cost?",
-      "example_az": "Bu ne qədər dəyər?",
+      "example_az": "Bu nə qədərdir?",
       "level": 1
     },
     {
       "word": "pound",
-      "translation_az": "funta",
+      "translation_az": "funt",
       "ipa": "/paʊnd/",
       "example": "This product weighs one pound.",
-      "example_az": "Bu məhsul bir funta ağırdır.",
+      "example_az": "Bu məhsul bir funt çəkir.",
       "level": 2
     },
     {
       "word": "dozen",
-      "translation_az": "on doqquz",
+      "translation_az": "on iki",
       "ipa": "/ˈdoʊzn/",
       "example": "I need a dozen eggs.",
-      "example_az": "Mən on doqquz yumurtaya ehtiyacım var.",
+      "example_az": "Mənə on iki yumurta lazımdır.",
       "level": 2
     },
     {
       "word": "checkout",
-      "translation_az": "səhifədən keçmək",
+      "translation_az": "kassa",
       "ipa": "/tʃek.aʊt/",
       "example": "Please checkout at the counter.",
-      "example_az": "Lütfən səhifədən keçmək üçün counterə gəl.",
+      "example_az": "Zəhmət olmasa kassada hesablaşın.",
       "level": 1
     },
     {
       "word": "receipt",
-      "translation_az": "alver sənədi",
+      "translation_az": "qəbz",
       "ipa": "/rɪˈsiːt/",
       "example": "Can I have my receipt, please?",
-      "example_az": "Lütfən mənim alver sənədimi verin, zərurət var.",
+      "example_az": "Qəbzimi verə bilərsinizmi?",
       "level": 1
     },
     {
@@ -62,7 +62,7 @@
     },
     {
       "word": "credit",
-      "translation_az": "kredit",
+      "translation_az": "kredit kartı",
       "ipa": "/ˈkrɛdɪt/",
       "example": "I'd like to pay with credit card.",
       "example_az": "Mən kredit kartı ilə ödəmək istəyirəm.",
@@ -73,31 +73,31 @@
       "translation_az": "endirim",
       "ipa": "/dɪsˈkaʊnt/",
       "example": "Is there a discount for students?",
-      "example_az": "Tələbələrə endirim var?",
+      "example_az": "Tələbələr üçün endirim varmı?",
       "level": 2
     },
     {
       "word": "return",
-      "translation_az": "qayıtmaq",
+      "translation_az": "geri qaytarmaq",
       "ipa": "/rɪˈtɜrn/",
       "example": "Can I return this item?",
-      "example_az": "Bu məhsulu qayıtmaq mümkündür?",
+      "example_az": "Bu məhsulu geri qaytara bilərəmmi?",
       "level": 1
     },
     {
       "word": "thank you",
-      "translation_az": "sənə görə",
+      "translation_az": "təşəkkür edirəm",
       "ipa": "/θæŋk juː/",
       "example": "Thank you for helping me.",
-      "example_az": "Sənə görə məni kömək etdin.",
+      "example_az": "Kömək etdiyiniz üçün təşəkkür edirəm.",
       "level": 1
     },
     {
       "word": "sorry",
-      "translation_az": "üzr",
+      "translation_az": "bağışlayın",
       "ipa": "/ˈsɒri/",
       "example": "Sorry, I don't have enough money.",
-      "example_az": "Üzr, mənim pulu yetərmi.",
+      "example_az": "Bağışlayın, kifayət qədər pulum yoxdur.",
       "level": 1
     }
   ]

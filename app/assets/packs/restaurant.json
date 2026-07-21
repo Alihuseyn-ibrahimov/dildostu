@@ -9,7 +9,7 @@
       "translation_az": "rezervasiya",
       "ipa": "/ˌrɛzərˈveɪʒən/",
       "example": "I'd like to make a reservation for tonight.",
-      "example_az": "Gecə üçün rezervasiya etmək istərdim.",
+      "example_az": "Bu axşam üçün rezervasiya etmək istərdim.",
       "level": 2
     },
     {
@@ -17,15 +17,15 @@
       "translation_az": "menyu",
       "ipa": "/ˈmeɪnu/",
       "example": "Can I see the menu, please?",
-      "example_az": "Menyu görməyə bəsən?",
+      "example_az": "Menyunu görə bilərəmmi?",
       "level": 1
     },
     {
       "word": "waiter",
-      "translation_az": "xidmətçi",
+      "translation_az": "ofisiant",
       "ipa": "/ˈweɪtər/",
       "example": "Our waiter is very friendly.",
-      "example_az": "Xidmətçi sehrəli.",
+      "example_az": "Ofisiantımız çox mehribandır.",
       "level": 1
     },
     {
@@ -38,42 +38,42 @@
     },
     {
       "word": "bill",
-      "translation_az": "fatura",
+      "translation_az": "hesab",
       "ipa": "/bɪl/",
       "example": "Can I see the bill, please?",
-      "example_az": "Fatura görməyə bəsən?",
+      "example_az": "Hesabı gətirə bilərsinizmi?",
       "level": 1
     },
     {
       "word": "vegetarian",
-      "translation_az": "bitkiçili",
+      "translation_az": "veqetarian",
       "ipa": "/ˌvɛdʒɪˈtɛəriən/",
       "example": "I'm a vegetarian, can you suggest some options?",
-      "example_az": "Bitkiçiliyəm, bəzi variantları tövsiyə edə bəsən?",
+      "example_az": "Mən veqetarianam, bəzi seçimlər tövsiyə edə bilərsinizmi?",
       "level": 2
     },
     {
       "word": "gluten-free",
-      "translation_az": "qənnadı-azad",
+      "translation_az": "qlütensiz",
       "ipa": "/ˈɡluːtənˌfrɪ/",
       "example": "Do you have any gluten-free options?",
-      "example_az": "Qənnadı-azad variantlar varmı?",
+      "example_az": "Qlütensiz yeməkləriniz varmı?",
       "level": 2
     },
     {
       "word": "check",
-      "translation_az": "yoxlama",
+      "translation_az": "hesab",
       "ipa": "/tʃɛk/",
-      "example": "Can I check the bill, please?",
-      "example_az": "Faturanı yoxlamaq istəyirəm.",
+      "example": "Can I get the check, please?",
+      "example_az": "Hesabı gətirə bilərsinizmi?",
       "level": 1
     },
     {
       "word": "tip",
-      "translation_az": "əlavə",
+      "translation_az": "bəxşiş",
       "ipa": "/tɪp/",
       "example": "How much tip should I leave?",
-      "example_az": "Əlavə qədər necə olmalıdır?",
+      "example_az": "Nə qədər bəxşiş buraxmalıyam?",
       "level": 1
     },
     {
@@ -89,15 +89,15 @@
       "translation_az": "kredit kartı",
       "ipa": "/ˈkrɛdɪt kɑrd/",
       "example": "Can I pay with credit card?",
-      "example_az": "Kredit kartı ilə ödəmək bəsən?",
+      "example_az": "Kredit kartı ilə ödəyə bilərəmmi?",
       "level": 2
     },
     {
       "word": "change",
-      "translation_az": "dəyişik",
+      "translation_az": "qalıq pul",
       "ipa": "/tʃeɪndʒ/",
       "example": "Here's your change.",
-      "example_az": "Dəyişiklər.",
+      "example_az": "Buyurun, qalıq pulunuz.",
       "level": 1
     }
   ]

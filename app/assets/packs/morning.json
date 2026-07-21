@@ -46,34 +46,34 @@
     },
     {
       "word": "alarm clock",
-      "translation_az": "signal saatı",
+      "translation_az": "zəngli saat",
       "ipa": "/əˈlɑrm klɔk/",
       "example": "My alarm clock is ringing.",
-      "example_az": "Mənim signal saatım çalıır.",
+      "example_az": "Zəngli saatım çalır.",
       "level": 2
     },
     {
       "word": "get dressed",
-      "translation_az": "geyim",
+      "translation_az": "geyin",
       "ipa": "/ɡɛt ˈdrɛst/",
       "example": "Get dressed, we are going out.",
-      "example_az": "Geyim, biz çıxacağıq.",
+      "example_az": "Geyin, biz çıxacağıq.",
       "level": 1
     },
     {
       "word": "brush teeth",
-      "translation_az": "dişləri yaxalamaq",
+      "translation_az": "dişləri fırçalamaq",
       "ipa": "/brʌʃ tiːθ/",
       "example": "Remember to brush your teeth.",
-      "example_az": "Dişlərini yaxalamağı unutma.",
+      "example_az": "Dişlərini fırçalamağı unutma.",
       "level": 1
     },
     {
       "word": "have a nice day",
-      "translation_az": "yaxşı gün",
+      "translation_az": "gününüz xeyirli keçsin",
       "ipa": "/hæv ə naɪs deɪ/",
       "example": "Have a nice day, see you later.",
-      "example_az": "Yaxşı gün, sonra görüşərik.",
+      "example_az": "Gününüz xeyirli keçsin, sonra görüşərik.",
       "level": 1
     },
     {
@@ -81,7 +81,7 @@
       "translation_az": "yuxulu",
       "ipa": "/ˈsliːpi/",
       "example": "I'm feeling sleepy, I need to rest.",
-      "example_az": "Mən yuxulu hiss edirəm, istirahətə ehtiyacım var.",
+      "example_az": "Yuxum gəlir, istirahətə ehtiyacım var.",
       "level": 2
     },
     {
@@ -89,15 +89,15 @@
       "translation_az": "səhər günəşi",
       "ipa": "/ˈmɔrnɪŋ ˈsʌnʃaɪn/",
       "example": "The morning sunshine is beautiful.",
-      "example_az": "Səhər günəşi gözələdir.",
+      "example_az": "Səhər günəşi gözəldir.",
       "level": 2
     },
     {
       "word": "yogurt",
-      "translation_az": "yoğurt",
+      "translation_az": "qatıq",
       "ipa": "/ˈjoʊɡərt/",
       "example": "I like to eat yogurt for breakfast.",
-      "example_az": "Mən səhər yeməyi üçün yoğurt yeyirəm.",
+      "example_az": "Mən səhər yeməyi üçün qatıq yeyirəm.",
       "level": 1
     }
   ]

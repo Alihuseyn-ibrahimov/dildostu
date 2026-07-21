@@ -6,10 +6,10 @@
   "words": [
     {
       "word": "taxi",
-      "translation_az": "taxi",
+      "translation_az": "taksi",
       "ipa": "/ˈtæksi/",
       "example": "I need a taxi.",
-      "example_az": "Mənə taxı tələb edirəm.",
+      "example_az": "Mənə taksi lazımdır.",
       "level": 1
     },
     {
@@ -25,7 +25,7 @@
       "translation_az": "metro",
       "ipa": "/ˈmɛtroʊ/",
       "example": "I'm taking the metro to the city center.",
-      "example_az": "Mən şəhər mərkəzinə metroya getərəm.",
+      "example_az": "Mən şəhər mərkəzinə metro ilə gedəcəyəm.",
       "level": 2
     },
     {
@@ -33,55 +33,55 @@
       "translation_az": "bilet",
       "ipa": "/ˈtɪkɪt/",
       "example": "How much is the ticket?",
-      "example_az": "Biletə ne qədər ödəyirəm?",
+      "example_az": "Bilet nə qədərdir?",
       "level": 1
     },
     {
       "word": "directions",
-      "translation_az": "istiqamət",
+      "translation_az": "yol göstərişi",
       "ipa": "/ˈdɪrɛkʃənz/",
       "example": "Can you give me directions to the hotel?",
-      "example_az": "Mənə hotelə istiqamət verməyə bilərsiz?",
+      "example_az": "Mənə otelə gedən yolu göstərə bilərsinizmi?",
       "level": 2
     },
     {
       "word": "where",
-      "translation_az": "nə",
+      "translation_az": "harada",
       "ipa": "/hwɛr/",
       "example": "Where is the bus station?",
-      "example_az": "Avtobus stansiyası nədir?",
+      "example_az": "Avtobus dayanacağı haradadır?",
       "level": 1
     },
     {
       "word": "how much",
-      "translation_az": "ne qədər",
+      "translation_az": "nə qədər",
       "ipa": "/haʊmʌtʃ/",
       "example": "How much is the taxi fare?",
-      "example_az": "Taxı qədərə qədər ödəyirəm?",
+      "example_az": "Taksi haqqı nə qədərdir?",
       "level": 1
     },
     {
       "word": "left",
-      "translation_az": "sağ",
+      "translation_az": "sol",
       "ipa": "/left/",
       "example": "Turn left at the next street.",
-      "example_az": "Sonrakı küçədə sağa qərqin.",
+      "example_az": "Sonrakı küçədə sola dönün.",
       "level": 1
     },
     {
       "word": "right",
-      "translation_az": "sol",
+      "translation_az": "sağ",
       "ipa": "/raɪt/",
       "example": "Turn right at the traffic light.",
-      "example_az": "Ağır gediş nöqtəsində sağa qərqin.",
+      "example_az": "İşıqforda sağa dönün.",
       "level": 1
     },
     {
       "word": "straight",
-      "translation_az": "geri",
+      "translation_az": "düz",
       "ipa": "/streɪt/",
       "example": "Go straight for 2 kilometers.",
-      "example_az": "2 kilometr geri gedin.",
+      "example_az": "2 kilometr düz gedin.",
       "level": 1
     },
     {
@@ -89,7 +89,7 @@
       "translation_az": "dayan",
       "ipa": "/stɒp/",
       "example": "Stop the taxi here.",
-      "example_az": "Burada taxı dayan.",
+      "example_az": "Taksini burada saxlayın.",
       "level": 1
     },
     {
@@ -97,7 +97,7 @@
       "translation_az": "xəritə",
       "ipa": "/mæp/",
       "example": "Can you show me the map?",
-      "example_az": "Mənə xəritə göstərə bilərsiz?",
+      "example_az": "Mənə xəritəni göstərə bilərsinizmi?",
       "level": 1
     }
   ]

@@ -6,99 +6,99 @@
   "words": [
     {
       "word": "coffee",
-      "translation_az": "qəhrəman",
+      "translation_az": "qəhvə",
       "ipa": "/ˈkɒfi/",
-      "example": "I'll have a coffee, please.",
-      "example_az": "Mən bir qəhrəman istəyirəm, lütfən.",
+      "example": "I would like a coffee.",
+      "example_az": "Mən qəhvə istəyirəm.",
       "level": 1
     },
     {
-      "word": "tea",
-      "translation_az": "çay",
-      "ipa": "/tiː/",
-      "example": "Do you have any tea?",
-      "example_az": "Siz çay varmı?",
+      "word": "black tea",
+      "translation_az": "qara çay",
+      "ipa": "/blæk ˈtiː/",
+      "example": "Do you have black tea?",
+      "example_az": "Sizdə qara çay varmı?",
+      "level": 2
+    },
+    {
+      "word": "sugar",
+      "translation_az": "şəkər",
+      "ipa": "/ˈʃʊɡər/",
+      "example": "Can I have sugar?",
+      "example_az": "Mənə şəkər vermək olarmı?",
+      "level": 1
+    },
+    {
+      "word": "milk",
+      "translation_az": "süd",
+      "ipa": "/mɪlk/",
+      "example": "I take my coffee with milk.",
+      "example_az": "Mən qəhvəmi südlə içirəm.",
       "level": 1
     },
     {
       "word": "bill",
-      "translation_az": "fatura",
+      "translation_az": "hesab",
       "ipa": "/bɪl/",
-      "example": "Can I see the bill, please?",
-      "example_az": "Mən faturanı görə bilərmi, lütfən?",
-      "level": 1
-    },
-    {
-      "word": "menu",
-      "translation_az": "menü",
-      "ipa": "/ˈmeɪnu/",
-      "example": "Can I see the menu, please?",
-      "example_az": "Mən menünü görə bilərmi, lütfən?",
+      "example": "Can I have the bill, please?",
+      "example_az": "Xahiş edirəm, mənə hesab gətirin.",
       "level": 1
     },
     {
       "word": "water",
-      "translation_az": "sud",
-      "ipa": "/ˈwɒtər/",
-      "example": "I'll have a glass of water, please.",
-      "example_az": "Mən bir su qəhrəmanı istəyirəm, lütfən.",
+      "translation_az": "su",
+      "ipa": "/ˈwɔːtər/",
+      "example": "Can I have some water?",
+      "example_az": "Mənə su vermək olarmı?",
       "level": 1
     },
     {
-      "word": "check",
-      "translation_az": "yoxlama",
-      "ipa": "/tʃɛk/",
-      "example": "Can I check the bill?",
-      "example_az": "Mən faturanı yoxlaya bilərmi?",
-      "level": 2
-    },
-    {
-      "word": "to go",
-      "translation_az": "getmək",
-      "ipa": "/tə ɡoʊ/",
-      "example": "I'd like to go.",
-      "example_az": "Mən getmək istəyirəm.",
-      "level": 2
-    },
-    {
-      "word": "takeaway",
-      "translation_az": "qəhrəman götürmək",
-      "ipa": "/tækəˈweɪ/",
-      "example": "Can I have a takeaway coffee?",
-      "example_az": "Mən qəhrəman götürmək istəyirəm.",
-      "level": 2
-    },
-    {
       "word": "how much",
-      "translation_az": "ne qədər",
+      "translation_az": "nə qədər",
       "ipa": "/haʊ ˈmʌtʃ/",
-      "example": "How much does it cost?",
-      "example_az": "Bu ne qədər məbləğə malikdir?",
-      "level": 2
+      "example": "How much is this coffee?",
+      "example_az": "Bu qəhvə nə qədərdir?",
+      "level": 1
     },
     {
       "word": "pay",
       "translation_az": "ödəmək",
       "ipa": "/peɪ/",
-      "example": "I'll pay with card.",
-      "example_az": "Mən kredit kartı ilə ödəyəcəm.",
-      "level": 2
-    },
-    {
-      "word": "change",
-      "translation_az": "qarşılıq",
-      "ipa": "/tʃeɪndʒ/",
-      "example": "Can I have my change?",
-      "example_az": "Mən qarşılığı almaq istəyirəm.",
-      "level": 2
+      "example": "I will pay now.",
+      "example_az": "Mən indi ödəyəcəyəm.",
+      "level": 1
     },
     {
       "word": "thank you",
-      "translation_az": "sənimə xüsusi təşəkkür",
+      "translation_az": "təşəkkür",
       "ipa": "/θæŋk juː/",
       "example": "Thank you for the coffee.",
-      "example_az": "Sənimə xüsusi təşəkkür, qəhrəman.",
-      "level": 3
+      "example_az": "Qəhvəyə görə təşəkkür edirəm.",
+      "level": 1
+    },
+    {
+      "word": "menu",
+      "translation_az": "menyu",
+      "ipa": "/ˈmɛnjuː/",
+      "example": "Can I see the menu?",
+      "example_az": "Mən menyunu görmək istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "waiter",
+      "translation_az": "ofisiant",
+      "ipa": "/ˈweɪtər/",
+      "example": "I need to call the waiter.",
+      "example_az": "Mən ofisiantı çağırmalıyam.",
+      "level": 2
+    },
+    {
+      "word": "tip",
+      "translation_az": "bəxşiş",
+      "ipa": "/tɪp/",
+      "example": "Should I leave a tip?",
+      "example_az": "Mən bağış qoymalıyam?",
+      "level": 2
     }
   ]
 }
