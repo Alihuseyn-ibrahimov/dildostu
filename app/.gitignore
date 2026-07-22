@@ -43,3 +43,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Yerli build workaround artefaktlari (maşına xas)
+/robocopy.log
+/diagnose_result.txt
+/diagnose.bat
