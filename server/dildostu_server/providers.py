@@ -13,6 +13,7 @@ from typing import Callable
 from dotenv import load_dotenv
 
 Completer = Callable[[str, str], str]  # (system, user) -> text
+ChatCompleter = Callable[[str, list], str]  # (system, messages) -> text
 
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 CLAUDE_MODEL = os.environ.get("CLAUDE_MODEL", "claude-sonnet-5")
@@ -45,6 +46,70 @@ def complete_with_fallback(
         except Exception as exc:  # noqa: BLE001 — fallback üçün geniş tutuş
             errors.append(f"{name}: {exc}")
     raise AllProvidersFailed("; ".join(errors) or "provayder yoxdur")
+
+
+def chat_with_fallback(
+    system: str,
+    messages: list,
+    order: list[str],
+    completers: dict[str, ChatCompleter],
+) -> str:
+    """Çoxnövbəli söhbət üçün fallback — `order` sırası ilə provayderləri sına."""
+    errors: list[str] = []
+    for name in order:
+        completer = completers.get(name)
+        if completer is None:
+            continue
+        try:
+            return completer(system, messages)
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"{name}: {exc}")
+    raise AllProvidersFailed("; ".join(errors) or "provayder yoxdur")
+
+
+def build_chat_completers() -> dict[str, ChatCompleter]:
+    """Söhbət (messages massivi) üçün Groq/Claude completer-ləri."""
+    load_env()
+    completers: dict[str, ChatCompleter] = {}
+    if os.environ.get("GROQ_API_KEY"):
+        completers["groq"] = _groq_chat_completer(GROQ_MODEL)
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        completers["claude"] = _claude_chat_completer(CLAUDE_MODEL)
+    return completers
+
+
+def _groq_chat_completer(model: str) -> ChatCompleter:
+    import groq
+
+    client = groq.Groq(api_key=os.environ["GROQ_API_KEY"])
+
+    def complete(system: str, messages: list) -> str:
+        resp = client.chat.completions.create(
+            model=model,
+            temperature=0.6,
+            messages=[{"role": "system", "content": system}, *messages],
+        )
+        return resp.choices[0].message.content
+
+    return complete
+
+
+def _claude_chat_completer(model: str) -> ChatCompleter:
+    import anthropic
+
+    client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+
+    def complete(system: str, messages: list) -> str:
+        resp = client.messages.create(
+            model=model,
+            max_tokens=1024,
+            temperature=0.6,
+            system=system,
+            messages=messages,
+        )
+        return "".join(b.text for b in resp.content if b.type == "text")
+
+    return complete
 
 
 def build_completers() -> dict[str, Completer]:

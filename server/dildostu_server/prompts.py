@@ -79,6 +79,30 @@ def build_generate_prompt(
     return _SYSTEM, user
 
 
+def chat_preferred_providers() -> list[str]:
+    """Söhbət üçün provayder sırası: Claude (keyfiyyət) → Groq (fallback)."""
+    return ["claude", "groq"]
+
+
+def build_chat_system(profile: UserProfile, context: Context | None) -> str:
+    """Söhbət üçün system prompt — Azərbaycanca İngilis dili müəllimi personası."""
+    ctx = ""
+    if context is not None:
+        ctx = (
+            f"\nİstifadəçi hazırda '{context.pack_id}' kontekstindədir "
+            f"(saat {context.hour}) — cavablarını buna uyğunlaşdıra bilərsən."
+        )
+    return (
+        "Sən DilDostu-san — Azərbaycanca danışan istifadəçiyə İngilis dili "
+        "öyrədən dostcasına, səbirli AI müəllim. Həmişə AZƏRBAYCANCA cavab ver "
+        "(İngilis söz/ifadələri nümunə kimi ver). Cavabların qısa, praktik və "
+        "cəsarətləndirici olsun. İstifadəçi soruşanda tələffüz, nümunə cümlə və "
+        "sadə izah ver.\n"
+        f"İstifadəçi səviyyəsi: {profile.level} (beginner/intermediate); "
+        f"məqsəd: {profile.purpose}.{ctx}"
+    )
+
+
 def build_dayplan_prompt(
     profile: UserProfile,
     pack_ids: list[str],

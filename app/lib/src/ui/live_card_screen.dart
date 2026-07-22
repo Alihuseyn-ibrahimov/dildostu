@@ -14,11 +14,15 @@ class LiveCardScreen extends StatefulWidget {
     required this.title,
     required this.speaker,
     required this.fetch,
+    this.onAskQuestion,
   });
 
   final String title;
   final Speaker speaker;
   final Future<LiveMessage> Function(String mode) fetch;
+
+  /// "Sual ver" düyməsi — AI söhbətini bu kontekstlə açır (main.dart bağlayır).
+  final VoidCallback? onAskQuestion;
 
   @override
   State<LiveCardScreen> createState() => _LiveCardScreenState();
@@ -58,6 +62,12 @@ class _LiveCardScreenState extends State<LiveCardScreen> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
+          if (widget.onAskQuestion != null)
+            IconButton(
+              icon: const Icon(Icons.chat_bubble_outline),
+              tooltip: 'Sual ver',
+              onPressed: widget.onAskQuestion,
+            ),
           if (msg != null && !msg.isLive)
             const Padding(
               padding: EdgeInsets.only(right: 12),

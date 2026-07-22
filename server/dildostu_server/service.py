@@ -6,9 +6,27 @@ Endpoint-dən ayrıdır ki, completer və keş inject oluna (test üçün mock).
 from __future__ import annotations
 
 from .generator import parse_dayplan_response, parse_generate_response
-from .models import DayPlanRequest, DayPlanResponse, GenerateRequest, LiveMessage
-from .prompts import build_dayplan_prompt, build_generate_prompt, preferred_providers
-from .providers import AllProvidersFailed, Completer, complete_with_fallback
+from .models import (
+    ChatRequest,
+    DayPlanRequest,
+    DayPlanResponse,
+    GenerateRequest,
+    LiveMessage,
+)
+from .prompts import (
+    build_chat_system,
+    build_dayplan_prompt,
+    build_generate_prompt,
+    chat_preferred_providers,
+    preferred_providers,
+)
+from .providers import (
+    AllProvidersFailed,
+    ChatCompleter,
+    Completer,
+    chat_with_fallback,
+    complete_with_fallback,
+)
 
 
 class ServiceError(Exception):
@@ -49,3 +67,15 @@ class LiveService:
         except (AllProvidersFailed, ValueError) as exc:
             raise ServiceError(str(exc)) from exc
         return DayPlanResponse(messages=messages, source="ai")
+
+
+def run_chat(req: ChatRequest, chat_completers: dict[str, ChatCompleter]) -> str:
+    """Söhbət cavabı yaradır (çoxnövbəli). AI uğursuzsa ServiceError."""
+    system = build_chat_system(req.profile, req.context)
+    messages = [{"role": m.role, "content": m.content} for m in req.messages]
+    try:
+        return chat_with_fallback(
+            system, messages, chat_preferred_providers(), chat_completers
+        )
+    except AllProvidersFailed as exc:
+        raise ServiceError(str(exc)) from exc

@@ -27,6 +27,7 @@ class HomeScreen extends StatelessWidget {
     required this.notificationService,
     required this.profile,
     required this.openLive,
+    required this.onOpenChat,
   });
 
   final PackRepository repository;
@@ -37,6 +38,7 @@ class HomeScreen extends StatelessWidget {
   final NotificationService notificationService;
   final UserProfile profile;
   final OpenLive openLive;
+  final VoidCallback onOpenChat;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,11 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('DilDostu'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.chat_bubble_outline),
+            tooltip: 'AI ilə söhbət',
+            onPressed: onOpenChat,
+          ),
           IconButton(
             icon: const Icon(Icons.notifications_active_outlined),
             tooltip: 'Test bildirişi',

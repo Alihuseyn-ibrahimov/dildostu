@@ -60,3 +60,18 @@ class DayPlanRequest(BaseModel):
 class DayPlanResponse(BaseModel):
     messages: list[LiveMessage]
     source: Literal["ai", "fallback"] = "ai"
+
+
+class ChatMessage(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(min_length=1)
+
+
+class ChatRequest(BaseModel):
+    profile: UserProfile
+    messages: list[ChatMessage] = Field(min_length=1)
+    context: Context | None = None
+
+
+class ChatResponse(BaseModel):
+    reply: str

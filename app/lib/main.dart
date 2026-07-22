@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'src/config.dart';
+import 'src/data/chat_client.dart';
 import 'src/data/live_content_client.dart';
 import 'src/data/manual_context_repository.dart';
 import 'src/data/pack_repository.dart';
@@ -12,6 +13,7 @@ import 'src/models/user_profile.dart';
 import 'src/services/location_service.dart';
 import 'src/services/notification_service.dart';
 import 'src/services/speaker.dart';
+import 'src/ui/chat_screen.dart';
 import 'src/ui/home_screen.dart';
 import 'src/ui/live_card_screen.dart';
 import 'src/ui/onboarding_screen.dart';
@@ -66,6 +68,7 @@ class _BootstrapState extends State<_Bootstrap> {
   final NotificationService _notifications = NotificationService();
   final LocationService _location = LocationService();
   late final LiveContentClient _live;
+  final ChatClient _chat = ChatClient(baseUrl: AppConfig.serverBaseUrl);
 
   @override
   void initState() {
@@ -138,8 +141,29 @@ class _BootstrapState extends State<_Bootstrap> {
           profile: profile,
           mode: mode,
         ),
+        onAskQuestion: () => _openChat(
+          profile,
+          packId: packId,
+          greeting: '"$title" haqda nə soruşmaq istəyirsən? 🤖',
+        ),
       ),
     );
+  }
+
+  /// AI söhbət ekranını açır (home-dan ümumi, kartdan kontekstli).
+  void _openChat(UserProfile profile, {String? packId, String? greeting}) {
+    final hour = DateTime.now().hour;
+    navigatorKey.currentState?.push(MaterialPageRoute(
+      builder: (_) => ChatScreen(
+        greeting: greeting,
+        sender: (history) => _chat.send(
+          profile: profile,
+          history: history,
+          packId: packId,
+          hour: packId != null ? hour : null,
+        ),
+      ),
+    ));
   }
 
   @override
@@ -188,6 +212,7 @@ class _BootstrapState extends State<_Bootstrap> {
           profile: data.profileRepo.current!,
           openLive: (packId, title, profile) => navigatorKey.currentState
               ?.push(_liveRoute(packId, title, profile)),
+          onOpenChat: () => _openChat(data.profileRepo.current!),
         );
       },
     );
