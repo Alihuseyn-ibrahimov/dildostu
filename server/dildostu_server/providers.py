@@ -69,7 +69,7 @@ def chat_with_fallback(
 
 def build_chat_completers() -> dict[str, ChatCompleter]:
     """Söhbət (messages massivi) üçün Groq/Claude completer-ləri."""
-    load_env()
+    load_dotenv(_ENV_PATH)
     completers: dict[str, ChatCompleter] = {}
     if os.environ.get("GROQ_API_KEY"):
         completers["groq"] = _groq_chat_completer(GROQ_MODEL)

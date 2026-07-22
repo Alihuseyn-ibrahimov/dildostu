@@ -2,7 +2,27 @@ import pytest
 
 from dildostu_server.models import ChatMessage, Context, UserProfile
 from dildostu_server.prompts import build_chat_system, chat_preferred_providers
-from dildostu_server.providers import AllProvidersFailed, chat_with_fallback
+from dildostu_server.providers import (
+    AllProvidersFailed,
+    build_chat_completers,
+    chat_with_fallback,
+)
+
+
+class TestBuildChatCompleters:
+    def test_callable_without_keys(self, monkeypatch):
+        # Açar yoxdursa boş dict qaytarmalı — NameError/istisna ATMAMALI.
+        # .env-in açarları geri yükləməməsi üçün load_dotenv neytrallaşdırılır.
+        monkeypatch.setattr("dildostu_server.providers.load_dotenv", lambda *a, **k: None)
+        monkeypatch.delenv("GROQ_API_KEY", raising=False)
+        monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+        assert build_chat_completers() == {}
+
+    def test_builds_groq_when_key_present(self, monkeypatch):
+        monkeypatch.setattr("dildostu_server.providers.load_dotenv", lambda *a, **k: None)
+        monkeypatch.setenv("GROQ_API_KEY", "test-key")
+        monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+        assert "groq" in build_chat_completers()
 
 
 def profile():
