@@ -94,6 +94,12 @@ class _BootstrapState extends State<_Bootstrap> {
       firstSlotOverride: contextOverride,
     );
 
+    // App bildirişə toxunmaqla soyuq başlanğıcdan açılıbsa, həmin paketi aç.
+    final launchPackId = await _notifications.initialLaunchPayload();
+    if (launchPackId != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _openPack(launchPackId));
+    }
+
     return _AppData(packs, reviews, settings, manualContext);
   }
 
@@ -151,6 +157,7 @@ class _BootstrapState extends State<_Bootstrap> {
           reviewRepository: data.reviews,
           manualContextRepository: data.manualContext,
           settingsRepository: data.settings,
+          notificationService: _notifications,
         );
       },
     );

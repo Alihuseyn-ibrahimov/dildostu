@@ -45,6 +45,36 @@ class NotificationService {
     await androidPlugin?.requestExactAlarmsPermission();
   }
 
+  /// App bildirişə toxunmaqla soyuq başlanğıcdan açılıbsa, həmin bildirişin
+  /// payload-unu (pack_id) qaytarır; əks halda null. main.dart bootstrap-da
+  /// çağırılır ki, birbaşa uyğun paket açılsın.
+  Future<String?> initialLaunchPayload() async {
+    final details = await _plugin.getNotificationAppLaunchDetails();
+    if (details?.didNotificationLaunchApp ?? false) {
+      return details?.notificationResponse?.payload;
+    }
+    return null;
+  }
+
+  /// Dərhal bir bildiriş göstərir (planlaşdırma yox) — demo/test üçün.
+  Future<void> showNow(String packId, String title) async {
+    await _plugin.show(
+      id: 9999,
+      title: 'DilDostu',
+      body: '$title — yeni sözlərə baxın',
+      notificationDetails: const NotificationDetails(
+        android: AndroidNotificationDetails(
+          _channelId,
+          _channelName,
+          channelDescription: _channelDescription,
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+      ),
+      payload: packId,
+    );
+  }
+
   /// Bugünkü qalan bildirişləri ləğv edib yenidən planlaşdırır. `packIds`
   /// mövcud paketlərin siyahısıdır (time_context_rule.dart üçün);
   /// `titleFor` hər pack_id-nin göstəriləcək adını qaytarır. `firstSlotOverride`

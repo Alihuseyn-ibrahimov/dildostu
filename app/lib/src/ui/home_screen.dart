@@ -4,6 +4,7 @@ import '../data/manual_context_repository.dart';
 import '../data/pack_repository.dart';
 import '../data/review_repository.dart';
 import '../data/settings_repository.dart';
+import '../services/notification_service.dart';
 import '../services/speaker.dart';
 import 'card_session_screen.dart';
 import 'evening_quiz_screen.dart';
@@ -20,6 +21,7 @@ class HomeScreen extends StatelessWidget {
     required this.reviewRepository,
     required this.manualContextRepository,
     required this.settingsRepository,
+    required this.notificationService,
   });
 
   final PackRepository repository;
@@ -27,6 +29,7 @@ class HomeScreen extends StatelessWidget {
   final ReviewRepository reviewRepository;
   final ManualContextRepository manualContextRepository;
   final SettingsRepository settingsRepository;
+  final NotificationService notificationService;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,22 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('DilDostu'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_active_outlined),
+            tooltip: 'Test bildirişi',
+            onPressed: () async {
+              // Demo: dərhal "kafe" konteksti üçün bildiriş göstərir ki,
+              // bildiriş→toxunma→kart axını sınaqdan keçirilə bilsin.
+              const demoPack = 'cafe';
+              final title = repository.byId(demoPack)?.titleAz ?? demoPack;
+              await notificationService.showNow(demoPack, title);
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Test bildirişi göndərildi')),
+                );
+              }
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.settings),
             tooltip: 'Ayarlar',
