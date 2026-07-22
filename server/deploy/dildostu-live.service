@@ -4,15 +4,13 @@ After=network.target
 
 [Service]
 Type=simple
-User=www-data
-Group=www-data
-WorkingDirectory=/opt/quantum/dildostu/server
-EnvironmentFile=/opt/quantum/dildostu/server/.env
-# 2 uvicorn worker; yalnız localhost-a bağlanır, nginx qarşıda HTTPS verir.
-ExecStart=/opt/quantum/dildostu/server/.venv/bin/gunicorn \
+WorkingDirectory=/opt/dildostu/server
+EnvironmentFile=/opt/dildostu/server/.env
+# 512MB droplet: 1 worker. Yalnız localhost-a bağlanır, nginx qarşıda HTTPS.
+ExecStart=/opt/dildostu/server/.venv/bin/gunicorn \
     dildostu_server.app:app \
     -k uvicorn.workers.UvicornWorker \
-    -w 2 \
+    -w 1 \
     -b 127.0.0.1:8100
 Restart=on-failure
 RestartSec=3
