@@ -8,6 +8,8 @@
 class AppConfig {
   static const String serverBaseUrl = String.fromEnvironment(
     'DILDOSTU_SERVER_URL',
-    defaultValue: 'http://192.168.0.1:8000',
+    // USB-qoşulu cihaz üçün `adb reverse tcp:8000 tcp:8000` ilə telefonun
+    // localhost:8000-i kompüterdəki serverə yönləndirilir.
+    defaultValue: 'http://localhost:8000',
   );
 }
