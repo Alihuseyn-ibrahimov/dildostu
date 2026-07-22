@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 
+import 'src/config.dart';
+import 'src/data/live_content_client.dart';
 import 'src/data/manual_context_repository.dart';
 import 'src/data/pack_repository.dart';
 import 'src/data/review_repository.dart';
 import 'src/data/settings_repository.dart';
+import 'src/data/user_profile_repository.dart';
 import 'src/engine/context_engine.dart';
+import 'src/models/user_profile.dart';
 import 'src/services/location_service.dart';
 import 'src/services/notification_service.dart';
 import 'src/services/speaker.dart';
-import 'src/ui/card_session_screen.dart';
 import 'src/ui/home_screen.dart';
+import 'src/ui/live_card_screen.dart';
+import 'src/ui/onboarding_screen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -25,25 +30,29 @@ class DilDostuApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: navigatorKey,
       title: 'DilDostu',
-      theme: ThemeData(
-        colorSchemeSeed: Colors.teal,
-        useMaterial3: true,
-      ),
+      theme: ThemeData(colorSchemeSeed: Colors.teal, useMaterial3: true),
       home: const _Bootstrap(),
     );
   }
 }
 
 class _AppData {
-  const _AppData(this.packs, this.reviews, this.settings, this.manualContext);
+  const _AppData(
+    this.packs,
+    this.reviews,
+    this.settings,
+    this.manualContext,
+    this.profileRepo,
+  );
   final PackRepository packs;
   final ReviewRepository reviews;
   final SettingsRepository settings;
   final ManualContextRepository manualContext;
+  final UserProfileRepository profileRepo;
 }
 
-/// Repository-ləri yükləyir, bildiriş icazəsini alıb bugünkü bildirişləri
-/// planlaşdırır; yüklənənə qədər spinner, xəta olarsa mesaj göstərir.
+/// Repository-ləri yükləyir, profil yoxdursa onboarding göstərir, bildirişləri
+/// planlaşdırır. Paket/bildiriş tıklaması canlı AI kartı açır (offline fallback).
 class _Bootstrap extends StatefulWidget {
   const _Bootstrap();
 
@@ -56,6 +65,7 @@ class _BootstrapState extends State<_Bootstrap> {
   final Speaker _speaker = TtsSpeaker();
   final NotificationService _notifications = NotificationService();
   final LocationService _location = LocationService();
+  late final LiveContentClient _live;
 
   @override
   void initState() {
@@ -65,13 +75,17 @@ class _BootstrapState extends State<_Bootstrap> {
 
   Future<_AppData> _bootstrap() async {
     final packs = await PackRepository.loadFromAssets();
+    _live = LiveContentClient(
+      baseUrl: AppConfig.serverBaseUrl,
+      fallbackRepo: packs,
+    );
     final reviews = await ReviewRepository.load();
     final settings = await SettingsRepository.load();
     final manualContext = await ManualContextRepository.load();
+    final profileRepo = await UserProfileRepository.load();
 
-    await _notifications.init(onTap: _openPack);
+    await _notifications.init(onTap: _openLive);
 
-    // Spec §3.2: manual seçim məkandan, məkan isə vaxt qaydasından üstündür.
     final now = DateTime.now();
     final manualSignal = manualContext.currentSignal(now: now);
     String? contextOverride = manualSignal?.packId;
@@ -94,34 +108,38 @@ class _BootstrapState extends State<_Bootstrap> {
       firstSlotOverride: contextOverride,
     );
 
-    // App bildirişə toxunmaqla soyuq başlanğıcdan açılıbsa, həmin paketi aç.
     final launchPackId = await _notifications.initialLaunchPayload();
     if (launchPackId != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => _openPack(launchPackId));
+      WidgetsBinding.instance.addPostFrameCallback((_) => _openLive(launchPackId));
     }
 
-    return _AppData(packs, reviews, settings, manualContext);
+    return _AppData(packs, reviews, settings, manualContext, profileRepo);
   }
 
-  void _openPack(String? packId) {
+  /// Bildiriş/paket tıklamasında canlı AI kartını açır (profil varsa).
+  void _openLive(String? packId) {
     if (packId == null) return;
-    _future.then((appData) {
-      final pack = appData.packs.byId(packId);
-      if (pack == null) return;
-      navigatorKey.currentState?.push(
-        MaterialPageRoute(
-          builder: (_) => CardSessionScreen(
-            title: pack.titleAz,
-            entries: [
-              for (final word in pack.words)
-                SessionEntry(wordKey: '${pack.packId}:${word.word}', word: word),
-            ],
-            speaker: _speaker,
-            reviewRepository: appData.reviews,
-          ),
-        ),
-      );
+    _future.then((data) {
+      final profile = data.profileRepo.current;
+      final pack = data.packs.byId(packId);
+      if (profile == null || pack == null) return;
+      navigatorKey.currentState?.push(_liveRoute(pack.packId, pack.titleAz, profile));
     });
+  }
+
+  MaterialPageRoute _liveRoute(String packId, String title, UserProfile profile) {
+    return MaterialPageRoute(
+      builder: (_) => LiveCardScreen(
+        title: title,
+        speaker: _speaker,
+        fetch: (mode) => _live.generate(
+          packId: packId,
+          hour: DateTime.now().hour,
+          profile: profile,
+          mode: mode,
+        ),
+      ),
+    );
   }
 
   @override
@@ -146,11 +164,20 @@ class _BootstrapState extends State<_Bootstrap> {
           );
         }
         if (!snapshot.hasData) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
         final data = snapshot.data!;
+
+        // Profil yoxdursa onboarding göstər.
+        if (!data.profileRepo.isOnboarded) {
+          return OnboardingScreen(
+            onComplete: (profile) async {
+              await data.profileRepo.save(profile);
+              if (mounted) setState(() {});
+            },
+          );
+        }
+
         return HomeScreen(
           repository: data.packs,
           speaker: _speaker,
@@ -158,6 +185,9 @@ class _BootstrapState extends State<_Bootstrap> {
           manualContextRepository: data.manualContext,
           settingsRepository: data.settings,
           notificationService: _notifications,
+          profile: data.profileRepo.current!,
+          openLive: (packId, title, profile) => navigatorKey.currentState
+              ?.push(_liveRoute(packId, title, profile)),
         );
       },
     );

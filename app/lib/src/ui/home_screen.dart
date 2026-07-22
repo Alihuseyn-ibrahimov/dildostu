@@ -4,15 +4,18 @@ import '../data/manual_context_repository.dart';
 import '../data/pack_repository.dart';
 import '../data/review_repository.dart';
 import '../data/settings_repository.dart';
+import '../models/user_profile.dart';
 import '../services/notification_service.dart';
 import '../services/speaker.dart';
-import 'card_session_screen.dart';
 import 'evening_quiz_screen.dart';
 import 'manual_mode_screen.dart';
 import 'settings_screen.dart';
 import 'stats_screen.dart';
 
-/// Paket siyahısı — hər birinə toxunanda kart sessiyası açılır.
+/// Bir paket üçün canlı AI kartı açan callback (main.dart-da bağlanır).
+typedef OpenLive = void Function(String packId, String title, UserProfile profile);
+
+/// Paket siyahısı — hər birinə toxunanda canlı AI kartı açılır.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
@@ -22,6 +25,8 @@ class HomeScreen extends StatelessWidget {
     required this.manualContextRepository,
     required this.settingsRepository,
     required this.notificationService,
+    required this.profile,
+    required this.openLive,
   });
 
   final PackRepository repository;
@@ -30,6 +35,8 @@ class HomeScreen extends StatelessWidget {
   final ManualContextRepository manualContextRepository;
   final SettingsRepository settingsRepository;
   final NotificationService notificationService;
+  final UserProfile profile;
+  final OpenLive openLive;
 
   @override
   Widget build(BuildContext context) {
@@ -113,19 +120,7 @@ class HomeScreen extends StatelessWidget {
               title: Text(pack.titleAz),
               subtitle: Text('${pack.words.length} söz'),
               trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => CardSessionScreen(
-                    title: pack.titleAz,
-                    entries: [
-                      for (final word in pack.words)
-                        SessionEntry(wordKey: '${pack.packId}:${word.word}', word: word),
-                    ],
-                    speaker: speaker,
-                    reviewRepository: reviewRepository,
-                  ),
-                ),
-              ),
+              onTap: () => openLive(pack.packId, pack.titleAz, profile),
             ),
           );
         },
