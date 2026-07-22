@@ -1,43 +1,39 @@
 #!/usr/bin/env bash
 # DilDostu Live — DigitalOcean droplet-də deploy skripti.
-# İşlətmə (droplet-də, root olaraq):
-#   GROQ_API_KEY=gsk_... bash deploy_on_droplet.sh [subdomen]
-# Nümunə:
-#   GROQ_API_KEY=gsk_xxx ANTHROPIC_API_KEY=sk-ant-xxx bash deploy_on_droplet.sh dildostu.prdostu.com
+# Bu skript YERLƏŞDİYİ repo checkout-unu işlədir (klon etmir) — private repo üçün.
+#
+# İşlətmə (droplet-də, root):
+#   1) Mövcud checkout-u yenilə:   git -C /opt/pr-agent/repo pull
+#   2) Skripti işə sal:
+#      GROQ_API_KEY=gsk_... bash /opt/pr-agent/repo/dildostu/server/deploy/deploy_on_droplet.sh dildostu.prdostu.com
 set -euo pipefail
 
 DOMAIN="${1:-dildostu.prdostu.com}"
-REPO="https://github.com/Alihuseyn-ibrahimov/quantum-pr-monitor.git"
-BASE=/opt/dildostu
-SRV="$BASE/repo/dildostu/server"
+
+# Skriptin yerləşdiyi server qovluğu (deploy/-in bir yuxarısı).
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SRV="$(dirname "$SCRIPT_DIR")"
 
 if [ -z "${GROQ_API_KEY:-}" ]; then
   echo "XETA: GROQ_API_KEY environment deyiskeni verilmelidir." >&2
   exit 1
 fi
+echo "Server qovlugu: $SRV"
 
-echo "=== 1/6 Kod cekilir ($REPO) ==="
-mkdir -p "$BASE"
-if [ -d "$BASE/repo/.git" ]; then
-  git -C "$BASE/repo" pull --ff-only
-else
-  git clone --depth 1 "$REPO" "$BASE/repo"
-fi
-
-echo "=== 2/6 venv + asililiqlar ==="
+echo "=== 1/5 venv + asililiqlar ==="
 cd "$SRV"
 python3 -m venv .venv
 .venv/bin/pip install -q -U pip
 .venv/bin/pip install -q -r requirements.txt
 
-echo "=== 3/6 .env ==="
+echo "=== 2/5 .env ==="
 {
   echo "GROQ_API_KEY=$GROQ_API_KEY"
   [ -n "${ANTHROPIC_API_KEY:-}" ] && echo "ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY"
 } > "$SRV/.env"
 chmod 600 "$SRV/.env"
 
-echo "=== 4/6 systemd servis ==="
+echo "=== 3/5 systemd servis ==="
 cat > /etc/systemd/system/dildostu-live.service <<UNIT
 [Unit]
 Description=DilDostu Live FastAPI backend
@@ -61,7 +57,7 @@ echo "--- health (localhost) ---"
 curl -s http://127.0.0.1:8100/health || echo "(health cavab vermedi — jurnal: journalctl -u dildostu-live -n 30)"
 echo
 
-echo "=== 5/6 nginx reverse proxy ($DOMAIN) ==="
+echo "=== 4/5 nginx reverse proxy ($DOMAIN) ==="
 cat > /etc/nginx/sites-available/dildostu <<NGINX
 server {
     server_name $DOMAIN;
@@ -79,18 +75,14 @@ NGINX
 ln -sf /etc/nginx/sites-available/dildostu /etc/nginx/sites-enabled/dildostu
 nginx -t && systemctl reload nginx
 
-echo "=== 6/6 Bitdi ==="
-cat <<DONE
+echo "=== 5/5 HTTPS (certbot) ==="
+if ! command -v certbot >/dev/null 2>&1; then
+  apt-get update -qq && apt-get install -y -qq certbot python3-certbot-nginx
+fi
+certbot --nginx -d "$DOMAIN" --non-interactive --agree-tos --register-unsafely-without-email --redirect || \
+  echo "(certbot ugursuz — DNS yayilmayibsa sonra: certbot --nginx -d $DOMAIN)"
 
-Server localhost:8100-de isleyir, nginx $DOMAIN uzerinden port 80-e yonlendirir.
-
-NOVBETI ADDIMLAR (sen edeceksen):
-  1. Cloudflare-de DNS qeydi: $DOMAIN  A  68.183.210.59  (Proxy: OFF / boz bulud)
-     — Let's Encrypt HTTP-01 challenge ucun boz bulud lazimdir.
-  2. DNS yayildiqdan sonra HTTPS:
-       apt-get install -y certbot python3-certbot-nginx
-       certbot --nginx -d $DOMAIN --agree-tos -m sizin@email --redirect
-  3. Yoxla:  curl https://$DOMAIN/health   ->  {"status":"ok"}
-
-Yenilemek ucun sonra:  cd $BASE/repo && git pull && systemctl restart dildostu-live
-DONE
+echo
+echo "=== BITDI ==="
+echo "Yoxla:  curl https://$DOMAIN/health"
+echo "Yenilemek:  git -C /opt/pr-agent/repo pull && systemctl restart dildostu-live"
