@@ -6,12 +6,18 @@ String? packIdForOsmTags(Map<String, String> tags) {
     'cafe': 'cafe',
     'restaurant': 'restaurant',
     'fast_food': 'restaurant',
+    'food_court': 'restaurant',
     'pharmacy': 'pharmacy',
+    'marketplace': 'market',
   };
   const shopMap = {
     'supermarket': 'market',
     'convenience': 'market',
     'grocery': 'market',
+    'mall': 'market',
+    'department_store': 'market',
+    'general': 'market',
+    'wholesale': 'market',
   };
   const aerowayMap = {
     'aerodrome': 'airport',
@@ -28,8 +34,10 @@ String? packIdForOsmTags(Map<String, String> tags) {
     return amenityMap[amenity];
   }
   final shop = tags['shop'];
-  if (shop != null && shopMap.containsKey(shop)) {
-    return shopMap[shop];
+  if (shop != null) {
+    // Bilinən mağaza növləri; digər hər hansı `shop=*` (geyim, elektronika...)
+    // ümumi alış-veriş kimi market paketinə düşür.
+    return shopMap[shop] ?? 'market';
   }
   final aeroway = tags['aeroway'];
   if (aeroway != null && aerowayMap.containsKey(aeroway)) {

@@ -16,6 +16,15 @@ void main() {
     expect(packIdForOsmTags({'shop': 'convenience'}), 'market');
   });
 
+  test('ticarət mərkəzi / mağaza növləri → market paketi', () {
+    expect(packIdForOsmTags({'shop': 'mall'}), 'market');
+    expect(packIdForOsmTags({'shop': 'department_store'}), 'market');
+    expect(packIdForOsmTags({'amenity': 'marketplace'}), 'market');
+    // İxtiyari mağaza növü də ümumi alış-veriş kimi market-ə düşür
+    expect(packIdForOsmTags({'shop': 'clothes'}), 'market');
+    expect(packIdForOsmTags({'shop': 'electronics'}), 'market');
+  });
+
   test('aeroway=aerodrome/terminal → airport paketi', () {
     expect(packIdForOsmTags({'aeroway': 'aerodrome'}), 'airport');
     expect(packIdForOsmTags({'aeroway': 'terminal'}), 'airport');

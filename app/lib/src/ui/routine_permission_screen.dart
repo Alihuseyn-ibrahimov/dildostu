@@ -8,6 +8,7 @@ class RoutinePermissionScreen extends StatefulWidget {
     required this.requestAlways,
     required this.openSettings,
     required this.onGranted,
+    this.onSampleNow,
   });
 
   /// "Həmişə" icazəsini istəyir; verildisə `true`.
@@ -19,6 +20,9 @@ class RoutinePermissionScreen extends StatefulWidget {
   /// İcazə verildikdə çağırılır (main.dart RoutineSampler-i qeyd edir).
   final VoidCallback onGranted;
 
+  /// "İndi yoxla" — dərhal ön-plan nümunəsi götürüb nəticə mətnini qaytarır.
+  final Future<String> Function()? onSampleNow;
+
   @override
   State<RoutinePermissionScreen> createState() =>
       _RoutinePermissionScreenState();
@@ -28,6 +32,8 @@ class _RoutinePermissionScreenState extends State<RoutinePermissionScreen> {
   bool _busy = false;
   bool _needsSettings = false;
   bool _granted = false;
+  bool _sampling = false;
+  String? _sampleResult;
 
   Future<void> _request() async {
     setState(() => _busy = true);
@@ -39,6 +45,16 @@ class _RoutinePermissionScreenState extends State<RoutinePermissionScreen> {
       _needsSettings = !ok;
     });
     if (ok) widget.onGranted();
+  }
+
+  Future<void> _sampleNow() async {
+    setState(() => _sampling = true);
+    final msg = await widget.onSampleNow!();
+    if (!mounted) return;
+    setState(() {
+      _sampling = false;
+      _sampleResult = msg;
+    });
   }
 
   @override
@@ -93,6 +109,29 @@ class _RoutinePermissionScreenState extends State<RoutinePermissionScreen> {
                   icon: const Icon(Icons.settings),
                   label: const Text('Ayarları aç'),
                 ),
+              ],
+            ],
+            if (widget.onSampleNow != null) ...[
+              const SizedBox(height: 24),
+              const Divider(),
+              const SizedBox(height: 8),
+              Text('Sınaq',
+                  style: theme.textTheme.labelMedium
+                      ?.copyWith(color: theme.colorScheme.outline)),
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                onPressed: _sampling ? null : _sampleNow,
+                icon: _sampling
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2))
+                    : const Icon(Icons.my_location),
+                label: const Text('İndi olduğum yeri yoxla'),
+              ),
+              if (_sampleResult != null) ...[
+                const SizedBox(height: 12),
+                Text(_sampleResult!, textAlign: TextAlign.center),
               ],
             ],
           ],

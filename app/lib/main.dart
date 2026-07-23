@@ -188,8 +188,51 @@ class _BootstrapState extends State<_Bootstrap> {
       WidgetsBinding.instance.addPostFrameCallback((_) => _openLive(launchPackId));
     }
 
+    // İcazə varsa: periodik tapşırığı yenidən qeyd et (app yeniləməsindən sonra
+    // itə bilər) + dərhal ön-plan nümunəsi götür (WorkManager-ə güvənmə).
+    _startRoutineSampling(deviceId, packs);
+
     return _AppData(
         packs, reviews, settings, manualContext, profileRepo, deviceId);
+  }
+
+  /// App açılışda rutin toplamanı təmin edir: icazə varsa periodik tapşırığı
+  /// yenidən qeyd edir və dərhal bir ön-plan nümunəsi göndərir. Səssiz keçir.
+  Future<void> _startRoutineSampling(
+      String deviceId, PackRepository packs) async {
+    try {
+      if (!await _location.hasBackgroundPermission()) return;
+      await RoutineSampler.registerPeriodic();
+      final sample = await _location.resolveNearbySample();
+      if (sample == null) return;
+      await _routine.postSample(
+        deviceId: deviceId,
+        lat: sample.lat,
+        lng: sample.lng,
+        placeType: sample.packId,
+        packId: sample.packId,
+      );
+    } catch (_) {
+      // Fon işi — istifadəçini bloklamamalı.
+    }
+  }
+
+  /// "İndi yoxla" — dərhal ön-plan nümunəsi götürüb nəticəni mətn kimi qaytarır.
+  Future<String> _sampleNow(_AppData data) async {
+    final sample = await _location.resolveNearbySample();
+    if (sample == null) {
+      return 'Yaxınlıqda tanınan yer tapılmadı. Kafe/market/park kimi yerdə '
+          'yenidən yoxla (və ya bir az sonra).';
+    }
+    await _routine.postSample(
+      deviceId: data.deviceId,
+      lat: sample.lat,
+      lng: sample.lng,
+      placeType: sample.packId,
+      packId: sample.packId,
+    );
+    final label = data.packs.byId(sample.packId)?.titleAz ?? sample.packId;
+    return 'Tapıldı: $label — serverə göndərildi ✅';
   }
 
   /// Bildiriş/paket tıklamasında canlı AI kartını açır (profil varsa).
@@ -229,13 +272,13 @@ class _BootstrapState extends State<_Bootstrap> {
       builder: (_) => LearnedPlacesScreen(
         loader: () => _routine.fetchSummary(data.deviceId),
         labelFor: (id) => data.packs.byId(id)?.titleAz ?? id,
-        onOpenPermission: _openRoutinePermission,
+        onOpenPermission: () => _openRoutinePermission(data),
       ),
     ));
   }
 
   /// Arxa fon icazə ekranını açır; icazə verilsə periodik toplamanı qeyd edir.
-  void _openRoutinePermission() {
+  void _openRoutinePermission(_AppData data) {
     navigatorKey.currentState?.push(MaterialPageRoute(
       builder: (_) => RoutinePermissionScreen(
         requestAlways: _location.ensureBackgroundPermission,
@@ -244,6 +287,7 @@ class _BootstrapState extends State<_Bootstrap> {
           // Xəta app-ı bloklamamalı — səssiz udulur.
           RoutineSampler.registerPeriodic().catchError((_) {});
         },
+        onSampleNow: () => _sampleNow(data),
       ),
     ));
   }
@@ -348,7 +392,7 @@ class _BootstrapState extends State<_Bootstrap> {
           profile: ProfileTab(
             onOpenSettings: () => _openSettings(data),
             onOpenLearned: () => _openLearnedPlaces(data),
-            onOpenRoutine: _openRoutinePermission,
+            onOpenRoutine: () => _openRoutinePermission(data),
             onTestNotification: () => _testNotification(data),
           ),
         );

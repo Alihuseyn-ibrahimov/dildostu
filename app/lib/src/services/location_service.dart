@@ -6,8 +6,10 @@ import 'package:http/http.dart' as http;
 import '../engine/osm_place_mapping.dart';
 
 const _overpassUrl = 'https://overpass-api.de/api/interpreter';
-const _searchRadiusMeters = 60;
-const _requestTimeout = Duration(seconds: 3);
+// Böyük məkanların (ticarət mərkəzi, hava limanı) OSM node-u GPS mövqeyindən
+// xeyli aralı ola bilər — radius geniş tutulur ki, yer tanına bilsin.
+const _searchRadiusMeters = 120;
+const _requestTimeout = Duration(seconds: 5);
 
 /// Cihazın GPS-i və OpenStreetMap Overpass API-si ilə yaxınlıqdakı yerin
 /// tipini müəyyənləşdirir (spec §3.2/§4). Bütün xəta halları (icazə yoxdur,
@@ -73,6 +75,11 @@ class LocationService {
   }
 
   Future<void> openSettings() => Geolocator.openAppSettings();
+
+  /// Arxa fon (always) icazəsi verilibmi — sorğu ETMƏDƏN yoxlayır. App açılışda
+  /// rutin toplamanı yenidən qeyd etmək üçün.
+  Future<bool> hasBackgroundPermission() async =>
+      (await Geolocator.checkPermission()) == LocationPermission.always;
 
   Future<Map<String, String>?> _queryNearbyTags(double lat, double lon) async {
     final query = '[out:json][timeout:3];'
