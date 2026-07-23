@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'src/config.dart';
 import 'src/data/chat_client.dart';
+import 'src/data/device_id_repository.dart';
 import 'src/data/live_content_client.dart';
 import 'src/data/manual_context_repository.dart';
 import 'src/data/pack_repository.dart';
 import 'src/data/review_repository.dart';
+import 'src/data/routine_client.dart';
 import 'src/data/settings_repository.dart';
 import 'src/data/user_profile_repository.dart';
 import 'src/engine/context_engine.dart';
@@ -15,6 +17,7 @@ import 'src/services/notification_service.dart';
 import 'src/services/speaker.dart';
 import 'src/ui/chat_screen.dart';
 import 'src/ui/home_screen.dart';
+import 'src/ui/learned_places_screen.dart';
 import 'src/ui/live_card_screen.dart';
 import 'src/ui/onboarding_screen.dart';
 
@@ -45,12 +48,14 @@ class _AppData {
     this.settings,
     this.manualContext,
     this.profileRepo,
+    this.deviceId,
   );
   final PackRepository packs;
   final ReviewRepository reviews;
   final SettingsRepository settings;
   final ManualContextRepository manualContext;
   final UserProfileRepository profileRepo;
+  final String deviceId;
 }
 
 /// Repository-ləri yükləyir, profil yoxdursa onboarding göstərir, bildirişləri
@@ -69,6 +74,7 @@ class _BootstrapState extends State<_Bootstrap> {
   final LocationService _location = LocationService();
   late final LiveContentClient _live;
   final ChatClient _chat = ChatClient(baseUrl: AppConfig.serverBaseUrl);
+  final RoutineClient _routine = RoutineClient(baseUrl: AppConfig.serverBaseUrl);
 
   @override
   void initState() {
@@ -86,6 +92,7 @@ class _BootstrapState extends State<_Bootstrap> {
     final settings = await SettingsRepository.load();
     final manualContext = await ManualContextRepository.load();
     final profileRepo = await UserProfileRepository.load();
+    final deviceId = (await DeviceIdRepository.load()).deviceId;
 
     await _notifications.init(onTap: _openLive);
 
@@ -116,7 +123,8 @@ class _BootstrapState extends State<_Bootstrap> {
       WidgetsBinding.instance.addPostFrameCallback((_) => _openLive(launchPackId));
     }
 
-    return _AppData(packs, reviews, settings, manualContext, profileRepo);
+    return _AppData(
+        packs, reviews, settings, manualContext, profileRepo, deviceId);
   }
 
   /// Bildiriş/paket tıklamasında canlı AI kartını açır (profil varsa).
@@ -148,6 +156,16 @@ class _BootstrapState extends State<_Bootstrap> {
         ),
       ),
     );
+  }
+
+  /// "AI nəyi öyrənib" ekranını açır (serverdəki rutin aqreqatı).
+  void _openLearnedPlaces(_AppData data) {
+    navigatorKey.currentState?.push(MaterialPageRoute(
+      builder: (_) => LearnedPlacesScreen(
+        loader: () => _routine.fetchSummary(data.deviceId),
+        labelFor: (id) => data.packs.byId(id)?.titleAz ?? id,
+      ),
+    ));
   }
 
   /// AI söhbət ekranını açır (home-dan ümumi, kartdan kontekstli).
@@ -213,6 +231,7 @@ class _BootstrapState extends State<_Bootstrap> {
           openLive: (packId, title, profile) => navigatorKey.currentState
               ?.push(_liveRoute(packId, title, profile)),
           onOpenChat: () => _openChat(data.profileRepo.current!),
+          onOpenLearned: () => _openLearnedPlaces(data),
         );
       },
     );

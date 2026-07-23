@@ -28,6 +28,7 @@ class HomeScreen extends StatelessWidget {
     required this.profile,
     required this.openLive,
     required this.onOpenChat,
+    required this.onOpenLearned,
   });
 
   final PackRepository repository;
@@ -39,6 +40,7 @@ class HomeScreen extends StatelessWidget {
   final UserProfile profile;
   final OpenLive openLive;
   final VoidCallback onOpenChat;
+  final VoidCallback onOpenLearned;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,11 @@ class HomeScreen extends StatelessWidget {
             icon: const Icon(Icons.chat_bubble_outline),
             tooltip: 'AI ilə söhbət',
             onPressed: onOpenChat,
+          ),
+          IconButton(
+            icon: const Icon(Icons.insights_outlined),
+            tooltip: 'AI nəyi öyrənib',
+            onPressed: onOpenLearned,
           ),
           IconButton(
             icon: const Icon(Icons.notifications_active_outlined),
