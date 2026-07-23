@@ -18,6 +18,15 @@ class TestVersionInfo:
         assert info["version_code"] == 3
         assert info["version_name"] == "1.0.0+3"
 
+    def test_reads_version_json_with_bom(self, tmp_path):
+        # Windows PowerShell `Set-Content -Encoding utf8` BOM əlavə edir.
+        (tmp_path / "version.json").write_text(
+            json.dumps({"version_code": 4, "version_name": "1.0.0+4"}),
+            encoding="utf-8-sig",
+        )
+        store = ReleaseStore(str(tmp_path))
+        assert store.version_info()["version_code"] == 4
+
 
 class TestApkPath:
     def test_no_apk_returns_none(self, tmp_path):

@@ -46,9 +46,9 @@ $json = @{
     version_name = $versionName
     notes        = $Notes
 } | ConvertTo-Json -Compress
-Set-Content -Path $tmpJson -Value $json -Encoding utf8 -NoNewline
+[System.IO.File]::WriteAllText($tmpJson, $json, (New-Object System.Text.UTF8Encoding($false)))
 
-Write-Output "Serverə göndərilir ($Server:$RemoteDir)..."
+Write-Output "Serverə göndərilir (${Server}:${RemoteDir})..."
 ssh $Server "mkdir -p $RemoteDir"
 scp $apkPath "${Server}:${RemoteDir}/latest.apk"
 scp $tmpJson "${Server}:${RemoteDir}/version.json"

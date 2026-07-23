@@ -20,7 +20,9 @@ class ReleaseStore:
         path = self._dir / "version.json"
         if not path.exists():
             return None
-        return json.loads(path.read_text(encoding="utf-8"))
+        # utf-8-sig: Windows PowerShell `Set-Content -Encoding utf8` BOM əlavə
+        # edir; bu, BOM-lu və BOM-suz faylların ikisini də düzgün oxuyur.
+        return json.loads(path.read_text(encoding="utf-8-sig"))
 
     def apk_path(self) -> Path | None:
         path = self._dir / "latest.apk"
