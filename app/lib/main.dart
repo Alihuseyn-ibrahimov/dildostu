@@ -24,11 +24,16 @@ import 'src/services/notification_service.dart';
 import 'src/services/routine_sampler.dart';
 import 'src/services/speaker.dart';
 import 'src/ui/chat_screen.dart';
-import 'src/ui/home_screen.dart';
+import 'src/ui/home_tab.dart';
 import 'src/ui/learned_places_screen.dart';
 import 'src/ui/live_card_screen.dart';
+import 'src/ui/main_shell.dart';
+import 'src/ui/manual_mode_screen.dart';
 import 'src/ui/onboarding_screen.dart';
+import 'src/ui/profile_tab.dart';
+import 'src/ui/progress_tab.dart';
 import 'src/ui/routine_permission_screen.dart';
+import 'src/ui/settings_screen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -245,6 +250,31 @@ class _BootstrapState extends State<_Bootstrap> {
     ));
   }
 
+  /// "İndi haradayam?" — manual məkan/kontekst ekranı.
+  void _openManualPlace(_AppData data) {
+    navigatorKey.currentState?.push(MaterialPageRoute(
+      builder: (_) => ManualModeScreen(
+        packRepository: data.packs,
+        reviewRepository: data.reviews,
+        manualContextRepository: data.manualContext,
+        speaker: _speaker,
+      ),
+    ));
+  }
+
+  void _openSettings(_AppData data) {
+    navigatorKey.currentState?.push(MaterialPageRoute(
+      builder: (_) => SettingsScreen(repository: data.settings),
+    ));
+  }
+
+  /// Demo: dərhal "kafe" bildirişi göstərir (bildiriş→toxunma→kart axını).
+  Future<void> _testNotification(_AppData data) async {
+    const demoPack = 'cafe';
+    final title = data.packs.byId(demoPack)?.titleAz ?? demoPack;
+    await _notifications.showNow(demoPack, title);
+  }
+
   @override
   void dispose() {
     _speaker.dispose();
@@ -281,20 +311,32 @@ class _BootstrapState extends State<_Bootstrap> {
           );
         }
 
-        return HomeScreen(
-          repository: data.packs,
-          speaker: _speaker,
-          reviewRepository: data.reviews,
-          manualContextRepository: data.manualContext,
-          settingsRepository: data.settings,
-          notificationService: _notifications,
-          profile: data.profileRepo.current!,
-          openLive: (packId, title, profile) => navigatorKey.currentState
-              ?.push(_liveRoute(packId, title, profile)),
-          onOpenChat: () => _openChat(data.profileRepo.current!),
-          onOpenLearned: () => _openLearnedPlaces(data),
-          availableUpdate: _availableUpdate,
-          onInstallUpdate: _availableUpdate == null ? null : _installUpdate,
+        final profile = data.profileRepo.current!;
+        return MainShell(
+          home: HomeTab(
+            repository: data.packs,
+            profile: profile,
+            openLive: (packId, title, p) =>
+                navigatorKey.currentState?.push(_liveRoute(packId, title, p)),
+            onManualPlace: () => _openManualPlace(data),
+            availableUpdate: _availableUpdate,
+            onInstallUpdate: _availableUpdate == null ? null : _installUpdate,
+          ),
+          chat: ChatScreen(
+            sender: (history) =>
+                _chat.send(profile: profile, history: history),
+          ),
+          progress: ProgressTab(
+            reviewRepository: data.reviews,
+            packRepository: data.packs,
+            speaker: _speaker,
+          ),
+          profile: ProfileTab(
+            onOpenSettings: () => _openSettings(data),
+            onOpenLearned: () => _openLearnedPlaces(data),
+            onOpenRoutine: _openRoutinePermission,
+            onTestNotification: () => _testNotification(data),
+          ),
         );
       },
     );
