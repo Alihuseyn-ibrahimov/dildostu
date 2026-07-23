@@ -5,3 +5,7 @@ __pycache__/
 .pytest_cache/
 routine.db
 *.log
+
+# Kök .gitignore-da qlobal "test_api.py" qaydası var (əlaqəsiz layihə üçün) —
+# bizim endpoint testimiz üçün bunu geri aç.
+!tests/test_api.py

@@ -4,6 +4,7 @@ import '../data/manual_context_repository.dart';
 import '../data/pack_repository.dart';
 import '../data/review_repository.dart';
 import '../data/settings_repository.dart';
+import '../models/app_version_info.dart';
 import '../models/user_profile.dart';
 import '../services/notification_service.dart';
 import '../services/speaker.dart';
@@ -11,6 +12,7 @@ import 'evening_quiz_screen.dart';
 import 'manual_mode_screen.dart';
 import 'settings_screen.dart';
 import 'stats_screen.dart';
+import 'update_banner.dart';
 
 /// Bir paket üçün canlı AI kartı açan callback (main.dart-da bağlanır).
 typedef OpenLive = void Function(String packId, String title, UserProfile profile);
@@ -29,6 +31,8 @@ class HomeScreen extends StatelessWidget {
     required this.openLive,
     required this.onOpenChat,
     required this.onOpenLearned,
+    this.availableUpdate,
+    this.onInstallUpdate,
   });
 
   final PackRepository repository;
@@ -41,6 +45,10 @@ class HomeScreen extends StatelessWidget {
   final OpenLive openLive;
   final VoidCallback onOpenChat;
   final VoidCallback onOpenLearned;
+
+  /// Yüklənmiş yeni versiya (varsa) — göstərilsə yuxarıda zolaq çıxır.
+  final AppVersionInfo? availableUpdate;
+  final VoidCallback? onInstallUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -122,22 +130,30 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(12),
-        itemCount: packs.length,
-        separatorBuilder: (_, _) => const SizedBox(height: 4),
-        itemBuilder: (context, i) {
-          final pack = packs[i];
-          return Card(
-            child: ListTile(
-              leading: const CircleAvatar(child: Icon(Icons.translate)),
-              title: Text(pack.titleAz),
-              subtitle: Text('${pack.words.length} söz'),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => openLive(pack.packId, pack.titleAz, profile),
+      body: Column(
+        children: [
+          if (availableUpdate != null)
+            UpdateBanner(info: availableUpdate!, onInstall: onInstallUpdate!),
+          Expanded(
+            child: ListView.separated(
+              padding: const EdgeInsets.all(12),
+              itemCount: packs.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 4),
+              itemBuilder: (context, i) {
+                final pack = packs[i];
+                return Card(
+                  child: ListTile(
+                    leading: const CircleAvatar(child: Icon(Icons.translate)),
+                    title: Text(pack.titleAz),
+                    subtitle: Text('${pack.words.length} söz'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => openLive(pack.packId, pack.titleAz, profile),
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

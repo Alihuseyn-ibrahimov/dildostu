@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.responses import FileResponse
 
 import os
 
 from .models import (
+    AppVersionInfo,
     ChatRequest,
     ChatResponse,
     DayPlanRequest,
@@ -22,6 +24,7 @@ from .providers import (
     build_chat_completers,
     build_completers,
 )
+from .release_store import ReleaseStore
 from .routine_store import RoutineStore
 from .service import LiveService, ServiceError, run_chat
 
@@ -30,6 +33,10 @@ app.state.cache = {}
 # Rutin nümunələri üçün davamlı SQLite (WorkingDirectory: /opt/dildostu/server).
 app.state.routine_store = RoutineStore(
     os.environ.get("ROUTINE_DB_PATH", "routine.db")
+)
+# APK buraxılışları — kod deploy-undan ayrı qovluq (bax release_store.py).
+app.state.release_store = ReleaseStore(
+    os.environ.get("RELEASES_DIR", "releases")
 )
 
 
@@ -46,6 +53,11 @@ def get_chat_completers() -> dict[str, ChatCompleter]:
 def get_routine_store() -> RoutineStore:
     """Rutin SQLite store (test-də :memory: ilə override olunur)."""
     return app.state.routine_store
+
+
+def get_release_store() -> ReleaseStore:
+    """Buraxılış store (test-də tmp_path ilə override olunur)."""
+    return app.state.release_store
 
 
 def _service(completers: dict[str, Completer]) -> LiveService:
@@ -113,3 +125,28 @@ def routine_summary(
 ) -> RoutineSummaryResponse:
     """"AI nəyi öyrənib" — məkan tipləri üzrə aqreqat."""
     return RoutineSummaryResponse(places=store.place_summary(device_id))
+
+
+@app.get("/app/version", response_model=AppVersionInfo)
+def app_version(
+    store: ReleaseStore = Depends(get_release_store),
+) -> AppVersionInfo:
+    """App açılışda bunu öz versiyası ilə müqayisə edir."""
+    info = store.version_info()
+    if info is None:
+        raise HTTPException(status_code=404, detail="Buraxılış yoxdur")
+    return AppVersionInfo(**info)
+
+
+@app.get("/app/latest.apk")
+def app_latest_apk(
+    store: ReleaseStore = Depends(get_release_store),
+) -> FileResponse:
+    path = store.apk_path()
+    if path is None:
+        raise HTTPException(status_code=404, detail="APK yoxdur")
+    return FileResponse(
+        path,
+        media_type="application/vnd.android.package-archive",
+        filename="dildostu-update.apk",
+    )

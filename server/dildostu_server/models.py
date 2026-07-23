@@ -98,3 +98,11 @@ class PlaceSummary(BaseModel):
 
 class RoutineSummaryResponse(BaseModel):
     places: list[PlaceSummary] = Field(default_factory=list)
+
+
+class AppVersionInfo(BaseModel):
+    """Serverdəki ən son buraxılış — app açılışda bunu özü ilə müqayisə edir."""
+
+    version_code: int = Field(ge=1)
+    version_name: str = Field(min_length=1)
+    notes: str = ""

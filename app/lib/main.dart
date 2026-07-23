@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'src/config.dart';
+import 'src/data/app_update_client.dart';
 import 'src/data/chat_client.dart';
 import 'src/data/device_id_repository.dart';
 import 'src/data/live_content_client.dart';
@@ -11,6 +16,8 @@ import 'src/data/routine_client.dart';
 import 'src/data/settings_repository.dart';
 import 'src/data/user_profile_repository.dart';
 import 'src/engine/context_engine.dart';
+import 'src/engine/update_logic.dart';
+import 'src/models/app_version_info.dart';
 import 'src/models/user_profile.dart';
 import 'src/services/location_service.dart';
 import 'src/services/notification_service.dart';
@@ -82,11 +89,43 @@ class _BootstrapState extends State<_Bootstrap> {
   late final LiveContentClient _live;
   final ChatClient _chat = ChatClient(baseUrl: AppConfig.serverBaseUrl);
   final RoutineClient _routine = RoutineClient(baseUrl: AppConfig.serverBaseUrl);
+  final AppUpdateClient _updateClient =
+      AppUpdateClient(baseUrl: AppConfig.serverBaseUrl);
+  AppVersionInfo? _availableUpdate;
+  String? _updateApkPath;
 
   @override
   void initState() {
     super.initState();
     _future = _bootstrap();
+    _checkForUpdate(); // fire-and-forget — açılışı bloklamır
+  }
+
+  /// Serverdə yeni versiya varsa arxa planda yükləyir; nəticə HomeScreen-də
+  /// "Yenilə" zolağı kimi göstərilir (təsdiq üçün toxunuş tələb olunur).
+  Future<void> _checkForUpdate() async {
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      final currentVersionCode = int.parse(packageInfo.buildNumber);
+      final destPath =
+          '${Directory.systemTemp.path}/dildostu-update.apk';
+      final result = await checkForUpdate(
+        currentVersionCode: currentVersionCode,
+        fetchVersion: _updateClient.fetchVersionInfo,
+        downloadApk: () => _updateClient.downloadApk(destPath),
+      );
+      if (result == null || !mounted) return;
+      setState(() {
+        _availableUpdate = result.versionInfo;
+        _updateApkPath = result.apkPath;
+      });
+    } catch (_) {
+      // Yeniləmə yoxlaması istifadəçini bloklamamalı.
+    }
+  }
+
+  Future<void> _installUpdate() async {
+    if (_updateApkPath != null) await OpenFilex.open(_updateApkPath!);
   }
 
   Future<_AppData> _bootstrap() async {
@@ -254,6 +293,8 @@ class _BootstrapState extends State<_Bootstrap> {
               ?.push(_liveRoute(packId, title, profile)),
           onOpenChat: () => _openChat(data.profileRepo.current!),
           onOpenLearned: () => _openLearnedPlaces(data),
+          availableUpdate: _availableUpdate,
+          onInstallUpdate: _availableUpdate == null ? null : _installUpdate,
         );
       },
     );
