@@ -75,3 +75,26 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     reply: str
+
+
+class RoutineSampleRequest(BaseModel):
+    """Cihazın göndərdiyi bir məkan nümunəsi (vaxt serverdə qoyulur)."""
+
+    device_id: str = Field(min_length=1)
+    lat: float = Field(ge=-90, le=90)
+    lng: float = Field(ge=-180, le=180)
+    place_type: str = Field(min_length=1)
+    pack_id: str | None = None
+
+
+class PlaceSummary(BaseModel):
+    """Bir məkan tipi üzrə aqreqat — "AI nəyi öyrənib" ekranı üçün."""
+
+    place_type: str
+    count: int
+    last_seen: str  # ISO 8601 UTC
+    pack_id: str | None = None
+
+
+class RoutineSummaryResponse(BaseModel):
+    places: list[PlaceSummary] = Field(default_factory=list)

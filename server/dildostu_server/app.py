@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from fastapi import Depends, FastAPI, HTTPException
 
+import os
+
 from .models import (
     ChatRequest,
     ChatResponse,
@@ -11,6 +13,8 @@ from .models import (
     DayPlanResponse,
     GenerateRequest,
     LiveMessage,
+    RoutineSampleRequest,
+    RoutineSummaryResponse,
 )
 from .providers import (
     ChatCompleter,
@@ -18,10 +22,15 @@ from .providers import (
     build_chat_completers,
     build_completers,
 )
+from .routine_store import RoutineStore
 from .service import LiveService, ServiceError, run_chat
 
 app = FastAPI(title="DilDostu Live")
 app.state.cache = {}
+# Rutin nümunələri üçün davamlı SQLite (WorkingDirectory: /opt/dildostu/server).
+app.state.routine_store = RoutineStore(
+    os.environ.get("ROUTINE_DB_PATH", "routine.db")
+)
 
 
 def get_completers() -> dict[str, Completer]:
@@ -32,6 +41,11 @@ def get_completers() -> dict[str, Completer]:
 def get_chat_completers() -> dict[str, ChatCompleter]:
     """Söhbət (çoxnövbəli) completer-ləri (test-də override olunur)."""
     return build_chat_completers()
+
+
+def get_routine_store() -> RoutineStore:
+    """Rutin SQLite store (test-də :memory: ilə override olunur)."""
+    return app.state.routine_store
 
 
 def _service(completers: dict[str, Completer]) -> LiveService:
@@ -74,3 +88,28 @@ def chat(
         return ChatResponse(reply=run_chat(req, chat_completers))
     except ServiceError as exc:
         raise HTTPException(status_code=502, detail=str(exc))
+
+
+@app.post("/routine/sample")
+def routine_sample(
+    req: RoutineSampleRequest,
+    store: RoutineStore = Depends(get_routine_store),
+) -> dict:
+    """Cihazdan gələn məkan nümunəsini saxlayır (vaxt serverdə UTC)."""
+    store.add(
+        req.device_id,
+        lat=req.lat,
+        lng=req.lng,
+        place_type=req.place_type,
+        pack_id=req.pack_id,
+    )
+    return {"ok": True}
+
+
+@app.get("/routine/summary/{device_id}", response_model=RoutineSummaryResponse)
+def routine_summary(
+    device_id: str,
+    store: RoutineStore = Depends(get_routine_store),
+) -> RoutineSummaryResponse:
+    """"AI nəyi öyrənib" — məkan tipləri üzrə aqreqat."""
+    return RoutineSummaryResponse(places=store.place_summary(device_id))
