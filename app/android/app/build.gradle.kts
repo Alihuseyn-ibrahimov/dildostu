@@ -4,6 +4,20 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Versiyanı birbaşa pubspec.yaml-dan oxu (gradlew-i birbaşa çağıranda
+// flutter.versionCode local.properties-dən gəlir və köhnəlir — bax build_apk.bat).
+// pubspec `version: X.Y.Z+N` → versionName=X.Y.Z, versionCode=N.
+val pubspecVersion: Pair<Int, String> by lazy {
+    val line = file("../../pubspec.yaml").readLines()
+        .firstOrNull { it.trimStart().startsWith("version:") }
+        ?.substringAfter("version:")?.trim()
+    if (line != null && line.contains("+")) {
+        line.substringAfter("+").toInt() to line.substringBefore("+")
+    } else {
+        (flutter.versionCode to flutter.versionName)
+    }
+}
+
 android {
     namespace = "com.dildostu.dildostu"
     compileSdk = flutter.compileSdkVersion
@@ -24,8 +38,8 @@ android {
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        versionCode = pubspecVersion.first
+        versionName = pubspecVersion.second
     }
 
     buildTypes {

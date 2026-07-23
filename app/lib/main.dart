@@ -130,7 +130,21 @@ class _BootstrapState extends State<_Bootstrap> {
   }
 
   Future<void> _installUpdate() async {
-    if (_updateApkPath != null) await OpenFilex.open(_updateApkPath!);
+    if (_updateApkPath == null) return;
+    // APK-nı explicit .apk MIME ilə aç (bəzi cihazlarda ümumi tip quraşdırıcını
+    // açmır); xəta olsa istifadəçiyə göstər ki, diaqnoz mümkün olsun.
+    final result = await OpenFilex.open(
+      _updateApkPath!,
+      type: 'application/vnd.android.package-archive',
+    );
+    if (result.type != ResultType.done) {
+      final ctx = navigatorKey.currentContext;
+      if (ctx != null && ctx.mounted) {
+        ScaffoldMessenger.of(ctx).showSnackBar(
+          SnackBar(content: Text('Quraşdırma açılmadı: ${result.message}')),
+        );
+      }
+    }
   }
 
   Future<_AppData> _bootstrap() async {
