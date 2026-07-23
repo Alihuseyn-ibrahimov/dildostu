@@ -19,7 +19,12 @@ class LocationService {
 
   final http.Client _http;
 
-  Future<String?> resolveNearbyPackId() async {
+  Future<String?> resolveNearbyPackId() async =>
+      (await resolveNearbySample())?.packId;
+
+  /// Rutin toplama üçün: koordinat + təyin olunmuş pack. Bütün xəta halları
+  /// (icazə/GPS/şəbəkə/timeout) sakitcə `null` qaytarır.
+  Future<({double lat, double lng, String packId})?> resolveNearbySample() async {
     try {
       if (!await _hasUsablePermission()) return null;
 
@@ -34,7 +39,9 @@ class LocationService {
           .timeout(_requestTimeout);
       if (tags == null) return null;
 
-      return packIdForOsmTags(tags);
+      final packId = packIdForOsmTags(tags);
+      if (packId == null) return null;
+      return (lat: position.latitude, lng: position.longitude, packId: packId);
     } catch (_) {
       // GPS/şəbəkə xətası, timeout və s. — sakitcə imtina et.
       return null;
@@ -49,6 +56,23 @@ class LocationService {
     return permission == LocationPermission.always ||
         permission == LocationPermission.whileInUse;
   }
+
+  /// Arxa fon (always) icazəsini tələb edir. Əvvəl ön-plan (whileInUse), sonra
+  /// yenidən sorğu ilə `always`. Android 11+ "Həmişə icazə ver"i tək dialoqdan
+  /// verə bilmir — o halda `false` qaytarır, UI istifadəçini Ayarlara yönləndirir.
+  Future<bool> ensureBackgroundPermission() async {
+    var permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    if (permission == LocationPermission.whileInUse) {
+      // İkinci sorğu — bəzi cihazlarda "always"a yüksəldir.
+      permission = await Geolocator.requestPermission();
+    }
+    return permission == LocationPermission.always;
+  }
+
+  Future<void> openSettings() => Geolocator.openAppSettings();
 
   Future<Map<String, String>?> _queryNearbyTags(double lat, double lon) async {
     final query = '[out:json][timeout:3];'

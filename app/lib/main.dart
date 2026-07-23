@@ -14,16 +14,23 @@ import 'src/engine/context_engine.dart';
 import 'src/models/user_profile.dart';
 import 'src/services/location_service.dart';
 import 'src/services/notification_service.dart';
+import 'src/services/routine_sampler.dart';
 import 'src/services/speaker.dart';
 import 'src/ui/chat_screen.dart';
 import 'src/ui/home_screen.dart';
 import 'src/ui/learned_places_screen.dart';
 import 'src/ui/live_card_screen.dart';
 import 'src/ui/onboarding_screen.dart';
+import 'src/ui/routine_permission_screen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Arxa fon rutin toplama plugin-i (periodik iş üçün). Xəta app-ı bloklamamalı.
+  try {
+    await RoutineSampler.initialize();
+  } catch (_) {}
   runApp(const DilDostuApp());
 }
 
@@ -164,6 +171,21 @@ class _BootstrapState extends State<_Bootstrap> {
       builder: (_) => LearnedPlacesScreen(
         loader: () => _routine.fetchSummary(data.deviceId),
         labelFor: (id) => data.packs.byId(id)?.titleAz ?? id,
+        onOpenPermission: _openRoutinePermission,
+      ),
+    ));
+  }
+
+  /// Arxa fon icazə ekranını açır; icazə verilsə periodik toplamanı qeyd edir.
+  void _openRoutinePermission() {
+    navigatorKey.currentState?.push(MaterialPageRoute(
+      builder: (_) => RoutinePermissionScreen(
+        requestAlways: _location.ensureBackgroundPermission,
+        openSettings: _location.openSettings,
+        onGranted: () {
+          // Xəta app-ı bloklamamalı — səssiz udulur.
+          RoutineSampler.registerPeriodic().catchError((_) {});
+        },
       ),
     ));
   }

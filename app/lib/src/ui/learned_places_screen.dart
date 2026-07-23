@@ -9,12 +9,16 @@ class LearnedPlacesScreen extends StatefulWidget {
     super.key,
     required this.loader,
     this.labelFor,
+    this.onOpenPermission,
   });
 
   final Future<List<PlaceSummary>> Function() loader;
 
   /// place_type/pack_id → görünən AZ ad (məs. 'cafe' → 'Kafe'). Yoxdursa xam id.
   final String Function(String id)? labelFor;
+
+  /// Rutin icazə/aktivləşdirmə ekranını açır (verilməsə düymə göstərilmir).
+  final VoidCallback? onOpenPermission;
 
   @override
   State<LearnedPlacesScreen> createState() => _LearnedPlacesScreenState();
@@ -37,7 +41,17 @@ class _LearnedPlacesScreenState extends State<LearnedPlacesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('AI nəyi öyrənib')),
+      appBar: AppBar(
+        title: const Text('AI nəyi öyrənib'),
+        actions: [
+          if (widget.onOpenPermission != null)
+            IconButton(
+              icon: const Icon(Icons.tune),
+              tooltip: 'Rutin öyrənməni aç',
+              onPressed: widget.onOpenPermission,
+            ),
+        ],
+      ),
       body: FutureBuilder<List<PlaceSummary>>(
         future: _future,
         builder: (context, snap) {
