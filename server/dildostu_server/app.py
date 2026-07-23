@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Response
 from fastapi.responses import FileResponse
 
 import os
@@ -127,11 +127,18 @@ def routine_summary(
     return RoutineSummaryResponse(places=store.place_summary(device_id))
 
 
+# Buraxılış cavabları keşlənməməlidir — Cloudflare/proxy köhnə APK/versiya
+# verməsin (yeni buraxılış dərhal görünsün).
+_NO_STORE = {"Cache-Control": "no-store, no-cache, must-revalidate"}
+
+
 @app.get("/app/version", response_model=AppVersionInfo)
 def app_version(
+    response: Response,
     store: ReleaseStore = Depends(get_release_store),
 ) -> AppVersionInfo:
     """App açılışda bunu öz versiyası ilə müqayisə edir."""
+    response.headers.update(_NO_STORE)
     info = store.version_info()
     if info is None:
         raise HTTPException(status_code=404, detail="Buraxılış yoxdur")
@@ -149,4 +156,5 @@ def app_latest_apk(
         path,
         media_type="application/vnd.android.package-archive",
         filename="dildostu-update.apk",
+        headers=_NO_STORE,
     )

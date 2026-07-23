@@ -234,6 +234,7 @@ class TestAppVersionEndpoint:
         r = client.get("/app/version")
         assert r.status_code == 200
         assert r.json()["version_code"] == 3
+        assert "no-store" in r.headers["cache-control"]
 
 
 class TestAppLatestApkEndpoint:
@@ -248,6 +249,7 @@ class TestAppLatestApkEndpoint:
         assert r.status_code == 200
         assert r.content == b"fake-apk-bytes"
         assert r.headers["content-type"] == "application/vnd.android.package-archive"
+        assert "no-store" in r.headers["cache-control"]
 
 
 def test_health():
