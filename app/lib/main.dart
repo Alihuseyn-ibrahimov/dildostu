@@ -217,12 +217,12 @@ class _BootstrapState extends State<_Bootstrap> {
     }
   }
 
-  /// "İndi yoxla" — dərhal ön-plan nümunəsi götürüb nəticəni mətn kimi qaytarır.
+  /// "İndi yoxla" — nümunə tapılsa göndərir; tapılmasa detallı diaqnostika
+  /// göstərir (koordinat + OSM nəticəsi) ki, problem harada olduğu görünsün.
   Future<String> _sampleNow(_AppData data) async {
     final sample = await _location.resolveNearbySample();
     if (sample == null) {
-      return 'Yaxınlıqda tanınan yer tapılmadı. Kafe/market/park kimi yerdə '
-          'yenidən yoxla (və ya bir az sonra).';
+      return _location.diagnose();
     }
     await _routine.postSample(
       deviceId: data.deviceId,

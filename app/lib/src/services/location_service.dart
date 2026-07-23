@@ -59,6 +59,43 @@ class LocationService {
         permission == LocationPermission.whileInUse;
   }
 
+  /// "İndi yoxla" diaqnostikası — hər mərhələni insanoxunaqlı sətir kimi qaytarır
+  /// (koordinat, OSM tag-ları, kateqoriya) ki, problem harada olduğu görünsün.
+  Future<String> diagnose() async {
+    try {
+      var permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        return 'Məkan icazəsi yoxdur (${permission.name}).';
+      }
+      final position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.medium,
+          timeLimit: _requestTimeout,
+        ),
+      );
+      final coord =
+          '${position.latitude.toStringAsFixed(4)}, ${position.longitude.toStringAsFixed(4)}';
+      final tags = await _queryNearbyTags(position.latitude, position.longitude)
+          .timeout(_requestTimeout);
+      if (tags == null) {
+        return 'Məkan alındı: $coord\n'
+            '${_searchRadiusMeters}m radiusda OSM-də qeydiyyatlı yer yoxdur '
+            '(yəqin evdəsən). Kafe/market kimi yerdə yenidən yoxla.';
+      }
+      final tagStr =
+          tags.entries.take(3).map((e) => '${e.key}=${e.value}').join(', ');
+      final packId = packIdForOsmTags(tags);
+      return 'Məkan: $coord\nTapılan: $tagStr\n'
+          'Kateqoriya: ${packId ?? "bu tip paketimizdə yoxdur"}';
+    } catch (e) {
+      return 'Məkan alınmadı (GPS/internet xətası). Yenidən cəhd et.';
+    }
+  }
+
   /// Arxa fon (always) icazəsini tələb edir. Əvvəl ön-plan (whileInUse), sonra
   /// yenidən sorğu ilə `always`. Android 11+ "Həmişə icazə ver"i tək dialoqdan
   /// verə bilmir — o halda `false` qaytarır, UI istifadəçini Ayarlara yönləndirir.
