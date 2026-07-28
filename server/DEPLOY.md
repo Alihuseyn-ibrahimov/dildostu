@@ -1,14 +1,14 @@
 # DilDostu Live — VPS Deploy Təlimatı
 
 Məqsəd: FastAPI backend-i VPS-də HTTPS ilə işə salmaq ki, telefon USB olmadan
-internetlə qoşulsun. KlinikBot ilə eyni VPS/pattern.
+internetlə qoşulsun. MasterNR1 ilə eyni VPS/pattern.
 
 ## 0. Səndən lazım olanlar
 | Nə | Qeyd |
 |----|------|
 | VPS SSH girişi | Deploy ediləcək host (user@ip) |
 | Subdomen | Məs. `dildostu.prdostu.com` — DNS (Cloudflare) VPS IP-yə A qeydi |
-| `GROQ_API_KEY` | server/.env (KlinikBot-dan AYRI açar tövsiyə — limit paylaşılmasın) |
+| `GROQ_API_KEY` | server/.env (MasterNR1-dan AYRI açar tövsiyə — limit paylaşılmasın) |
 | `ANTHROPIC_API_KEY` (istəyə görə) | personal mode-lar (sadələşdir/çətinləşdir) canlı işləsin |
 
 ## 1. Kod deploy (VPS-də)
