@@ -45,4 +45,20 @@ void main() {
 
     expect(repo.current.dailyNotificationCount, 10);
   });
+
+  testWidgets('buildLabel verilibsə Buraxılış sətri göstərir', (tester) async {
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(
+      home: SettingsScreen(repository: repo, buildLabel: '1.0.0+7'),
+    ));
+
+    expect(find.text('1.0.0+7'), findsOneWidget);
+  });
+
+  testWidgets('buildLabel yoxdursa Buraxılış sətri göstərilmir', (tester) async {
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(home: SettingsScreen(repository: repo)));
+
+    expect(find.text('Buraxılış'), findsNothing);
+  });
 }

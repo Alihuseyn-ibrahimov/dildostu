@@ -10,9 +10,14 @@ const _maxCount = 10;
 /// Dəyişikliklər dərhal SettingsRepository-ə saxlanır; növbəti app açılışında
 /// (main.dart bootstrap) yeni bildiriş cədvəli qurulur.
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key, required this.repository});
+  const SettingsScreen({super.key, required this.repository, this.buildLabel});
 
   final SettingsRepository repository;
+
+  /// Quraşdırılmış tam versiya (məs. "1.0.0+7") — auto-update diaqnostikası
+  /// üçün. Android Ayarlar yalnız versionName-i (həmişə "1.0.0") göstərdiyi
+  /// üçün buradan görmək lazımdır. Null-dursa göstərilmir.
+  final String? buildLabel;
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -90,6 +95,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
+          if (widget.buildLabel != null) ...[
+            const Divider(),
+            ListTile(
+              title: const Text('Buraxılış'),
+              trailing: Text(widget.buildLabel!),
+            ),
+          ],
         ],
       ),
     );

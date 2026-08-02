@@ -22,6 +22,7 @@ import 'src/engine/pack_titles.dart';
 import 'src/engine/update_logic.dart';
 import 'src/models/app_version_info.dart';
 import 'src/models/user_profile.dart';
+import 'src/services/battery_optimization_service.dart';
 import 'src/services/location_service.dart';
 import 'src/services/notification_service.dart';
 import 'src/services/routine_sampler.dart';
@@ -94,6 +95,7 @@ class _BootstrapState extends State<_Bootstrap> {
   final Speaker _speaker = TtsSpeaker();
   final NotificationService _notifications = NotificationService();
   final LocationService _location = LocationService();
+  final BatteryOptimizationService _battery = BatteryOptimizationService();
   late final LiveContentClient _live;
   final ChatClient _chat = ChatClient(baseUrl: AppConfig.serverBaseUrl);
   final RoutineClient _routine = RoutineClient(baseUrl: AppConfig.serverBaseUrl);
@@ -101,6 +103,7 @@ class _BootstrapState extends State<_Bootstrap> {
       AppUpdateClient(baseUrl: AppConfig.serverBaseUrl);
   AppVersionInfo? _availableUpdate;
   String? _updateApkPath;
+  String? _buildLabel;
 
   @override
   void initState() {
@@ -115,6 +118,10 @@ class _BootstrapState extends State<_Bootstrap> {
     try {
       final packageInfo = await PackageInfo.fromPlatform();
       final currentVersionCode = int.parse(packageInfo.buildNumber);
+      if (mounted) {
+        setState(() =>
+            _buildLabel = '${packageInfo.version}+${packageInfo.buildNumber}');
+      }
       final destPath =
           '${Directory.systemTemp.path}/dildostu-update.apk';
       final result = await checkForUpdate(
@@ -323,6 +330,8 @@ class _BootstrapState extends State<_Bootstrap> {
           RoutineSampler.registerPeriodic().catchError((_) {});
         },
         onSampleNow: () => _sampleNow(data),
+        checkBatteryOptimization: _battery.isIgnoringOptimizations,
+        openBatterySettings: _battery.openSettings,
       ),
     ));
   }
@@ -357,7 +366,8 @@ class _BootstrapState extends State<_Bootstrap> {
 
   void _openSettings(_AppData data) {
     navigatorKey.currentState?.push(MaterialPageRoute(
-      builder: (_) => SettingsScreen(repository: data.settings),
+      builder: (_) =>
+          SettingsScreen(repository: data.settings, buildLabel: _buildLabel),
     ));
   }
 
