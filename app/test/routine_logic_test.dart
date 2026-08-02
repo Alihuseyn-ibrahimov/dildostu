@@ -38,7 +38,8 @@ void main() {
       });
       final client = RoutineClient(baseUrl: 'http://x', httpClient: mock);
       await takeRoutineSample(
-        resolve: () async => (lat: 40.37, lng: 49.83, packId: 'cafe'),
+        resolve: () async =>
+            (lat: 40.37, lng: 49.83, packId: 'cafe', place: 'Kafe Nur'),
         client: client,
         deviceId: 'dev1',
       );

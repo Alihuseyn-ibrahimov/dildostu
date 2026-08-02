@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
+from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, Response
 from fastapi.responses import FileResponse
 
@@ -15,9 +18,12 @@ from .models import (
     DayPlanResponse,
     GenerateRequest,
     LiveMessage,
+    PlaceResolveRequest,
+    PlaceResolveResponse,
     RoutineSampleRequest,
     RoutineSummaryResponse,
 )
+from .place_lookup import PlaceLookup, PlaceLookupError
 from .providers import (
     ChatCompleter,
     Completer,
@@ -38,6 +44,9 @@ app.state.routine_store = RoutineStore(
 app.state.release_store = ReleaseStore(
     os.environ.get("RELEASES_DIR", "releases")
 )
+# Foursquare açarı serverdə (.env) — koordinatı yaxın yerə çevirmək üçün.
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
+app.state.place_lookup = PlaceLookup(os.environ.get("FOURSQUARE_API_KEY", ""))
 
 
 def get_completers() -> dict[str, Completer]:
@@ -58,6 +67,11 @@ def get_routine_store() -> RoutineStore:
 def get_release_store() -> ReleaseStore:
     """Buraxılış store (test-də tmp_path ilə override olunur)."""
     return app.state.release_store
+
+
+def get_place_lookup() -> PlaceLookup:
+    """Foursquare yer axtarışı (test-də saxta client ilə override olunur)."""
+    return app.state.place_lookup
 
 
 def _service(completers: dict[str, Completer]) -> LiveService:
@@ -116,6 +130,25 @@ def routine_sample(
         pack_id=req.pack_id,
     )
     return {"ok": True}
+
+
+@app.post("/place/resolve", response_model=PlaceResolveResponse)
+def place_resolve(
+    req: PlaceResolveRequest,
+    lookup: PlaceLookup = Depends(get_place_lookup),
+) -> PlaceResolveResponse:
+    """Koordinatı yaxınlıqdakı yerə və söz paketinə çevirir (Foursquare)."""
+    try:
+        result = lookup.resolve(req.lat, req.lng)
+    except PlaceLookupError as exc:
+        raise HTTPException(status_code=503, detail=str(exc))
+    if result is None or not result.get("pack_id"):
+        raise HTTPException(status_code=404, detail="Yaxınlıqda tanınan yer yoxdur")
+    return PlaceResolveResponse(
+        pack_id=result["pack_id"],
+        name=result.get("name", ""),
+        category=result.get("category", ""),
+    )
 
 
 @app.get("/routine/summary/{device_id}", response_model=RoutineSummaryResponse)

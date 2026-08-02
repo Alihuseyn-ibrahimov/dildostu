@@ -218,7 +218,7 @@ class _BootstrapState extends State<_Bootstrap> {
   }
 
   /// "İndi yoxla" — nümunə tapılsa göndərir; tapılmasa detallı diaqnostika
-  /// göstərir (koordinat + OSM nəticəsi) ki, problem harada olduğu görünsün.
+  /// göstərir (koordinat + server/OSM nəticəsi) ki, problem harada olduğu görünsün.
   Future<String> _sampleNow(_AppData data) async {
     final sample = await _location.resolveNearbySample();
     if (sample == null) {
@@ -232,7 +232,27 @@ class _BootstrapState extends State<_Bootstrap> {
       packId: sample.packId,
     );
     final label = data.packs.byId(sample.packId)?.titleAz ?? sample.packId;
-    return 'Tapıldı: $label — serverə göndərildi ✅';
+    final where = sample.place.isNotEmpty ? '${sample.place} → ' : '';
+    return 'Tapıldı: $where$label — serverə göndərildi ✅';
+  }
+
+  /// Ana səhifədəki canlı məkan kartı üçün: GPS→server ilə cari yeri tapır,
+  /// paket başlığı ilə birlikdə qaytarır və ön-plan nümunəsini serverə göndərir.
+  /// Tapılmasa `null` (kart manual rejimə keçir).
+  Future<({String packId, String title, String placeName})?> _resolveLivePlace(
+      _AppData data) async {
+    final sample = await _location.resolveNearbySample();
+    if (sample == null) return null;
+    final title = data.packs.byId(sample.packId)?.titleAz ?? sample.packId;
+    // Ön-plan nümunəsini rutin datasına da yaz (fon icazəsi olmasa belə).
+    _routine.postSample(
+      deviceId: data.deviceId,
+      lat: sample.lat,
+      lng: sample.lng,
+      placeType: sample.packId,
+      packId: sample.packId,
+    );
+    return (packId: sample.packId, title: title, placeName: sample.place);
   }
 
   /// Bildiriş/paket tıklamasında canlı AI kartını açır (profil varsa).
@@ -377,6 +397,7 @@ class _BootstrapState extends State<_Bootstrap> {
             openLive: (packId, title, p) =>
                 navigatorKey.currentState?.push(_liveRoute(packId, title, p)),
             onManualPlace: () => _openManualPlace(data),
+            resolveLivePlace: () => _resolveLivePlace(data),
             availableUpdate: _availableUpdate,
             onInstallUpdate: _availableUpdate == null ? null : _installUpdate,
           ),

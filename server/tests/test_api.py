@@ -7,9 +7,11 @@ from dildostu_server.app import (
     app,
     get_chat_completers,
     get_completers,
+    get_place_lookup,
     get_release_store,
     get_routine_store,
 )
+from dildostu_server.place_lookup import PlaceLookup, PlaceLookupError
 from dildostu_server.release_store import ReleaseStore
 from dildostu_server.routine_store import RoutineStore
 
@@ -213,6 +215,55 @@ class TestRoutineSummaryEndpoint:
         r = client.get("/routine/summary/nobody")
         assert r.status_code == 200
         assert r.json()["places"] == []
+
+
+class _StubLookup:
+    """PlaceLookup əvəzinə — resolve() sabit nəticə və ya istisna verir."""
+
+    def __init__(self, result=None, error=None):
+        self._result = result
+        self._error = error
+
+    def resolve(self, lat, lng, radius=200):
+        if self._error is not None:
+            raise self._error
+        return self._result
+
+
+def override_place(lookup):
+    app.dependency_overrides[get_place_lookup] = lambda: lookup
+    return TestClient(app)
+
+
+class TestPlaceResolveEndpoint:
+    def test_resolves_to_pack(self):
+        client = override_place(_StubLookup(
+            {"name": "28 Mall", "category": "Shopping Mall", "pack_id": "market"}))
+        r = client.post("/place/resolve", json={"lat": 40.37, "lng": 49.83})
+        assert r.status_code == 200
+        assert r.json()["pack_id"] == "market"
+        assert r.json()["name"] == "28 Mall"
+
+    def test_no_place_nearby_404(self):
+        client = override_place(_StubLookup(None))
+        r = client.post("/place/resolve", json={"lat": 40.0, "lng": 49.0})
+        assert r.status_code == 404
+
+    def test_unmapped_category_404(self):
+        client = override_place(_StubLookup(
+            {"name": "City Hall", "category": "Government", "pack_id": None}))
+        r = client.post("/place/resolve", json={"lat": 40.0, "lng": 49.0})
+        assert r.status_code == 404
+
+    def test_missing_key_503(self):
+        client = override_place(_StubLookup(error=PlaceLookupError("açar yoxdur")))
+        r = client.post("/place/resolve", json={"lat": 40.0, "lng": 49.0})
+        assert r.status_code == 503
+
+    def test_invalid_coords_422(self):
+        client = override_place(_StubLookup(None))
+        r = client.post("/place/resolve", json={"lat": 999, "lng": 0})
+        assert r.status_code == 422
 
 
 def override_release(store):

@@ -9,8 +9,12 @@ import 'update_banner.dart';
 /// Bir paket üçün canlı AI kartı açan callback (main.dart-da bağlanır).
 typedef OpenLive = void Function(String packId, String title, UserProfile profile);
 
-/// Ana səhifə tabı — salamlama başlığı, "İndi haradayam?" kontekst kartı və
-/// ikonlu söz paketləri. Update banner varsa yuxarıda göstərilir.
+/// Cari yeri müəyyən edən callback — tapılsa paket + başlıq + yerin adı.
+typedef ResolveLivePlace
+    = Future<({String packId, String title, String placeName})?> Function();
+
+/// Ana səhifə tabı — salamlama, canlı "İndi haradayam?" məkan kartı və ikonlu
+/// söz paketləri. Update banner varsa yuxarıda göstərilir.
 class HomeTab extends StatelessWidget {
   const HomeTab({
     super.key,
@@ -18,6 +22,7 @@ class HomeTab extends StatelessWidget {
     required this.profile,
     required this.openLive,
     required this.onManualPlace,
+    this.resolveLivePlace,
     this.availableUpdate,
     this.onInstallUpdate,
   });
@@ -26,6 +31,10 @@ class HomeTab extends StatelessWidget {
   final UserProfile profile;
   final OpenLive openLive;
   final VoidCallback onManualPlace;
+
+  /// Cari yeri canlı müəyyən edir (GPS→server). Null olsa kart manual rejimə
+  /// keçir (köhnə davranış).
+  final ResolveLivePlace? resolveLivePlace;
   final AppVersionInfo? availableUpdate;
   final VoidCallback? onInstallUpdate;
 
@@ -51,7 +60,12 @@ class HomeTab extends StatelessWidget {
                     style: theme.textTheme.bodyMedium
                         ?.copyWith(color: theme.colorScheme.outline)),
                 const SizedBox(height: 16),
-                _ContextCard(onTap: onManualPlace),
+                _LiveContextCard(
+                  resolve: resolveLivePlace,
+                  onManualTap: onManualPlace,
+                  onOpenPack: (packId, title) =>
+                      openLive(packId, title, profile),
+                ),
                 const SizedBox(height: 20),
                 Text('Söz paketləri',
                     style: theme.textTheme.titleMedium
@@ -76,14 +90,78 @@ class HomeTab extends StatelessWidget {
   }
 }
 
-/// "İndi haradayam?" — məkan konteksti üçün cəlbedici kart.
-class _ContextCard extends StatelessWidget {
-  const _ContextCard({required this.onTap});
-  final VoidCallback onTap;
+/// "İndi haradayam?" — açılışda cari yeri GPS+server ilə tapıb göstərir.
+/// Yer tapılsa toxunuş həmin paketi açır; tapılmasa manual rejimə keçir.
+class _LiveContextCard extends StatefulWidget {
+  const _LiveContextCard({
+    required this.resolve,
+    required this.onManualTap,
+    required this.onOpenPack,
+  });
+
+  final ResolveLivePlace? resolve;
+  final VoidCallback onManualTap;
+  final void Function(String packId, String title) onOpenPack;
+
+  @override
+  State<_LiveContextCard> createState() => _LiveContextCardState();
+}
+
+class _LiveContextCardState extends State<_LiveContextCard> {
+  bool _loading = false;
+  ({String packId, String title, String placeName})? _place;
+
+  @override
+  void initState() {
+    super.initState();
+    _resolve();
+  }
+
+  Future<void> _resolve() async {
+    if (widget.resolve == null) return;
+    setState(() => _loading = true);
+    final result = await widget.resolve!();
+    if (!mounted) return;
+    setState(() {
+      _loading = false;
+      _place = result;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final onColor = theme.colorScheme.onPrimaryContainer;
+
+    final String titleText;
+    final String subtitleText;
+    final Widget leading;
+    final VoidCallback onTap;
+
+    if (_loading) {
+      titleText = 'Yerini müəyyən edirəm…';
+      subtitleText = 'Bir saniyə';
+      leading = SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(strokeWidth: 2.4, color: onColor),
+      );
+      onTap = () {};
+    } else if (_place != null) {
+      final place = _place!;
+      titleText = place.placeName.isNotEmpty
+          ? '📍 ${place.placeName}'
+          : place.title;
+      subtitleText = '${place.title} sözlərinə bax';
+      leading = Icon(Icons.my_location, color: onColor);
+      onTap = () => widget.onOpenPack(place.packId, place.title);
+    } else {
+      titleText = 'İndi haradayam?';
+      subtitleText = 'Olduğun yerə uyğun sözlər';
+      leading = Icon(Icons.place, color: onColor);
+      onTap = widget.onManualTap;
+    }
+
     return Card(
       color: theme.colorScheme.primaryContainer,
       child: InkWell(
@@ -93,24 +171,30 @@ class _ContextCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Icon(Icons.place, color: theme.colorScheme.onPrimaryContainer),
+              leading,
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('İndi haradayam?',
+                    Text(titleText,
                         style: theme.textTheme.titleMedium?.copyWith(
-                            color: theme.colorScheme.onPrimaryContainer,
-                            fontWeight: FontWeight.w600)),
-                    Text('Olduğun yerə uyğun sözlər',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onPrimaryContainer)),
+                            color: onColor, fontWeight: FontWeight.w600)),
+                    Text(subtitleText,
+                        style: theme.textTheme.bodySmall
+                            ?.copyWith(color: onColor)),
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right,
-                  color: theme.colorScheme.onPrimaryContainer),
+              // Yenilə düyməsi (yer dəyişəndə əl ilə təzələmək üçün).
+              if (widget.resolve != null && !_loading)
+                IconButton(
+                  onPressed: _resolve,
+                  icon: Icon(Icons.refresh, color: onColor),
+                  tooltip: 'Yeri yenilə',
+                )
+              else
+                Icon(Icons.chevron_right, color: onColor),
             ],
           ),
         ),

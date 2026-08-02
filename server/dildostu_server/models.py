@@ -87,6 +87,21 @@ class RoutineSampleRequest(BaseModel):
     pack_id: str | None = None
 
 
+class PlaceResolveRequest(BaseModel):
+    """App-ın göndərdiyi cari koordinat — server yaxın yeri tapır."""
+
+    lat: float = Field(ge=-90, le=90)
+    lng: float = Field(ge=-180, le=180)
+
+
+class PlaceResolveResponse(BaseModel):
+    """Tapılan yer və ona uyğun söz paketi."""
+
+    pack_id: str = Field(min_length=1)
+    name: str = ""
+    category: str = ""
+
+
 class PlaceSummary(BaseModel):
     """Bir məkan tipi üzrə aqreqat — "AI nəyi öyrənib" ekranı üçün."""
 

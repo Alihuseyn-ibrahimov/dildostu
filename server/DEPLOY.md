@@ -10,6 +10,7 @@ internetlə qoşulsun. MasterNR1 ilə eyni VPS/pattern.
 | Subdomen | Məs. `dildostu.prdostu.com` — DNS (Cloudflare) VPS IP-yə A qeydi |
 | `GROQ_API_KEY` | server/.env (MasterNR1-dan AYRI açar tövsiyə — limit paylaşılmasın) |
 | `ANTHROPIC_API_KEY` (istəyə görə) | personal mode-lar (sadələşdir/çətinləşdir) canlı işləsin |
+| `FOURSQUARE_API_KEY` | Məkan tanıma (pulsuz). foursquare.com/developers → yeni layihə → **Service Key** kopyala. Olmasa app OSM ehtiyatına düşür |
 
 ## 1. Kod deploy (VPS-də)
 ```bash
@@ -24,6 +25,7 @@ cp .env.example .env    # sonra doldur (aşağı)
 ```
 GROQ_API_KEY=...
 ANTHROPIC_API_KEY=...        # istəyə görə
+FOURSQUARE_API_KEY=...       # məkan tanıma (pulsuz service key)
 GROQ_MODEL=llama-3.3-70b-versatile
 CLAUDE_MODEL=claude-sonnet-5
 ```
