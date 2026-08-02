@@ -115,6 +115,22 @@ class RoutineSummaryResponse(BaseModel):
     places: list[PlaceSummary] = Field(default_factory=list)
 
 
+class GeofenceZone(BaseModel):
+    """Tez-tez gedilən yer — app bura çatanda avtomatik dərs bildirişi göstərir."""
+
+    center_lat: float
+    center_lng: float
+    radius: float
+    pack_id: str = Field(min_length=1)
+    label: str
+    hour_window: str
+    count: int
+
+
+class GeofencesResponse(BaseModel):
+    geofences: list[GeofenceZone] = Field(default_factory=list)
+
+
 class AppVersionInfo(BaseModel):
     """Serverdəki ən son buraxılış — app açılışda bunu özü ilə müqayisə edir."""
 

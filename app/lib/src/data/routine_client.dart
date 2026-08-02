@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../models/geofence_zone.dart';
 import '../models/place_summary.dart';
 
 const _timeout = Duration(seconds: 15);
@@ -53,6 +54,23 @@ class RoutineClient {
           jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
       final places = (body['places'] as List).cast<Map<String, dynamic>>();
       return [for (final p in places) PlaceSummary.fromServerJson(p)];
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  /// Tez-tez gedilən yerlər (geofence namizədləri). Xəta halında boş siyahı —
+  /// çağıran tərəf (geofence yoxlaması) bu tick-də sakitcə heç nə etməməlidir.
+  Future<List<GeofenceZone>> fetchGeofences(String deviceId) async {
+    try {
+      final resp = await _http
+          .get(Uri.parse('$baseUrl/routine/geofences/$deviceId'))
+          .timeout(_timeout);
+      if (resp.statusCode != 200) return const [];
+      final body =
+          jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
+      final zones = (body['geofences'] as List).cast<Map<String, dynamic>>();
+      return [for (final z in zones) GeofenceZone.fromServerJson(z)];
     } catch (_) {
       return const [];
     }

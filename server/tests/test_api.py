@@ -266,6 +266,36 @@ class TestPlaceResolveEndpoint:
         assert r.status_code == 422
 
 
+class TestRoutineGeofencesEndpoint:
+    def test_returns_frequent_places(self):
+        store = RoutineStore(":memory:")
+        for _ in range(4):
+            store.add("dev1", lat=40.370, lng=49.830,
+                       place_type="cafe", pack_id="cafe")
+        client = override_routine(store)
+        r = client.get("/routine/geofences/dev1")
+        assert r.status_code == 200
+        zones = r.json()["geofences"]
+        assert len(zones) == 1
+        assert zones[0]["pack_id"] == "cafe"
+        assert zones[0]["count"] == 4
+
+    def test_below_threshold_empty(self):
+        store = RoutineStore(":memory:")
+        store.add("dev1", lat=40.370, lng=49.830,
+                   place_type="cafe", pack_id="cafe")
+        client = override_routine(store)
+        r = client.get("/routine/geofences/dev1")
+        assert r.status_code == 200
+        assert r.json()["geofences"] == []
+
+    def test_unknown_device_empty(self):
+        client = override_routine(RoutineStore(":memory:"))
+        r = client.get("/routine/geofences/nobody")
+        assert r.status_code == 200
+        assert r.json()["geofences"] == []
+
+
 def override_release(store):
     app.dependency_overrides[get_release_store] = lambda: store
     return TestClient(app)

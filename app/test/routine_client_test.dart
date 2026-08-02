@@ -54,4 +54,43 @@ void main() {
     final client = RoutineClient(baseUrl: 'http://x', httpClient: mock);
     expect(await client.fetchSummary('dev1'), isEmpty);
   });
+
+  test('fetchGeofences zonaları parse edir', () async {
+    final mock = MockClient((req) async {
+      expect(req.url.path, '/routine/geofences/dev1');
+      return http.Response(
+        jsonEncode({
+          'geofences': [
+            {
+              'center_lat': 40.37,
+              'center_lng': 49.83,
+              'radius': 120.0,
+              'pack_id': 'cafe',
+              'label': 'cafe',
+              'hour_window': 'morning',
+              'count': 5,
+            }
+          ]
+        }),
+        200,
+      );
+    });
+    final client = RoutineClient(baseUrl: 'https://x', httpClient: mock);
+    final zones = await client.fetchGeofences('dev1');
+    expect(zones, hasLength(1));
+    expect(zones.first.packId, 'cafe');
+    expect(zones.first.radius, 120.0);
+  });
+
+  test('fetchGeofences 404 → boş siyahı', () async {
+    final mock = MockClient((req) async => http.Response('{}', 404));
+    final client = RoutineClient(baseUrl: 'https://x', httpClient: mock);
+    expect(await client.fetchGeofences('dev1'), isEmpty);
+  });
+
+  test('fetchGeofences şəbəkə xətası → boş siyahı (səssiz)', () async {
+    final mock = MockClient((req) async => throw Exception('offline'));
+    final client = RoutineClient(baseUrl: 'https://x', httpClient: mock);
+    expect(await client.fetchGeofences('dev1'), isEmpty);
+  });
 }

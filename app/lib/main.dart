@@ -8,6 +8,7 @@ import 'src/config.dart';
 import 'src/data/app_update_client.dart';
 import 'src/data/chat_client.dart';
 import 'src/data/device_id_repository.dart';
+import 'src/data/geofence_cooldown_repository.dart';
 import 'src/data/live_content_client.dart';
 import 'src/data/manual_context_repository.dart';
 import 'src/data/pack_repository.dart';
@@ -16,6 +17,8 @@ import 'src/data/routine_client.dart';
 import 'src/data/settings_repository.dart';
 import 'src/data/user_profile_repository.dart';
 import 'src/engine/context_engine.dart';
+import 'src/engine/geofence_logic.dart';
+import 'src/engine/pack_titles.dart';
 import 'src/engine/update_logic.dart';
 import 'src/models/app_version_info.dart';
 import 'src/models/user_profile.dart';
@@ -197,7 +200,9 @@ class _BootstrapState extends State<_Bootstrap> {
   }
 
   /// App açılışda rutin toplamanı təmin edir: icazə varsa periodik tapşırığı
-  /// yenidən qeyd edir və dərhal bir ön-plan nümunəsi göndərir. Səssiz keçir.
+  /// yenidən qeyd edir, dərhal bir ön-plan nümunəsi göndərir və eyni koordinatla
+  /// geofence yoxlaması edir (tez-tez gedilən yerdəsənsə dərhal bildiriş).
+  /// Səssiz keçir.
   Future<void> _startRoutineSampling(
       String deviceId, PackRepository packs) async {
     try {
@@ -211,6 +216,16 @@ class _BootstrapState extends State<_Bootstrap> {
         lng: sample.lng,
         placeType: sample.packId,
         packId: sample.packId,
+      );
+      final cooldown = await GeofenceCooldownRepository.load();
+      await checkGeofenceArrival(
+        lat: sample.lat,
+        lng: sample.lng,
+        fetchGeofences: () => _routine.fetchGeofences(deviceId),
+        getLastNotified: cooldown.lastNotifiedAt,
+        markNotified: cooldown.markNotified,
+        notify: (packId, label) =>
+            _notifications.showArrival(packId, packTitleAz(label)),
       );
     } catch (_) {
       // Fon işi — istifadəçini bloklamamalı.

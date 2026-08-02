@@ -18,16 +18,18 @@ bool isWithinActiveHours(int hour, int wakeHour, int sleepHour) {
 }
 
 /// Bir dəfə nümunə götür: `resolve` cari məkanı təyin edir; nəticə varsa serverə
-/// göndərir. Məkan təyin olunmasa (icazə/GPS/şəbəkə yox) səssiz keçir.
+/// göndərir və nümunəni qaytarır (çağıran tərəf, məs. geofence yoxlaması,
+/// eyni koordinatı təkrar GPS sorğusu etmədən istifadə edə bilsin). Məkan
+/// təyin olunmasa (icazə/GPS/şəbəkə yox) səssiz keçib `null` qaytarır.
 ///
 /// `resolve` və `client` inject olunur → plugin-siz test.
-Future<void> takeRoutineSample({
+Future<RoutineSample?> takeRoutineSample({
   required Future<RoutineSample?> Function() resolve,
   required RoutineClient client,
   required String deviceId,
 }) async {
   final sample = await resolve();
-  if (sample == null) return;
+  if (sample == null) return null;
   await client.postSample(
     deviceId: deviceId,
     lat: sample.lat,
@@ -35,4 +37,5 @@ Future<void> takeRoutineSample({
     placeType: sample.packId,
     packId: sample.packId,
   );
+  return sample;
 }

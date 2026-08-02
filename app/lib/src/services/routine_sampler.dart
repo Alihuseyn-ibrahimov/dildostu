@@ -2,10 +2,14 @@ import 'package:workmanager/workmanager.dart';
 
 import '../config.dart';
 import '../data/device_id_repository.dart';
+import '../data/geofence_cooldown_repository.dart';
 import '../data/routine_client.dart';
 import '../data/user_profile_repository.dart';
+import '../engine/geofence_logic.dart';
+import '../engine/pack_titles.dart';
 import '../engine/routine_logic.dart';
 import 'location_service.dart';
+import 'notification_service.dart';
 
 /// Rutin nümunə toplamanın WorkManager qatı. Faktiki məntiq
 /// `engine/routine_logic.dart`-da test olunur; bura yalnız nazik plumbing-dir.
@@ -54,11 +58,28 @@ void callbackDispatcher() {
       final deviceId = (await DeviceIdRepository.load()).deviceId;
       final location = LocationService();
       final client = RoutineClient(baseUrl: AppConfig.serverBaseUrl);
-      await takeRoutineSample(
+      final sample = await takeRoutineSample(
         resolve: location.resolveNearbySample,
         client: client,
         deviceId: deviceId,
       );
+
+      // Nümunə tapılıbsa (proqrama daxil OLMADAN belə) tez-tez gedilən yerə
+      // çatıb-çatmadığını yoxla; çatıbsa avtomatik dərs bildirişi göstər.
+      if (sample != null) {
+        final cooldown = await GeofenceCooldownRepository.load();
+        final notifications = NotificationService();
+        await notifications.initBackground();
+        await checkGeofenceArrival(
+          lat: sample.lat,
+          lng: sample.lng,
+          fetchGeofences: () => client.fetchGeofences(deviceId),
+          getLastNotified: cooldown.lastNotifiedAt,
+          markNotified: cooldown.markNotified,
+          notify: (packId, label) =>
+              notifications.showArrival(packId, packTitleAz(label)),
+        );
+      }
       return true;
     } catch (_) {
       // Fon işi heç vaxt sınmamalı — uğursuzsa belə true qaytar (təkrar yığılmasın).

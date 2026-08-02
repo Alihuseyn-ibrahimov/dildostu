@@ -45,6 +45,17 @@ class NotificationService {
     await androidPlugin?.requestExactAlarmsPermission();
   }
 
+  /// WorkManager fon izolatı üçün yüngül init — tz/icazə sorğusu YOX (bunlar
+  /// əsas izolatda `init()` ilə artıq edilib). Yalnız plugin-i qeydiyyatdan
+  /// keçirir ki, `showArrival` işləsin (background izolatda plugin ayrıca
+  /// qeydiyyat tələb edir).
+  Future<void> initBackground() async {
+    const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+    await _plugin.initialize(
+      settings: const InitializationSettings(android: androidInit),
+    );
+  }
+
   /// App bildirişə toxunmaqla soyuq başlanğıcdan açılıbsa, həmin bildirişin
   /// payload-unu (pack_id) qaytarır; əks halda null. main.dart bootstrap-da
   /// çağırılır ki, birbaşa uyğun paket açılsın.
@@ -62,6 +73,28 @@ class NotificationService {
       id: 9999,
       title: 'DilDostu',
       body: '$title — yeni sözlərə baxın',
+      notificationDetails: const NotificationDetails(
+        android: AndroidNotificationDetails(
+          _channelId,
+          _channelName,
+          channelDescription: _channelDescription,
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+      ),
+      payload: packId,
+    );
+  }
+
+  /// Geofence tetiklənməsi — istifadəçi tez-tez gəldiyi yerə çatanda (proqram
+  /// bağlı olsa belə, WorkManager fon tick-indən) göstərilir. Toxunma
+  /// `showNow`/`scheduleToday` ilə eyni payload konvensiyasını (pack_id)
+  /// paylaşır — main.dart-da eyni `onTap` LiveCardScreen-i açır.
+  Future<void> showArrival(String packId, String title) async {
+    await _plugin.show(
+      id: 7777,
+      title: 'DilDostu',
+      body: '📍 $title-dasan! Uyğun sözlərə bax',
       notificationDetails: const NotificationDetails(
         android: AndroidNotificationDetails(
           _channelId,

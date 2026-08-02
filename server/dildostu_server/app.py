@@ -17,6 +17,7 @@ from .models import (
     DayPlanRequest,
     DayPlanResponse,
     GenerateRequest,
+    GeofencesResponse,
     LiveMessage,
     PlaceResolveRequest,
     PlaceResolveResponse,
@@ -24,6 +25,7 @@ from .models import (
     RoutineSummaryResponse,
 )
 from .place_lookup import PlaceLookup, PlaceLookupError
+from .routine_clustering import cluster_places
 from .providers import (
     ChatCompleter,
     Completer,
@@ -158,6 +160,21 @@ def routine_summary(
 ) -> RoutineSummaryResponse:
     """"AI nəyi öyrənib" — məkan tipləri üzrə aqreqat."""
     return RoutineSummaryResponse(places=store.place_summary(device_id))
+
+
+# Android geofence limitinə uyğun tavan (bax spec: Faza 3b).
+_MAX_GEOFENCES = 20
+
+
+@app.get("/routine/geofences/{device_id}", response_model=GeofencesResponse)
+def routine_geofences(
+    device_id: str,
+    store: RoutineStore = Depends(get_routine_store),
+) -> GeofencesResponse:
+    """Tez-tez gedilən yerlər — app bunları qeyd edib çatanda bildiriş göstərir."""
+    samples = store.recent(device_id, limit=1000)
+    zones = cluster_places(samples)[:_MAX_GEOFENCES]
+    return GeofencesResponse(geofences=zones)
 
 
 # Buraxılış cavabları keşlənməməlidir — Cloudflare/proxy köhnə APK/versiya
