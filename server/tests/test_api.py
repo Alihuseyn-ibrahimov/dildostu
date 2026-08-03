@@ -7,6 +7,7 @@ from dildostu_server.app import (
     app,
     get_chat_completers,
     get_completers,
+    get_current_user,
     get_place_lookup,
     get_release_store,
     get_routine_store,
@@ -173,13 +174,27 @@ class TestChatEndpoint:
         assert r.status_code == 502
 
 
-def override_routine(store):
+# Faza 2: rutin/məkan endpoint-ləri token tələb edir. Testlərdə auth-u sabit
+# istifadəçi ilə əvəz edirik (auth məntiqi ayrıca test_auth_api.py-də yoxlanır).
+_TEST_USER = {"id": 1, "email": "test@example.com", "created_at": "2026-08-03T00:00:00+00:00"}
+
+
+def override_routine(store, user=None):
     app.dependency_overrides[get_routine_store] = lambda: store
+    app.dependency_overrides[get_current_user] = lambda: user or _TEST_USER
     return TestClient(app)
 
 
+def _sample(store, user_id, **kw):
+    kw.setdefault("device_id", "dev1")
+    kw.setdefault("lat", 1.0)
+    kw.setdefault("lng", 1.0)
+    kw.setdefault("place_type", "cafe")
+    store.add(user_id, **kw)
+
+
 class TestRoutineSampleEndpoint:
-    def test_sample_stored(self):
+    def test_sample_stored_against_current_user(self):
         store = RoutineStore(":memory:")
         client = override_routine(store)
         r = client.post("/routine/sample", json={
@@ -188,7 +203,7 @@ class TestRoutineSampleEndpoint:
         })
         assert r.status_code == 200
         assert r.json()["ok"] is True
-        assert store.recent("dev1")[0]["place_type"] == "cafe"
+        assert store.recent(1)[0]["place_type"] == "cafe"
 
     def test_invalid_lat_422(self):
         client = override_routine(RoutineStore(":memory:"))
@@ -197,24 +212,63 @@ class TestRoutineSampleEndpoint:
         })
         assert r.status_code == 422
 
+    def test_requires_auth(self):
+        app.dependency_overrides[get_routine_store] = lambda: RoutineStore(":memory:")
+        r = TestClient(app).post("/routine/sample", json={
+            "device_id": "dev1", "lat": 40.0, "lng": 49.0, "place_type": "cafe",
+        })
+        assert r.status_code == 401
+
 
 class TestRoutineSummaryEndpoint:
     def test_summary_returns_aggregate(self):
         store = RoutineStore(":memory:")
-        store.add("dev1", lat=1.0, lng=1.0, place_type="cafe", pack_id="cafe")
-        store.add("dev1", lat=1.0, lng=1.0, place_type="cafe", pack_id="cafe")
+        _sample(store, 1, pack_id="cafe")
+        _sample(store, 1, pack_id="cafe")
         client = override_routine(store)
-        r = client.get("/routine/summary/dev1")
+        r = client.get("/routine/summary")
         assert r.status_code == 200
         places = r.json()["places"]
         assert places[0]["place_type"] == "cafe"
         assert places[0]["count"] == 2
 
-    def test_unknown_device_empty(self):
+    def test_new_user_empty(self):
         client = override_routine(RoutineStore(":memory:"))
-        r = client.get("/routine/summary/nobody")
+        r = client.get("/routine/summary")
         assert r.status_code == 200
         assert r.json()["places"] == []
+
+    def test_does_not_leak_other_users_data(self):
+        store = RoutineStore(":memory:")
+        _sample(store, 2, place_type="market")  # başqa istifadəçi
+        client = override_routine(store)  # user id=1
+        assert client.get("/routine/summary").json()["places"] == []
+
+    def test_requires_auth(self):
+        app.dependency_overrides[get_routine_store] = lambda: RoutineStore(":memory:")
+        assert TestClient(app).get("/routine/summary").status_code == 401
+
+
+class TestRoutineClaimEndpoint:
+    def test_claims_anonymous_samples(self):
+        store = RoutineStore(":memory:")
+        store.add(None, device_id="devX", lat=1.0, lng=1.0, place_type="cafe")
+        client = override_routine(store)
+        r = client.post("/routine/claim", json={"device_id": "devX"})
+        assert r.status_code == 200
+        assert r.json()["claimed"] == 1
+        assert len(store.recent(1)) == 1
+
+    def test_cannot_claim_other_users_samples(self):
+        store = RoutineStore(":memory:")
+        _sample(store, 2, device_id="devX")
+        client = override_routine(store)
+        assert client.post("/routine/claim", json={"device_id": "devX"}).json()["claimed"] == 0
+
+    def test_requires_auth(self):
+        app.dependency_overrides[get_routine_store] = lambda: RoutineStore(":memory:")
+        r = TestClient(app).post("/routine/claim", json={"device_id": "d"})
+        assert r.status_code == 401
 
 
 class _StubLookup:
@@ -232,6 +286,7 @@ class _StubLookup:
 
 def override_place(lookup):
     app.dependency_overrides[get_place_lookup] = lambda: lookup
+    app.dependency_overrides[get_current_user] = lambda: _TEST_USER
     return TestClient(app)
 
 
@@ -265,15 +320,19 @@ class TestPlaceResolveEndpoint:
         r = client.post("/place/resolve", json={"lat": 999, "lng": 0})
         assert r.status_code == 422
 
+    def test_requires_auth(self):
+        app.dependency_overrides[get_place_lookup] = lambda: _StubLookup(None)
+        r = TestClient(app).post("/place/resolve", json={"lat": 40.0, "lng": 49.0})
+        assert r.status_code == 401
+
 
 class TestRoutineGeofencesEndpoint:
     def test_returns_frequent_places(self):
         store = RoutineStore(":memory:")
         for _ in range(4):
-            store.add("dev1", lat=40.370, lng=49.830,
-                       place_type="cafe", pack_id="cafe")
+            _sample(store, 1, lat=40.370, lng=49.830, pack_id="cafe")
         client = override_routine(store)
-        r = client.get("/routine/geofences/dev1")
+        r = client.get("/routine/geofences")
         assert r.status_code == 200
         zones = r.json()["geofences"]
         assert len(zones) == 1
@@ -282,18 +341,21 @@ class TestRoutineGeofencesEndpoint:
 
     def test_below_threshold_empty(self):
         store = RoutineStore(":memory:")
-        store.add("dev1", lat=40.370, lng=49.830,
-                   place_type="cafe", pack_id="cafe")
+        _sample(store, 1, lat=40.370, lng=49.830, pack_id="cafe")
         client = override_routine(store)
-        r = client.get("/routine/geofences/dev1")
+        r = client.get("/routine/geofences")
         assert r.status_code == 200
         assert r.json()["geofences"] == []
 
-    def test_unknown_device_empty(self):
+    def test_new_user_empty(self):
         client = override_routine(RoutineStore(":memory:"))
-        r = client.get("/routine/geofences/nobody")
+        r = client.get("/routine/geofences")
         assert r.status_code == 200
         assert r.json()["geofences"] == []
+
+    def test_requires_auth(self):
+        app.dependency_overrides[get_routine_store] = lambda: RoutineStore(":memory:")
+        assert TestClient(app).get("/routine/geofences").status_code == 401
 
 
 def override_release(store):

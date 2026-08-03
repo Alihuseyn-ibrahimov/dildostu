@@ -36,6 +36,7 @@ from .models import (
     ProfileResponse,
     ProfileUpdateRequest,
     RegisterRequest,
+    RoutineClaimRequest,
     RoutineSampleRequest,
     RoutineSummaryResponse,
     UserInfo,
@@ -193,8 +194,14 @@ def auth_me(user: dict = Depends(get_current_user)) -> UserInfo:
 def auth_delete_me(
     user: dict = Depends(get_current_user),
     store: UserStore = Depends(get_user_store),
+    routine: RoutineStore = Depends(get_routine_store),
 ) -> Response:
-    """Hesabı və ona bağlı datanı silir (Google Play tələbi)."""
+    """Hesabı və ona bağlı BÜTÜN datanı silir (Google Play tələbi).
+
+    Rutin nümunələri (məkan tarixçəsi) də silinir — hesab silinəndə geridə
+    məkan datası qalmamalıdır.
+    """
+    routine.delete_user_data(user["id"])
     store.delete(user["id"])
     return Response(status_code=204)
 
@@ -268,11 +275,13 @@ def chat(
 @app.post("/routine/sample")
 def routine_sample(
     req: RoutineSampleRequest,
+    user: dict = Depends(get_current_user),
     store: RoutineStore = Depends(get_routine_store),
 ) -> dict:
     """Cihazdan gələn məkan nümunəsini saxlayır (vaxt serverdə UTC)."""
     store.add(
-        req.device_id,
+        user["id"],
+        device_id=req.device_id,
         lat=req.lat,
         lng=req.lng,
         place_type=req.place_type,
@@ -281,9 +290,20 @@ def routine_sample(
     return {"ok": True}
 
 
+@app.post("/routine/claim")
+def routine_claim(
+    req: RoutineClaimRequest,
+    user: dict = Depends(get_current_user),
+    store: RoutineStore = Depends(get_routine_store),
+) -> dict:
+    """Hesabdan əvvəl bu cihazda toplanmış anonim nümunələri hesaba bağlayır."""
+    return {"claimed": store.claim_device(user["id"], req.device_id)}
+
+
 @app.post("/place/resolve", response_model=PlaceResolveResponse)
 def place_resolve(
     req: PlaceResolveRequest,
+    user: dict = Depends(get_current_user),
     lookup: PlaceLookup = Depends(get_place_lookup),
 ) -> PlaceResolveResponse:
     """Koordinatı yaxınlıqdakı yerə və söz paketinə çevirir (Foursquare)."""
@@ -300,26 +320,30 @@ def place_resolve(
     )
 
 
-@app.get("/routine/summary/{device_id}", response_model=RoutineSummaryResponse)
+@app.get("/routine/summary", response_model=RoutineSummaryResponse)
 def routine_summary(
-    device_id: str,
+    user: dict = Depends(get_current_user),
     store: RoutineStore = Depends(get_routine_store),
 ) -> RoutineSummaryResponse:
-    """"AI nəyi öyrənib" — məkan tipləri üzrə aqreqat."""
-    return RoutineSummaryResponse(places=store.place_summary(device_id))
+    """"AI nəyi öyrənib" — məkan tipləri üzrə aqreqat.
+
+    Faza 2: `device_id` URL-dən çıxarıldı — əvvəl istənilən şəxs başqasının
+    `device_id`-sini bilsə onun məkan aqreqatını oxuya bilirdi.
+    """
+    return RoutineSummaryResponse(places=store.place_summary(user["id"]))
 
 
 # Android geofence limitinə uyğun tavan (bax spec: Faza 3b).
 _MAX_GEOFENCES = 20
 
 
-@app.get("/routine/geofences/{device_id}", response_model=GeofencesResponse)
+@app.get("/routine/geofences", response_model=GeofencesResponse)
 def routine_geofences(
-    device_id: str,
+    user: dict = Depends(get_current_user),
     store: RoutineStore = Depends(get_routine_store),
 ) -> GeofencesResponse:
     """Tez-tez gedilən yerlər — app bunları qeyd edib çatanda bildiriş göstərir."""
-    samples = store.recent(device_id, limit=1000)
+    samples = store.recent(user["id"], limit=1000)
     zones = cluster_places(samples)[:_MAX_GEOFENCES]
     return GeofencesResponse(geofences=zones)
 

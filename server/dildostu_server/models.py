@@ -126,6 +126,12 @@ class RoutineSampleRequest(BaseModel):
     pack_id: str | None = None
 
 
+class RoutineClaimRequest(BaseModel):
+    """Hesabdan əvvəl bu cihazda toplanmış anonim nümunələri mənimsəmək."""
+
+    device_id: str = Field(min_length=1)
+
+
 class PlaceResolveRequest(BaseModel):
     """App-ın göndərdiyi cari koordinat — server yaxın yeri tapır."""
 
