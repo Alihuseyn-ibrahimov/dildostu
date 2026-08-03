@@ -38,16 +38,29 @@ class AppUpdateClient {
   }
 
   /// APK-nı `destPath`-ə yükləyir; uğursuzsa null qaytarır (atmır).
+  ///
+  /// AXIN kimi yüklənir (`send()` + `stream.pipe`), `get()...bodyBytes` YOX —
+  /// APK 150+ MB olduğu üçün bütün faylı yaddaşa yükləmək telefonda (xüsusən
+  /// zəif cihazlarda) səssiz OOM-a səbəb ola bilirdi: xəta `catch`-ə düşür,
+  /// "Yenilə" zolağı heç görünmürdü, amma heç bir xəta da göstərilmirdi.
   Future<String?> downloadApk(String destPath) async {
     try {
-      final resp = await _http
-          .get(Uri.parse('$baseUrl/app/latest.apk'))
-          .timeout(_downloadTimeout);
-      if (resp.statusCode != 200) return null;
-      await File(destPath).writeAsBytes(resp.bodyBytes);
-      return destPath;
+      return await _downloadStreamed(destPath).timeout(_downloadTimeout);
     } catch (_) {
+      // Yarımçıq fayl qalmasın — sonra quraşdırma cəhdi anlaşılmaz xəta versin.
+      try {
+        final f = File(destPath);
+        if (await f.exists()) await f.delete();
+      } catch (_) {}
       return null;
     }
+  }
+
+  Future<String?> _downloadStreamed(String destPath) async {
+    final request = http.Request('GET', Uri.parse('$baseUrl/app/latest.apk'));
+    final streamed = await _http.send(request);
+    if (streamed.statusCode != 200) return null;
+    await streamed.stream.pipe(File(destPath).openWrite());
+    return destPath;
   }
 }

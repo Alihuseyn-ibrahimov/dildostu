@@ -41,4 +41,59 @@ void main() {
     expect(await File(dest).readAsBytes(), [1, 2, 3, 4]);
     await dir.delete(recursive: true);
   });
+
+  test('downloadApk böyük faylı hissə-hissə (axın) yazır', () async {
+    // 20MB-lıq axın — real APK-nın kiçildilmiş modeli. Məqsəd: `send()` +
+    // `stream.pipe` çoxlu çanaqdan gələn datanı düzgün ardıcıllıqla fayla
+    // yazır (tək bufferə yığıb sonra yazan `get()...bodyBytes`-dan fərqli).
+    final chunk = List.filled(1024 * 1024, 7); // 1MB chunk, 20 dəfə
+    final fake = _StreamingFakeClient(
+      List.generate(20, (_) => chunk),
+      statusCode: 200,
+    );
+    final client = AppUpdateClient(baseUrl: 'http://x', httpClient: fake);
+    final dir = await Directory.systemTemp.createTemp('dildostu_test_');
+    final dest = '${dir.path}${Platform.pathSeparator}update.apk';
+    final path = await client.downloadApk(dest);
+    expect(path, dest);
+    expect(await File(dest).length(), 20 * 1024 * 1024);
+    await dir.delete(recursive: true);
+  });
+
+  test('404 → null qaytarır, fayl yaranmır', () async {
+    final mock = MockClient((req) async => http.Response('not found', 404));
+    final client = AppUpdateClient(baseUrl: 'http://x', httpClient: mock);
+    final dir = await Directory.systemTemp.createTemp('dildostu_test_');
+    final dest = '${dir.path}${Platform.pathSeparator}update.apk';
+    final path = await client.downloadApk(dest);
+    expect(path, isNull);
+    expect(await File(dest).exists(), isFalse);
+    await dir.delete(recursive: true);
+  });
+
+  test('axın xətası → null qaytarır və yarımçıq faylı silir', () async {
+    final mock = MockClient((req) async => throw Exception('network'));
+    final client = AppUpdateClient(baseUrl: 'http://x', httpClient: mock);
+    final dir = await Directory.systemTemp.createTemp('dildostu_test_');
+    final dest = '${dir.path}${Platform.pathSeparator}update.apk';
+    final path = await client.downloadApk(dest);
+    expect(path, isNull);
+    expect(await File(dest).exists(), isFalse);
+    await dir.delete(recursive: true);
+  });
+}
+
+/// `send()`-i birbaşa çoxçanaqlı `StreamedResponse` ilə cavablandıran saxta
+/// client — `MockClient`-in `Response`-ə əsaslanan sadə interfeysi çoxçanaqlı
+/// axını simulyasiya etmək üçün kifayət etmir.
+class _StreamingFakeClient extends http.BaseClient {
+  _StreamingFakeClient(this.chunks, {required this.statusCode});
+
+  final List<List<int>> chunks;
+  final int statusCode;
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    return http.StreamedResponse(Stream.fromIterable(chunks), statusCode);
+  }
 }
