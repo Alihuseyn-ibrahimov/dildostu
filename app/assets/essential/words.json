@@ -1,0 +1,4040 @@
+{
+  "pack_id": "essential",
+  "target_lang": "en",
+  "ui_lang": "az",
+  "title_az": "Əsas lüğət",
+  "words": [
+    {
+      "word": "abandon",
+      "translation_az": "tərk etmək",
+      "ipa": "/əˈbændən/",
+      "example": "I abandon my car.",
+      "example_az": "Mən maşınımı tərk edirəm.",
+      "level": 1
+    },
+    {
+      "word": "bachelor",
+      "translation_az": "subay",
+      "ipa": "/ˈbætʃələr/",
+      "example": "He is a bachelor.",
+      "example_az": "O, subaydır.",
+      "level": 1
+    },
+    {
+      "word": "data",
+      "translation_az": "məlumat",
+      "ipa": "/ˈdætə/",
+      "example": "I need data for my project.",
+      "example_az": "Mənim layihəm üçün məlumat lazım olacaq.",
+      "level": 1
+    },
+    {
+      "word": "gallant",
+      "translation_az": "cəsur",
+      "ipa": "/ˈɡælənt/",
+      "example": "He is a gallant man.",
+      "example_az": "O, cəsur bir adamdır.",
+      "level": 1
+    },
+    {
+      "word": "hardship",
+      "translation_az": "çətinlik",
+      "ipa": "/ˈhɑːrdʃɪp/",
+      "example": "I face hardship in my life.",
+      "example_az": "Mən həyatımda çətinliklərlə qarşılaşırım.",
+      "level": 1
+    },
+    {
+      "word": "jealous",
+      "translation_az": "paxıl",
+      "ipa": "/ˈdʒeləs/",
+      "example": "He is jealous of my success.",
+      "example_az": "O, mənim uğurumdan paxıldır.",
+      "level": 1
+    },
+    {
+      "word": "keen",
+      "translation_az": "həvəsli",
+      "ipa": "/kiːn/",
+      "example": "I am keen on reading.",
+      "example_az": "Mən oxumağa həvəsliyəm.",
+      "level": 1
+    },
+    {
+      "word": "oath",
+      "translation_az": "and",
+      "ipa": "/oʊθ/",
+      "example": "I take an oath to be honest.",
+      "example_az": "Mən dürüst olmaq üçün and içirəm.",
+      "level": 1
+    },
+    {
+      "word": "qualify",
+      "translation_az": "ixtisaslaşdırmaq",
+      "ipa": "/ˈkwɒlɪfaɪ/",
+      "example": "I qualify for the exam.",
+      "example_az": "Mən imtahan üçün ixtisaslaşdırıram.",
+      "level": 1
+    },
+    {
+      "word": "tact",
+      "translation_az": "takt",
+      "ipa": "/tækt/",
+      "example": "I need tact in this situation.",
+      "example_az": "Mən bu vəziyyətdə takt lazım olacaq.",
+      "level": 1
+    },
+    {
+      "word": "unaccustomed",
+      "translation_az": "adət etməyən",
+      "ipa": "/ˌʌnəˈkʌstəmd/",
+      "example": "I am unaccustomed to this food.",
+      "example_az": "Mən bu qida ilə adət etməyənəm.",
+      "level": 1
+    },
+    {
+      "word": "vacant",
+      "translation_az": "boş",
+      "ipa": "/ˈveɪkənt/",
+      "example": "The room is vacant.",
+      "example_az": "Otaq boşdur.",
+      "level": 1
+    },
+    {
+      "word": "conceal",
+      "translation_az": "sahilə salmaq",
+      "ipa": "/kənˈsiːl/",
+      "example": "She tries to conceal her feelings.",
+      "example_az": "O, hisslərini gizlətməyə çalışır.",
+      "level": 1
+    },
+    {
+      "word": "corpse",
+      "translation_az": "cəsəd",
+      "ipa": "/kɔːrsp/",
+      "example": "The police found a corpse in the park.",
+      "example_az": "Polis parkda bir cəsəd tapdı.",
+      "level": 1
+    },
+    {
+      "word": "dismal",
+      "translation_az": "çətin",
+      "ipa": "/ˈdɪz.məl/",
+      "example": "The weather is dismal today.",
+      "example_az": "Bu gün havalar çətindir.",
+      "level": 1
+    },
+    {
+      "word": "frigid",
+      "translation_az": "söyüd",
+      "ipa": "/ˈfrɪdʒ.ɪd/",
+      "example": "The frigid water is very cold.",
+      "example_az": "Söyüd su çox soyuqdur.",
+      "level": 1
+    },
+    {
+      "word": "inhabit",
+      "translation_az": "məskunlaşmaq",
+      "ipa": "/ɪnˈhæb.ɪt/",
+      "example": "People inhabit this planet.",
+      "example_az": "İnsanlar bu planetdə məskunlaşıblar.",
+      "level": 1
+    },
+    {
+      "word": "numb",
+      "translation_az": "hisssiz",
+      "ipa": "/nʌm/",
+      "example": "My feet are numb from the cold.",
+      "example_az": "Ayaqlarım soyuqdan hisssizdir.",
+      "level": 1
+    },
+    {
+      "word": "peril",
+      "translation_az": "təhlükə",
+      "ipa": "/ˈpɛr.ɪl/",
+      "example": "The hikers faced many perils on their journey.",
+      "example_az": "Alpinistlər səfərləri zamanı çox təhlükə ilə qarşılaşdılar.",
+      "level": 1
+    },
+    {
+      "word": "recline",
+      "translation_az": "arxaya əyilmək",
+      "ipa": "/rɪˈklaɪn/",
+      "example": "She likes to recline on the beach.",
+      "example_az": "O, sahilə əyilməyi sevir.",
+      "level": 1
+    },
+    {
+      "word": "shriek",
+      "translation_az": "qışqırmaq",
+      "ipa": "/ʃriːk/",
+      "example": "The girl let out a loud shriek.",
+      "example_az": "Qız səsini qaldıraraq qışqırdı.",
+      "level": 1
+    },
+    {
+      "word": "sinister",
+      "translation_az": "şər",
+      "ipa": "/ˈsɪn.ɪ.stər/",
+      "example": "The old house had a sinister atmosphere.",
+      "example_az": "Köhnə evdə şər atmosfer var idi.",
+      "level": 1
+    },
+    {
+      "word": "tempt",
+      "translation_az": "cəzb etmək",
+      "ipa": "/tɛmpt/",
+      "example": "The delicious cake tempted her.",
+      "example_az": "Ləziz tort onu cəzb etdi.",
+      "level": 1
+    },
+    {
+      "word": "wager",
+      "translation_az": "dərəc",
+      "ipa": "/ˈweɪ.dʒər/",
+      "example": "He made a wager with his friend.",
+      "example_az": "O, dostu ilə dərəc bağladı.",
+      "level": 1
+    },
+    {
+      "word": "annual",
+      "translation_az": "illik",
+      "ipa": "/ˈænjuəl/",
+      "example": "I have an annual meeting.",
+      "example_az": "Mən illik iclasa sahibəm.",
+      "level": 1
+    },
+    {
+      "word": "beau",
+      "translation_az": "cavan",
+      "ipa": "/boʊ/",
+      "example": "My beau is very handsome.",
+      "example_az": "Mənim cavanım çox yaraşıqlıdır.",
+      "level": 1
+    },
+    {
+      "word": "blend",
+      "translation_az": "qarışdırmaq",
+      "ipa": "/blɛnd/",
+      "example": "Can you blend these colors?",
+      "example_az": "Bu rəngləri qarışdırا bilərsən?",
+      "level": 1
+    },
+    {
+      "word": "devise",
+      "translation_az": "yaratmaq",
+      "ipa": "/dɪˈvaɪz/",
+      "example": "I will devise a plan.",
+      "example_az": "Mən plan yaradacam.",
+      "level": 1
+    },
+    {
+      "word": "essential",
+      "translation_az": "zəruri",
+      "ipa": "/ɪˈsɛnʃəl/",
+      "example": "This is essential for me.",
+      "example_az": "Bu mənə zəruridir.",
+      "level": 1
+    },
+    {
+      "word": "expensive",
+      "translation_az": "baha",
+      "ipa": "/ɛkˈspɛnsɪv/",
+      "example": "This watch is expensive.",
+      "example_az": "Bu saat bahadır.",
+      "level": 1
+    },
+    {
+      "word": "minimum",
+      "translation_az": "minimum",
+      "ipa": "/ˈmɪnɪməm/",
+      "example": "I need the minimum amount.",
+      "example_az": "Mən minimum məbləğə ehtiyacım var.",
+      "level": 1
+    },
+    {
+      "word": "persuade",
+      "translation_az": "inandırmaq",
+      "ipa": "/pərˈsweɪd/",
+      "example": "I will persuade him.",
+      "example_az": "Mən onu inandıracam.",
+      "level": 1
+    },
+    {
+      "word": "scarce",
+      "translation_az": "az",
+      "ipa": "/skɑrs/",
+      "example": "Water is scarce here.",
+      "example_az": "Burada su azdır.",
+      "level": 1
+    },
+    {
+      "word": "typical",
+      "translation_az": "adətən",
+      "ipa": "/ˈtɪpɪkəl/",
+      "example": "This is typical for him.",
+      "example_az": "Bu onun üçün adətəndir.",
+      "level": 1
+    },
+    {
+      "word": "visible",
+      "translation_az": "görünən",
+      "ipa": "/ˈvɪzɪbəl/",
+      "example": "The stars are visible tonight.",
+      "example_az": "Ulduzlar bu gecə görünən.",
+      "level": 1
+    },
+    {
+      "word": "wholesale",
+      "translation_az": "bütöv",
+      "ipa": "/ˈhoʊlˌseɪl/",
+      "example": "I buy things wholesale.",
+      "example_az": "Mən şeyləri bütöv alıram.",
+      "level": 1
+    },
+    {
+      "word": "circulate",
+      "translation_az": "dövrənmək",
+      "ipa": "/ˈsɜːrkjʊleɪt/",
+      "example": "The blood circulates in my body.",
+      "example_az": "Qanım mənim bədənimdə dövrənməyə davam edir.",
+      "level": 1
+    },
+    {
+      "word": "dense",
+      "translation_az": "qalın",
+      "ipa": "/dɛns/",
+      "example": "The forest is very dense.",
+      "example_az": "Meşə çox qalınır.",
+      "level": 1
+    },
+    {
+      "word": "descend",
+      "translation_az": "enmək",
+      "ipa": "/dɪˈsɛnd/",
+      "example": "The plane will descend soon.",
+      "example_az": "Təyyarə tezliklə enəcək.",
+      "level": 1
+    },
+    {
+      "word": "eliminate",
+      "translation_az": "aradan qaldırmaq",
+      "ipa": "/ɪˈlɪmɪneɪt/",
+      "example": "We must eliminate the problem.",
+      "example_az": "Biz problemi aradan qaldırmalıyıq.",
+      "level": 1
+    },
+    {
+      "word": "enormous",
+      "translation_az": "nəhəng",
+      "ipa": "/ɪˈnɔːrməs/",
+      "example": "The hotel is enormous.",
+      "example_az": "Meşə nəhəngdir.",
+      "level": 1
+    },
+    {
+      "word": "humid",
+      "translation_az": "rütubətli",
+      "ipa": "/ˈhjuːmɪd/",
+      "example": "The weather is very humid today.",
+      "example_az": "Bugün havalar çox rütubətlidir.",
+      "level": 1
+    },
+    {
+      "word": "predict",
+      "translation_az": "proqnozlaşdırmaq",
+      "ipa": "/prɪˈdɪkt/",
+      "example": "I can predict the future.",
+      "example_az": "Mən gələcəyi proqnozlaşdıra bilərəm.",
+      "level": 1
+    },
+    {
+      "word": "theory",
+      "translation_az": "nəzəriyyə",
+      "ipa": "/ˈθɪəri/",
+      "example": "The theory is very interesting.",
+      "example_az": "Nəzəriyyə çox maraqlıdır.",
+      "level": 1
+    },
+    {
+      "word": "utilize",
+      "translation_az": "istifadə etmək",
+      "ipa": "/ˈjuːtɪlaɪz/",
+      "example": "We must utilize the time.",
+      "example_az": "Biz vaxtdan istifadə etməliyik.",
+      "level": 1
+    },
+    {
+      "word": "vanish",
+      "translation_az": "yox olmaq",
+      "ipa": "/væˈnɪʃ/",
+      "example": "The problem will vanish soon.",
+      "example_az": "Problem tezliklə yox olacaq.",
+      "level": 1
+    },
+    {
+      "word": "vapor",
+      "translation_az": "buz",
+      "ipa": "/ˈveɪpər/",
+      "example": "The water turns to vapor.",
+      "example_az": "Su buza çevrilir.",
+      "level": 1
+    },
+    {
+      "word": "villain",
+      "translation_az": "pis adam",
+      "ipa": "/ˈvɪlən/",
+      "example": "The villain is very bad.",
+      "example_az": "Pis adam çox pisdir.",
+      "level": 1
+    },
+    {
+      "word": "assemble",
+      "translation_az": "yığmaq",
+      "ipa": "/əˈsɛmbəl/",
+      "example": "They assemble furniture.",
+      "example_az": "Onlar mebel yığır.",
+      "level": 1
+    },
+    {
+      "word": "burden",
+      "translation_az": "yükmü",
+      "ipa": "/ˈbɜːrdən/",
+      "example": "The burden is heavy.",
+      "example_az": "Yükmü ağırır.",
+      "level": 1
+    },
+    {
+      "word": "campus",
+      "translation_az": "kampus",
+      "ipa": "/ˈkæmpəs/",
+      "example": "The campus is big.",
+      "example_az": "Kampus böyükdür.",
+      "level": 1
+    },
+    {
+      "word": "debate",
+      "translation_az": "mübahisə",
+      "ipa": "/dɪˈbeɪt/",
+      "example": "They debate politics.",
+      "example_az": "Onlar siyaseti mübahisə edir.",
+      "level": 1
+    },
+    {
+      "word": "evade",
+      "translation_az": "yaxşılmazdan qaçmaq",
+      "ipa": "/ɪˈveɪd/",
+      "example": "He tries to evade taxes.",
+      "example_az": "O, vergilərdən qaçmağa çalışır.",
+      "level": 1
+    },
+    {
+      "word": "explore",
+      "translation_az": "araşdırmaq",
+      "ipa": "/ɛkˈsplɔːr/",
+      "example": "They explore the city.",
+      "example_az": "Onlar şəhəri arașdırır.",
+      "level": 1
+    },
+    {
+      "word": "majority",
+      "translation_az": "əksəriyyət",
+      "ipa": "/məˈdʒɒrɪti/",
+      "example": "The majority is happy.",
+      "example_az": "Əksəriyyət xoșbəxtdir.",
+      "level": 1
+    },
+    {
+      "word": "probe",
+      "translation_az": "tədqiqat aparmaq",
+      "ipa": "/proʊb/",
+      "example": "They probe the issue.",
+      "example_az": "Onlar məsələni tədqiq edir.",
+      "level": 1
+    },
+    {
+      "word": "reform",
+      "translation_az": "islahat",
+      "ipa": "/rɪˈfɔːrm/",
+      "example": "They reform the system.",
+      "example_az": "Onlar sistemi islah edir.",
+      "level": 1
+    },
+    {
+      "word": "rural",
+      "translation_az": "kənd",
+      "ipa": "/ˈrʊrəl/",
+      "example": "The rural area is quiet.",
+      "example_az": "Kənd ərazisi sakitdir.",
+      "level": 1
+    },
+    {
+      "word": "topic",
+      "translation_az": "mövzu",
+      "ipa": "/ˈtɒpɪk/",
+      "example": "The topic is interesting.",
+      "example_az": "Mövzu maraqlıdır.",
+      "level": 1
+    },
+    {
+      "word": "tradition",
+      "translation_az": "ənənə",
+      "ipa": "/trəˈdɪʃən/",
+      "example": "They follow tradition.",
+      "example_az": "Onlar ənənəyə əməl edir.",
+      "level": 1
+    },
+    {
+      "word": "approach",
+      "translation_az": "yaklaşmaq",
+      "ipa": "/əˈproʊtʃ/",
+      "example": "I will approach the problem.",
+      "example_az": "Mən problemə yanaşacam.",
+      "level": 1
+    },
+    {
+      "word": "client",
+      "translation_az": "müştəri",
+      "ipa": "/ˈklaɪənt/",
+      "example": "The client is waiting.",
+      "example_az": "Müştəri gözləyir.",
+      "level": 1
+    },
+    {
+      "word": "comprehensive",
+      "translation_az": "ümumi",
+      "ipa": "/ˌkɒmprɪˈhɛnsɪv/",
+      "example": "This is a comprehensive guide.",
+      "example_az": "Bu, ümumi bir bələdçidir.",
+      "level": 1
+    },
+    {
+      "word": "deceive",
+      "translation_az": "aldatmaq",
+      "ipa": "/dɪˈsiːv/",
+      "example": "Do not deceive me.",
+      "example_az": "Məni aldatma.",
+      "level": 1
+    },
+    {
+      "word": "defect",
+      "translation_az": "nöqsan",
+      "ipa": "/dɪˈfɛkt/",
+      "example": "The product has a defect.",
+      "example_az": "Məhsulda nöqsan var.",
+      "level": 1
+    },
+    {
+      "word": "defraud",
+      "translation_az": "aldatmaq",
+      "ipa": "/dɪˈfrɔːd/",
+      "example": "Do not defraud anyone.",
+      "example_az": "Heç kimi aldatmayın.",
+      "level": 1
+    },
+    {
+      "word": "detect",
+      "translation_az": " aşkarlamaq",
+      "ipa": "/dɪˈtɛkt/",
+      "example": "I can detect the problem.",
+      "example_az": "Mən problemi aşkarlaya bilərəm.",
+      "level": 1
+    },
+    {
+      "word": "employee",
+      "translation_az": "işçi",
+      "ipa": "/ˌɛm.plɔɪˈiː/",
+      "example": "The employee is working.",
+      "example_az": "İşçi işləyir.",
+      "level": 1
+    },
+    {
+      "word": "neglect",
+      "translation_az": "qəddərə vermir",
+      "ipa": "/nɪˈɡlɛkt/",
+      "example": "Do not neglect your work.",
+      "example_az": "İşini qəddərə vermə.",
+      "level": 1
+    },
+    {
+      "word": "popular",
+      "translation_az": "məşhur",
+      "ipa": "/ˈpɒpjʊlər/",
+      "example": "This place is popular.",
+      "example_az": "Bu yer məşhurdur.",
+      "level": 1
+    },
+    {
+      "word": "thorough",
+      "translation_az": "dərindən",
+      "ipa": "/ˈθʌrəʊ/",
+      "example": "I will do it thoroughly.",
+      "example_az": "Mən dərindən edəcəm.",
+      "level": 1
+    },
+    {
+      "word": "undoubtedly",
+      "translation_az": "şübhəsiz",
+      "ipa": "/ˌʌndɔʊtɪdli/",
+      "example": "He is undoubtedly the best.",
+      "example_az": "O, şübhəsiz ki, ən yaxşısıdır.",
+      "level": 1
+    },
+    {
+      "word": "capsule",
+      "translation_az": "kapsul",
+      "ipa": "/ˈkæpsʊl/",
+      "example": "The astronaut is in a capsule.",
+      "example_az": "Astronavt kapsulda olub.",
+      "level": 1
+    },
+    {
+      "word": "consent",
+      "translation_az": "razılıq",
+      "ipa": "/kənˈsɛnt/",
+      "example": "Do you give your consent?",
+      "example_az": "Razılıq verirsən?",
+      "level": 1
+    },
+    {
+      "word": "denounce",
+      "translation_az": "pisləmək",
+      "ipa": "/dɪˈnaʊns/",
+      "example": "The people denounce the government.",
+      "example_az": "Xalq hökuməti pisləyir.",
+      "level": 1
+    },
+    {
+      "word": "gloomy",
+      "translation_az": "buludlu",
+      "ipa": "/ˈɡluːmi/",
+      "example": "The weather is gloomy today.",
+      "example_az": "Bugün hava buludludur.",
+      "level": 1
+    },
+    {
+      "word": "massive",
+      "translation_az": "nəhəng",
+      "ipa": "/ˈmæsɪv/",
+      "example": "The massive building is very impressive.",
+      "example_az": "Nəhəng bina çox təəccüblüdür.",
+      "level": 1
+    },
+    {
+      "word": "molest",
+      "translation_az": "təcavüz",
+      "ipa": "/məˈlɛst/",
+      "example": "The law protects people from molest.",
+      "example_az": "Qanun insanları təcavüzdən qoruyur.",
+      "level": 1
+    },
+    {
+      "word": "postpone",
+      "translation_az": "təxirə salmaq",
+      "ipa": "/pəˈspəʊn/",
+      "example": "We will postpone the meeting.",
+      "example_az": "Biz görüşü təxirə salacağıq.",
+      "level": 1
+    },
+    {
+      "word": "preserve",
+      "translation_az": "qorumaq",
+      "ipa": "/prɪˈzɜːrv/",
+      "example": "We need to preserve the environment.",
+      "example_az": "Biz mühiti qorumağa ehtiyacımız var.",
+      "level": 1
+    },
+    {
+      "word": "resent",
+      "translation_az": "nifrət etmək",
+      "ipa": "/rɪˈzɛnt/",
+      "example": "I resent your behavior.",
+      "example_az": "Sənin davranışından nifrət edirəm.",
+      "level": 1
+    },
+    {
+      "word": "torrent",
+      "translation_az": "daşqın",
+      "ipa": "/ˈtɔrənt/",
+      "example": "The torrent is very strong.",
+      "example_az": "Daşqın çox güclüdür.",
+      "level": 1
+    },
+    {
+      "word": "unforeseen",
+      "translation_az": "gözlənilməz",
+      "ipa": "/ʌnfɔːˈsiːn/",
+      "example": "The unforeseen event changed everything.",
+      "example_az": "Gözlənilməz hadisə hər şeyi dəyişdi.",
+      "level": 1
+    },
+    {
+      "word": "unique",
+      "translation_az": "yeganə",
+      "ipa": "/juːˈniːk/",
+      "example": "This place is unique.",
+      "example_az": "Bu yer yeganədir.",
+      "level": 1
+    },
+    {
+      "word": "amateur",
+      "translation_az": "həvəskar",
+      "ipa": "/ˈæmətər/",
+      "example": "He is an amateur photographer.",
+      "example_az": "O, həvəskar fotoqrafdır.",
+      "level": 1
+    },
+    {
+      "word": "bulky",
+      "translation_az": "çox böyük",
+      "ipa": "/ˈbʌlki/",
+      "example": "This bag is too bulky for me.",
+      "example_az": "Bu çanta mənə çox böyükdür.",
+      "level": 1
+    },
+    {
+      "word": "exaggerate",
+      "translation_az": "ifrat danışmaq",
+      "ipa": "/ɛɡˈzædʒəreɪt/",
+      "example": "Don't exaggerate, it's not that bad.",
+      "example_az": "İfrat danışma, belə də pis deyil.",
+      "level": 1
+    },
+    {
+      "word": "mediocre",
+      "translation_az": "adi",
+      "ipa": "/ˌmɛdiˈoʊkər/",
+      "example": "The food was mediocre at best.",
+      "example_az": "Qida ən yaxşı halda adi idi.",
+      "level": 1
+    },
+    {
+      "word": "obvious",
+      "translation_az": " aydın",
+      "ipa": "/ˈɒbvɪəs/",
+      "example": "It's obvious that he's tired.",
+      "example_az": "Aydındır ki, o yorğundur.",
+      "level": 1
+    },
+    {
+      "word": "prominent",
+      "translation_az": "məşhur",
+      "ipa": "/ˈprɒmɪnənt/",
+      "example": "She's a prominent figure in the community.",
+      "example_az": "O, cəmiyyətdə məşhur şəxsdir.",
+      "level": 1
+    },
+    {
+      "word": "reluctant",
+      "translation_az": "istəməyən",
+      "ipa": "/rɪˈlʌktənt/",
+      "example": "He was reluctant to try new things.",
+      "example_az": "O, yeni şeylərə cəhd etməyə istəməyən idi.",
+      "level": 1
+    },
+    {
+      "word": "security",
+      "translation_az": "təhlükəsizlik",
+      "ipa": "/sɪˈkjʊərɪti/",
+      "example": "The security at the airport is very strict.",
+      "example_az": "Aeroportdakı təhlükəsizlik çox sərtidir.",
+      "level": 1
+    },
+    {
+      "word": "survive",
+      "translation_az": "yaşamaq",
+      "ipa": "/sərˈvaɪv/",
+      "example": "We will survive this difficult time.",
+      "example_az": "Biz bu çətin vaxtdan yaşayacağıq.",
+      "level": 1
+    },
+    {
+      "word": "valid",
+      "translation_az": "əlavə",
+      "ipa": "/ˈvælɪd/",
+      "example": "Is your ticket still valid?",
+      "example_az": "Biletin hələ də əlavədir?",
+      "level": 1
+    },
+    {
+      "word": "variety",
+      "translation_az": "çeşid",
+      "ipa": "/vəˈraɪəti/",
+      "example": "The city offers a variety of foods.",
+      "example_az": "Şəhər müxtəlif qidalar təklif edir.",
+      "level": 1
+    },
+    {
+      "word": "weird",
+      "translation_az": "qəribə",
+      "ipa": "/wɪərd/",
+      "example": "This movie is really weird.",
+      "example_az": "Bu film çox qəribədir.",
+      "level": 1
+    },
+    {
+      "word": "century",
+      "translation_az": "əsr",
+      "ipa": "/ˈsɛntʃəri/",
+      "example": "I live in the 21st century.",
+      "example_az": "Mən 21-ci əsrdə yaşayıram.",
+      "level": 1
+    },
+    {
+      "word": "challenge",
+      "translation_az": "çətinlik",
+      "ipa": "/ˈtʃælɪndʒ/",
+      "example": "This game is a challenge for me.",
+      "example_az": "Bu oyun mənə çətinlik təşkil edir.",
+      "level": 1
+    },
+    {
+      "word": "conclude",
+      "translation_az": "qənaətə gəlmək",
+      "ipa": "/kənˈkluːd/",
+      "example": "I conclude that this is the best option.",
+      "example_az": "Mən qənaətə gəlirəm ki, bu ən yaxşı variantdır.",
+      "level": 1
+    },
+    {
+      "word": "document",
+      "translation_az": "sənəd",
+      "ipa": "/ˈdɒkjʊmənt/",
+      "example": "Please sign this document.",
+      "example_az": "Xahiş edirəm, bu sənədi imzalayın.",
+      "level": 1
+    },
+    {
+      "word": "ignore",
+      "translation_az": "nəzərə almamaq",
+      "ipa": "/ɪɡˈnɔːr/",
+      "example": "I will ignore this problem.",
+      "example_az": "Mən bu problemi nəzərə almaram.",
+      "level": 1
+    },
+    {
+      "word": "lack",
+      "translation_az": "kifayət etməmək",
+      "ipa": "/læk/",
+      "example": "I lack money for this trip.",
+      "example_az": "Mən bu səfər üçün pulum yoxdur.",
+      "level": 1
+    },
+    {
+      "word": "miniature",
+      "translation_az": "kiçik",
+      "ipa": "/ˈmɪnɪətʃər/",
+      "example": "This is a miniature car.",
+      "example_az": "Bu kiçik maşındır.",
+      "level": 1
+    },
+    {
+      "word": "rage",
+      "translation_az": "qəzəb",
+      "ipa": "/reɪdʒ/",
+      "example": "He is in a rage.",
+      "example_az": "O, qəzəbdədir.",
+      "level": 1
+    },
+    {
+      "word": "resist",
+      "translation_az": "davam gətirmək",
+      "ipa": "/rɪˈzɪst/",
+      "example": "I will resist this temptation.",
+      "example_az": "Mən bu cəlbədici təklifə davam gətirməyəcəm.",
+      "level": 1
+    },
+    {
+      "word": "source",
+      "translation_az": "mənbə",
+      "ipa": "/ˈsɔːrs/",
+      "example": "This is a reliable source.",
+      "example_az": "Bu etibarlı mənbədir.",
+      "level": 1
+    },
+    {
+      "word": "undeniable",
+      "translation_az": "inkar edilə bilməz",
+      "ipa": "/ˌʌndɪˈnaɪəbəl/",
+      "example": "This fact is undeniable.",
+      "example_az": "Bu fakt inkar edilə bilməz.",
+      "level": 1
+    },
+    {
+      "word": "vicinity",
+      "translation_az": "yaxınlıq",
+      "ipa": "/vɪˈsɪnɪti/",
+      "example": "There is a park in the vicinity.",
+      "example_az": "Yaxınlıqda bir park var.",
+      "level": 1
+    },
+    {
+      "word": "compete",
+      "translation_az": "rəqabət aparmaq",
+      "ipa": "/kəmˈpiːt/",
+      "example": "They compete in sports.",
+      "example_az": "Onlar idmanla məşğul olurlar.",
+      "level": 1
+    },
+    {
+      "word": "dread",
+      "translation_az": "qorxmaq",
+      "ipa": "/drɛd/",
+      "example": "I dread going to the dentist.",
+      "example_az": "Mən diş həkiminə getməyə qorxuram.",
+      "level": 1
+    },
+    {
+      "word": "excel",
+      "translation_az": "üstün olmaq",
+      "ipa": "/ɛkˈsɛl/",
+      "example": "She excels in mathematics.",
+      "example_az": "O, riyaziyyətdə üstündür.",
+      "level": 1
+    },
+    {
+      "word": "feminine",
+      "translation_az": "qadın",
+      "ipa": "/ˈfɛmɪnɪn/",
+      "example": "The dress is feminine.",
+      "example_az": "Paltar qadın paltarıdır.",
+      "level": 1
+    },
+    {
+      "word": "flexible",
+      "translation_az": "maneə törədilməz",
+      "ipa": "/ˈflɛksɪbəl/",
+      "example": "The flexible schedule is convenient.",
+      "example_az": "Maneə törədilməz saatlar əlverişlidir.",
+      "level": 1
+    },
+    {
+      "word": "masculine",
+      "translation_az": "kişi",
+      "ipa": "/ˈmæskjʊlɪn/",
+      "example": "The suit is masculine.",
+      "example_az": "Kostyum kişi geyimi-dir.",
+      "level": 1
+    },
+    {
+      "word": "menace",
+      "translation_az": "təhlükə",
+      "ipa": "/ˈmɛnɪs/",
+      "example": "The storm is a menace to the city.",
+      "example_az": "Fırtına şəhərə təhlükədir.",
+      "level": 1
+    },
+    {
+      "word": "mount",
+      "translation_az": "minmək",
+      "ipa": "/maʊnt/",
+      "example": "I will mount the horse.",
+      "example_az": "Mən atı minəcəyəm.",
+      "level": 1
+    },
+    {
+      "word": "numerous",
+      "translation_az": "çoxsaylı",
+      "ipa": "/ˈnjuːmərəs/",
+      "example": "There are numerous hotels in the city.",
+      "example_az": "Şəhərdə çoxsaylı otellər var.",
+      "level": 1
+    },
+    {
+      "word": "tendency",
+      "translation_az": "meyil",
+      "ipa": "/tɛnˈdɛnsi/",
+      "example": "I have a tendency to forget things.",
+      "example_az": "Mənim unudmağa meyilim var.",
+      "level": 1
+    },
+    {
+      "word": "underestimate",
+      "translation_az": "az qiymətləndirmək",
+      "ipa": "/ˌʌndərˈɛstɪmɪt/",
+      "example": "Do not underestimate the difficulty.",
+      "example_az": "Çətinliyi az qiymətləndirməyin.",
+      "level": 1
+    },
+    {
+      "word": "victorious",
+      "translation_az": "qalib",
+      "ipa": "/vaɪˈtɔːriəs/",
+      "example": "The team was victorious in the game.",
+      "example_az": "Komanda oyunda qalib gəldi.",
+      "level": 1
+    },
+    {
+      "word": "absurd",
+      "translation_az": "əbəs",
+      "ipa": "/ˈæbsərd/",
+      "example": "This situation is absurd.",
+      "example_az": "Bu vəziyyət əbəsdir.",
+      "level": 1
+    },
+    {
+      "word": "conflict",
+      "translation_az": "qarşıdurma",
+      "ipa": "/ˈkɑnflɪkt/",
+      "example": "They are trying to resolve the conflict.",
+      "example_az": "Onlar qarşıdurmaya son qoymağa çalışırlar.",
+      "level": 1
+    },
+    {
+      "word": "decade",
+      "translation_az": "onillik",
+      "ipa": "/ˈdɛkeɪd/",
+      "example": "I have been traveling for a decade.",
+      "example_az": "Mən on illikdən səyahət edirəm.",
+      "level": 1
+    },
+    {
+      "word": "evidence",
+      "translation_az": "sübut",
+      "ipa": "/ˈɛvɪdəns/",
+      "example": "The police found evidence of the crime.",
+      "example_az": "Polis cinayətin sübutunu tapdı.",
+      "level": 1
+    },
+    {
+      "word": "fiction",
+      "translation_az": "bədii ədəbiyyat",
+      "ipa": "/ˈfɪkʃən/",
+      "example": "I love reading fiction books.",
+      "example_az": "Mən bədii ədəbiyyat kitablarını oxumağı sevirəm.",
+      "level": 1
+    },
+    {
+      "word": "frequent",
+      "translation_az": "tez-tez",
+      "ipa": "/ˈfriːkwənt/",
+      "example": "I travel frequent to new countries.",
+      "example_az": "Mən tez-tez yeni ölkələrə səyahət edirəm.",
+      "level": 1
+    },
+    {
+      "word": "glimpse",
+      "translation_az": "görnüş",
+      "ipa": "/ˈɡlɪmps/",
+      "example": "I caught a glimpse of the city.",
+      "example_az": "Mən şəhərin görnüşünü gördüm.",
+      "level": 1
+    },
+    {
+      "word": "hesitate",
+      "translation_az": "tərəddüd etmək",
+      "ipa": "/həˈsɪtɪt/",
+      "example": "I hesitate to travel alone.",
+      "example_az": "Mən tək səyahət etməkdən tərəddüd edirəm.",
+      "level": 1
+    },
+    {
+      "word": "minority",
+      "translation_az": "azlıq",
+      "ipa": "/mɪˈnɔrɪti/",
+      "example": "The minority group has its own language.",
+      "example_az": "Azlıq qrupu öz dili var.",
+      "level": 1
+    },
+    {
+      "word": "recent",
+      "translation_az": "son",
+      "ipa": "/ˈriːsnt/",
+      "example": "I have recent memories of my trip.",
+      "example_az": "Mənim səyahətimin son xatirələrim var.",
+      "level": 1
+    },
+    {
+      "word": "solitary",
+      "translation_az": "tək",
+      "ipa": "/ˈsɒlɪtɛri/",
+      "example": "I prefer to travel solitary.",
+      "example_az": "Mən tək səyahət etməyi üstün tuturam.",
+      "level": 1
+    },
+    {
+      "word": "vision",
+      "translation_az": "görüş",
+      "ipa": "/ˈvɪʒən/",
+      "example": "I have a vision of my future travels.",
+      "example_az": "Mənim gələcək səyahətlərim haqqında görüşüm var.",
+      "level": 1
+    },
+    {
+      "word": "abolish",
+      "translation_az": "ləğv etmək",
+      "ipa": "/əˈbɒlɪʃ/",
+      "example": "They will abolish the rule.",
+      "example_az": "Onlar qaydayı ləğv edəcəklər.",
+      "level": 1
+    },
+    {
+      "word": "adequate",
+      "translation_az": "kifayət qədər",
+      "ipa": "/ˈædɪkwət/",
+      "example": "The hotel has adequate facilities.",
+      "example_az": "Otel kifayət qədər qonaq otaqları var.",
+      "level": 1
+    },
+    {
+      "word": "audible",
+      "translation_az": "əsən",
+      "ipa": "/ˈɔːdɪbəl/",
+      "example": "The music is audible from here.",
+      "example_az": "Musiqi buradan əsən gəlir.",
+      "level": 1
+    },
+    {
+      "word": "decrease",
+      "translation_az": "azalmaq",
+      "ipa": "/dɪˈkriːs/",
+      "example": "The population will decrease.",
+      "example_az": "Əhali azalacaq.",
+      "level": 1
+    },
+    {
+      "word": "frank",
+      "translation_az": "açıq",
+      "ipa": "/fræŋk/",
+      "example": "He is very frank with his friends.",
+      "example_az": "O, dostları ilə çox açıq davranır.",
+      "level": 1
+    },
+    {
+      "word": "ignite",
+      "translation_az": "yanmaq",
+      "ipa": "/ɪɡˈnaɪt/",
+      "example": "The fire will ignite the fuel.",
+      "example_az": "Od yanacaq.",
+      "level": 1
+    },
+    {
+      "word": "pollute",
+      "translation_az": "çirkləndirmək",
+      "ipa": "/pəˈluːt/",
+      "example": "We must not pollute the air.",
+      "example_az": "Havayı çirkləndirməməliyik.",
+      "level": 1
+    },
+    {
+      "word": "population",
+      "translation_az": "əhali",
+      "ipa": "/ˌpɒpjʊˈleɪʃən/",
+      "example": "The population of the city is increasing.",
+      "example_az": "Şəhər əhalisi artmaqdadır.",
+      "level": 1
+    },
+    {
+      "word": "prohibit",
+      "translation_az": "qadağan etmək",
+      "ipa": "/prəˈhɪbɪt/",
+      "example": "Smoking is prohibited here.",
+      "example_az": "Burada siqaret çəkmək qadağandır.",
+      "level": 1
+    },
+    {
+      "word": "reveal",
+      "translation_az": "açmaq",
+      "ipa": "/rɪˈviːl/",
+      "example": "The secret will be revealed soon.",
+      "example_az": "Sır tezliklə açılacaq.",
+      "level": 1
+    },
+    {
+      "word": "urban",
+      "translation_az": "şəhər",
+      "ipa": "/ˈɜːrbən/",
+      "example": "The urban area is very crowded.",
+      "example_az": "Şəhər ərazisi çox sıx.",
+      "level": 1
+    },
+    {
+      "word": "urgent",
+      "translation_az": "təcili",
+      "ipa": "/ˈɜːrdʒənt/",
+      "example": "The situation is urgent.",
+      "example_az": "Vəziyyət təcili.",
+      "level": 1
+    },
+    {
+      "word": "commence",
+      "translation_az": "başlamaq",
+      "ipa": "/kəˈmɛns/",
+      "example": "We commence our journey now.",
+      "example_az": "Biz səyahətimizi indi başlayırıq.",
+      "level": 1
+    },
+    {
+      "word": "editor",
+      "translation_az": "redaktor",
+      "ipa": "/ˈɛdɪtər/",
+      "example": "She is an editor of a magazine.",
+      "example_az": "O, jurnalın redaktorudur.",
+      "level": 1
+    },
+    {
+      "word": "famine",
+      "translation_az": "açlıq",
+      "ipa": "/ˈfæmɪn/",
+      "example": "The country suffered from famine.",
+      "example_az": "Ölkə aclıqdan əziyyət çəkirdi.",
+      "level": 1
+    },
+    {
+      "word": "gleam",
+      "translation_az": "parlaq işıq",
+      "ipa": "/ɡliːm/",
+      "example": "I see a gleam in her eye.",
+      "example_az": "Mən onun gözündə parlaq işıq görürəm.",
+      "level": 1
+    },
+    {
+      "word": "hazy",
+      "translation_az": "dumanlı",
+      "ipa": "/ˈheɪzi/",
+      "example": "The weather is hazy today.",
+      "example_az": "Bugün hava dumanlıdır.",
+      "level": 1
+    },
+    {
+      "word": "identify",
+      "translation_az": "tanımaq",
+      "ipa": "/aɪˈdɛntɪfaɪ/",
+      "example": "I can identify this bird.",
+      "example_az": "Mən bu quşu tanıyabilərəm.",
+      "level": 1
+    },
+    {
+      "word": "journalist",
+      "translation_az": "jurnalist",
+      "ipa": "/ˈdʒɜːrnəlɪst/",
+      "example": "He is a journalist for a newspaper.",
+      "example_az": "O, qəzetin jurnalistidir.",
+      "level": 1
+    },
+    {
+      "word": "migrate",
+      "translation_az": "köç etmək",
+      "ipa": "/ˈmaɪɡreɪt/",
+      "example": "Birds migrate to warm countries.",
+      "example_az": "Quşlar isti ölkələrə köç edirlər.",
+      "level": 1
+    },
+    {
+      "word": "observant",
+      "translation_az": "diqqətli",
+      "ipa": "/əbˈzɜːrvnt/",
+      "example": "She is an observant person.",
+      "example_az": "O, diqqətli bir insandır.",
+      "level": 1
+    },
+    {
+      "word": "persist",
+      "translation_az": "davam etmək",
+      "ipa": "/pərˈsɪst/",
+      "example": "I will persist in my efforts.",
+      "example_az": "Mən səylərimdə davam edəcəyəm.",
+      "level": 1
+    },
+    {
+      "word": "revive",
+      "translation_az": "canlandırmaq",
+      "ipa": "/rɪˈvaɪv/",
+      "example": "We will revive the project.",
+      "example_az": "Biz layihəni canlandıracaq.",
+      "level": 1
+    },
+    {
+      "word": "vessel",
+      "translation_az": "gəmi",
+      "ipa": "/ˈvɛsəl/",
+      "example": "The vessel is sailing across the sea.",
+      "example_az": "Gəmi dəniz üzərindən üzür.",
+      "level": 1
+    },
+    {
+      "word": "bewildered",
+      "translation_az": "çəkingən",
+      "ipa": "/bɪˈwɪldərd/",
+      "example": "I am bewildered by the map.",
+      "example_az": "Mən xəritədən çəkingənəm.",
+      "level": 1
+    },
+    {
+      "word": "brawl",
+      "translation_az": "dava",
+      "ipa": "/brɔːl/",
+      "example": "The two men got into a brawl.",
+      "example_az": "İki nəfər dava etdi.",
+      "level": 1
+    },
+    {
+      "word": "brutal",
+      "translation_az": "vəhşi",
+      "ipa": "/ˈbruːtəl/",
+      "example": "The brutal truth is that we lost.",
+      "example_az": "Vəhşi həqiqət odur ki, biz uduzduk.",
+      "level": 1
+    },
+    {
+      "word": "duplicate",
+      "translation_az": "kopiyalamaq",
+      "ipa": "/ˈdjuːplɪkeɪt/",
+      "example": "Can you duplicate this document?",
+      "example_az": "Bu sənədi kopiyalaya bilərsən?",
+      "level": 1
+    },
+    {
+      "word": "opponent",
+      "translation_az": "rəqib",
+      "ipa": "/əˈpɒnənt/",
+      "example": "My opponent is very strong.",
+      "example_az": "Mənim rəqibim çox güclüdür.",
+      "level": 1
+    },
+    {
+      "word": "rival",
+      "translation_az": "rəqib",
+      "ipa": "/ˈraɪvəl/",
+      "example": "The two companies are rivals.",
+      "example_az": "İki şirkət rəqibdir.",
+      "level": 1
+    },
+    {
+      "word": "thrust",
+      "translation_az": "itələmək",
+      "ipa": "/θrʌst/",
+      "example": "The rocket began to thrust upward.",
+      "example_az": "Raket yuxarıya itələməyə başladı.",
+      "level": 1
+    },
+    {
+      "word": "underdog",
+      "translation_az": "zəif tərəf",
+      "ipa": "/ˈʌndərdɒɡ/",
+      "example": "The underdog team won the game.",
+      "example_az": "Zəif tərəf komanda oyunu qazandı.",
+      "level": 1
+    },
+    {
+      "word": "unruly",
+      "translation_az": "nizamsız",
+      "ipa": "/ʌnˈruːli/",
+      "example": "The unruly child was sent home.",
+      "example_az": "Nizamsız uşaq evə göndərildi.",
+      "level": 1
+    },
+    {
+      "word": "vicious",
+      "translation_az": "vəhşi",
+      "ipa": "/ˈvɪʃəs/",
+      "example": "The vicious dog bit the man.",
+      "example_az": "Vəhşi it adamı dişlədi.",
+      "level": 1
+    },
+    {
+      "word": "violent",
+      "translation_az": "şiddətli",
+      "ipa": "/ˈvaɪələnt/",
+      "example": "The violent storm destroyed the city.",
+      "example_az": "Şiddətli fırtına şəhəri məhv etdi.",
+      "level": 1
+    },
+    {
+      "word": "whirling",
+      "translation_az": "fırlanan",
+      "ipa": "/ˈhwɜːrlɪŋ/",
+      "example": "The whirling dervishes danced.",
+      "example_az": "Fırlanan dərvişlər rəqs etdilər.",
+      "level": 1
+    },
+    {
+      "word": "alter",
+      "translation_az": "dəyişdirmək",
+      "ipa": "/ˈɔltər/",
+      "example": "I will alter my plans.",
+      "example_az": "Mən planlarımı dəyişdirəcəyəm.",
+      "level": 2
+    },
+    {
+      "word": "casual",
+      "translation_az": "sadə",
+      "ipa": "/ˈkæʒuəl/",
+      "example": "She likes casual clothes.",
+      "example_az": "O, sadə geyimləri sevər.",
+      "level": 2
+    },
+    {
+      "word": "expand",
+      "translation_az": "genişləndirmək",
+      "ipa": "/ɪkˈspænd/",
+      "example": "The company will expand its business.",
+      "example_az": "Şirkət biznesini genişləndirəcək.",
+      "level": 2
+    },
+    {
+      "word": "fortunate",
+      "translation_az": "bəxtli",
+      "ipa": "/ˈfɔrtʃənɪt/",
+      "example": "I feel fortunate to have such friends.",
+      "example_az": "Belə dostlara sahib olduğum üçün bəxtliyəm.",
+      "level": 2
+    },
+    {
+      "word": "innovative",
+      "translation_az": "yeni",
+      "ipa": "/ˌɪnəˈveɪtɪv/",
+      "example": "The innovative design impressed everyone.",
+      "example_az": "Yeni dizayn hamını heyran etdi.",
+      "level": 2
+    },
+    {
+      "word": "mature",
+      "translation_az": "yetkin",
+      "ipa": "/məˈtʃʊər/",
+      "example": "She is mature enough to take care of herself.",
+      "example_az": "O, özü ilə bağlı qayğı göstərmək üçün yetkindir.",
+      "level": 2
+    },
+    {
+      "word": "pioneer",
+      "translation_az": "pioner",
+      "ipa": "/ˌpaɪəˈnɪər/",
+      "example": "He was a pioneer in his field.",
+      "example_az": "O, öz sahəsində pioner idi.",
+      "level": 2
+    },
+    {
+      "word": "pledge",
+      "translation_az": "vəd",
+      "ipa": "/ˈplɛdʒ/",
+      "example": "I pledge to help those in need.",
+      "example_az": "Ehtiyacı olanlara kömək etməyə vəd verərəm.",
+      "level": 2
+    },
+    {
+      "word": "pursue",
+      "translation_az": "davam etmək",
+      "ipa": "/pərˈsuː/",
+      "example": "I will pursue my dreams.",
+      "example_az": "Mən arzularımı davam etdirəcəyəm.",
+      "level": 2
+    },
+    {
+      "word": "revise",
+      "translation_az": "yenidən baxmaq",
+      "ipa": "/rɪˈvaɪz/",
+      "example": "I need to revise my plan.",
+      "example_az": "Mən planımı yenidən baxmaqlı olacağam.",
+      "level": 2
+    },
+    {
+      "word": "sacred",
+      "translation_az": "müqəddəs",
+      "ipa": "/ˈseɪkrɪd/",
+      "example": "The temple is a sacred place.",
+      "example_az": "Məbəd müqəddəs yerdir.",
+      "level": 2
+    },
+    {
+      "word": "unanimous",
+      "translation_az": "birsəs",
+      "ipa": "/juːnəˈnɪməs/",
+      "example": "The decision was unanimous.",
+      "example_az": "Qərar birsəs idi.",
+      "level": 2
+    },
+    {
+      "word": "accurate",
+      "translation_az": "dəqiq",
+      "ipa": "/ˈækjərɪt/",
+      "example": "The map provides accurate directions.",
+      "example_az": "Xəritə dəqiq istiqamətlər verir.",
+      "level": 2
+    },
+    {
+      "word": "capacity",
+      "translation_az": "tutum",
+      "ipa": "/kəˈpæsɪti/",
+      "example": "The hotel has a large capacity for guests.",
+      "example_az": "Mehmanxana qonaqlar üçün böyük tutuma malikdir.",
+      "level": 2
+    },
+    {
+      "word": "cautious",
+      "translation_az": "ehtiyatlı",
+      "ipa": "/ˈkɔːʃəs/",
+      "example": "You should be cautious when crossing the street.",
+      "example_az": "Küçəni keçərkən ehtiyatlı olmalısınız.",
+      "level": 2
+    },
+    {
+      "word": "confident",
+      "translation_az": "etibarsız",
+      "ipa": "/kənˈfɪdnt/",
+      "example": "She is confident in her abilities.",
+      "example_az": "O, öz bacarıqlarına etibar edir.",
+      "level": 2
+    },
+    {
+      "word": "doubt",
+      "translation_az": "şübhə",
+      "ipa": "/daʊt/",
+      "example": "I have some doubt about the plan.",
+      "example_az": "Mən planda bəzi şübhələrə sahibəm.",
+      "level": 2
+    },
+    {
+      "word": "grateful",
+      "translation_az": "minnətdar",
+      "ipa": "/ˈɡreɪtfl/",
+      "example": "I am grateful for your help.",
+      "example_az": "Sizin köməyinizə görə minnətdaram.",
+      "level": 2
+    },
+    {
+      "word": "microscope",
+      "translation_az": "mikroskop",
+      "ipa": "/ˈmaɪkrəskəʊp/",
+      "example": "The scientist used a microscope to study the cells.",
+      "example_az": "Alim hüceyrələri öyrənmək üçün mikroskopdan istifadə etdi.",
+      "level": 2
+    },
+    {
+      "word": "penetrate",
+      "translation_az": "nüfuz etmək",
+      "ipa": "/ˈpɛnɪtreɪt/",
+      "example": "The new technology will penetrate the market soon.",
+      "example_az": "Yeni texnologiya tezliklə bazarı ələ keçirəcək.",
+      "level": 2
+    },
+    {
+      "word": "pierce",
+      "translation_az": "deşmək",
+      "ipa": "/pɪərs/",
+      "example": "The needle will pierce the skin.",
+      "example_az": "İynə dəriyi deşəcək.",
+      "level": 2
+    },
+    {
+      "word": "slender",
+      "translation_az": "nazik",
+      "ipa": "/ˈslɛndər/",
+      "example": "She has a slender figure.",
+      "example_az": "O, nazik fiqura malikdir.",
+      "level": 2
+    },
+    {
+      "word": "surpass",
+      "translation_az": "keçmək",
+      "ipa": "/sərˈpæs/",
+      "example": "The new model will surpass the old one.",
+      "example_az": "Yeni model köhnəsini keçəcək.",
+      "level": 2
+    },
+    {
+      "word": "vast",
+      "translation_az": "çox böyük",
+      "ipa": "/væst/",
+      "example": "The desert is a vast and empty place.",
+      "example_az": "Səhra çox böyük və boş bir yerdədir.",
+      "level": 2
+    },
+    {
+      "word": "addict",
+      "translation_az": "asılı",
+      "ipa": "/ˈædɪkt/",
+      "example": "He was an addict and couldn't stop drinking.",
+      "example_az": "O, asılı idi və içməyi dayandıra bilmirdi.",
+      "level": 2
+    },
+    {
+      "word": "appeal",
+      "translation_az": "təsir",
+      "ipa": "/əˈpiːl/",
+      "example": "The new policy will appeal to many people.",
+      "example_az": "Yeni siyasət çox insanı cəlb edəcək.",
+      "level": 2
+    },
+    {
+      "word": "avoid",
+      "translation_az": "yaxudan çıxmaq",
+      "ipa": "/əˈvɔɪd/",
+      "example": "Try to avoid the traffic jam.",
+      "example_az": "Tıxaçılıqdan yaxudan çıxmağa çalış.",
+      "level": 2
+    },
+    {
+      "word": "aware",
+      "translation_az": "xəbərdar",
+      "ipa": "/əˈwɛr/",
+      "example": "Be aware of your surroundings.",
+      "example_az": "Ətrafındakılarla xəbərdar ol.",
+      "level": 2
+    },
+    {
+      "word": "harsh",
+      "translation_az": "sərt",
+      "ipa": "/hɑːrʃ/",
+      "example": "The teacher's harsh words made the student cry.",
+      "example_az": "Müəllimin sərt sözləri şagirdi ağlatdı.",
+      "level": 2
+    },
+    {
+      "word": "keg",
+      "translation_az": "dəmir tuta",
+      "ipa": "/kɛɡ/",
+      "example": "The party had a keg of beer.",
+      "example_az": "Tədbir dəmir tuta şərabla keçdi.",
+      "level": 2
+    },
+    {
+      "word": "misfortune",
+      "translation_az": "bədbəxtlik",
+      "ipa": "/ˌmɪsˈfɔːrtʃən/",
+      "example": "The accident was a great misfortune for the family.",
+      "example_az": "Qəza ailə üçün böyük bədbəxtlik idi.",
+      "level": 2
+    },
+    {
+      "word": "nourish",
+      "translation_az": "qida vermək",
+      "ipa": "/ˈnɜːrɪʃ/",
+      "example": "The mother tried to nourish her baby with healthy food.",
+      "example_az": "Ana körpəsini sağlam qida ilə qida verməyə çalışdı.",
+      "level": 2
+    },
+    {
+      "word": "opt",
+      "translation_az": "seçmək",
+      "ipa": "/ɔpt/",
+      "example": "I will opt for the cheaper option.",
+      "example_az": "Mən ucuz variantı seçəcəyəm.",
+      "level": 2
+    },
+    {
+      "word": "quantity",
+      "translation_az": "miqdar",
+      "ipa": "/ˈkwɒntɪti/",
+      "example": "The store had a large quantity of goods.",
+      "example_az": "Mağazada çox miqdar mal var idi.",
+      "level": 2
+    },
+    {
+      "word": "wary",
+      "translation_az": "ehtiyatlı",
+      "ipa": "/ˈwɛri/",
+      "example": "Be wary of strangers.",
+      "example_az": "Yad adamlardan ehtiyatlı ol.",
+      "level": 2
+    },
+    {
+      "word": "wretched",
+      "translation_az": "bədbəxt",
+      "ipa": "/ˈrɛtʃɪd/",
+      "example": "The wretched conditions made the trip unpleasant.",
+      "example_az": "Bədbəxt şərait səfəri xoşagəlməz etdi.",
+      "level": 2
+    },
+    {
+      "word": "budget",
+      "translation_az": "büdcə",
+      "ipa": "/ˈbʌdʒɪt/",
+      "example": "I have to budget my money for the trip.",
+      "example_az": "Mən səyahət üçün pulumu büdcələşdirməliyəm.",
+      "level": 2
+    },
+    {
+      "word": "economical",
+      "translation_az": "iqtisadi",
+      "ipa": "/ˌiːkəˈnɒmɪkəl/",
+      "example": "This hotel is very economical for travelers.",
+      "example_az": "Bu otel səyahətçilər üçün çox iqtisadi hesab olunur.",
+      "level": 2
+    },
+    {
+      "word": "glance",
+      "translation_az": "nəzər salmaq",
+      "ipa": "/ɡlæns/",
+      "example": "I took a glance at the map to find my way.",
+      "example_az": "Mən yolumu tapmaq üçün xəritəyə nəzər saldım.",
+      "level": 2
+    },
+    {
+      "word": "horrid",
+      "translation_az": "qorxunc",
+      "ipa": "/ˈhɒrɪd/",
+      "example": "The weather was horrid during our trip.",
+      "example_az": "Səyahətimiz zamanı hava qorxunc idi.",
+      "level": 2
+    },
+    {
+      "word": "ingenious",
+      "translation_az": "dahi",
+      "ipa": "/ˌɪndʒɪˈniːəs/",
+      "example": "The solution was ingenious and helped us a lot.",
+      "example_az": "Həll yolu dahiyə idi və bizə çox kömək etdi.",
+      "level": 2
+    },
+    {
+      "word": "lubricate",
+      "translation_az": "yaymaq",
+      "ipa": "/ˈluːbrɪkeɪt/",
+      "example": "You should lubricate your bike chain regularly.",
+      "example_az": "Velosiped zəncirini müntəzəm olaraq yaymalısın.",
+      "level": 2
+    },
+    {
+      "word": "manipulate",
+      "translation_az": "idarə etmək",
+      "ipa": "/məˈnɪpjʊleɪt/",
+      "example": "Some people try to manipulate others for their own benefit.",
+      "example_az": "Bəzi insanlar öz mənfəətləri üçün digərlərini idarə etməyə çalışırlar.",
+      "level": 2
+    },
+    {
+      "word": "nimble",
+      "translation_az": "çətin",
+      "ipa": "/ˈnɪmbəl/",
+      "example": "The nimble hikers climbed the mountain quickly.",
+      "example_az": "Çətin yerləri keçən turistlər dağı tez çıxdılar.",
+      "level": 2
+    },
+    {
+      "word": "pedestrian",
+      "translation_az": "piyada",
+      "ipa": "/pəˈdestriən/",
+      "example": "The pedestrian zone is closed to cars.",
+      "example_az": "Piyada zonası avtomobillərə bağlandı.",
+      "level": 2
+    },
+    {
+      "word": "rave",
+      "translation_az": "coşqun təşviq",
+      "ipa": "/reɪv/",
+      "example": "The tourists gave a rave review of the hotel.",
+      "example_az": "Turistlər oteli coşqun təşviq etdilər.",
+      "level": 2
+    },
+    {
+      "word": "reckless",
+      "translation_az": "əyyaş",
+      "ipa": "/ˈrɛkləs/",
+      "example": "Reckless driving can be very dangerous.",
+      "example_az": "Əyyaş sürmək çox təhlükəli ola bilər.",
+      "level": 2
+    },
+    {
+      "word": "tragedy",
+      "translation_az": "faciə",
+      "ipa": "/ˈtrædʒədi/",
+      "example": "The accident was a tragedy for the family.",
+      "example_az": "Qəza ailəyə faciə oldu.",
+      "level": 2
+    },
+    {
+      "word": "absorb",
+      "translation_az": "udmaq, mənimsəmək",
+      "ipa": "/əbˈzɔrb/",
+      "example": "The sponge will absorb the water.",
+      "example_az": "Süngər suyu udacaq.",
+      "level": 2
+    },
+    {
+      "word": "abundant",
+      "translation_az": "çox",
+      "ipa": "/əˈbʌndənt/",
+      "example": "The hotel had abundant food and drink.",
+      "example_az": "Otel çox qida və içki ilə təchiz olunmuşdu.",
+      "level": 2
+    },
+    {
+      "word": "appropriate",
+      "translation_az": "uyğun",
+      "ipa": "/əˈproʊpriɪt/",
+      "example": "This gift is not appropriate for a child.",
+      "example_az": "Bu hədiyyə uşaq üçün uyğun deyil.",
+      "level": 2
+    },
+    {
+      "word": "ban",
+      "translation_az": "qadağa",
+      "ipa": "/bæn/",
+      "example": "The government has placed a ban on smoking in public places.",
+      "example_az": "Hökumət ictimai yerlərdə siqaret çəkməyə qadağa qoyub.",
+      "level": 2
+    },
+    {
+      "word": "calculate",
+      "translation_az": "hesablamaq",
+      "ipa": "/ˈkælkjʊleɪt/",
+      "example": "Can you calculate the cost of the trip?",
+      "example_az": "Səyahətin xərcini hesablaya bilərsən?",
+      "level": 2
+    },
+    {
+      "word": "estimate",
+      "translation_az": "təxmin etmək",
+      "ipa": "/ˈɛstɪmeɪt/",
+      "example": "I estimate that the project will take about six months to complete.",
+      "example_az": "Mən hesab edirəm ki, layihənin tamamlanması təxminən altı ay çəkəcək.",
+      "level": 2
+    },
+    {
+      "word": "harvest",
+      "translation_az": "məhsul yığım",
+      "ipa": "/ˈhɑrvɪst/",
+      "example": "The farmers are preparing for the harvest season.",
+      "example_az": "Fermerlər məhsul yığım mövsümü üçün hazırlaşırlar.",
+      "level": 2
+    },
+    {
+      "word": "morsel",
+      "translation_az": "qırdaq",
+      "ipa": "/ˈmɔrsəl/",
+      "example": "She took a small morsel of food from the plate.",
+      "example_az": "O, tabaqdakı qidanın kiçik bir qırdağını götürdü.",
+      "level": 2
+    },
+    {
+      "word": "panic",
+      "translation_az": "panika",
+      "ipa": "/ˈpænɪk/",
+      "example": "Don't panic, we will find a solution to the problem.",
+      "example_az": "Panikə düşmə, biz problemə həll tapacaq.",
+      "level": 2
+    },
+    {
+      "word": "quota",
+      "translation_az": "norma",
+      "ipa": "/ˈkoʊtə/",
+      "example": "The company has to meet its sales quota for the quarter.",
+      "example_az": "Şirkət məhsuldarlıq normasını dövrə tamamlamaq məcburiyyətindədir.",
+      "level": 2
+    },
+    {
+      "word": "threat",
+      "translation_az": "təhlükə",
+      "ipa": "/θrɛt/",
+      "example": "The new policy is a threat to the environment.",
+      "example_az": "Yeni siyasət mühit üçün təhlükədir.",
+      "level": 2
+    },
+    {
+      "word": "uneasy",
+      "translation_az": "narahat",
+      "ipa": "/ʌnˈiːzi/",
+      "example": "I feel uneasy about the upcoming exam.",
+      "example_az": "Gələcək imtahan haqqında narahat hiss edirəm.",
+      "level": 2
+    },
+    {
+      "word": "ambush",
+      "translation_az": "qəflətən hücum",
+      "ipa": "/ˈæmbʊʃ/",
+      "example": "The enemy set an ambush in the forest.",
+      "example_az": "Düşmən meşədə qəflətən hücum təşkil etdi.",
+      "level": 2
+    },
+    {
+      "word": "captive",
+      "translation_az": "əsir",
+      "ipa": "/ˈkæptɪv/",
+      "example": "The captive was released after a year.",
+      "example_az": "Əsir il sonra azad edildi.",
+      "level": 2
+    },
+    {
+      "word": "crafty",
+      "translation_az": "çoxbilmiş",
+      "ipa": "/ˈkræfti/",
+      "example": "She was a crafty businesswoman.",
+      "example_az": "O, çoxbilmiş bir iş qadını idi.",
+      "level": 2
+    },
+    {
+      "word": "defiant",
+      "translation_az": "itazəkar",
+      "ipa": "/dɪˈfaɪənt/",
+      "example": "The defiant child refused to obey.",
+      "example_az": "İtazəkar uşaq itaət etməkdən imtina etdi.",
+      "level": 2
+    },
+    {
+      "word": "devour",
+      "translation_az": "qurtarmaq",
+      "ipa": "/dɪˈvaʊər/",
+      "example": "The fire began to devour the house.",
+      "example_az": "Od evi qurtarmağa başladı.",
+      "level": 2
+    },
+    {
+      "word": "emerge",
+      "translation_az": "peyda olmaq",
+      "ipa": "/ɪˈmɜːrdʒ/",
+      "example": "A new star began to emerge in the sky.",
+      "example_az": "Səmada yeni ulduz peyda olmağa başladı.",
+      "level": 2
+    },
+    {
+      "word": "fragile",
+      "translation_az": "zəif",
+      "ipa": "/ˈfrædʒaɪl/",
+      "example": "The fragile vase broke easily.",
+      "example_az": "Zəif vaza asanlıqla sınmışdı.",
+      "level": 2
+    },
+    {
+      "word": "jagged",
+      "translation_az": "dişli",
+      "ipa": "/ˈdʒæɡɪd/",
+      "example": "The jagged rock was difficult to climb.",
+      "example_az": "Dişli qaya üzərinə çıxmaq çətin idi.",
+      "level": 2
+    },
+    {
+      "word": "linger",
+      "translation_az": "dayanmaq",
+      "ipa": "/ˈlɪŋɡər/",
+      "example": "The smell of smoke began to linger in the air.",
+      "example_az": "Tüstü qoxusu havada dayanmağa başladı.",
+      "level": 2
+    },
+    {
+      "word": "perish",
+      "translation_az": "məhv olmaq",
+      "ipa": "/ˈpɛrɪʃ/",
+      "example": "The plants began to perish in the drought.",
+      "example_az": "Bitkilər quraqlıqda məhv olmağa başladı.",
+      "level": 2
+    },
+    {
+      "word": "prosper",
+      "translation_az": "inkişaf etmək",
+      "ipa": "/ˈprɒspər/",
+      "example": "The city began to prosper after the war.",
+      "example_az": "Şəhər müharibədən sonra inkişaf etməyə başladı.",
+      "level": 2
+    },
+    {
+      "word": "vigor",
+      "translation_az": "cavanlıq",
+      "ipa": "/ˈvɪɡər/",
+      "example": "The old man still had vigor in his eyes.",
+      "example_az": "Qoca adamın gözlərində hələ də cavanlıq vardı.",
+      "level": 2
+    },
+    {
+      "word": "anticipate",
+      "translation_az": "gözləmək",
+      "ipa": "/ænˈtɪsɪpeɪt/",
+      "example": "I anticipate that the trip will be amazing.",
+      "example_az": "Mən gözləyirəm ki, səyahət möhtəşəm olacaq.",
+      "level": 2
+    },
+    {
+      "word": "baffle",
+      "translation_az": "çətinlik törətmək",
+      "ipa": "/ˈbæfəl/",
+      "example": "The instructions baffle me, can you explain?",
+      "example_az": "Qaydalar məni çaşdırır, izah edə bilərsən?",
+      "level": 2
+    },
+    {
+      "word": "collide",
+      "translation_az": "toqquşmaq",
+      "ipa": "/kəˈlaɪd/",
+      "example": "The two cars collide on the highway.",
+      "example_az": "İki maşın avtomagistralda toqquşdu.",
+      "level": 2
+    },
+    {
+      "word": "confirm",
+      "translation_az": "təsdiqləmək",
+      "ipa": "/kənˈfɜːrm/",
+      "example": "Can you confirm my flight reservation?",
+      "example_az": "Mənim uçuş rezervasiyamı təsdiqləyə bilərsən?",
+      "level": 2
+    },
+    {
+      "word": "detour",
+      "translation_az": "əyrili",
+      "ipa": "/ˈdiːtuːr/",
+      "example": "We had to take a detour because of the traffic jam.",
+      "example_az": "Yol bağlanması səbəbiylə əyrili yol ilə getməli olduq.",
+      "level": 2
+    },
+    {
+      "word": "dilemma",
+      "translation_az": "dilemma",
+      "ipa": "/dɪˈlɛmə/",
+      "example": "I'm in a dilemma, which hotel should I choose?",
+      "example_az": "Mən dilemma içərisəndəyəm, hansı oteli seçməliyəm?",
+      "level": 2
+    },
+    {
+      "word": "merit",
+      "translation_az": "layiqincə",
+      "ipa": "/ˈmɛrɪt/",
+      "example": "The new employee's work merit a raise.",
+      "example_az": "Yeni işçi layiqincə artım alır.",
+      "level": 2
+    },
+    {
+      "word": "plea",
+      "translation_az": "xahiş",
+      "ipa": "/pliː/",
+      "example": "The charity made a plea for donations.",
+      "example_az": "Xeyriyyə təşkilatı ianələr üçün xahiş etdi.",
+      "level": 2
+    },
+    {
+      "word": "relieve",
+      "translation_az": "yüngülləşdirmək",
+      "ipa": "/rɪˈliːv/",
+      "example": "The news relieved me, I was so worried.",
+      "example_az": "Xəbər məni yüngülləşdirdi, mən çox narahat idim.",
+      "level": 2
+    },
+    {
+      "word": "transmit",
+      "translation_az": "ötürmək",
+      "ipa": "/trænˈsmɪt/",
+      "example": "The signal will transmit to the satellite.",
+      "example_az": "Siqnal peykdə ötürüləcək.",
+      "level": 2
+    },
+    {
+      "word": "verify",
+      "translation_az": "yoxlamaq",
+      "ipa": "/ˈvɛrɪfaɪ/",
+      "example": "Please verify your email address.",
+      "example_az": "Zəhmət olmasa, elektron poçt ünvanınızı yoxlayın.",
+      "level": 2
+    },
+    {
+      "word": "weary",
+      "translation_az": "yormaq",
+      "ipa": "/ˈwɪəri/",
+      "example": "The long journey made me weary.",
+      "example_az": "Uzun səyahət məni yordu.",
+      "level": 2
+    },
+    {
+      "word": "acknowledge",
+      "translation_az": "qəbul etmək",
+      "ipa": "/əkˈnɒlɪdʒ/",
+      "example": "She acknowledged his presence with a nod.",
+      "example_az": "O, onun mövcudluğunu başqaşdırmaqla qəbul etdi.",
+      "level": 2
+    },
+    {
+      "word": "beneficiary",
+      "translation_az": "xeyirə çatdıran",
+      "ipa": "/ˌbɛnɪˈfɪʃəri/",
+      "example": "The charity's main beneficiary is a local hospital.",
+      "example_az": "Xeyriyyə təşkilatının əsas xeyirə çatdıranı yerli xəstəxana idi.",
+      "level": 2
+    },
+    {
+      "word": "delinquent",
+      "translation_az": "cavabdehlikdən qaçan",
+      "ipa": "/dɪˈlɪŋkwənt/",
+      "example": "The delinquent teenager was sent to a rehabilitation center.",
+      "example_az": "Cavabdehlikdən qaçan yeniyetmə reabilitasiya mərkəzinə göndərildi.",
+      "level": 2
+    },
+    {
+      "word": "deprive",
+      "translation_az": "məhrum etmək",
+      "ipa": "/dɪˈpraɪv/",
+      "example": "The company will deprive employees of their benefits if they don't meet the deadline.",
+      "example_az": "Şirkət əgər işçi müddəti vaxtında yerinə yetirməsə, onlardan faydalara məhrum edəcək.",
+      "level": 2
+    },
+    {
+      "word": "homicide",
+      "translation_az": "qətl",
+      "ipa": "/ˈhɒmɪsaɪd/",
+      "example": "The police are investigating the homicide that occurred last night.",
+      "example_az": "Polis dünən gecə baş verən qətli araşdırır.",
+      "level": 2
+    },
+    {
+      "word": "justice",
+      "translation_az": "ədalət",
+      "ipa": "/ˈdʒʌstɪs/",
+      "example": "The court will provide justice for the victims of the crime.",
+      "example_az": "Məhkəmə cinayətin qurbanlarına ədalət təmin edəcək.",
+      "level": 2
+    },
+    {
+      "word": "penalize",
+      "translation_az": "cəzalandırmaq",
+      "ipa": "/ˈpɛnəlaɪz/",
+      "example": "The team will be penalized for their unsportsmanlike behavior.",
+      "example_az": "Komanda idmansız davranışına görə cəzalandırılacaq.",
+      "level": 2
+    },
+    {
+      "word": "reject",
+      "translation_az": "rədd etmək",
+      "ipa": "/rɪˈdʒɛkt/",
+      "example": "The company rejected my job application.",
+      "example_az": "Şirkət mənim işə qəbul təklifimi rədd etdi.",
+      "level": 2
+    },
+    {
+      "word": "spouse",
+      "translation_az": "ər-arvad",
+      "ipa": "/spaʊz/",
+      "example": "My spouse is very supportive of my travels.",
+      "example_az": "Mənim ər-arvadım səyahətlərimə çox dəstək verirdi.",
+      "level": 2
+    },
+    {
+      "word": "unstable",
+      "translation_az": "sabit olmayan",
+      "ipa": "/ʌnˈsteɪbəl/",
+      "example": "The unstable political situation in the country is causing concern.",
+      "example_az": "Ölkədə sabit olmayan siyasi vəziyyət narahatlıq yaradır.",
+      "level": 2
+    },
+    {
+      "word": "vocation",
+      "translation_az": "peşə",
+      "ipa": "/vəʊˈkeɪʃən/",
+      "example": "Her true vocation is to be a teacher.",
+      "example_az": "Onun həqiqi peşəsi müəllim olmaqdır.",
+      "level": 2
+    },
+    {
+      "word": "warden",
+      "translation_az": "müdir",
+      "ipa": "/ˈwɔːrdən/",
+      "example": "The warden of the prison was very strict.",
+      "example_az": "Həbsxananın müdiri çox sərt idi.",
+      "level": 2
+    },
+    {
+      "word": "embrace",
+      "translation_az": "qəbul etmək",
+      "ipa": "/əmˈbreɪs/",
+      "example": "I will embrace the new culture.",
+      "example_az": "Mən yeni mədəniyyəti qəbul edəcəyəm.",
+      "level": 2
+    },
+    {
+      "word": "exhibit",
+      "translation_az": "nümayiş etdirmək",
+      "ipa": "/ɛɡˈzɪbɪt/",
+      "example": "The museum will exhibit a new collection.",
+      "example_az": "Muzey yeni kolleksiya nümayiş etdirəcək.",
+      "level": 2
+    },
+    {
+      "word": "extract",
+      "translation_az": "çıxarmaq",
+      "ipa": "/ˈɛkstrækt/",
+      "example": "We need to extract the information from the document.",
+      "example_az": "Biz sənəddən məlumatı çıxarmalıyıq.",
+      "level": 2
+    },
+    {
+      "word": "forbid",
+      "translation_az": "qadağan etmək",
+      "ipa": "/fərˈbɪd/",
+      "example": "The hotel forbids smoking in the rooms.",
+      "example_az": "Otel otaqlarda siqaret çəkməyi qadağan edir.",
+      "level": 2
+    },
+    {
+      "word": "logical",
+      "translation_az": "məntiqi",
+      "ipa": "/ˈlɒdʒɪkəl/",
+      "example": "The decision was logical based on the facts.",
+      "example_az": "Qərar faktlara əsasən məntiqi idi.",
+      "level": 2
+    },
+    {
+      "word": "partial",
+      "translation_az": "qismən",
+      "ipa": "/ˈpɑːrʃəl/",
+      "example": "The view was partial due to the trees.",
+      "example_az": "Mənzərə ağaclardan dolayı qismən idi.",
+      "level": 2
+    },
+    {
+      "word": "precaution",
+      "translation_az": "əndişə",
+      "ipa": "/ˌprɪˈkɔːʃən/",
+      "example": "We took precautions to avoid the danger.",
+      "example_az": "Biz təhlükədən qaçmaq üçün əndişələrə əməl etdik.",
+      "level": 2
+    },
+    {
+      "word": "prior",
+      "translation_az": "əvvəlki",
+      "ipa": "/ˈpraɪər/",
+      "example": "I had prior experience with this type of work.",
+      "example_az": "Mən bu cür işlə əvvəlki təcrübəyə malik idim.",
+      "level": 2
+    },
+    {
+      "word": "proceed",
+      "translation_az": "davam etmək",
+      "ipa": "/prəˈsiːd/",
+      "example": "We will proceed with the plan.",
+      "example_az": "Biz planla davam edəcəyik.",
+      "level": 2
+    },
+    {
+      "word": "rarely",
+      "translation_az": "çox nadir",
+      "ipa": "/ˈrɛərli/",
+      "example": "I rarely travel by plane.",
+      "example_az": "Mən çox nadir təyyarə ilə səyahət edirəm.",
+      "level": 2
+    },
+    {
+      "word": "reptile",
+      "translation_az": "sürünən",
+      "ipa": "/ˈrɛptɪl/",
+      "example": "The zoo has a reptile house.",
+      "example_az": "Zooloji bağda sürünən heyvanlar evi var.",
+      "level": 2
+    },
+    {
+      "word": "valiant",
+      "translation_az": "cəsur",
+      "ipa": "/ˈvæliənt/",
+      "example": "The valiant knight saved the princess.",
+      "example_az": "Cəsur cəngavər şahzadəni xilas etdi.",
+      "level": 2
+    },
+    {
+      "word": "authority",
+      "translation_az": "səlahiyyət",
+      "ipa": "/ɔːˈθɒrɪti/",
+      "example": "The local authority will make a decision.",
+      "example_az": "Yerli səlahiyyət qərar qəbul edəcək.",
+      "level": 2
+    },
+    {
+      "word": "consider",
+      "translation_az": "nəzərdən keçirmək",
+      "ipa": "/kənˈsɪdər/",
+      "example": "I will consider your proposal.",
+      "example_az": "Mən sizin təklifinizi nəzərdən keçirəcəm.",
+      "level": 2
+    },
+    {
+      "word": "detest",
+      "translation_az": "nifrət etmək",
+      "ipa": "/dɪˈtɛst/",
+      "example": "She detests eating spicy food.",
+      "example_az": "O, acı yeməyi nifrət edir.",
+      "level": 2
+    },
+    {
+      "word": "encourage",
+      "translation_az": "təşviq etmək",
+      "ipa": "/ɛnˈkʌrɪdʒ/",
+      "example": "The coach will encourage the team.",
+      "example_az": "Məşqçi komandanı təşviq edəcək.",
+      "level": 2
+    },
+    {
+      "word": "fierce",
+      "translation_az": "şiddətli",
+      "ipa": "/fɪərs/",
+      "example": "The fierce storm damaged the house.",
+      "example_az": "Şiddətli fırtına evi zədələdi.",
+      "level": 2
+    },
+    {
+      "word": "neutral",
+      "translation_az": "bitərəf",
+      "ipa": "/ˈnuːtrəl/",
+      "example": "The judge should remain neutral.",
+      "example_az": "Hakim bitərəf qalmalıdır.",
+      "level": 2
+    },
+    {
+      "word": "scowl",
+      "translation_az": "çilləmək",
+      "ipa": "/skaʊl/",
+      "example": "She began to scowl at the rude driver.",
+      "example_az": "O, hörmətsiz sürücüdən çilləməyə başladı.",
+      "level": 2
+    },
+    {
+      "word": "sneer",
+      "translation_az": "alçaltıcı gülümsəmə",
+      "ipa": "/sniər/",
+      "example": "He gave a sneer to the opponent.",
+      "example_az": "O, rəqibinə alçaltıcı gülümsədi.",
+      "level": 2
+    },
+    {
+      "word": "symbol",
+      "translation_az": "simvol",
+      "ipa": "/ˈsɪmbəl/",
+      "example": "The flag is a symbol of our country.",
+      "example_az": "Bayraq bizim ölkəmizin simvoludur.",
+      "level": 2
+    },
+    {
+      "word": "trifle",
+      "translation_az": "kiçik əhəmiyyət kəsb edən şey",
+      "ipa": "/ˈtraɪfəl/",
+      "example": "Don't trifle with her feelings.",
+      "example_az": "Onun hissləri ilə oynama.",
+      "level": 2
+    },
+    {
+      "word": "vermin",
+      "translation_az": "zərərli heyvan",
+      "ipa": "/ˈvɜːmɪn/",
+      "example": "Rats are considered vermin.",
+      "example_az": "Siçovullar zərərli heyvan hesab olunur.",
+      "level": 2
+    },
+    {
+      "word": "wail",
+      "translation_az": "fəryad etmək",
+      "ipa": "/weɪl/",
+      "example": "The baby began to wail loudly.",
+      "example_az": "Körpə səsələyərək fəryad etməyə başladı.",
+      "level": 2
+    },
+    {
+      "word": "abroad",
+      "translation_az": "xaricdə",
+      "ipa": "/əˈbrɔːd/",
+      "example": "I would love to travel abroad.",
+      "example_az": "Mən xaricdə səyahət etməyi sevirəm.",
+      "level": 2
+    },
+    {
+      "word": "architect",
+      "translation_az": "memar",
+      "ipa": "/ˈɑːrkɪtɛkt/",
+      "example": "The architect designed a beautiful building.",
+      "example_az": "Memar gözəl bir bina layihələndirdi.",
+      "level": 2
+    },
+    {
+      "word": "baggage",
+      "translation_az": "bağaj",
+      "ipa": "/ˈbæɡɪdʒ/",
+      "example": "Can you help me with my baggage?",
+      "example_az": "Mənə bağajımla kömək edə bilərsən?",
+      "level": 2
+    },
+    {
+      "word": "bigamy",
+      "translation_az": "cəmi iki dəfə evlənmə",
+      "ipa": "/bɪˈɡæmɪ/",
+      "example": "Bigamy is illegal in many countries.",
+      "example_az": "Çoxərlilik bir çox ölkədə qanunsuzdur.",
+      "level": 2
+    },
+    {
+      "word": "calamity",
+      "translation_az": "fəlakət",
+      "ipa": "/kəˈlæmɪti/",
+      "example": "The hurricane was a calamity for the city.",
+      "example_az": "Qasırğa şəhər üçün fəlakət idi.",
+      "level": 2
+    },
+    {
+      "word": "collapse",
+      "translation_az": "çökmə",
+      "ipa": "/kəˈlæps/",
+      "example": "The building was in danger of collapse.",
+      "example_az": "Bina çökmə təhlükəsi ilə üzləşirdi.",
+      "level": 2
+    },
+    {
+      "word": "envy",
+      "translation_az": "paxıllıq",
+      "ipa": "/ˈɛnvi/",
+      "example": "I feel envy when I see their success.",
+      "example_az": "Onların uğurunu görəndə paxıllıq hiss edirəm.",
+      "level": 2
+    },
+    {
+      "word": "fugitive",
+      "translation_az": "cəllad",
+      "ipa": "/ˈfjuːdʒɪtɪv/",
+      "example": "The police were searching for the fugitive.",
+      "example_az": "Polis cəlladı axtarırdı.",
+      "level": 2
+    },
+    {
+      "word": "matrimony",
+      "translation_az": "evlilik",
+      "ipa": "/məˈtrɪməni/",
+      "example": "They celebrated their matrimony with a big party.",
+      "example_az": "Onlar evliliklərini böyük bir məclis ilə qeyd etdilər.",
+      "level": 2
+    },
+    {
+      "word": "pauper",
+      "translation_az": "yoxsul",
+      "ipa": "/ˈpɔːpər/",
+      "example": "The pauper had to rely on charity.",
+      "example_az": "Yoxsul xeyriyyəçilikdən asılı olmalı idi.",
+      "level": 2
+    },
+    {
+      "word": "prosecute",
+      "translation_az": "məhkum etmək",
+      "ipa": "/ˈprɒsɪkjuːt/",
+      "example": "They will prosecute anyone who breaks the law.",
+      "example_az": "Onlar qanunu pozan hər kəsi məhkum edəcəklər.",
+      "level": 2
+    },
+    {
+      "word": "squander",
+      "translation_az": "israf etmək",
+      "ipa": "/ˈskwɒndər/",
+      "example": "He squandered all his money on useless things.",
+      "example_az": "O, pulunu faydasız şeylərə israf etdi.",
+      "level": 2
+    },
+    {
+      "word": "awesome",
+      "translation_az": "heyranedici",
+      "ipa": "/ˈɔːsəm/",
+      "example": "The Grand Canyon is awesome.",
+      "example_az": "Böyük Kanyon heyranedici görünür.",
+      "level": 2
+    },
+    {
+      "word": "awkward",
+      "translation_az": "çətin",
+      "ipa": "/ˈɔːkwərd/",
+      "example": "I felt awkward in the new clothes.",
+      "example_az": "Mən yeni geyimdə çətin hiss etdim.",
+      "level": 2
+    },
+    {
+      "word": "beckon",
+      "translation_az": "isdə",
+      "ipa": "/ˈbɛkən/",
+      "example": "The beautiful island beckons me to visit.",
+      "example_az": "Gözlə möhtəşəm adası məni ziyarətə dəvət edir.",
+      "level": 2
+    },
+    {
+      "word": "betray",
+      "translation_az": "xəyanət",
+      "ipa": "/bɪˈtreɪ/",
+      "example": "I would never betray my friend's trust.",
+      "example_az": "Mən heç vaxt dostumun etimadını xəyanət etməyəcəm.",
+      "level": 2
+    },
+    {
+      "word": "compel",
+      "translation_az": "məcbur",
+      "ipa": "/kəmˈpɛl/",
+      "example": "The beautiful view compels me to take a photo.",
+      "example_az": "Gözlə möhtəşəm mənzərə məni şəkil çəkməyə məcbur edir.",
+      "level": 2
+    },
+    {
+      "word": "guide",
+      "translation_az": "bələdçi",
+      "ipa": "/ɡaɪd/",
+      "example": "The guide helped us navigate the city.",
+      "example_az": "Bələdçi bizə şəhəri gəzməyə kömək etdi.",
+      "level": 2
+    },
+    {
+      "word": "pacify",
+      "translation_az": "sakitləşdir",
+      "ipa": "/ˈpæsɪfaɪ/",
+      "example": "The music helped to pacify the baby.",
+      "example_az": "Musiqi körpəni sakitləşdirməyə kömək etdi.",
+      "level": 2
+    },
+    {
+      "word": "possible",
+      "translation_az": "olması",
+      "ipa": "/ˈpɔsɪbəl/",
+      "example": "It's possible to learn any language.",
+      "example_az": "Hər hansı dili öyrənmək olar.",
+      "level": 2
+    },
+    {
+      "word": "quench",
+      "translation_az": "söndür",
+      "ipa": "/kwɛntʃ/",
+      "example": "I need a drink to quench my thirst.",
+      "example_az": "Susuzluğu söndürmək üçün mən içkiyə ehtiyacım var.",
+      "level": 2
+    },
+    {
+      "word": "respond",
+      "translation_az": "cavab",
+      "ipa": "/rɪˈspɔnd/",
+      "example": "I will respond to your email soon.",
+      "example_az": "Mən tezliklə sənin məktubuna cavab verəcəyəm.",
+      "level": 2
+    },
+    {
+      "word": "utter",
+      "translation_az": "dəqiq",
+      "ipa": "/ˈʌtər/",
+      "example": "I couldn't utter a word in fear.",
+      "example_az": "Qorxudan heç bir söz deməyə bacarmadım.",
+      "level": 2
+    },
+    {
+      "word": "venture",
+      "translation_az": "məşq",
+      "ipa": "/ˈvɛntʃər/",
+      "example": "I would love to venture into new business.",
+      "example_az": "Mən yeni biznesə başlamaqdan məmnun olardım.",
+      "level": 2
+    },
+    {
+      "word": "cease",
+      "translation_az": "dayandırmaq",
+      "ipa": "/siːz/",
+      "example": "The company will cease operations next month.",
+      "example_az": "Şirkət növbəti ay fəaliyyətini dayandıraq.",
+      "level": 2
+    },
+    {
+      "word": "despite",
+      "translation_az": "baxmayaraq",
+      "ipa": "/dɪˈspaɪt/",
+      "example": "I went to the party despite the rain.",
+      "example_az": "Yağışa baxmayaraq, mən partiyə getdim.",
+      "level": 2
+    },
+    {
+      "word": "disrupt",
+      "translation_az": "fəaliyyəti pozmaq",
+      "ipa": "/dɪsˈrʌpt/",
+      "example": "The storm disrupted the communication systems.",
+      "example_az": "Fırtına kommunikasiya sistemlərini pozdu.",
+      "level": 2
+    },
+    {
+      "word": "exhaust",
+      "translation_az": "yormaq",
+      "ipa": "/ɪɡˈzɔːst/",
+      "example": "The long hike exhausted me.",
+      "example_az": "Uzun gediş məni yordu.",
+      "level": 2
+    },
+    {
+      "word": "feeble",
+      "translation_az": "zəif",
+      "ipa": "/ˈfiːbəl/",
+      "example": "The feeble old man couldn't walk alone.",
+      "example_az": "Zəif qoca kişi tək başına getməyə bilmirdi.",
+      "level": 2
+    },
+    {
+      "word": "miserly",
+      "translation_az": "qənaətcil",
+      "ipa": "/ˈmaɪzərli/",
+      "example": "He was known for being miserly with his money.",
+      "example_az": "O, puluna qənaətcil olması ilə məşhur idi.",
+      "level": 2
+    },
+    {
+      "word": "monarch",
+      "translation_az": "monarx",
+      "ipa": "/ˈmɒnərk/",
+      "example": "The monarch ruled the kingdom for decades.",
+      "example_az": "Monarx onilliklər boyu krallığı idarə etdi.",
+      "level": 2
+    },
+    {
+      "word": "rapid",
+      "translation_az": "tez",
+      "ipa": "/ˈræpɪd/",
+      "example": "The rapid growth of the city surprised everyone.",
+      "example_az": "Şəhərin sürətli artımı hamını təəccübə saldı.",
+      "level": 2
+    },
+    {
+      "word": "rash",
+      "translation_az": "sərəncam",
+      "ipa": "/ræʃ/",
+      "example": "She made a rash decision to quit her job.",
+      "example_az": "O, işindən çıxmaq qərarına gəldi.",
+      "level": 2
+    },
+    {
+      "word": "severity",
+      "translation_az": "şiddət",
+      "ipa": "/səˈvɛrɪti/",
+      "example": "The severity of the crime was shocking.",
+      "example_az": "Cinayətin şiddəti şok edici idi.",
+      "level": 2
+    },
+    {
+      "word": "thrifty",
+      "translation_az": "qənaətcil",
+      "ipa": "/ˈθrɪfti/",
+      "example": "She was thrifty and saved a lot of money.",
+      "example_az": "O, qənaətcil idi və çox pul qopardı.",
+      "level": 2
+    },
+    {
+      "word": "unite",
+      "translation_az": "birləşdirmək",
+      "ipa": "/juːˈnaɪt/",
+      "example": "The team worked together to unite the community.",
+      "example_az": "Komanda birgə işləyərək cəmiyyəti birləşdirməyə çalışdı.",
+      "level": 2
+    },
+    {
+      "word": "bait",
+      "translation_az": "yem",
+      "ipa": "/beɪt/",
+      "example": "The fisherman used bait to catch the fish.",
+      "example_az": "Balıqçı balığı tutmaq üçün yem istifadə etdi.",
+      "level": 2
+    },
+    {
+      "word": "censor",
+      "translation_az": "sensur",
+      "ipa": "/ˈsɛnsər/",
+      "example": "The government tried to censor the news.",
+      "example_az": "Hökumət xəbərləri sensur etməyə çalışdı.",
+      "level": 2
+    },
+    {
+      "word": "culprit",
+      "translation_az": "günahkar",
+      "ipa": "/ˈkʌlprɪt/",
+      "example": "The police found the culprit of the crime.",
+      "example_az": "Polis cinayətin günahkarını tapdı.",
+      "level": 2
+    },
+    {
+      "word": "disaster",
+      "translation_az": "fəlakət",
+      "ipa": "/dɪˈzɑːstər/",
+      "example": "The earthquake was a disaster for the city.",
+      "example_az": "Zəlzələ şəhər üçün fəlakət oldu.",
+      "level": 2
+    },
+    {
+      "word": "disclose",
+      "translation_az": "açığ vurmaq",
+      "ipa": "/dɪsˈkloʊz/",
+      "example": "The company will disclose the financial reports next week.",
+      "example_az": "Şirkət maliyyə hesabatlarını növbəti həftə açığ vuracaq.",
+      "level": 2
+    },
+    {
+      "word": "excessive",
+      "translation_az": "çox",
+      "ipa": "/ɛkˈsɛsɪv/",
+      "example": "Excessive drinking can be harmful to your health.",
+      "example_az": "Çox içmək sizin sağlınıza ziyanlı ola bilər.",
+      "level": 2
+    },
+    {
+      "word": "illustrate",
+      "translation_az": "şərh etmək",
+      "ipa": "/ˈɪləstreɪt/",
+      "example": "The pictures will illustrate the story.",
+      "example_az": "Şəkillər hekayəni şərh edəcək.",
+      "level": 2
+    },
+    {
+      "word": "insist",
+      "translation_az": "israr etmək",
+      "ipa": "/ɪnˈsɪst/",
+      "example": "She will insist on going to the party tonight.",
+      "example_az": "O, bu gecə partiyə getməyə israr edəcək.",
+      "level": 2
+    },
+    {
+      "word": "juvenile",
+      "translation_az": "gənc",
+      "ipa": "/ˈdʒuːvənɪl/",
+      "example": "The juvenile court handled the case.",
+      "example_az": "Gənclər məhkəməsi işlə məşğul oldu.",
+      "level": 2
+    },
+    {
+      "word": "outlaw",
+      "translation_az": "qanunsuz",
+      "ipa": "/ˈaʊtlɔː/",
+      "example": "The government declared the group an outlaw organization.",
+      "example_az": "Hökumət qrupu qanunsuz təşkilat elan etdi.",
+      "level": 2
+    },
+    {
+      "word": "promote",
+      "translation_az": "təbliğ etmək",
+      "ipa": "/prəˈmoʊt/",
+      "example": "The company will promote the new product on social media.",
+      "example_az": "Şirkət yeni məhsulu sosial mediada təbliğ edəcək.",
+      "level": 2
+    },
+    {
+      "word": "undernourished",
+      "translation_az": "qidalı olmayan",
+      "ipa": "/ˌʌndərˈnɜːrɪʃt/",
+      "example": "Many children in the developing countries are undernourished.",
+      "example_az": "İnkişaf edən ölkələrdə çoxlu uşaq qidalı deyil.",
+      "level": 2
+    },
+    {
+      "word": "blunder",
+      "translation_az": "səhv addım",
+      "ipa": "/ˈblʌndər/",
+      "example": "The team's blunder cost them the game.",
+      "example_az": "Komandanın səhv addımı oyunu uduzmağa səbəb oldu.",
+      "level": 3
+    },
+    {
+      "word": "commend",
+      "translation_az": "tərifləmək",
+      "ipa": "/kəˈmɛnd/",
+      "example": "The manager commended the employee for his excellent work.",
+      "example_az": "Menecer işçiyyəni yaxşı işinə görə təriflədi.",
+      "level": 3
+    },
+    {
+      "word": "comprehend",
+      "translation_az": "anlamaq",
+      "ipa": "/ˌkɒmprɪˈhɛnd/",
+      "example": "It takes time to comprehend the complexity of the issue.",
+      "example_az": "Məsələnin mürəkkəbliyini anlamaq zaman tələb edir.",
+      "level": 3
+    },
+    {
+      "word": "daze",
+      "translation_az": "şok vəziyyəti",
+      "ipa": "/deɪz/",
+      "example": "The news left her in a daze for hours.",
+      "example_az": "Xəbər ona saatlarla şok vəziyyəti yaratdı.",
+      "level": 3
+    },
+    {
+      "word": "exempt",
+      "translation_az": "azad etmək",
+      "ipa": "/ɪɡˈzɛmpt/",
+      "example": "The charity is exempt from paying taxes.",
+      "example_az": "Xeyriyyə təşkilatı vergiləri ödəməkdən azaddır.",
+      "level": 3
+    },
+    {
+      "word": "final",
+      "translation_az": "son",
+      "ipa": "/ˈfaɪnəl/",
+      "example": "The final decision will be made by the committee.",
+      "example_az": "Son qərarı komitə verəcək.",
+      "level": 3
+    },
+    {
+      "word": "maim",
+      "translation_az": "zədələmək",
+      "ipa": "/meɪm/",
+      "example": "The accident left him maimed for life.",
+      "example_az": "Qaza nəticəsində o, həyatı boyu zədələndi.",
+      "level": 3
+    },
+    {
+      "word": "mourn",
+      "translation_az": "matəm saxlamaq",
+      "ipa": "/mɔːrn/",
+      "example": "The family will mourn the loss of their loved one.",
+      "example_az": "Ailə sevimli insanının itkisinə görə matəm saxlayacaq.",
+      "level": 3
+    },
+    {
+      "word": "repetition",
+      "translation_az": "təkrar",
+      "ipa": "/ˌrɛpɪˈtɪʃən/",
+      "example": "Repetition is the key to mastering a new skill.",
+      "example_az": "Təkrar, yeni bir bacarıq öyrənməkdə açar rolunu oynayır.",
+      "level": 3
+    },
+    {
+      "word": "subside",
+      "translation_az": "azalmaq",
+      "ipa": "/səbˈsaɪd/",
+      "example": "The pain will subside once the medication takes effect.",
+      "example_az": "Dərman təsirini göstərdikdən sonra ağrı azalacaq.",
+      "level": 3
+    },
+    {
+      "word": "toil",
+      "translation_az": "əmək",
+      "ipa": "/tɔɪl/",
+      "example": "She had to toil for years to achieve her goals.",
+      "example_az": "O, məqsədlərini əldə etmək üçün illərlə əmək sərf etməli oldu.",
+      "level": 3
+    },
+    {
+      "word": "vain",
+      "translation_az": "boşu-boşuna",
+      "ipa": "/veɪn/",
+      "example": "It was all in vain, as the project was cancelled anyway.",
+      "example_az": "Hər şey boşu-boşuna oldu, çünki layihə hər halda ləğv edildi.",
+      "level": 3
+    },
+    {
+      "word": "appoint",
+      "translation_az": "təyin etmək",
+      "ipa": "/əˈpɔɪnt/",
+      "example": "The company will appoint a new manager next week.",
+      "example_az": "Şirkət növbəti həftə yeni menecer təyin edəcək.",
+      "level": 3
+    },
+    {
+      "word": "attract",
+      "translation_az": "cəlb etmək",
+      "ipa": "/əˈtrækt/",
+      "example": "The city's beauty will attract many tourists.",
+      "example_az": "Şəhərin gözəlliyi çox sayda turisti cəlb edəcək.",
+      "level": 3
+    },
+    {
+      "word": "depict",
+      "translation_az": "təsvir etmək",
+      "ipa": "/dɪˈpɪkt/",
+      "example": "The painting depicts a beautiful landscape.",
+      "example_az": "Rəsm gözəl mənzərəni təsvir edir.",
+      "level": 3
+    },
+    {
+      "word": "morality",
+      "translation_az": "əxlaq",
+      "ipa": "/məˈrælɪti/",
+      "example": "The movie raises questions about morality and ethics.",
+      "example_az": "Film əxlaq və əxlaq haqqında suallar qoyur.",
+      "level": 3
+    },
+    {
+      "word": "mortal",
+      "translation_az": "fani",
+      "ipa": "/ˈmɔːrtəl/",
+      "example": "As a mortal, we all have to face death eventually.",
+      "example_az": "Fani olaraq, biz hamımız ölüm ilə qarşılaşmalı olarıq.",
+      "level": 3
+    },
+    {
+      "word": "novel",
+      "translation_az": "roman",
+      "ipa": "/ˈnɒvəl/",
+      "example": "She wrote a novel about her travels around the world.",
+      "example_az": "O, dünya ətrafında səyahətləri haqqında roman yazdı.",
+      "level": 3
+    },
+    {
+      "word": "occupant",
+      "translation_az": "sahibi",
+      "ipa": "/ˈɒksɪpənt/",
+      "example": "The occupant of the car was injured in the accident.",
+      "example_az": "Maşının sahibi avtomobil qəzasında yaralandı.",
+      "level": 3
+    },
+    {
+      "word": "quarter",
+      "translation_az": "dördüncü hissə",
+      "ipa": "/ˈkwɔːrtər/",
+      "example": "The city is divided into four quarters.",
+      "example_az": "Şəhər dörd hissəyə bölünür.",
+      "level": 3
+    },
+    {
+      "word": "quote",
+      "translation_az": "sitat gətirmək",
+      "ipa": "/ˈkwəʊt/",
+      "example": "She quoted a famous phrase from the book.",
+      "example_az": "O, kitabdakı məşhur bir ifadəni sitat gətirdi.",
+      "level": 3
+    },
+    {
+      "word": "roam",
+      "translation_az": "sərbəst gəzmək",
+      "ipa": "/roʊm/",
+      "example": "The animals roam freely in the wild.",
+      "example_az": "Heyvanlar vəhşi təbiətdə sərbəst gəzirlər.",
+      "level": 3
+    },
+    {
+      "word": "site",
+      "translation_az": "sayt",
+      "ipa": "/ˈsaɪt/",
+      "example": "The company's website is a great site for learning.",
+      "example_az": "Şirkətin saytı öyrənmək üçün yaxşı saytdır.",
+      "level": 3
+    },
+    {
+      "word": "verse",
+      "translation_az": "misra",
+      "ipa": "/vɜːrs/",
+      "example": "The poem consists of four verses.",
+      "example_az": "Şeir dörd misradan ibarətdir.",
+      "level": 3
+    },
+    {
+      "word": "commuter",
+      "translation_az": "gündəlik səyahət edən",
+      "ipa": "/kəˈmjuːtər/",
+      "example": "The commuter was tired after a long day.",
+      "example_az": "Gündəlik səyahət edən şəxs uzun günün ardından yorğun idi.",
+      "level": 3
+    },
+    {
+      "word": "confine",
+      "translation_az": "məhdudlaşdırmaq",
+      "ipa": "/kənˈfaɪn/",
+      "example": "The doctor will confine the patient to bed for a week.",
+      "example_az": "Həkim xəstəni bir həftəlik müddətə yatağa məhdudlaşdıracaq.",
+      "level": 3
+    },
+    {
+      "word": "dispute",
+      "translation_az": "mübahisə",
+      "ipa": "/dɪˈspjuːt/",
+      "example": "The two friends had a dispute over the bill.",
+      "example_az": "İki dost hesab barədə mübahisə etdi.",
+      "level": 3
+    },
+    {
+      "word": "fertile",
+      "translation_az": "məhsuldar",
+      "ipa": "/ˈfɜːrtaɪl/",
+      "example": "The fertile soil was perfect for growing crops.",
+      "example_az": "Məhsuldar torpaq bitkilər becərmək üçün ideal idi.",
+      "level": 3
+    },
+    {
+      "word": "idle",
+      "translation_az": "fəaliyyətsiz",
+      "ipa": "/ˈaɪdəl/",
+      "example": "The idle machine was wasting energy.",
+      "example_az": "Fəaliyyətsiz maşın enerjiyə sərf edirdi.",
+      "level": 3
+    },
+    {
+      "word": "idol",
+      "translation_az": "ilahə",
+      "ipa": "/ˈaɪdəl/",
+      "example": "The singer was an idol to her fans.",
+      "example_az": "İfaçı pərəstişkarları üçün ilahə idi.",
+      "level": 3
+    },
+    {
+      "word": "jest",
+      "translation_az": "şərh",
+      "ipa": "/dʒest/",
+      "example": "The comedian's jest about politics was funny.",
+      "example_az": "Komedianın siyasi şərhini yumorlu idi.",
+      "level": 3
+    },
+    {
+      "word": "lunatic",
+      "translation_az": "dəli",
+      "ipa": "/ˈluːnətɪk/",
+      "example": "The lunatic driver was speeding down the highway.",
+      "example_az": "Dəli sürücü avtomagistralda sürətlə hərəkət edirdi.",
+      "level": 3
+    },
+    {
+      "word": "patriotic",
+      "translation_az": "vətənpərvər",
+      "ipa": "/ˌpeɪtrɪˈɒtɪk/",
+      "example": "The patriotic song was sung at the national ceremony.",
+      "example_az": "Vətənpərvər mahnı milli mərasimində ifa olundu.",
+      "level": 3
+    },
+    {
+      "word": "uneventful",
+      "translation_az": "hadisəsiz",
+      "ipa": "/ʌnɪˈvɛntfʊl/",
+      "example": "The uneventful day was boring for the kids.",
+      "example_az": "Hadisəsiz gün uşaqlar üçün darıxdırıcı idi.",
+      "level": 3
+    },
+    {
+      "word": "valor",
+      "translation_az": "cəsarət",
+      "ipa": "/ˈvælər/",
+      "example": "The soldier was awarded for his valor in battle.",
+      "example_az": "Əsgər döyüşdəki cəsarətinə görə mükafatlandırıldı.",
+      "level": 3
+    },
+    {
+      "word": "vein",
+      "translation_az": "damar",
+      "ipa": "/veɪn/",
+      "example": "The doctor inserted the needle into a vein.",
+      "example_az": "Həkim iynəni damara daxil etdi.",
+      "level": 3
+    },
+    {
+      "word": "apologize",
+      "translation_az": "özür dilemək",
+      "ipa": "/əˈpɒlədʒaɪz/",
+      "example": "I apologize for the delay.",
+      "example_az": "Təxirə görə özür diləyirəm.",
+      "level": 3
+    },
+    {
+      "word": "colleague",
+      "translation_az": "kolleq",
+      "ipa": "/ˈkɒliːɡ/",
+      "example": "My colleague helped me with the project.",
+      "example_az": "Kolleqim mənə layihə ilə kömək etdi.",
+      "level": 3
+    },
+    {
+      "word": "diminish",
+      "translation_az": "azalmaq",
+      "ipa": "/dɪˈmɪnɪʃ/",
+      "example": "The noise will diminish as we move away.",
+      "example_az": "Səs uzaqlaşdıqca azalacaq.",
+      "level": 3
+    },
+    {
+      "word": "distress",
+      "translation_az": "narahatlıq",
+      "ipa": "/dɪˈstrɛs/",
+      "example": "The news caused her great distress.",
+      "example_az": "Xəbər onu çox narahat etdi.",
+      "level": 3
+    },
+    {
+      "word": "flee",
+      "translation_az": "qaçmaq",
+      "ipa": "/fliː/",
+      "example": "They had to flee the city because of the war.",
+      "example_az": "Onlar müharibə səbəbiylə şəhəri tərk etməli oldular.",
+      "level": 3
+    },
+    {
+      "word": "loyalty",
+      "translation_az": "sadiqlik",
+      "ipa": "/ˈlɔɪəlti/",
+      "example": "The company values the loyalty of its employees.",
+      "example_az": "Şirkət işçilərinin sadiqliyinə dəyər verir.",
+      "level": 3
+    },
+    {
+      "word": "maximum",
+      "translation_az": "maksimum",
+      "ipa": "/ˈmæksɪməm/",
+      "example": "We should try to achieve the maximum result.",
+      "example_az": "Biz maksimum nəticə əldə etməyə çalışmalıyız.",
+      "level": 3
+    },
+    {
+      "word": "mythology",
+      "translation_az": "mifologiya",
+      "ipa": "/mɪˈθɒlədʒi/",
+      "example": "The mythology of ancient Greece is very interesting.",
+      "example_az": "Qədim Yunannın mifologiyası çox maraqlıdır.",
+      "level": 3
+    },
+    {
+      "word": "refer",
+      "translation_az": "istinad etmək",
+      "ipa": "/rɪˈfɜːr/",
+      "example": "I refer to the book for more information.",
+      "example_az": "Mən daha çox məlumat üçün kitaba istinad edirəm.",
+      "level": 3
+    },
+    {
+      "word": "signify",
+      "translation_az": "göstərmək",
+      "ipa": "/ˈsɪɡnɪfaɪ/",
+      "example": "The symbol signifies peace and harmony.",
+      "example_az": "Simvol sülhü və harmoniyanı göstərir.",
+      "level": 3
+    },
+    {
+      "word": "torment",
+      "translation_az": "əzab",
+      "ipa": "/ˈtɔːrmənt/",
+      "example": "The pain was a constant torment to him.",
+      "example_az": "Ağrı onun üçün daimi əzab idi.",
+      "level": 3
+    },
+    {
+      "word": "vulnerable",
+      "translation_az": "zəif",
+      "ipa": "/ˈvʌlnərəbəl/",
+      "example": "The child is vulnerable to illnesses.",
+      "example_az": "Uşaq xəstəliklərə qarşı zəifdir.",
+      "level": 3
+    },
+    {
+      "word": "abuse",
+      "translation_az": "ciddi zərər yetirmək",
+      "ipa": "/əˈbjuːs/",
+      "example": "The new policy aims to prevent abuse of power.",
+      "example_az": "Yeni siyasət hakimiyyətin səhlənənən şəkildə istifadəsini qarşısını almaq məqsədi daşıyır.",
+      "level": 3
+    },
+    {
+      "word": "hinder",
+      "translation_az": " maneə törətmək",
+      "ipa": "/ˈhɪndər/",
+      "example": "The lack of funding will hinder the progress of the project.",
+      "example_az": "Maliyyə dəstəyinin olmaması layihənin irəliləyisinə maneə törədəcək.",
+      "level": 3
+    },
+    {
+      "word": "jolly",
+      "translation_az": "şən",
+      "ipa": "/ˈdʒɒli/",
+      "example": "The jolly atmosphere of the party made everyone feel welcome.",
+      "example_az": "Tədbirin şən atmosferi hamını yaxşı hisləndirdi.",
+      "level": 3
+    },
+    {
+      "word": "lecture",
+      "translation_az": "mühazirə",
+      "ipa": "/ˈlɛktʃər/",
+      "example": "The professor gave a lecture on the history of art.",
+      "example_az": "Professor incəsənət tarixi haqqında mühazirə oxudu.",
+      "level": 3
+    },
+    {
+      "word": "mumble",
+      "translation_az": "pəçəpəçə danışmaq",
+      "ipa": "/ˈmʌmbəl/",
+      "example": "She started to mumble when she was nervous.",
+      "example_az": "O, narahat olduğu zaman pəçəpəçə danışmağa başladı.",
+      "level": 3
+    },
+    {
+      "word": "mute",
+      "translation_az": "səssiz",
+      "ipa": "/mjuːt/",
+      "example": "The film was so boring that I felt mute during the whole screening.",
+      "example_az": "Film çox yuxulu idi ki, bütün seans ərzində mən səssiz qaldım.",
+      "level": 3
+    },
+    {
+      "word": "prejudice",
+      "translation_az": "qərəz",
+      "ipa": "/ˈprɛdʒədɪs/",
+      "example": "We should not judge people based on prejudice.",
+      "example_az": "Biz insanları qərəz əsasında yaxşı və ya pis hesab etməməliyik.",
+      "level": 3
+    },
+    {
+      "word": "retain",
+      "translation_az": "qorumaq",
+      "ipa": "/rɪˈteɪn/",
+      "example": "The company will retain the rights to the patent.",
+      "example_az": "Şirkət patentin hüquqlarını qoruyacaq.",
+      "level": 3
+    },
+    {
+      "word": "shrill",
+      "translation_az": "kəskin",
+      "ipa": "/ʃrɪl/",
+      "example": "The shrill sound of the alarm woke me up.",
+      "example_az": "Siqnalın kəskin səsi məni oyatdı.",
+      "level": 3
+    },
+    {
+      "word": "volunteer",
+      "translation_az": "köməkçi",
+      "ipa": "/ˌvɒlənˈtɪər/",
+      "example": "She decided to volunteer at the local animal shelter.",
+      "example_az": "O, yerli heyvan sığınacağında könüllü olaraq işləməyə qərar verdi.",
+      "level": 3
+    },
+    {
+      "word": "wad",
+      "translation_az": "top",
+      "ipa": "/wɒd/",
+      "example": "She had a wad of cash in her purse.",
+      "example_az": "O, çantasında pul topu saxlayırdı.",
+      "level": 3
+    },
+    {
+      "word": "witty",
+      "translation_az": "cəfası",
+      "ipa": "/ˈwɪti/",
+      "example": "He was known for his witty sense of humor.",
+      "example_az": "O, cəfası hissi ilə tanınır.",
+      "level": 3
+    },
+    {
+      "word": "adolescent",
+      "translation_az": "yeniyetmə",
+      "ipa": "/ˌædəˈlesnt/",
+      "example": "The adolescent boy was trying to find his place in the world.",
+      "example_az": "Yeniyetmə oğlan dünya üzrə öz yerini tapmağa çalışırdı.",
+      "level": 3
+    },
+    {
+      "word": "candidate",
+      "translation_az": "namizəd",
+      "ipa": "/ˈkændɪdeɪt/",
+      "example": "The company was looking for a suitable candidate for the job.",
+      "example_az": "Şirkət iş üçün uyğun namizəd axtarırdı.",
+      "level": 3
+    },
+    {
+      "word": "coeducational",
+      "translation_az": "qarışığı təhsil",
+      "ipa": "/ˌkəʊˌedjuːˈkeɪʃənl/",
+      "example": "The coeducational school allowed boys and girls to learn together.",
+      "example_az": "Qarışığı təhsil məktəbi oğlanlar və qızların birgə öyrənməsinə icazə verirdi.",
+      "level": 3
+    },
+    {
+      "word": "precede",
+      "translation_az": "sələf olmaq",
+      "ipa": "/prɪˈsiːd/",
+      "example": "The concert will precede the fireworks display.",
+      "example_az": "Konsert atəşfəşanlıq nümayişi əvvəlində olacaq.",
+      "level": 3
+    },
+    {
+      "word": "radical",
+      "translation_az": "kəskin",
+      "ipa": "/ˈrædɪkl/",
+      "example": "The company made a radical change in its marketing strategy.",
+      "example_az": "Şirkət marketinq strategiyasında kəskin dəyişiklik etdi.",
+      "level": 3
+    },
+    {
+      "word": "sensitive",
+      "translation_az": "hissi",
+      "ipa": "/ˈsɛnsɪtɪv/",
+      "example": "The sensitive equipment required careful handling.",
+      "example_az": "Hissi avadanlıq ehtiyata aparmağı tələb edirdi.",
+      "level": 3
+    },
+    {
+      "word": "skim",
+      "translation_az": "səthi oxumaq",
+      "ipa": "/skɪm/",
+      "example": "I skimmed the article to get the main points.",
+      "example_az": "Mən məqaləni səthi oxudum, əsas məqamları anladım.",
+      "level": 3
+    },
+    {
+      "word": "spontaneous",
+      "translation_az": "təbii",
+      "ipa": "/ˌspɒntəˈneɪəs/",
+      "example": "The spontaneous applause filled the room.",
+      "example_az": "Təbii alqış otağı doldurdu.",
+      "level": 3
+    },
+    {
+      "word": "temperate",
+      "translation_az": "mülayim",
+      "ipa": "/ˈtɛmpərɪt/",
+      "example": "The temperate climate made the region ideal for farming.",
+      "example_az": "Mülayim iqlim regionu kənd təsərrüfatı üçün ideal etdi.",
+      "level": 3
+    },
+    {
+      "word": "untidy",
+      "translation_az": "nizamsız",
+      "ipa": "/ʌnˈtaɪdi/",
+      "example": "The untidy room needed to be cleaned.",
+      "example_az": "Nizamsız otaq təmizlənməyə ehtiyac duyurdu.",
+      "level": 3
+    },
+    {
+      "word": "utensil",
+      "translation_az": "qabıq",
+      "ipa": "/juːˈtɛnsɪl/",
+      "example": "The kitchen was equipped with all the necessary utensils.",
+      "example_az": "Mətbəx lazım olan qabıqlarla təchiz olunmuşdu.",
+      "level": 3
+    },
+    {
+      "word": "vaccinate",
+      "translation_az": "peyvənd",
+      "ipa": "/væksɪˈneɪt/",
+      "example": "The doctor advised us to vaccinate our children against the disease.",
+      "example_az": "Həkim uşaqlarımızı xəstəliyə qarşı peyvəndləməyi məsləhət gördü.",
+      "level": 3
+    },
+    {
+      "word": "cinema",
+      "translation_az": "kino",
+      "ipa": "/ˈsɪnəmə/",
+      "example": "I love watching movies at the cinema.",
+      "example_az": "Mən kinoda film izləməyi sevirəm.",
+      "level": 3
+    },
+    {
+      "word": "discard",
+      "translation_az": "atmaq",
+      "ipa": "/dɪsˈkɑrd/",
+      "example": "Please discard the trash after the party.",
+      "example_az": "Xahiş edirəm, partidən sonra zibiləri atın.",
+      "level": 3
+    },
+    {
+      "word": "elevate",
+      "translation_az": "yüksəltmək",
+      "ipa": "/ˈɛlɪveɪt/",
+      "example": "The new policy will elevate the company's reputation.",
+      "example_az": "Yeni siyasət şirkətin nüfuzunu yüksəldəcək.",
+      "level": 3
+    },
+    {
+      "word": "event",
+      "translation_az": "hadisə",
+      "ipa": "/ɪˈvɛnt/",
+      "example": "The event was attended by many famous people.",
+      "example_az": "Hadisəyə çoxlu məşhur insan qatıldı.",
+      "level": 3
+    },
+    {
+      "word": "finance",
+      "translation_az": "maliyyə",
+      "ipa": "/ˈfaɪnæns/",
+      "example": "The company will finance the new project.",
+      "example_az": "Şirkət yeni layihəni maliyyələşdirəcək.",
+      "level": 3
+    },
+    {
+      "word": "lottery",
+      "translation_az": "lotereya",
+      "ipa": "/ˈlɒtəri/",
+      "example": "She won a lot of money in the lottery.",
+      "example_az": "O, lotereyada çox pul qazandı.",
+      "level": 3
+    },
+    {
+      "word": "obtain",
+      "translation_az": "əldə etmək",
+      "ipa": "/əbˈteɪn/",
+      "example": "You need to obtain a visa before traveling.",
+      "example_az": "Səyahətə gedən qədər vizanı əldə etməlisən.",
+      "level": 3
+    },
+    {
+      "word": "relate",
+      "translation_az": "əlaqələndirmək",
+      "ipa": "/rɪˈleɪt/",
+      "example": "I can relate to your feelings.",
+      "example_az": "Mən sənin hisslərinlə əlaqələndirə bilərəm.",
+      "level": 3
+    },
+    {
+      "word": "soar",
+      "translation_az": "yüksəlmək",
+      "ipa": "/sɔr/",
+      "example": "The eagle began to soar into the sky.",
+      "example_az": "Qartal səmağa yüksəlməyə başladı.",
+      "level": 3
+    },
+    {
+      "word": "stationary",
+      "translation_az": "hərəkətsiz",
+      "ipa": "/ˈstæʃənəri/",
+      "example": "The car has been stationary for hours.",
+      "example_az": "Maşın saatlarla hərəkətsiz dayanmışdır.",
+      "level": 3
+    },
+    {
+      "word": "subsequent",
+      "translation_az": "sonrakı",
+      "ipa": "/ˈsʌbsɪkwənt/",
+      "example": "The subsequent events were very surprising.",
+      "example_az": "Sonrakı hadisələr çox təəccüblü idi.",
+      "level": 3
+    },
+    {
+      "word": "vague",
+      "translation_az": "müəyyən olmayan",
+      "ipa": "/veɪɡ/",
+      "example": "The instructions were vague and hard to follow.",
+      "example_az": "Göstərişlər müəyyən olmayan və izləmək çətin idi.",
+      "level": 3
+    },
+    {
+      "word": "harmony",
+      "translation_az": "ahəng",
+      "ipa": "/ˈhɑrməni/",
+      "example": "The music created harmony in the room.",
+      "example_az": "Musiqi otaqda ahəng yaratdı.",
+      "level": 3
+    },
+    {
+      "word": "hasty",
+      "translation_az": "tələsik",
+      "ipa": "/ˈheɪsti/",
+      "example": "She made a hasty decision to quit her job.",
+      "example_az": "O, işini tərk etmək qərarına tələsik gəldi.",
+      "level": 3
+    },
+    {
+      "word": "illegal",
+      "translation_az": "qanunsuz",
+      "ipa": "/ɪˈliːɡəl/",
+      "example": "The company was fined for illegal practices.",
+      "example_az": "Şirkət qanunsuz fəaliyyətə görə cərimə olundu.",
+      "level": 3
+    },
+    {
+      "word": "narcotic",
+      "translation_az": "narkotik",
+      "ipa": "/nɑrˈkɒtɪk/",
+      "example": "The doctor prescribed a narcotic to relieve the pain.",
+      "example_az": "Həkim ağrını yatırtmaq üçün narkotik dərman yazdı.",
+      "level": 3
+    },
+    {
+      "word": "prompt",
+      "translation_az": "ciddi",
+      "ipa": "/ˈprɒmpt/",
+      "example": "The company will give a prompt response to the complaint.",
+      "example_az": "Şirkət şikayətə ciddi cavab verəcək.",
+      "level": 3
+    },
+    {
+      "word": "redeem",
+      "translation_az": "bərpa etmək",
+      "ipa": "/rɪˈdiːm/",
+      "example": "You can redeem your voucher for a free ticket.",
+      "example_az": "Siz vaucerinizi pulsuz biletə dəyişə bilərsiniz.",
+      "level": 3
+    },
+    {
+      "word": "refrain",
+      "translation_az": "çəkinmək",
+      "ipa": "/rɪˈfreɪn/",
+      "example": "I will refrain from commenting on this issue.",
+      "example_az": "Mən bu məsələ ilə bağlı şərh etməkdən çəkinəcəyəm.",
+      "level": 3
+    },
+    {
+      "word": "resume",
+      "translation_az": "bərpa etmək",
+      "ipa": "/ˌrɛzʊˈmeɪ/",
+      "example": "I will resume my studies after the summer break.",
+      "example_az": "Mən yay tətilindən sonra təhsilimə davam edəcəyəm.",
+      "level": 3
+    },
+    {
+      "word": "scorch",
+      "translation_az": "yandırmaq",
+      "ipa": "/skɔːrʃ/",
+      "example": "The sun will scorch the plants if you don't water them.",
+      "example_az": "Günəş bitkiləri su verməsən, yandıracaq.",
+      "level": 3
+    },
+    {
+      "word": "soothe",
+      "translation_az": "sakitləşdirmək",
+      "ipa": "/suːð/",
+      "example": "The music will soothe your nerves.",
+      "example_az": "Musiqi sinirinizi sakitləşdirəcək.",
+      "level": 3
+    },
+    {
+      "word": "sympathetic",
+      "translation_az": "həssas",
+      "ipa": "/ˌsɪmpəˈθɛtɪk/",
+      "example": "She is a sympathetic listener.",
+      "example_az": "O, həssas dinləyicidir.",
+      "level": 3
+    },
+    {
+      "word": "tempest",
+      "translation_az": "fırtına",
+      "ipa": "/ˈtɛm.pɛst/",
+      "example": "The tempest warning was issued for the coastal areas.",
+      "example_az": "Sahil zonaları üçün fırtına xəbərdarlığı verildi.",
+      "level": 3
+    },
+    {
+      "word": "abide",
+      "translation_az": "uyğun gəlmək",
+      "ipa": "/əˈbaɪd/",
+      "example": "The new employee will abide by the company rules.",
+      "example_az": "Yeni işçi şirkətin qaydalarına uyğun olacaq.",
+      "level": 3
+    },
+    {
+      "word": "deliberate",
+      "translation_az": "qəsdən",
+      "ipa": "/dɪˈlɪbərɪt/",
+      "example": "The company made a deliberate decision to expand into new markets.",
+      "example_az": "Şirkət yeni bazarlara genişlənmək qərarı verdi.",
+      "level": 3
+    },
+    {
+      "word": "drought",
+      "translation_az": "quraqlıq",
+      "ipa": "/draʊt/",
+      "example": "The drought has caused a severe water shortage in the region.",
+      "example_az": "Quraqlıq regionda su ehtiyatının kəskin azalması ilə nəticələndi.",
+      "level": 3
+    },
+    {
+      "word": "dwindle",
+      "translation_az": "azalmaq",
+      "ipa": "/ˈdwɪndəl/",
+      "example": "The company's profits will dwindle if they don't innovate.",
+      "example_az": "Şirkət yeniliklər gətirməsə, onların mənfəəti azalacaq.",
+      "level": 3
+    },
+    {
+      "word": "heed",
+      "translation_az": "diqqət yetirmək",
+      "ipa": "/hiːd/",
+      "example": "You should heed the warning signs and leave the area immediately.",
+      "example_az": "Xəbərdarlıq işarələrinə diqqət yetir və ərazini dərhal tərk et.",
+      "level": 3
+    },
+    {
+      "word": "heir",
+      "translation_az": "varis",
+      "ipa": "/ɛr/",
+      "example": "The prince is the heir to the throne.",
+      "example_az": "Şahzadə taxtın varisidir.",
+      "level": 3
+    },
+    {
+      "word": "majestic",
+      "translation_az": "əzəmətli",
+      "ipa": "/mæˈdʒɛstɪk/",
+      "example": "The majestic view from the summit took our breath away.",
+      "example_az": "Zirvədən açılan əzəmətli mənzərə bizə təsir etdi.",
+      "level": 3
+    },
+    {
+      "word": "summit",
+      "translation_az": "zirvə",
+      "ipa": "/ˈsʌmɪt/",
+      "example": "The team reached the summit after a challenging climb.",
+      "example_az": "Komanda çətin bir yüksəlişdən sonra zirvəyə çatdı.",
+      "level": 3
+    },
+    {
+      "word": "surplus",
+      "translation_az": "artıq",
+      "ipa": "/ˈsɜːrpləs/",
+      "example": "The company has a surplus of products, so they are offering discounts.",
+      "example_az": "Şirkət məhsulun artığını satmaq üçün endirimlər təklif edir.",
+      "level": 3
+    },
+    {
+      "word": "traitor",
+      "translation_az": "xəyanətkar",
+      "ipa": "/ˈtreɪtər/",
+      "example": "The traitor was caught and brought to justice.",
+      "example_az": "Xəyanətkar tutuldu və cəza aldı.",
+      "level": 3
+    },
+    {
+      "word": "unify",
+      "translation_az": "birləşdirmək",
+      "ipa": "/ˈjuːnɪfaɪ/",
+      "example": "The new policy aims to unify the different departments within the company.",
+      "example_az": "Yeni siyasət şirkət daxilində fərqli departamentləri birləşdirməyə yönəlir.",
+      "level": 3
+    },
+    {
+      "word": "vandal",
+      "translation_az": "vandal",
+      "ipa": "/ˈvændəl/",
+      "example": "The vandal was caught spray-painting graffiti on the building.",
+      "example_az": "Vandal binaya qraffiti çəkərkən tutuldu.",
+      "level": 3
+    },
+    {
+      "word": "biography",
+      "translation_az": "bioqrafiya",
+      "ipa": "/baɪˈɒɡrəfi/",
+      "example": "The famous writer wrote a biography about her life.",
+      "example_az": "Məşhur yazıçı öz həyatı haqqında bioqrafiya yazdı.",
+      "level": 3
+    },
+    {
+      "word": "charity",
+      "translation_az": "xeyriyyə",
+      "ipa": "/ˈtʃærɪti/",
+      "example": "The charity event raised a lot of money for the poor.",
+      "example_az": "Xeyriyyə tədbiri yoxsullar üçün çox pul topladı.",
+      "level": 3
+    },
+    {
+      "word": "dejected",
+      "translation_az": "məyus",
+      "ipa": "/dɪˈdʒektɪd/",
+      "example": "She felt dejected after losing her job.",
+      "example_az": "O, işini itirdikdən sonra məyus hiss etdi.",
+      "level": 3
+    },
+    {
+      "word": "drench",
+      "translation_az": "çəmənləmək",
+      "ipa": "/drɛntʃ/",
+      "example": "The heavy rain began to drench the city streets.",
+      "example_az": "Yağış şəhər küçələrini çəmənləməyə başladı.",
+      "level": 3
+    },
+    {
+      "word": "kneel",
+      "translation_az": "diz çökmək",
+      "ipa": "/niːl/",
+      "example": "She had to kneel to pick up the keys.",
+      "example_az": "O, açarları götürmək üçün diz çökməli oldu.",
+      "level": 3
+    },
+    {
+      "word": "obedient",
+      "translation_az": "itaətkar",
+      "ipa": "/əˈbiːdiənt/",
+      "example": "The obedient dog followed its owner everywhere.",
+      "example_az": "İtaətkar it, sahibini hər yerə izlədi.",
+      "level": 3
+    },
+    {
+      "word": "recede",
+      "translation_az": "geri çəkilmək",
+      "ipa": "/rɪˈsiːd/",
+      "example": "The flood waters began to recede after the storm.",
+      "example_az": "Daşqın suları fırtınadan sonra geri çəkilməyə başladı.",
+      "level": 3
+    },
+    {
+      "word": "swarm",
+      "translation_az": "dəstə",
+      "ipa": "/swɔːrm/",
+      "example": "A swarm of bees flew into the garden.",
+      "example_az": "Bal arılarının dəstəsi bağa uçdu.",
+      "level": 3
+    },
+    {
+      "word": "tumult",
+      "translation_az": "çəltik",
+      "ipa": "/ˈtjuːmʌlt/",
+      "example": "The news caused a tumult in the financial market.",
+      "example_az": "Xəbər, maliyyə bazarında çəltik yaratdı.",
+      "level": 3
+    },
+    {
+      "word": "tyrant",
+      "translation_az": "zalım",
+      "ipa": "/ˈtaɪrənt/",
+      "example": "The people suffered under the rule of the tyrant.",
+      "example_az": "Xalq, zalimin hökmranlığı altında əziyyət çəkdi.",
+      "level": 3
+    },
+    {
+      "word": "verdict",
+      "translation_az": "hökm",
+      "ipa": "/ˈvərdɪkt/",
+      "example": "The jury delivered a verdict of guilty.",
+      "example_az": "Həyat müddəti hökmü, məhkum edən hökmranlıqdan yaxa qurtarmaq asan deyil.",
+      "level": 3
+    },
+    {
+      "word": "wobble",
+      "translation_az": "titrəmək",
+      "ipa": "/ˈwɒbəl/",
+      "example": "The bike began to wobble on the uneven road.",
+      "example_az": "Velosiped, bərabərsiz yolda titrəməyə başladı.",
+      "level": 3
+    },
+    {
+      "word": "cancel",
+      "translation_az": "ləğv etmək",
+      "ipa": "/kænˈsɛl/",
+      "example": "If it rains, we will cancel the picnic.",
+      "example_az": "Əgər yağış yağarsa, pikniki ləğv edəcəyik.",
+      "level": 3
+    },
+    {
+      "word": "clergy",
+      "translation_az": "ruhanilər",
+      "ipa": "/ˈklɜːrdʒi/",
+      "example": "The clergy will perform the wedding ceremony.",
+      "example_az": "Ruhanilər toy mərasimini keçirəcəklər.",
+      "level": 3
+    },
+    {
+      "word": "coincide",
+      "translation_az": "əvvələ getmək",
+      "ipa": "/ˌkɔɪnˈsaɪd/",
+      "example": "The two events will coincide next week.",
+      "example_az": "İki hadisə növbəti həftə əvvələ gedəcək.",
+      "level": 3
+    },
+    {
+      "word": "contagious",
+      "translation_az": "yayılma",
+      "ipa": "/kənˈteɪdʒəs/",
+      "example": "The contagious laughter spread throughout the room.",
+      "example_az": "Yayılma gülmə otaq boyu yayıldı.",
+      "level": 3
+    },
+    {
+      "word": "customary",
+      "translation_az": "ənənəvi",
+      "ipa": "/ˈkʌstəməri/",
+      "example": "It is customary to tip the waiter in this restaurant.",
+      "example_az": "Bu restoranda ofisianta bahşış vermək ənənəvidir.",
+      "level": 3
+    },
+    {
+      "word": "debtor",
+      "translation_az": "borclu",
+      "ipa": "/dɛbˈtɔːr/",
+      "example": "The company is a debtor to the bank.",
+      "example_az": "Şirkət bankın borclусudur.",
+      "level": 3
+    },
+    {
+      "word": "depart",
+      "translation_az": "getmək",
+      "ipa": "/dɪˈpɑːrt/",
+      "example": "The train will depart from the station at 5 o'clock.",
+      "example_az": "Qatar stansiyadan saat 5-də getməyə hazırdır.",
+      "level": 3
+    },
+    {
+      "word": "legible",
+      "translation_az": "oxunaqlı",
+      "ipa": "/ˈlɛdʒɪbəl/",
+      "example": "The handwriting is legible, but the signature is not.",
+      "example_az": "Əl yazısı oxunaqlıdır, amma imza oxunaqlı deyil.",
+      "level": 3
+    },
+    {
+      "word": "placard",
+      "translation_az": "plakat",
+      "ipa": "/ˈplækɑːrd/",
+      "example": "The protesters carried a placard with a slogan.",
+      "example_az": "Etirazçılar şüarlı plakat daşıyırdılar.",
+      "level": 3
+    },
+    {
+      "word": "scald",
+      "translation_az": "qaynatmaq",
+      "ipa": "/skɔːld/",
+      "example": "Be careful not to scald yourself with hot water.",
+      "example_az": "İstiyə su ilə özünü qaynatmaqdan ehtiyatlı ol.",
+      "level": 3
+    },
+    {
+      "word": "transparent",
+      "translation_az": "şəffaf",
+      "ipa": "/trænˈspærənt/",
+      "example": "The company's policy is transparent and fair.",
+      "example_az": "Şirkətin siyasəti şəffaf və ədalətlidir.",
+      "level": 3
+    },
+    {
+      "word": "unearth",
+      "translation_az": "torpaqdan çıxarmaq",
+      "ipa": "/ʌnˈɜːrθ/",
+      "example": "The archaeologists will unearth the ancient city.",
+      "example_az": "Arxeoloqlar qədim şəhəri torpaqdan çıxaracaqlar.",
+      "level": 3
+    },
+    {
+      "word": "chiropractor",
+      "translation_az": "xiropraktor",
+      "ipa": "/ˌkaɪrəˈpræktər/",
+      "example": "The chiropractor helped me with my back pain.",
+      "example_az": "Xiropraktor mənə bel ağrım ilə kömək etdi.",
+      "level": 3
+    },
+    {
+      "word": "epidemic",
+      "translation_az": "epidemiya",
+      "ipa": "/ˌɛpɪˈdɛmɪk/",
+      "example": "The government took measures to prevent the epidemic from spreading.",
+      "example_az": "Hökumət epidemiyanın yayılmasını qarşısını almaq üçün tədbirlər gördü.",
+      "level": 3
+    },
+    {
+      "word": "jeopardize",
+      "translation_az": "təhlükəyə salaq",
+      "ipa": "/ˌdʒɛpərˈdaɪz/",
+      "example": "The delay in the project would jeopardize the entire investment.",
+      "example_az": "Layihədə olan gecikmə bütün investisiyanı təhlükəyə sala bilər.",
+      "level": 3
+    },
+    {
+      "word": "magnify",
+      "translation_az": "böyütmək",
+      "ipa": "/ˈmæɡnɪfaɪ/",
+      "example": "The telescope can magnify objects that are far away.",
+      "example_az": "Teleskop uzaqda olan obyektləri böyüdə bilər.",
+      "level": 3
+    },
+    {
+      "word": "municipal",
+      "translation_az": "bələdiyyə",
+      "ipa": "/mjuːˈnɪsɪpəl/",
+      "example": "The municipal government is responsible for maintaining the city's infrastructure.",
+      "example_az": "Bələdiyyə hökuməti şəhərin infrastrukturunu saxlamaqdan məsuldur.",
+      "level": 3
+    },
+    {
+      "word": "negative",
+      "translation_az": "mənfi",
+      "ipa": "/ˈnɛɡətɪv/",
+      "example": "The negative review of the hotel made me change my mind about booking a room.",
+      "example_az": "Otelin mənfi rəyi məni otaq ayırtmaq barədə fikrimi dəyişməyə məcbur etdi.",
+      "level": 3
+    },
+    {
+      "word": "obesity",
+      "translation_az": "artıq çəki",
+      "ipa": "/oʊˈbiːsɪti/",
+      "example": "The doctor warned me about the risks of obesity and recommended a healthy diet.",
+      "example_az": "Həkim mənə artıq çəkinin təhlükələri barədə xəbərdarlıq etdi və sağlam qidaya tövsiyə etdi.",
+      "level": 3
+    },
+    {
+      "word": "obstacle",
+      "translation_az": " maneə",
+      "ipa": "/ˈɒbstəkəl/",
+      "example": "The obstacle in the road made it difficult to drive.",
+      "example_az": "Yolda olan maneə sürməyə mane oldu.",
+      "level": 3
+    },
+    {
+      "word": "oral",
+      "translation_az": "ağız",
+      "ipa": "/ˈɔrəl/",
+      "example": "The oral exam was more challenging than the written one.",
+      "example_az": "Ağız imtahanı yazılı imtahandan daha çətin idi.",
+      "level": 3
+    },
+    {
+      "word": "pension",
+      "translation_az": "təqaüd",
+      "ipa": "/ˈpɛnʃən/",
+      "example": "After retiring, she started receiving her pension and could travel freely.",
+      "example_az": "Təqaüdə çıxdıqdan sonra, o təqaüdünü almağa başladı və sərbəst səyahət edə bildi.",
+      "level": 3
+    },
+    {
+      "word": "ventilate",
+      "translation_az": "hava ilə təmin etmək",
+      "ipa": "/ˈvɛntɪleɪt/",
+      "example": "The room needs to be ventilated to remove the bad smell.",
+      "example_az": "Otağın havası dəyişməli və pis iyin aradan qaldırılmalıdır.",
+      "level": 3
+    },
+    {
+      "word": "vital",
+      "translation_az": "həyatı",
+      "ipa": "/ˈvaɪtəl/",
+      "example": "The doctor said that the patient's vital signs were stable.",
+      "example_az": "Həkim xəstənin həyatı əhəmiyyətli əlamətlərinin sabit olduğunu dedi.",
+      "level": 3
+    },
+    {
+      "word": "complacent",
+      "translation_az": "özünü kifayət qarşısında hiss edən",
+      "ipa": "/kəmˈpleɪsnt/",
+      "example": "The team became complacent after winning several games in a row.",
+      "example_az": "Komanda ardıcıl bir neçə oyun qazandıqdan sonra özünü kifayət qarşısında hiss etməyə başladı.",
+      "level": 3
+    },
+    {
+      "word": "indifference",
+      "translation_az": "biganəlik",
+      "ipa": "/ˌɪndɪˈfɛrəns/",
+      "example": "The government's indifference to the environmental issue sparked widespread protests.",
+      "example_az": "Hökumətin ekoloji problemlərə biganəliyi genişmiqyaslı etirazlara səbəb oldu.",
+      "level": 3
+    },
+    {
+      "word": "morgue",
+      "translation_az": "mərhumxana",
+      "ipa": "/ˈmɔːrɡ/",
+      "example": "The body was taken to the morgue for an autopsy.",
+      "example_az": "Cəsəd otopsiya üçün mərhumxanaya aparıldı.",
+      "level": 3
+    },
+    {
+      "word": "multitude",
+      "translation_az": "çoxluq",
+      "ipa": "/ˈmʌltɪtuːd/",
+      "example": "A multitude of people attended the concert.",
+      "example_az": "Konsertə çoxlu insan qatıldı.",
+      "level": 3
+    },
+    {
+      "word": "nominate",
+      "translation_az": "namizəd göstərmək",
+      "ipa": "/ˈnɒmɪneɪt/",
+      "example": "She was nominated for the award for her outstanding performance.",
+      "example_az": "O, fərqlənməsi üçün mükafata namizəd göstərildi.",
+      "level": 3
+    },
+    {
+      "word": "parole",
+      "translation_az": "özünü idarə etmə",
+      "ipa": "/ˈpærəʊl/",
+      "example": "The prisoner was released on parole after serving five years.",
+      "example_az": "Məhbus beş il xidmət etdikdən sonra özünü idarə etmə şərti ilə azad edildi.",
+      "level": 3
+    },
+    {
+      "word": "potential",
+      "translation_az": "potensial",
+      "ipa": "/pəˈtɛnʃəl/",
+      "example": "The new employee has great potential for growth and development.",
+      "example_az": "Yeni işçi inkişaf və yetişmək üçün böyük potensiala malikdir.",
+      "level": 3
+    },
+    {
+      "word": "preoccupied",
+      "translation_az": "diqqəti cəlb olunmuş",
+      "ipa": "/ˌpriːɒkjʊˈpeɪtɪd/",
+      "example": "She was preoccupied with her thoughts and didn't notice the beautiful scenery.",
+      "example_az": "O, fikirləri ilə məşğul idi və gözəl mənzərəni görmədi.",
+      "level": 3
+    },
+    {
+      "word": "rehabilitate",
+      "translation_az": "reabilitasiya etmək",
+      "ipa": "/ˌriːhəˈbɪlɪteɪt/",
+      "example": "The goal of the program is to rehabilitate former prisoners and help them reintegrate into society.",
+      "example_az": "Proqramın məqsədi keçmiş məhbusları reabilitasiya etmək və cəmiyətə yenidən inteqrasiya edilməsinə kömək etməkdir.",
+      "level": 3
+    },
+    {
+      "word": "upholstery",
+      "translation_az": "mebel döşəmə",
+      "ipa": "/ʌˈpɒlstəri/",
+      "example": "The old armchair needed new upholstery to make it look more modern.",
+      "example_az": "Köhnə armchaira daha müasir görünməsi üçün yeni mebel döşəməsi lazımdı.",
+      "level": 3
+    },
+    {
+      "word": "vertical",
+      "translation_az": "şaquli",
+      "ipa": "/ˈvɜːtɪkl/",
+      "example": "The vertical garden on the side of the building was a beautiful sight.",
+      "example_az": "Binanın yanındakı şaquli bağ gözəl bir mənzərə idi.",
+      "level": 3
+    },
+    {
+      "word": "wasp",
+      "translation_az": "ərən",
+      "ipa": "/wɒsp/",
+      "example": "A wasp flew into the room and started buzzing around the flowers.",
+      "example_az": "Ərən otağa uçdu və güllər ətrafında zəngin səs çıxarmağa başladı.",
+      "level": 3
+    },
+    {
+      "word": "amend",
+      "translation_az": "dəyişdirmək",
+      "ipa": "/əˈmend/",
+      "example": "We need to amend the contract before signing it.",
+      "example_az": "Müqaviləni imzalamadan əvvəl onu dəyişdirməliyik.",
+      "level": 3
+    },
+    {
+      "word": "ballot",
+      "translation_az": "səsvermə",
+      "ipa": "/ˈbælət/",
+      "example": "The ballot box was sealed after the election.",
+      "example_az": "Səsvermə qutusu seçkidən sonra möhürləndi.",
+      "level": 3
+    },
+    {
+      "word": "drastic",
+      "translation_az": "kəskin",
+      "ipa": "/ˈdræstɪk/",
+      "example": "The company had to make drastic changes to stay in business.",
+      "example_az": "Şirkət işdə qalmaq üçün kəskin dəyişikliklər etməli oldu.",
+      "level": 3
+    },
+    {
+      "word": "endure",
+      "translation_az": "dözüm",
+      "ipa": "/ɛnˈdjʊər/",
+      "example": "She had to endure a long and difficult journey.",
+      "example_az": "O, uzun və çətin səyahətə dözməli oldu.",
+      "level": 3
+    },
+    {
+      "word": "expose",
+      "translation_az": "ifşa",
+      "ipa": "/ɛksˈpoʊz/",
+      "example": "The journalist tried to expose the government's secrets.",
+      "example_az": "Jurnalist hökumətin sirrlərini ifşa etməyə çalışdı.",
+      "level": 3
+    },
+    {
+      "word": "legend",
+      "translation_az": "əfsanə",
+      "ipa": "/ˈlɛdʒənd/",
+      "example": "The city was founded by a legend who became a hero.",
+      "example_az": "Şəhər qəhrəman olan bir əfsanə tərəfindən quruldu.",
+      "level": 3
+    },
+    {
+      "word": "maintain",
+      "translation_az": "saxlamaq",
+      "ipa": "/meɪnˈteɪn/",
+      "example": "It's hard to maintain a healthy diet while traveling.",
+      "example_az": "Səyahət əsnasında sağlam qida rejimini saxlamaq çətindir.",
+      "level": 3
+    },
+    {
+      "word": "ponder",
+      "translation_az": "düşünmək",
+      "ipa": "/ˈpɒndər/",
+      "example": "I need some time to ponder the decision.",
+      "example_az": "Qərar barədə düşünmək üçün mənə bir az vaxt lazımdır.",
+      "level": 3
+    },
+    {
+      "word": "resign",
+      "translation_az": "istefa",
+      "ipa": "/rɪˈzaɪn/",
+      "example": "She had to resign from her job due to health issues.",
+      "example_az": "O, səhhət problemləri səbəbiylə işindən istefa verməli oldu.",
+      "level": 3
+    },
+    {
+      "word": "snub",
+      "translation_az": "alçaltmaq",
+      "ipa": "/snʌb/",
+      "example": "She felt snubbed by her friends when they didn't invite her to the party.",
+      "example_az": "O, dostlarının onu partiyə dəvət etməməsi səbəbiylə alçaltıldığını hiss etdi.",
+      "level": 3
+    },
+    {
+      "word": "wharf",
+      "translation_az": "dəniz limanı",
+      "ipa": "/hwɔrf/",
+      "example": "The ship docked at the wharf in the early morning.",
+      "example_az": "Gəmi səhər tezən dəniz limanında dayandı.",
+      "level": 3
+    },
+    {
+      "word": "wrath",
+      "translation_az": "qəzəb",
+      "ipa": "/ræθ/",
+      "example": "The storm was a manifestation of nature's wrath.",
+      "example_az": "Fırtına təbiətin qəzəbinin bir göstəricisi idi.",
+      "level": 3
+    }
+  ]
+}

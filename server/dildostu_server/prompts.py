@@ -76,13 +76,25 @@ def preferred_providers(mode: Mode) -> list[str]:
     return ["claude", "groq"]
 
 
+# Yumşaq yönləndirmə — kontekstə uyğun söz həmişə prioritetdir, bu yalnız
+# bərabər şərtlərdə "sınaqdan keçmiş" ümumi sözə üstünlük vermək üçündür.
+# 504 sözün tam siyahısını prompt-a yükləmirik (əksəriyyəti "cafe"/"airport"
+# kimi konkret kontekstlərə uyğun gəlmir) — bax essential_words.py.
+_ESSENTIAL_NUDGE = (
+    'Mümkün olduqda, "504 Essential Words" (Barron\'s) kimi sınaqdan keçmiş '
+    "mənbələrdəki ən çox işlənən, gündəlik lüğətdən söz seç — amma bu, "
+    "kontekstə uyğunluqdan vacib DEYİL: situasiyaya ən yaxşı uyğun gələn "
+    "sözü seçməyə davam et."
+)
+
+
 def _profile_line(profile: UserProfile) -> str:
     """Profil sətri + seçilmiş səviyyənin konkret qaydaları (spec §2)."""
     interests = ", ".join(profile.interests) if profile.interests else "yoxdur"
     return (
         f"İstifadəçi profili: məqsəd={profile.purpose} "
         f"({_PURPOSE_AZ[profile.purpose]}), maraqlar: {interests}.\n"
-        f"{level_instruction(profile.level)}"
+        f"{level_instruction(profile.level)}\n{_ESSENTIAL_NUDGE}"
     )
 
 

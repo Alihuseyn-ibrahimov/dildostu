@@ -4,8 +4,10 @@ import 'package:http/http.dart' as http;
 
 import '../engine/level_content.dart';
 import '../models/live_message.dart';
+import '../models/pack.dart';
 import '../models/user_profile.dart';
 import '../models/word.dart';
+import 'essential_words_repository.dart';
 import 'pack_repository.dart';
 
 const _timeout = Duration(seconds: 5);
@@ -18,11 +20,17 @@ class LiveContentClient {
   LiveContentClient({
     required this.baseUrl,
     required this.fallbackRepo,
+    this.essentialFallback,
     http.Client? httpClient,
   }) : _http = httpClient ?? http.Client();
 
   final String baseUrl;
   final PackRepository fallbackRepo;
+
+  /// "Əsas lüğət" üçün offline nüsxə (bax `EssentialWordsRepository`) — server
+  /// əlçatmaz olanda bu istifadə olunur. Null olsa (məs. testdə) offline halda
+  /// boş nəticə qaytarılır, xəta atılmır.
+  final EssentialWordsRepository? essentialFallback;
   final http.Client _http;
 
   Future<LiveMessage> generate({
@@ -94,9 +102,9 @@ class LiveContentClient {
   /// 504 sabit söz bankından (Əsas lüğət) növbəti dəst — səviyyəyə uyğun,
   /// `offset`-dən başlayaraq dövriyyəli (bank sonunda yenidən əvvələ qayıdır).
   ///
-  /// Statik fallback YOXDUR (bu paketin tərcümə/nümunəsi yalnız AI ilə
-  /// yaradılır) — server əlçatmaz olsa çağıran ekran xəta göstərib
-  /// "Yenidən cəhd et" təklif edir.
+  /// Server/internet əlçatmaz olsa `essentialFallback`-dakı əvvəlcədən
+  /// hazırlanmış (bir dəfəlik AI ilə yaradılmış) statik nüsxəyə düşür — eyni
+  /// səhifələmə qaydası (offset/total/nextOffset) ilə, ekran fərqi bilmir.
   Future<
       ({
         List<LiveMessage> words,
@@ -107,28 +115,56 @@ class LiveContentClient {
     int offset = 0,
     int count = 12,
   }) async {
-    final resp = await _http
-        .post(
-          Uri.parse('$baseUrl/essential-words'),
-          headers: const {'Content-Type': 'application/json'},
-          body: jsonEncode({
-            'profile': profile.toServerJson(),
-            'offset': offset,
-            'count': count,
-          }),
-        )
-        // Siyahı generasiyası tək sözdən uzun çəkir.
-        .timeout(const Duration(seconds: 25));
-    if (resp.statusCode != 200) {
-      throw StateError('Əsas lüğət yüklənmədi (${resp.statusCode})');
+    try {
+      final resp = await _http
+          .post(
+            Uri.parse('$baseUrl/essential-words'),
+            headers: const {'Content-Type': 'application/json'},
+            body: jsonEncode({
+              'profile': profile.toServerJson(),
+              'offset': offset,
+              'count': count,
+            }),
+          )
+          // Siyahı generasiyası tək sözdən uzun çəkir.
+          .timeout(const Duration(seconds: 25));
+      if (resp.statusCode != 200) {
+        return _essentialFallbackSlice(profile.level, offset, count);
+      }
+      final body =
+          jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
+      final raw = (body['words'] as List).cast<Map<String, dynamic>>();
+      if (raw.isEmpty) return _essentialFallbackSlice(profile.level, offset, count);
+      return (
+        words: [for (final w in raw) LiveMessage.fromServerJson(w)],
+        total: body['total'] as int,
+        nextOffset: body['next_offset'] as int,
+      );
+    } catch (_) {
+      return _essentialFallbackSlice(profile.level, offset, count);
     }
-    final body =
-        jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
-    final raw = (body['words'] as List).cast<Map<String, dynamic>>();
+  }
+
+  /// Offline asset-dən eyni səhifələmə qaydası ilə dəst çıxarır (server ilə
+  /// eyni sözlər — hər ikisi `essential_words.py`-nin sabit siyahısından gəlir).
+  ({List<LiveMessage> words, int total, int nextOffset})
+      _essentialFallbackSlice(ProficiencyLevel level, int offset, int count) {
+    final Pack? pack = essentialFallback?.pack;
+    if (pack == null || pack.words.isEmpty) {
+      return (words: const <LiveMessage>[], total: 0, nextOffset: 0);
+    }
+    final matches = wordsForLevel(pack, level);
+    final total = matches.length;
+    if (total == 0) return (words: const <LiveMessage>[], total: 0, nextOffset: 0);
+    final start = offset % total;
+    final end = start + count;
+    final slice = end <= total
+        ? matches.sublist(start, end)
+        : [...matches.sublist(start), ...matches.sublist(0, end - total)];
     return (
-      words: [for (final w in raw) LiveMessage.fromServerJson(w)],
-      total: body['total'] as int,
-      nextOffset: body['next_offset'] as int,
+      words: [for (final w in slice) LiveMessage.fromWord(w, 'essential')],
+      total: total,
+      nextOffset: (start + count) % total,
     );
   }
 

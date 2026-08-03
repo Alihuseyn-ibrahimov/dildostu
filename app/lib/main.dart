@@ -10,6 +10,7 @@ import 'src/data/auth_client.dart';
 import 'src/data/auth_repository.dart';
 import 'src/data/chat_client.dart';
 import 'src/data/device_id_repository.dart';
+import 'src/data/essential_words_repository.dart';
 import 'src/data/geofence_cooldown_repository.dart';
 import 'src/data/live_content_client.dart';
 import 'src/data/manual_context_repository.dart';
@@ -296,9 +297,16 @@ class _BootstrapState extends State<_Bootstrap> {
 
   Future<_AppData> _bootstrap() async {
     final packs = await PackRepository.loadFromAssets();
+    // "Əsas lüğət" offline nüsxəsi — asset korlanıbsa/yoxdursa səssiz keçir,
+    // sadəcə offline halda bu paket boş qalır (server yenə işləyir).
+    EssentialWordsRepository? essentialFallback;
+    try {
+      essentialFallback = await EssentialWordsRepository.loadFromAssets();
+    } catch (_) {}
     _live = LiveContentClient(
       baseUrl: AppConfig.serverBaseUrl,
       fallbackRepo: packs,
+      essentialFallback: essentialFallback,
     );
     final reviews = await ReviewRepository.load();
     final settings = await SettingsRepository.load();

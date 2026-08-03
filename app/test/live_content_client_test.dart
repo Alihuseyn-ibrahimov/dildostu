@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dildostu/src/data/essential_words_repository.dart';
 import 'package:dildostu/src/data/live_content_client.dart';
 import 'package:dildostu/src/data/pack_repository.dart';
 import 'package:dildostu/src/models/user_profile.dart';
@@ -255,15 +256,84 @@ void main() {
       expect(body!['profile']['level'], 'beginner');
     });
 
-    test('server xətası → StateError atır (statik fallback yoxdur)', () async {
+    test('essentialFallback yoxdursa server xətası → boş nəticə (atmır)',
+        () async {
       final mock = MockClient((req) async => http.Response('err', 502));
       final client = LiveContentClient(
         baseUrl: 'http://x', httpClient: mock, fallbackRepo: _repo(),
       );
-      expect(
-        () => client.essentialWords(profile: _profile),
-        throwsA(isA<StateError>()),
+      final result = await client.essentialWords(profile: _profile);
+      expect(result.words, isEmpty);
+      expect(result.total, 0);
+    });
+
+    test('server 502 → offline statik nüsxədən eyni səhifələmə ilə qaytarır',
+        () async {
+      final mock = MockClient((req) async => http.Response('err', 502));
+      final client = LiveContentClient(
+        baseUrl: 'http://x',
+        httpClient: mock,
+        fallbackRepo: _repo(),
+        essentialFallback: _essentialRepo(),
       );
+      final result = await client.essentialWords(
+          profile: _profile, offset: 0, count: 2);
+      expect(result.words, hasLength(2));
+      expect(result.words.first.word, 'abandon');
+      expect(result.words.first.isLive, isFalse);
+      expect(result.words.first.packId, 'essential');
+      expect(result.total, 3);
+      expect(result.nextOffset, 2);
+    });
+
+    test('şəbəkə istisnası → offline statik nüsxəyə düşür', () async {
+      final mock = MockClient((req) async => throw Exception('network'));
+      final client = LiveContentClient(
+        baseUrl: 'http://x',
+        httpClient: mock,
+        fallbackRepo: _repo(),
+        essentialFallback: _essentialRepo(),
+      );
+      final result =
+          await client.essentialWords(profile: _profile, count: 2);
+      expect(result.words, isNotEmpty);
+      expect(result.words.every((w) => !w.isLive), isTrue);
+    });
+
+    test('offline halda offset dövr edir (wraparound)', () async {
+      final mock = MockClient((req) async => http.Response('err', 502));
+      final client = LiveContentClient(
+        baseUrl: 'http://x',
+        httpClient: mock,
+        fallbackRepo: _repo(),
+        essentialFallback: _essentialRepo(),
+      );
+      final result = await client.essentialWords(
+          profile: _profile, offset: 2, count: 2);
+      expect(result.words.map((w) => w.word), ['tact', 'abandon']);
+      expect(result.nextOffset, 1);
     });
   });
 }
+
+EssentialWordsRepository _essentialRepo() =>
+    EssentialWordsRepository.fromJsonString(jsonEncode({
+      'pack_id': 'essential',
+      'target_lang': 'en',
+      'ui_lang': 'az',
+      'title_az': 'Əsas lüğət',
+      'words': [
+        {
+          'word': 'abandon', 'translation_az': 'tərk etmək', 'ipa': '/ə/',
+          'example': 'x', 'example_az': 'x', 'level': 1,
+        },
+        {
+          'word': 'keen', 'translation_az': 'həvəsli', 'ipa': '/k/',
+          'example': 'x', 'example_az': 'x', 'level': 1,
+        },
+        {
+          'word': 'tact', 'translation_az': 'takt', 'ipa': '/t/',
+          'example': 'x', 'example_az': 'x', 'level': 1,
+        },
+      ],
+    }));

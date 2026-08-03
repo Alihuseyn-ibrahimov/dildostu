@@ -52,6 +52,13 @@ class TestGeneratePrompt:
         )
         assert "json" in user.lower()
 
+    def test_nudges_toward_essential_vocabulary(self):
+        _, user = build_generate_prompt(
+            profile(), Context(pack_id="cafe", hour=9), mode="normal", recent_words=[]
+        )
+        assert "504" in user
+        assert "kontekstə uyğunluqdan vacib" in user
+
 
 class TestLevelInstruction:
     """Spec §2 — hər səviyyə AI-ya konkret, fərqli təlimat verməlidir."""
