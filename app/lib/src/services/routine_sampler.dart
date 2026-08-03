@@ -1,8 +1,10 @@
 import 'package:workmanager/workmanager.dart';
 
 import '../config.dart';
+import '../data/auth_repository.dart';
 import '../data/device_id_repository.dart';
 import '../data/geofence_cooldown_repository.dart';
+import '../data/place_client.dart';
 import '../data/routine_client.dart';
 import '../data/user_profile_repository.dart';
 import '../engine/geofence_logic.dart';
@@ -55,9 +57,17 @@ void callbackDispatcher() {
         return true;
       }
 
+      // Giriş yoxdursa (çıxış edilib/token silinib) fon toplaması olmamalıdır —
+      // fon izolatında naviqasiya mümkün deyil, ona görə sadəcə səssiz keçir.
+      final auth = await AuthRepository.load();
+      if (!auth.isLoggedIn) return true;
+      final token = auth.token!;
+
       final deviceId = (await DeviceIdRepository.load()).deviceId;
-      final location = LocationService();
-      final client = RoutineClient(baseUrl: AppConfig.serverBaseUrl);
+      final location = LocationService(
+        placeClient: PlaceClient(baseUrl: AppConfig.serverBaseUrl, token: token),
+      );
+      final client = RoutineClient(baseUrl: AppConfig.serverBaseUrl, token: token);
       final sample = await takeRoutineSample(
         resolve: location.resolveNearbySample,
         client: client,
@@ -73,7 +83,7 @@ void callbackDispatcher() {
         await checkGeofenceArrival(
           lat: sample.lat,
           lng: sample.lng,
-          fetchGeofences: () => client.fetchGeofences(deviceId),
+          fetchGeofences: client.fetchGeofences,
           getLastNotified: cooldown.lastNotifiedAt,
           markNotified: cooldown.markNotified,
           notify: (packId, label) =>

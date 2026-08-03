@@ -28,4 +28,11 @@ class UserProfileRepository {
     current = profile;
     await _prefs.setString(_prefsKey, jsonEncode(profile.toJson()));
   }
+
+  /// Yaddaşdakı profili silir. Server profil qaytarmadıqda (yeni hesab və ya
+  /// eyni cihazda fərqli istifadəçi) köhnə profilin sızmasının qarşısını alır.
+  Future<void> clear() async {
+    current = null;
+    await _prefs.remove(_prefsKey);
+  }
 }

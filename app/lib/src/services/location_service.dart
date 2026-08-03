@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
-import '../config.dart';
 import '../data/place_client.dart';
 import '../engine/osm_place_mapping.dart';
 
@@ -19,11 +18,13 @@ const _requestTimeout = Duration(seconds: 8);
 /// Server yer tapmasa/əlçatmaz olsa OpenStreetMap Overpass ehtiyat qalır.
 /// Bütün xəta halları (icazə/internet/timeout) sakitcə `null` qaytarır —
 /// ContextEngine bu halda vaxt qaydasına düşür, app sınmır.
+///
+/// Faza 3: `/place/resolve` giriş tələb etdiyi üçün `placeClient` MƏCBURİDİR —
+/// çağıran tərəf cari sessiyanın tokeni ilə qurulmuş `PlaceClient` ötürməlidir.
 class LocationService {
-  LocationService({http.Client? httpClient, PlaceClient? placeClient})
+  LocationService({required PlaceClient placeClient, http.Client? httpClient})
       : _http = httpClient ?? http.Client(),
-        _place = placeClient ??
-            PlaceClient(baseUrl: AppConfig.serverBaseUrl);
+        _place = placeClient;
 
   final http.Client _http;
   final PlaceClient _place;

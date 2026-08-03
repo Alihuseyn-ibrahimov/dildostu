@@ -36,7 +36,7 @@ void main() {
         body = jsonDecode(req.body) as Map<String, dynamic>;
         return http.Response('{"ok":true}', 200);
       });
-      final client = RoutineClient(baseUrl: 'http://x', httpClient: mock);
+      final client = RoutineClient(baseUrl: 'http://x', token: 'tok1', httpClient: mock);
       await takeRoutineSample(
         resolve: () async =>
             (lat: 40.37, lng: 49.83, packId: 'cafe', place: 'Kafe Nur'),
@@ -54,7 +54,7 @@ void main() {
         called = true;
         return http.Response('{"ok":true}', 200);
       });
-      final client = RoutineClient(baseUrl: 'http://x', httpClient: mock);
+      final client = RoutineClient(baseUrl: 'http://x', token: 'tok1', httpClient: mock);
       await takeRoutineSample(
         resolve: () async => null,
         client: client,

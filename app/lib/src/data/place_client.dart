@@ -16,13 +16,21 @@ class PlaceResult {
 /// Koordinatı serverə göndərir; server Foursquare ilə yaxın yeri tapıb paket
 /// kimliyini qaytarır (API açarı serverdə qalır — app-a düşmür).
 ///
-/// Bütün xəta halları (404 = yer yoxdur, şəbəkə, timeout) sakitcə `null`
-/// qaytarır — çağıran tərəf OSM fallback-a keçir və ya vaxt qaydasına düşür.
+/// Faza 2: endpoint `Authorization: Bearer <token>` tələb edir. Bütün xəta
+/// halları (401/404/şəbəkə/timeout) sakitcə `null` qaytarır — çağıran tərəf
+/// OSM fallback-a keçir və ya vaxt qaydasına düşür. 401-də əlavə olaraq
+/// `onUnauthorized` çağırılır (main.dart giriş ekranına qaytarmaq üçün işlədir).
 class PlaceClient {
-  PlaceClient({required this.baseUrl, http.Client? httpClient})
-      : _http = httpClient ?? http.Client();
+  PlaceClient({
+    required this.baseUrl,
+    required this.token,
+    http.Client? httpClient,
+    this.onUnauthorized,
+  }) : _http = httpClient ?? http.Client();
 
   final String baseUrl;
+  final String token;
+  final void Function()? onUnauthorized;
   final http.Client _http;
 
   Future<PlaceResult?> resolve(double lat, double lng) async {
@@ -30,10 +38,14 @@ class PlaceClient {
       final resp = await _http
           .post(
             Uri.parse('$baseUrl/place/resolve'),
-            headers: const {'Content-Type': 'application/json'},
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+            },
             body: jsonEncode({'lat': lat, 'lng': lng}),
           )
           .timeout(_timeout);
+      if (resp.statusCode == 401) onUnauthorized?.call();
       if (resp.statusCode != 200) return null;
       final body =
           jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;

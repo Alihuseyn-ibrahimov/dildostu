@@ -6,12 +6,16 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import 'src/config.dart';
 import 'src/data/app_update_client.dart';
+import 'src/data/auth_client.dart';
+import 'src/data/auth_repository.dart';
 import 'src/data/chat_client.dart';
 import 'src/data/device_id_repository.dart';
 import 'src/data/geofence_cooldown_repository.dart';
 import 'src/data/live_content_client.dart';
 import 'src/data/manual_context_repository.dart';
 import 'src/data/pack_repository.dart';
+import 'src/data/place_client.dart';
+import 'src/data/profile_client.dart';
 import 'src/data/review_repository.dart';
 import 'src/data/routine_client.dart';
 import 'src/data/settings_repository.dart';
@@ -30,8 +34,7 @@ import 'src/services/speaker.dart';
 import 'src/ui/chat_screen.dart';
 import 'src/ui/home_tab.dart';
 import 'src/ui/learned_places_screen.dart';
-import 'src/ui/word_detail_screen.dart';
-import 'src/ui/word_list_screen.dart';
+import 'src/ui/login_screen.dart';
 import 'src/ui/main_shell.dart';
 import 'src/ui/manual_mode_screen.dart';
 import 'src/ui/onboarding_screen.dart';
@@ -40,6 +43,8 @@ import 'src/ui/progress_tab.dart';
 import 'src/ui/routine_permission_screen.dart';
 import 'src/ui/settings_screen.dart';
 import 'src/ui/theme.dart';
+import 'src/ui/word_detail_screen.dart';
+import 'src/ui/word_list_screen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -62,7 +67,63 @@ class DilDostuApp extends StatelessWidget {
       title: 'DilDostu',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
-      home: const _Bootstrap(),
+      home: const _AuthGate(),
+    );
+  }
+}
+
+/// Giriş qapısı — token varsa əsas app-ı (`_Bootstrap`), yoxdursa
+/// `LoginScreen`-i göstərir. Çıxış/401 halında `setState` ilə geri
+/// `LoginScreen`-ə qayıdır (spec: Faza 3, "hər kəs öz kabinetini yaradıb
+/// daxil olsun").
+class _AuthGate extends StatefulWidget {
+  const _AuthGate();
+
+  @override
+  State<_AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<_AuthGate> {
+  late final Future<AuthRepository> _future;
+  final AuthClient _authClient = AuthClient(baseUrl: AppConfig.serverBaseUrl);
+
+  @override
+  void initState() {
+    super.initState();
+    _future = AuthRepository.load();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<AuthRepository>(
+      future: _future,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        }
+        final auth = snapshot.data!;
+        if (!auth.isLoggedIn) {
+          return LoginScreen(
+            register: _authClient.register,
+            login: _authClient.login,
+            onAuthenticated: (token, email) {
+              auth.setSession(token: token, email: email).then((_) {
+                if (mounted) setState(() {});
+              });
+            },
+          );
+        }
+        // `key` — istifadəçi dəyişəndə (çıxış→başqa hesaba giriş) _Bootstrap
+        // tam təzədən qurulsun, köhnə sessiyanın state-i sızmasın.
+        return _Bootstrap(
+          key: ValueKey(auth.token),
+          auth: auth,
+          authClient: _authClient,
+          onLoggedOut: () {
+            if (mounted) setState(() {});
+          },
+        );
+      },
     );
   }
 }
@@ -87,7 +148,18 @@ class _AppData {
 /// Repository-ləri yükləyir, profil yoxdursa onboarding göstərir, bildirişləri
 /// planlaşdırır. Paket/bildiriş tıklaması canlı AI kartı açır (offline fallback).
 class _Bootstrap extends StatefulWidget {
-  const _Bootstrap();
+  const _Bootstrap({
+    super.key,
+    required this.auth,
+    required this.authClient,
+    required this.onLoggedOut,
+  });
+
+  final AuthRepository auth;
+  final AuthClient authClient;
+
+  /// Çıxış/hesab silmə/401 sonrası çağırılır — `_AuthGate`-i yenidən qurur.
+  final VoidCallback onLoggedOut;
 
   @override
   State<_Bootstrap> createState() => _BootstrapState();
@@ -97,22 +169,67 @@ class _BootstrapState extends State<_Bootstrap> {
   late final Future<_AppData> _future;
   final Speaker _speaker = TtsSpeaker();
   final NotificationService _notifications = NotificationService();
-  final LocationService _location = LocationService();
   final BatteryOptimizationService _battery = BatteryOptimizationService();
+  late final LocationService _location;
   late final LiveContentClient _live;
   final ChatClient _chat = ChatClient(baseUrl: AppConfig.serverBaseUrl);
-  final RoutineClient _routine = RoutineClient(baseUrl: AppConfig.serverBaseUrl);
+  late final RoutineClient _routine;
+  final ProfileClient _profileClient = ProfileClient(baseUrl: AppConfig.serverBaseUrl);
   final AppUpdateClient _updateClient =
       AppUpdateClient(baseUrl: AppConfig.serverBaseUrl);
   AppVersionInfo? _availableUpdate;
   String? _updateApkPath;
   String? _buildLabel;
+  bool _loggingOut = false;
+
+  String get _token => widget.auth.token!;
 
   @override
   void initState() {
     super.initState();
+    _routine = RoutineClient(
+      baseUrl: AppConfig.serverBaseUrl,
+      token: _token,
+      onUnauthorized: _forceLogout,
+    );
+    _location = LocationService(
+      placeClient: PlaceClient(
+        baseUrl: AppConfig.serverBaseUrl,
+        token: _token,
+        onUnauthorized: _forceLogout,
+      ),
+    );
     _future = _bootstrap();
     _checkForUpdate(); // fire-and-forget — açılışı bloklamır
+  }
+
+  /// Token vaxtı keçib/hesab silinibsə (server 401 versə) sessiyanı bağlayıb
+  /// giriş ekranına qaytarır. Bir neçə client eyni anda 401 alsa belə
+  /// təhlükəsizdir (logout/onLoggedOut idempotentdir).
+  void _forceLogout() {
+    if (_loggingOut) return;
+    _loggingOut = true;
+    widget.auth.logout().then((_) => widget.onLoggedOut());
+  }
+
+  Future<void> _logout() async {
+    await widget.auth.logout();
+    widget.onLoggedOut();
+  }
+
+  Future<void> _deleteAccount() async {
+    try {
+      await widget.authClient.deleteAccount(_token);
+    } on AuthException catch (e) {
+      final ctx = navigatorKey.currentContext;
+      if (ctx != null && ctx.mounted) {
+        ScaffoldMessenger.of(ctx)
+            .showSnackBar(SnackBar(content: Text(e.message)));
+      }
+      return;
+    }
+    await widget.auth.logout();
+    widget.onLoggedOut();
   }
 
   /// Serverdə yeni versiya varsa arxa planda yükləyir; nəticə HomeScreen-də
@@ -171,6 +288,20 @@ class _BootstrapState extends State<_Bootstrap> {
     final manualContext = await ManualContextRepository.load();
     final profileRepo = await UserProfileRepository.load();
     final deviceId = (await DeviceIdRepository.load()).deviceId;
+
+    // Server profili tək mənbədir (spec: hər istifadəçi üçün ayrıca AI
+    // yanaşması) — hər girişdə yenidən çəkilir ki, eyni cihazda fərqli
+    // istifadəçi daxil olanda əvvəlki istifadəçinin profili sızmasın.
+    final serverProfile = await _profileClient.fetch(_token);
+    if (serverProfile != null) {
+      await profileRepo.save(serverProfile);
+    } else {
+      await profileRepo.clear();
+    }
+
+    // Bu cihazda giriş edilmədən (köhnə buraxılışda) toplanmış anonim
+    // nümunələr varsa hesaba bağla.
+    await _routine.claimDevice(deviceId);
 
     await _notifications.init(onTap: _openLive);
 
@@ -231,7 +362,7 @@ class _BootstrapState extends State<_Bootstrap> {
       await checkGeofenceArrival(
         lat: sample.lat,
         lng: sample.lng,
-        fetchGeofences: () => _routine.fetchGeofences(deviceId),
+        fetchGeofences: _routine.fetchGeofences,
         getLastNotified: cooldown.lastNotifiedAt,
         markNotified: cooldown.markNotified,
         notify: (packId, label) =>
@@ -322,7 +453,7 @@ class _BootstrapState extends State<_Bootstrap> {
   void _openLearnedPlaces(_AppData data) {
     navigatorKey.currentState?.push(MaterialPageRoute(
       builder: (_) => LearnedPlacesScreen(
-        loader: () => _routine.fetchSummary(data.deviceId),
+        loader: _routine.fetchSummary,
         labelFor: (id) => data.packs.byId(id)?.titleAz ?? id,
         onOpenPermission: () => _openRoutinePermission(data),
       ),
@@ -374,12 +505,15 @@ class _BootstrapState extends State<_Bootstrap> {
     ));
   }
 
-  /// Ana səhifədəki çətinlik seçicisi — profilə saxlanır və dərhal tətbiq
-  /// olunur (növbəti AI sorğusu yeni səviyyə ilə gedir, spec §1).
+  /// Ana səhifədəki çətinlik seçicisi — profilə saxlanır (lokal keş + server)
+  /// və dərhal tətbiq olunur (növbəti AI sorğusu yeni səviyyə ilə gedir,
+  /// spec §1).
   Future<void> _changeLevel(_AppData data, ProficiencyLevel level) async {
     final current = data.profileRepo.current;
     if (current == null || current.level == level) return;
-    await data.profileRepo.save(current.copyWith(level: level));
+    final updated = current.copyWith(level: level);
+    await data.profileRepo.save(updated);
+    await _profileClient.save(_token, updated);
     if (mounted) setState(() {});
   }
 
@@ -428,6 +562,7 @@ class _BootstrapState extends State<_Bootstrap> {
           return OnboardingScreen(
             onComplete: (profile) async {
               await data.profileRepo.save(profile);
+              await _profileClient.save(_token, profile);
               if (mounted) setState(() {});
             },
           );
@@ -460,6 +595,9 @@ class _BootstrapState extends State<_Bootstrap> {
             onOpenLearned: () => _openLearnedPlaces(data),
             onOpenRoutine: () => _openRoutinePermission(data),
             onTestNotification: () => _testNotification(data),
+            email: widget.auth.email ?? '',
+            onLogout: _logout,
+            onDeleteAccount: _deleteAccount,
           ),
         );
       },
