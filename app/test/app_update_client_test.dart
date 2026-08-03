@@ -60,6 +60,29 @@ void main() {
     await dir.delete(recursive: true);
   });
 
+  test('downloadApk yükləmə gedişatını bildirir (onProgress)', () async {
+    final chunk = List.filled(1000, 1);
+    final fake = _StreamingFakeClient(
+      List.generate(5, (_) => chunk),
+      statusCode: 200,
+    );
+    final client = AppUpdateClient(baseUrl: 'http://x', httpClient: fake);
+    final dir = await Directory.systemTemp.createTemp('dildostu_test_');
+    final dest = '${dir.path}${Platform.pathSeparator}update.apk';
+
+    final received = <int>[];
+    int? reportedTotal;
+    await client.downloadApk(dest, onProgress: (got, total) {
+      received.add(got);
+      reportedTotal = total;
+    });
+
+    // Hər çanaqdan sonra artan ölçü bildirilir (UI faizi buradan hesablayır).
+    expect(received, [1000, 2000, 3000, 4000, 5000]);
+    expect(reportedTotal, 5000);
+    await dir.delete(recursive: true);
+  });
+
   test('404 → null qaytarır, fayl yaranmır', () async {
     final mock = MockClient((req) async => http.Response('not found', 404));
     final client = AppUpdateClient(baseUrl: 'http://x', httpClient: mock);
@@ -94,6 +117,12 @@ class _StreamingFakeClient extends http.BaseClient {
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
-    return http.StreamedResponse(Stream.fromIterable(chunks), statusCode);
+    // `contentLength` real serverin `Content-Length` başlığını təqlid edir —
+    // UI faizi bundan hesablanır (canlıda yoxlanılıb: 157808908 bayt).
+    return http.StreamedResponse(
+      Stream.fromIterable(chunks),
+      statusCode,
+      contentLength: chunks.fold<int>(0, (sum, c) => sum + c.length),
+    );
   }
 }

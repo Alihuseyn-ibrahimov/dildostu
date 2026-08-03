@@ -39,13 +39,21 @@ class AppUpdateClient {
 
   /// APK-nı `destPath`-ə yükləyir; uğursuzsa null qaytarır (atmır).
   ///
-  /// AXIN kimi yüklənir (`send()` + `stream.pipe`), `get()...bodyBytes` YOX —
+  /// AXIN kimi yüklənir (`send()` + çanaq-çanaq yazma), `get()...bodyBytes` YOX —
   /// APK 150+ MB olduğu üçün bütün faylı yaddaşa yükləmək telefonda (xüsusən
   /// zəif cihazlarda) səssiz OOM-a səbəb ola bilirdi: xəta `catch`-ə düşür,
   /// "Yenilə" zolağı heç görünmürdü, amma heç bir xəta da göstərilmirdi.
-  Future<String?> downloadApk(String destPath) async {
+  ///
+  /// `onProgress(received, total)` hər çanaqdan sonra çağırılır (`total` server
+  /// `Content-Length` verməsə null) — UI faizi göstərsin deyə: uzun yükləmə
+  /// zamanı istifadəçi nəyinsə baş verdiyini görməlidir.
+  Future<String?> downloadApk(
+    String destPath, {
+    void Function(int received, int? total)? onProgress,
+  }) async {
     try {
-      return await _downloadStreamed(destPath).timeout(_downloadTimeout);
+      return await _downloadStreamed(destPath, onProgress)
+          .timeout(_downloadTimeout);
     } catch (_) {
       // Yarımçıq fayl qalmasın — sonra quraşdırma cəhdi anlaşılmaz xəta versin.
       try {
@@ -56,11 +64,26 @@ class AppUpdateClient {
     }
   }
 
-  Future<String?> _downloadStreamed(String destPath) async {
+  Future<String?> _downloadStreamed(
+    String destPath,
+    void Function(int received, int? total)? onProgress,
+  ) async {
     final request = http.Request('GET', Uri.parse('$baseUrl/app/latest.apk'));
     final streamed = await _http.send(request);
     if (streamed.statusCode != 200) return null;
-    await streamed.stream.pipe(File(destPath).openWrite());
+    final total = streamed.contentLength;
+    var received = 0;
+    final sink = File(destPath).openWrite();
+    try {
+      await for (final chunk in streamed.stream) {
+        sink.add(chunk);
+        received += chunk.length;
+        onProgress?.call(received, total);
+      }
+      await sink.flush();
+    } finally {
+      await sink.close();
+    }
     return destPath;
   }
 }

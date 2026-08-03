@@ -27,6 +27,8 @@ class HomeTab extends StatelessWidget {
     this.resolveLivePlace,
     this.availableUpdate,
     this.onInstallUpdate,
+    this.updateStage = UpdateStage.available,
+    this.updateProgress,
     this.onOpenEssentialWords,
     this.now,
   });
@@ -51,6 +53,10 @@ class HomeTab extends StatelessWidget {
   final AppVersionInfo? availableUpdate;
   final VoidCallback? onInstallUpdate;
 
+  /// Yeniləmə zolağının vəziyyəti (hazır / yüklənir / uğursuz) və faizi.
+  final UpdateStage updateStage;
+  final double? updateProgress;
+
   /// Salamlama mətnini vaxta görə seçmək üçün (testdə sabitlənir).
   final DateTime? now;
 
@@ -63,7 +69,12 @@ class HomeTab extends StatelessWidget {
         child: Column(
           children: [
             if (availableUpdate != null)
-              UpdateBanner(info: availableUpdate!, onInstall: onInstallUpdate!),
+              UpdateBanner(
+                info: availableUpdate!,
+                onInstall: onInstallUpdate!,
+                stage: updateStage,
+                progress: updateProgress,
+              ),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(

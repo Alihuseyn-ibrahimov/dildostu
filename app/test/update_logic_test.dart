@@ -8,51 +8,43 @@ void main() {
       final result = await checkForUpdate(
         currentVersionCode: 3,
         fetchVersion: () async => null,
-        downloadApk: () async => '/tmp/x.apk',
       );
       expect(result, isNull);
     });
 
     test('server versiyası eyni və ya köhnədirsə yeniləmə yoxdur', () async {
-      var downloadCalled = false;
-      final result = await checkForUpdate(
-        currentVersionCode: 5,
-        fetchVersion: () async => const AppVersionInfo(
-            versionCode: 5, versionName: '1.0.0+5', notes: ''),
-        downloadApk: () async {
-          downloadCalled = true;
-          return '/tmp/x.apk';
-        },
+      expect(
+        await checkForUpdate(
+          currentVersionCode: 5,
+          fetchVersion: () async => const AppVersionInfo(
+              versionCode: 5, versionName: '1.0.0+5', notes: ''),
+        ),
+        isNull,
       );
-      expect(result, isNull);
-      expect(downloadCalled, isFalse); // köhnədirsə yükləməyə ehtiyac yoxdur
+      expect(
+        await checkForUpdate(
+          currentVersionCode: 5,
+          fetchVersion: () async => const AppVersionInfo(
+              versionCode: 4, versionName: '1.0.0+4', notes: ''),
+        ),
+        isNull,
+      );
     });
 
-    test('server versiyası yenidirsə yükləyir və nəticə qaytarır', () async {
-      String? downloadedTo;
+    test('server versiyası yenidirsə DƏRHAL (yükləmədən) məlumat qaytarır',
+        () async {
+      // Vacib: yükləmə burada BAŞLAMIR — zolaq dərhal görünsün deyə.
+      // Əvvəl 150+ MB tam yüklənənə qədər null qaytarılırdı və zolaq
+      // praktikada heç vaxt çıxmırdı.
       final result = await checkForUpdate(
         currentVersionCode: 3,
         fetchVersion: () async => const AppVersionInfo(
             versionCode: 5, versionName: '1.0.0+5', notes: 'düzəliş'),
-        downloadApk: () async {
-          downloadedTo = '/tmp/dildostu-update.apk';
-          return downloadedTo!;
-        },
       );
       expect(result, isNotNull);
-      expect(result!.versionInfo.versionCode, 5);
-      expect(result.apkPath, '/tmp/dildostu-update.apk');
-      expect(downloadedTo, isNotNull);
-    });
-
-    test('yükləmə uğursuzsa (null) banner göstərilmir', () async {
-      final result = await checkForUpdate(
-        currentVersionCode: 3,
-        fetchVersion: () async => const AppVersionInfo(
-            versionCode: 5, versionName: '1.0.0+5'),
-        downloadApk: () async => null,
-      );
-      expect(result, isNull);
+      expect(result!.versionCode, 5);
+      expect(result.versionName, '1.0.0+5');
+      expect(result.notes, 'düzəliş');
     });
   });
 }

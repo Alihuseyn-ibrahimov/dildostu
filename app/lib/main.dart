@@ -47,6 +47,7 @@ import 'src/ui/progress_tab.dart';
 import 'src/ui/routine_permission_screen.dart';
 import 'src/ui/settings_screen.dart';
 import 'src/ui/theme.dart';
+import 'src/ui/update_banner.dart';
 import 'src/ui/word_detail_screen.dart';
 import 'src/ui/word_list_screen.dart';
 
@@ -190,7 +191,8 @@ class _BootstrapState extends State<_Bootstrap> {
   final AppUpdateClient _updateClient =
       AppUpdateClient(baseUrl: AppConfig.serverBaseUrl);
   AppVersionInfo? _availableUpdate;
-  String? _updateApkPath;
+  UpdateStage _updateStage = UpdateStage.available;
+  double? _updateProgress;
   String? _buildLabel;
   bool _loggingOut = false;
 
@@ -245,8 +247,9 @@ class _BootstrapState extends State<_Bootstrap> {
     widget.onLoggedOut();
   }
 
-  /// Serverdə yeni versiya varsa arxa planda yükləyir; nəticə HomeScreen-də
-  /// "Yenilə" zolağı kimi göstərilir (təsdiq üçün toxunuş tələb olunur).
+  /// Serverdə yeni versiya varmı — YALNIZ yoxlayır (kiçik JSON sorğusu) və
+  /// tapılsa "Yenilə" zolağını DƏRHAL göstərir. Yükləmə istifadəçi zolağa
+  /// toxunanda başlayır (`_startUpdate`).
   ///
   /// Google Play buraxılışında tamamilə söndürülür — Play siyasəti tətbiqin
   /// özünü yeniləməsini qadağan edir, yeniləmə yalnız Play-in öz mexanizmi
@@ -260,29 +263,62 @@ class _BootstrapState extends State<_Bootstrap> {
         setState(() =>
             _buildLabel = '${packageInfo.version}+${packageInfo.buildNumber}');
       }
-      final destPath =
-          '${Directory.systemTemp.path}/dildostu-update.apk';
-      final result = await checkForUpdate(
+      final info = await checkForUpdate(
         currentVersionCode: currentVersionCode,
         fetchVersion: _updateClient.fetchVersionInfo,
-        downloadApk: () => _updateClient.downloadApk(destPath),
       );
-      if (result == null || !mounted) return;
+      if (info == null || !mounted) return;
       setState(() {
-        _availableUpdate = result.versionInfo;
-        _updateApkPath = result.apkPath;
+        _availableUpdate = info;
+        _updateStage = UpdateStage.available;
+        _updateProgress = null;
       });
     } catch (_) {
       // Yeniləmə yoxlaması istifadəçini bloklamamalı.
     }
   }
 
-  Future<void> _installUpdate() async {
-    if (_updateApkPath == null) return;
+  /// "Yenilə" toxunuşu: APK-nı faiz göstərərək yükləyir, sonra sistem
+  /// quraşdırıcısını açır. Uğursuz olsa zolaq "Yenidən cəhd et"-ə keçir —
+  /// səssiz uğursuzluq olmamalıdır (əvvəl məhz bu, problemi gizlədirdi).
+  Future<void> _startUpdate() async {
+    if (_updateStage == UpdateStage.downloading) return;
+    setState(() {
+      _updateStage = UpdateStage.downloading;
+      _updateProgress = null;
+    });
+
+    final destPath = '${Directory.systemTemp.path}/dildostu-update.apk';
+    var lastPercent = -1;
+    final path = await _updateClient.downloadApk(
+      destPath,
+      onProgress: (received, total) {
+        if (!mounted || total == null || total <= 0) return;
+        // Hər çanaqda setState çağırmaq UI-ı boğur — yalnız faiz dəyişəndə.
+        final percent = (received * 100 ~/ total);
+        if (percent == lastPercent) return;
+        lastPercent = percent;
+        setState(() => _updateProgress = received / total);
+      },
+    );
+    if (!mounted) return;
+
+    if (path == null) {
+      setState(() {
+        _updateStage = UpdateStage.failed;
+        _updateProgress = null;
+      });
+      return;
+    }
+    setState(() {
+      _updateStage = UpdateStage.available;
+      _updateProgress = null;
+    });
+
     // APK-nı explicit .apk MIME ilə aç (bəzi cihazlarda ümumi tip quraşdırıcını
     // açmır); xəta olsa istifadəçiyə göstər ki, diaqnoz mümkün olsun.
     final result = await OpenFilex.open(
-      _updateApkPath!,
+      path,
       type: 'application/vnd.android.package-archive',
     );
     if (result.type != ResultType.done) {
@@ -637,7 +673,9 @@ class _BootstrapState extends State<_Bootstrap> {
             resolveLivePlace: () => _resolveLivePlace(data),
             onOpenEssentialWords: () => _openEssentialWords(profile),
             availableUpdate: _availableUpdate,
-            onInstallUpdate: _availableUpdate == null ? null : _installUpdate,
+            onInstallUpdate: _availableUpdate == null ? null : _startUpdate,
+            updateStage: _updateStage,
+            updateProgress: _updateProgress,
           ),
           chat: ChatScreen(
             sender: (history) =>
