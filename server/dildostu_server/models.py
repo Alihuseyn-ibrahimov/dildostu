@@ -8,13 +8,37 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, EmailStr, Field
 
 Purpose = Literal["travel", "work", "general"]
 # Asan / Orta / Çətin (app UI adları). `advanced` 2026-08-03-də əlavə edildi —
 # köhnə cihaz profilləri ilk iki dəyəri işlətdiyi üçün geriyə uyğundur.
 Level = Literal["beginner", "intermediate", "advanced"]
 Mode = Literal["normal", "another_example", "simpler", "harder"]
+
+
+class RegisterRequest(BaseModel):
+    email: EmailStr
+    # 8 simvol minimum — Play/ümumi təhlükəsizlik gözləntisi.
+    password: str = Field(min_length=8, max_length=128)
+
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=1, max_length=128)
+
+
+class UserInfo(BaseModel):
+    """İstifadəçiyə qaytarılan hesab məlumatı — şifrə hash-i HEÇ VAXT daxil deyil."""
+
+    id: int
+    email: str
+    created_at: str
+
+
+class AuthResponse(BaseModel):
+    token: str
+    user: UserInfo
 
 
 class UserProfile(BaseModel):
@@ -128,6 +152,16 @@ class PlaceSummary(BaseModel):
 
 class RoutineSummaryResponse(BaseModel):
     places: list[PlaceSummary] = Field(default_factory=list)
+
+
+class ProfileResponse(BaseModel):
+    """Serverdə saxlanan profil — hesab yenidirsə `None`."""
+
+    profile: UserProfile | None = None
+
+
+class ProfileUpdateRequest(BaseModel):
+    profile: UserProfile
 
 
 class GeofenceZone(BaseModel):

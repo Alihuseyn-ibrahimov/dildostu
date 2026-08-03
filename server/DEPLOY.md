@@ -11,6 +11,7 @@ internetlə qoşulsun. MasterNR1 ilə eyni VPS/pattern.
 | `GROQ_API_KEY` | server/.env (MasterNR1-dan AYRI açar tövsiyə — limit paylaşılmasın) |
 | `ANTHROPIC_API_KEY` (istəyə görə) | personal mode-lar (sadələşdir/çətinləşdir) canlı işləsin |
 | `FOURSQUARE_API_KEY` | Məkan tanıma (pulsuz). foursquare.com/developers → yeni layihə → **Service Key** kopyala. Olmasa app OSM ehtiyatına düşür |
+| `JWT_SECRET` | **MƏCBURİ** — istifadəçi giriş tokenləri bununla imzalanır (≥32 simvol). Yaratmaq: `python -c "import secrets; print(secrets.token_urlsafe(48))"`. Dəyişdikdə bütün istifadəçilər sistemdən çıxarılır |
 
 ## 1. Kod deploy (VPS-də)
 ```bash
@@ -26,6 +27,7 @@ cp .env.example .env    # sonra doldur (aşağı)
 GROQ_API_KEY=...
 ANTHROPIC_API_KEY=...        # istəyə görə
 FOURSQUARE_API_KEY=...       # məkan tanıma (pulsuz service key)
+JWT_SECRET=...               # MƏCBURİ — giriş tokenləri (≥32 simvol)
 GROQ_MODEL=llama-3.3-70b-versatile
 CLAUDE_MODEL=claude-sonnet-5
 ```

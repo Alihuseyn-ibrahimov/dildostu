@@ -4,6 +4,8 @@ __pycache__/
 *.pyc
 .pytest_cache/
 routine.db
+# İstifadəçi hesabları — şifrə hash-ləri var, heç vaxt commit edilmir.
+users.db
 *.log
 
 # Kök .gitignore-da qlobal "test_api.py" qaydası var (əlaqəsiz layihə üçün) —

@@ -5,13 +5,22 @@ from __future__ import annotations
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI, HTTPException, Response
+from fastapi import Depends, FastAPI, Header, HTTPException, Response
 from fastapi.responses import FileResponse
 
 import os
 
+from .auth import (
+    InvalidToken,
+    create_token,
+    hash_password,
+    token_secret,
+    verify_password,
+    verify_token,
+)
 from .models import (
     AppVersionInfo,
+    AuthResponse,
     ChatRequest,
     ChatResponse,
     DayPlanRequest,
@@ -19,12 +28,17 @@ from .models import (
     GenerateRequest,
     GeofencesResponse,
     LiveMessage,
+    LoginRequest,
     PackWordsRequest,
     PackWordsResponse,
     PlaceResolveRequest,
     PlaceResolveResponse,
+    ProfileResponse,
+    ProfileUpdateRequest,
+    RegisterRequest,
     RoutineSampleRequest,
     RoutineSummaryResponse,
+    UserInfo,
 )
 from .place_lookup import PlaceLookup, PlaceLookupError
 from .routine_clustering import cluster_places
@@ -37,6 +51,7 @@ from .providers import (
 from .release_store import ReleaseStore
 from .routine_store import RoutineStore
 from .service import LiveService, ServiceError, run_chat
+from .user_store import DuplicateEmail, UserStore
 
 app = FastAPI(title="DilDostu Live")
 app.state.cache = {}
@@ -51,6 +66,8 @@ app.state.release_store = ReleaseStore(
 # Foursquare açarı serverdə (.env) — koordinatı yaxın yerə çevirmək üçün.
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 app.state.place_lookup = PlaceLookup(os.environ.get("FOURSQUARE_API_KEY", ""))
+# İstifadəçi hesabları (Faza 1) — routine.db-dən ayrı fayl.
+app.state.user_store = UserStore(os.environ.get("USERS_DB_PATH", "users.db"))
 
 
 def get_completers() -> dict[str, Completer]:
@@ -78,6 +95,55 @@ def get_place_lookup() -> PlaceLookup:
     return app.state.place_lookup
 
 
+def get_user_store() -> UserStore:
+    """İstifadəçi hesabları store-u (test-də :memory: ilə override olunur)."""
+    return app.state.user_store
+
+
+def get_token_secret() -> str:
+    """JWT imzalama açarı (test-də sabit açarla override olunur)."""
+    return token_secret()
+
+
+# Başlıq avtomatik `WWW-Authenticate` ilə — standart 401 davranışı.
+_UNAUTHORIZED = HTTPException(
+    status_code=401,
+    detail="Giriş tələb olunur",
+    headers={"WWW-Authenticate": "Bearer"},
+)
+
+
+def get_current_user(
+    authorization: str | None = Header(default=None),
+    store: UserStore = Depends(get_user_store),
+    secret: str = Depends(get_token_secret),
+) -> dict:
+    """`Authorization: Bearer <token>` başlığından cari istifadəçini tapır.
+
+    Token yoxdursa/etibarsızdırsa və ya istifadəçi silinibsə 401.
+    """
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise _UNAUTHORIZED
+    token = authorization[7:].strip()
+    try:
+        user_id = verify_token(token, secret=secret)
+    except InvalidToken:
+        raise _UNAUTHORIZED
+
+    user = store.get_by_id(user_id)
+    if user is None:
+        # Hesab silinib, amma token hələ ömrünü başa vurmayıb.
+        raise _UNAUTHORIZED
+    return user
+
+
+def _user_info(user: dict) -> UserInfo:
+    """DB sətrindən cavab modeli — `password_hash` qəsdən daxil edilmir."""
+    return UserInfo(
+        id=user["id"], email=user["email"], created_at=user["created_at"]
+    )
+
+
 def _service(completers: dict[str, Completer]) -> LiveService:
     return LiveService(completers, cache=app.state.cache)
 
@@ -85,6 +151,72 @@ def _service(completers: dict[str, Completer]) -> LiveService:
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok"}
+
+
+@app.post("/auth/register", response_model=AuthResponse, status_code=201)
+def auth_register(
+    req: RegisterRequest,
+    store: UserStore = Depends(get_user_store),
+    secret: str = Depends(get_token_secret),
+) -> AuthResponse:
+    try:
+        user = store.create(req.email, hash_password(req.password))
+    except DuplicateEmail:
+        raise HTTPException(status_code=409, detail="Bu e-poçt artıq qeydiyyatdadır")
+    return AuthResponse(
+        token=create_token(user["id"], secret=secret), user=_user_info(user)
+    )
+
+
+@app.post("/auth/login", response_model=AuthResponse)
+def auth_login(
+    req: LoginRequest,
+    store: UserStore = Depends(get_user_store),
+    secret: str = Depends(get_token_secret),
+) -> AuthResponse:
+    user = store.get_by_email(req.email)
+    # Naməlum e-poçt və səhv şifrə EYNİ cavabı verir — hansı e-poçtların
+    # qeydiyyatda olduğunu üzə çıxarmamaq üçün.
+    if user is None or not verify_password(req.password, user["password_hash"]):
+        raise HTTPException(status_code=401, detail="E-poçt və ya şifrə səhvdir")
+    return AuthResponse(
+        token=create_token(user["id"], secret=secret), user=_user_info(user)
+    )
+
+
+@app.get("/auth/me", response_model=UserInfo)
+def auth_me(user: dict = Depends(get_current_user)) -> UserInfo:
+    return _user_info(user)
+
+
+@app.delete("/auth/me", status_code=204)
+def auth_delete_me(
+    user: dict = Depends(get_current_user),
+    store: UserStore = Depends(get_user_store),
+) -> Response:
+    """Hesabı və ona bağlı datanı silir (Google Play tələbi)."""
+    store.delete(user["id"])
+    return Response(status_code=204)
+
+
+@app.get("/profile", response_model=ProfileResponse)
+def get_profile(
+    user: dict = Depends(get_current_user),
+    store: UserStore = Depends(get_user_store),
+) -> ProfileResponse:
+    """İstifadəçinin serverdə saxlanan profili (səviyyə, məqsəd, maraqlar)."""
+    saved = store.get_profile(user["id"])
+    return ProfileResponse(profile=saved)
+
+
+@app.put("/profile", response_model=ProfileResponse)
+def put_profile(
+    req: ProfileUpdateRequest,
+    user: dict = Depends(get_current_user),
+    store: UserStore = Depends(get_user_store),
+) -> ProfileResponse:
+    store.save_profile(user["id"], req.profile.model_dump())
+    return ProfileResponse(profile=req.profile)
 
 
 @app.post("/generate", response_model=LiveMessage)
