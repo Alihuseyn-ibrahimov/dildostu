@@ -205,4 +205,65 @@ void main() {
       expect(await client.packWords(packId: 'yoxdur', profile: _profile), isEmpty);
     });
   });
+
+  group('essentialWords (Əsas lüğət)', () {
+    String response({int total = 168, int nextOffset = 12}) => jsonEncode({
+          'words': [
+            {
+              'pack_id': 'essential',
+              'word': 'abandon',
+              'translation_az': 'tərk etmək',
+              'ipa': '/ə/',
+              'example': 'They abandon it.',
+              'example_az': 'Onlar tərk edir.',
+              'ai_line': 'Bu sözü öyrən!',
+              'level': 1,
+            },
+          ],
+          'total': total,
+          'next_offset': nextOffset,
+        });
+
+    test('serverdən dəst + səhifələmə məlumatı qaytarır', () async {
+      final mock = MockClient(
+          (req) async => http.Response.bytes(utf8.encode(response()), 200));
+      final client = LiveContentClient(
+        baseUrl: 'http://x', httpClient: mock, fallbackRepo: _repo(),
+      );
+      final result = await client.essentialWords(profile: _profile);
+      expect(result.words, hasLength(1));
+      expect(result.words.first.word, 'abandon');
+      expect(result.total, 168);
+      expect(result.nextOffset, 12);
+    });
+
+    test('düzgün endpoint və gövdə göndərir', () async {
+      String? path;
+      Map<String, dynamic>? body;
+      final mock = MockClient((req) async {
+        path = req.url.path;
+        body = jsonDecode(req.body) as Map<String, dynamic>;
+        return http.Response.bytes(utf8.encode(response()), 200);
+      });
+      final client = LiveContentClient(
+        baseUrl: 'http://x', httpClient: mock, fallbackRepo: _repo(),
+      );
+      await client.essentialWords(profile: _profile, offset: 24, count: 12);
+      expect(path, '/essential-words');
+      expect(body!['offset'], 24);
+      expect(body!['count'], 12);
+      expect(body!['profile']['level'], 'beginner');
+    });
+
+    test('server xətası → StateError atır (statik fallback yoxdur)', () async {
+      final mock = MockClient((req) async => http.Response('err', 502));
+      final client = LiveContentClient(
+        baseUrl: 'http://x', httpClient: mock, fallbackRepo: _repo(),
+      );
+      expect(
+        () => client.essentialWords(profile: _profile),
+        throwsA(isA<StateError>()),
+      );
+    });
+  });
 }

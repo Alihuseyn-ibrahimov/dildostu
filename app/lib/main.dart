@@ -34,6 +34,7 @@ import 'src/services/notification_service.dart';
 import 'src/services/routine_sampler.dart';
 import 'src/services/speaker.dart';
 import 'src/ui/chat_screen.dart';
+import 'src/ui/essential_words_screen.dart';
 import 'src/ui/home_tab.dart';
 import 'src/ui/learned_places_screen.dart';
 import 'src/ui/login_screen.dart';
@@ -469,6 +470,30 @@ class _BootstrapState extends State<_Bootstrap> {
     );
   }
 
+  /// "Əsas lüğət" (504 sabit söz bankı) ekranını açır — kontekstdən
+  /// (məkan/paket) asılı deyil, birbaşa istifadəçinin cari səviyyəsindən.
+  void _openEssentialWords(UserProfile profile) {
+    navigatorKey.currentState?.push(MaterialPageRoute(
+      builder: (_) => EssentialWordsScreen(
+        loader: (offset) =>
+            _live.essentialWords(profile: profile, offset: offset),
+        onOpenWord: (words, index) =>
+            navigatorKey.currentState?.push(MaterialPageRoute(
+          builder: (_) => WordDetailScreen(
+            title: 'Əsas lüğət',
+            words: words,
+            initialIndex: index,
+            speaker: _speaker,
+            onAskQuestion: () => _openChat(
+              profile,
+              greeting: 'Bu sözlər haqda nə soruşmaq istəyirsən? 🤖',
+            ),
+          ),
+        )),
+      ),
+    ));
+  }
+
   /// "AI nəyi öyrənib" ekranını açır (serverdəki rutin aqreqatı).
   void _openLearnedPlaces(_AppData data) {
     navigatorKey.currentState?.push(MaterialPageRoute(
@@ -602,6 +627,7 @@ class _BootstrapState extends State<_Bootstrap> {
             onManualPlace: () => _openManualPlace(data),
             onLevelChanged: (level) => _changeLevel(data, level),
             resolveLivePlace: () => _resolveLivePlace(data),
+            onOpenEssentialWords: () => _openEssentialWords(profile),
             availableUpdate: _availableUpdate,
             onInstallUpdate: _availableUpdate == null ? null : _installUpdate,
           ),

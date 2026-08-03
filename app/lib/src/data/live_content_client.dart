@@ -91,6 +91,47 @@ class LiveContentClient {
     }
   }
 
+  /// 504 sabit söz bankından (Əsas lüğət) növbəti dəst — səviyyəyə uyğun,
+  /// `offset`-dən başlayaraq dövriyyəli (bank sonunda yenidən əvvələ qayıdır).
+  ///
+  /// Statik fallback YOXDUR (bu paketin tərcümə/nümunəsi yalnız AI ilə
+  /// yaradılır) — server əlçatmaz olsa çağıran ekran xəta göstərib
+  /// "Yenidən cəhd et" təklif edir.
+  Future<
+      ({
+        List<LiveMessage> words,
+        int total,
+        int nextOffset,
+      })> essentialWords({
+    required UserProfile profile,
+    int offset = 0,
+    int count = 12,
+  }) async {
+    final resp = await _http
+        .post(
+          Uri.parse('$baseUrl/essential-words'),
+          headers: const {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            'profile': profile.toServerJson(),
+            'offset': offset,
+            'count': count,
+          }),
+        )
+        // Siyahı generasiyası tək sözdən uzun çəkir.
+        .timeout(const Duration(seconds: 25));
+    if (resp.statusCode != 200) {
+      throw StateError('Əsas lüğət yüklənmədi (${resp.statusCode})');
+    }
+    final body =
+        jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
+    final raw = (body['words'] as List).cast<Map<String, dynamic>>();
+    return (
+      words: [for (final w in raw) LiveMessage.fromServerJson(w)],
+      total: body['total'] as int,
+      nextOffset: body['next_offset'] as int,
+    );
+  }
+
   /// Offline siyahı — statik paketin səviyyəyə uyğun sözləri.
   List<LiveMessage> _fallbackList(String packId, ProficiencyLevel level) {
     final pack = fallbackRepo.byId(packId);

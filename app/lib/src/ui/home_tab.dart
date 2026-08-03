@@ -27,6 +27,7 @@ class HomeTab extends StatelessWidget {
     this.resolveLivePlace,
     this.availableUpdate,
     this.onInstallUpdate,
+    this.onOpenEssentialWords,
     this.now,
   });
 
@@ -34,6 +35,11 @@ class HomeTab extends StatelessWidget {
   final UserProfile profile;
   final OpenLive openLive;
   final VoidCallback onManualPlace;
+
+  /// "Əsas lüğət" (504 ümumi söz bankı) ekranını açır. Kontekstdən (məkan)
+  /// asılı olmadığı üçün paket şəbəkəsindən ayrı, öz kartı var. Null olsa
+  /// kart göstərilmir.
+  final VoidCallback? onOpenEssentialWords;
 
   /// Çətinlik səviyyəsi dəyişdikdə (profilə saxlanır). Null-dursa seçici
   /// göstərilmir.
@@ -85,6 +91,10 @@ class HomeTab extends StatelessWidget {
                     onOpenPack: (packId, title) =>
                         openLive(packId, title, profile),
                   ),
+                  if (onOpenEssentialWords != null) ...[
+                    const SizedBox(height: AppSpacing.section),
+                    _EssentialWordsCard(onTap: onOpenEssentialWords!),
+                  ],
                   const SizedBox(height: AppSpacing.section),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -292,6 +302,53 @@ class _LiveContextCardState extends State<_LiveContextCard> {
                 )
               else
                 Icon(Icons.chevron_right, color: onColor),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// "Əsas lüğət" — 504 ümumi söz bankına giriş, kontekstdən asılı olmadığı
+/// üçün paket şəbəkəsindən ayrı, tam enli kart kimi göstərilir.
+class _EssentialWordsCard extends StatelessWidget {
+  const _EssentialWordsCard({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Card(
+      color: theme.colorScheme.secondaryContainer,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusCard),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Icon(Icons.menu_book_outlined,
+                  color: theme.colorScheme.onSecondaryContainer),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Əsas lüğət',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                            color: theme.colorScheme.onSecondaryContainer,
+                            fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 2),
+                    Text('504 ən çox işlənən söz — səviyyənə uyğun',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSecondaryContainer)),
+                  ],
+                ),
+              ),
+              Icon(Icons.chevron_right,
+                  color: theme.colorScheme.onSecondaryContainer),
             ],
           ),
         ),
