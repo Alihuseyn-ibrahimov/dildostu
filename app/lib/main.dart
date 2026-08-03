@@ -58,6 +58,7 @@ class DilDostuApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: navigatorKey,
       title: 'DilDostu',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(colorSchemeSeed: Colors.teal, useMaterial3: true),
       home: const _Bootstrap(),
     );
