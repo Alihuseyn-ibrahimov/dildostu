@@ -21,6 +21,12 @@ private const val BATTERY_CHANNEL = "dildostu/battery"
 private const val BUILD_CHANNEL = "dildostu/build_flavor"
 private const val META_IS_PLAY_BUILD = "dildostu.isPlayBuild"
 
+// Brauzerdə keçid açmaq üçün (məxfilik siyasəti). `url_launcher` paketi
+// bu maşında pub-cache/antivirus toqquşması səbəbindən qurulmurdu (eyni
+// problem əvvəllər workmanager_android/open_filex-də də olub) — ona görə
+// native Intent birbaşa işlədilir, əlavə plugin lazım deyil.
+private const val BROWSER_CHANNEL = "dildostu/browser"
+
 class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -53,6 +59,24 @@ class MainActivity : FlutterActivity() {
                             packageName, android.content.pm.PackageManager.GET_META_DATA
                         )
                         result.success(appInfo.metaData?.getBoolean(META_IS_PLAY_BUILD, false) ?: false)
+                    }
+                    else -> result.notImplemented()
+                }
+            }
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, BROWSER_CHANNEL)
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "openUrl" -> {
+                        val url = call.argument<String>("url")
+                        try {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
+                            result.success(true)
+                        } catch (e: Exception) {
+                            result.success(false)
+                        }
                     }
                     else -> result.notImplemented()
                 }

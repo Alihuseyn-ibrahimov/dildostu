@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'src/config.dart';
 import 'src/data/app_update_client.dart';
@@ -28,6 +27,7 @@ import 'src/engine/update_logic.dart';
 import 'src/models/app_version_info.dart';
 import 'src/models/user_profile.dart';
 import 'src/services/battery_optimization_service.dart';
+import 'src/services/browser_launcher_service.dart';
 import 'src/services/build_flavor_service.dart';
 import 'src/services/location_service.dart';
 import 'src/services/notification_service.dart';
@@ -178,6 +178,7 @@ class _BootstrapState extends State<_Bootstrap> {
   final NotificationService _notifications = NotificationService();
   final BatteryOptimizationService _battery = BatteryOptimizationService();
   final BuildFlavorService _buildFlavor = BuildFlavorService();
+  final BrowserLauncherService _browserLauncher = BrowserLauncherService();
   late final Future<bool> _isPlayBuildFuture;
   late final LocationService _location;
   late final LiveContentClient _live;
@@ -541,10 +542,8 @@ class _BootstrapState extends State<_Bootstrap> {
       builder: (_) => SettingsScreen(
         repository: data.settings,
         buildLabel: _buildLabel,
-        onOpenPrivacyPolicy: () => launchUrl(
-          Uri.parse('${AppConfig.serverBaseUrl}/privacy'),
-          mode: LaunchMode.externalApplication,
-        ),
+        onOpenPrivacyPolicy: () =>
+            _browserLauncher.openUrl('${AppConfig.serverBaseUrl}/privacy'),
       ),
     ));
   }
