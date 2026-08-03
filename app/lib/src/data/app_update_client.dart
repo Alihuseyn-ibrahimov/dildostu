@@ -5,7 +5,13 @@ import 'package:http/http.dart' as http;
 
 import '../models/app_version_info.dart';
 
-const _timeout = Duration(seconds: 20);
+// /app/version — kiçik JSON cavabı, tez olmalıdır.
+const _versionTimeout = Duration(seconds: 20);
+// /app/latest.apk — 150+ MB fayl. Mobil/orta sürətli Wi-Fi-də tam yüklənmə
+// bir neçə dəqiqə çəkə bilər; 20s kimi qısa vaxt demək olar həmişə vaxtından
+// əvvəl kəsib "yeniləmə yoxdur" kimi görünürdü (səssiz uğursuzluq — banner
+// heç görünmürdü). Böyük fayl üçün geniş büdcə verilir.
+const _downloadTimeout = Duration(minutes: 5);
 
 /// Serverdəki ən son buraxılışı yoxlayır və APK-nı yükləyir. Xəta halında
 /// (server yoxdur, buraxılış yoxdur, şəbəkə xətası) səssiz keçir — yeniləmə
@@ -21,7 +27,7 @@ class AppUpdateClient {
     try {
       final resp = await _http
           .get(Uri.parse('$baseUrl/app/version'))
-          .timeout(_timeout);
+          .timeout(_versionTimeout);
       if (resp.statusCode != 200) return null;
       final body =
           jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
@@ -36,7 +42,7 @@ class AppUpdateClient {
     try {
       final resp = await _http
           .get(Uri.parse('$baseUrl/app/latest.apk'))
-          .timeout(_timeout);
+          .timeout(_downloadTimeout);
       if (resp.statusCode != 200) return null;
       await File(destPath).writeAsBytes(resp.bodyBytes);
       return destPath;
