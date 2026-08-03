@@ -103,6 +103,35 @@ yaradılır. 42 dərs → 3 səviyyə (14 dərslik bloklar, 168 söz/səviyyə).
   14×12-lik dəstlərlə (168/12) çağırıb nəticəni `pack_id: "essential"` formatında
   birləşdir (bax köhnə skript nümunəsi — tək dəfəlik, runtime-a aid deyil).
 
+## Səsli kitablar
+
+İctimai domen mətn (Project Gutenberg) + **Piper TTS** (MIT, offline).
+Dizayn: `docs/superpowers/specs/2026-08-04-audiobooks-design.md`.
+
+**Audio HEÇ VAXT serverdə yaradılmır** — VPS-də cəmi ~115 MB əlçatan RAM var.
+Generasiya yerli kompüterdə, bir dəfəlik:
+```bash
+cd dildostu/content_gen
+.venv/Scripts/python scripts/build_audiobook.py --book aesop --limit 5   # sınaq
+.venv/Scripts/python scripts/build_audiobook.py --book aesop            # hamısı
+```
+Piper binarı + səs modeli (~99 MB) `.tools/`-a yüklənir, **repoya girmir**
+(`.gitignore`-da). Nəticə `audiobooks_out/` → `scp` ilə
+`/opt/dildostu/server/audiobooks/`.
+
+Ölçülmüş rəqəmlər: Piper RTF ~0.086 (1 saat audio ≈ 5 dəq), MP3 64 kbps mono
+= **0.50 MB/dəq** (1 saat = 30 MB). Ezop = 284 hekayə ≈ 4 saat ≈ 122 MB.
+
+**Server:** `GET /audiobooks` (manifest) + `/audiobooks/{kitab}/{fəsil}.mp3`.
+Audio `immutable` ilə **uzun keşlənir** — APK-nın `no-store`-undan qəsdən
+fərqlidir, səhv salma. id-lər yalnız `[a-z0-9-]` (path traversal bağlı).
+
+**App:** plyer native `MediaPlayer`-dir (MethodChannel `dildostu/audio`) —
+`just_audio` kimi federated plugin İŞLƏTMƏ, yuxarıdakı Gradle riski.
+
+**Müəllif hüququ:** yalnız ictimai domen. Barron's 504 kimi qorunan kitabların
+mətni səsləndirilməməlidir — o kitabdan yalnız söz→dərs indeksi götürülüb.
+
 ## Yoxlama qaydası
 
 Hər dəyişiklikdən sonra: server `pytest -q`, app `flutter analyze` + `flutter test`.
