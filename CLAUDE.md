@@ -44,13 +44,28 @@ curl -s https://dildostu.prdostu.com/app/version   # {"version_code":N,...}
 curl -s -X POST https://dildostu.prdostu.com/<endpoint> -d '{...}'
 ```
 
-## Self-update mexanizmi
+## Self-update mexanizmi — üç dəfə sınıb, üçünü də pozma
 
 `app_update_client.dart` → `/app/version` + `/app/latest.apk` (Cloudflare
-`no-store` başlıqları ilə). APK ~150+ MB olduğu üçün **axın (stream) kimi**
-yüklənir (`send()` + `stream.pipe`), `get()...bodyBytes` YOX — bütün faylı
-yaddaşa yığmaq telefonda səssiz OOM-a səbəb olurdu (heç bir xəta görünmədən
-"Yenilə" zolağı sadəcə çıxmırdı). Bunu təkrar pozma.
+`no-store` başlıqları ilə). Zolaq aylarla görünmədi; üç ayrı səbəb vardı:
+
+1. **Timeout (v15-də düzəldildi):** 150+ MB yükləmə üçün 20 saniyə verilirdi.
+   İndi `_versionTimeout` (20s, kiçik JSON) və `_downloadTimeout` (5 dəq) ayrıdır.
+2. **OOM (v17-də düzəldildi):** `get()...bodyBytes` bütün faylı yaddaşa yığırdı.
+   İndi **axın** kimi (`send()` + çanaq-çanaq `sink.add`) birbaşa diskə yazılır.
+3. **ƏSL SƏBƏB — sıra (v19-da düzəldildi):** `checkForUpdate()` banneri yalnız
+   APK TAM yükləndikdən sonra qaytarırdı. İstifadəçi app-ı açanda heç bir əlamət
+   görmür, arxada səssiz yükləmə gedir, app bağlananda itirdi → zolaq praktikada
+   heç vaxt çıxmırdı. İndi `checkForUpdate()` **yalnız versiyanı yoxlayır**,
+   zolaq dərhal görünür; yükləmə istifadəçi toxunanda, faiz göstəricisi ilə
+   başlayır (`_startUpdate` + `onProgress`), uğursuzluqda "Yenidən cəhd et".
+
+**Qayda:** yükləməni heç vaxt banner göstərilməzdən əvvələ qaytarma və heç bir
+uğursuzluğu səssiz udma — istifadəçi hər mərhələni görməlidir.
+
+Qırıq yükləmə mexanizmi özü-özünü yeniləyə bilməz (köhnə pozuq kod yeni APK-nı
+yükləyə bilmir). Belə düzəlişlərdən sonra HƏMİŞƏ istifadəçiyə birbaşa link
+göndər (`https://dildostu.prdostu.com/app/latest.apk`), əl ilə bir dəfə qurdur.
 
 İlk versiyanın (v17-dən əvvəlki) yükləmə mexanizmi qırıq idi — bu növ qırıqlıq
 özü-özünü yeniləyə bilməz (köhnə pozuq kodun özü yeni APK-nı yükləyə bilmir).
