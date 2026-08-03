@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:geolocator/geolocator.dart';
@@ -10,7 +11,17 @@ const _overpassUrl = 'https://overpass-api.de/api/interpreter';
 // Böyük məkanların (ticarət mərkəzi, hava limanı) OSM node-u GPS mövqeyindən
 // xeyli aralı ola bilər — radius geniş tutulur ki, yer tanına bilsin.
 const _searchRadiusMeters = 120;
-const _requestTimeout = Duration(seconds: 8);
+// Qapalı məkanlarda (kafe, market daxili) təzə GPS siqnalı tez-tez 8-10
+// saniyəyə tapılmır. GPS-ə bir qədər vaxt veririk, amma əsl sürət qazancı
+// timeout olanda son bilinən mövqeyə keçməkdir (aşağıda _getPosition).
+const _gpsTimeout = Duration(seconds: 10);
+// OSM Overpass sorğusunun öz büdcəsindən ([timeout:5], aşağıda) bir qədər
+// böyük saxlanır ki, server cavab verməkdə olanda client vaxtından əvvəl
+// kəsməsin.
+const _networkTimeout = Duration(seconds: 7);
+// Son bilinən mövqe bundan köhnədirsə etibarlı sayılmır (istifadəçi başqa
+// yerə keçmiş ola bilər) — GPS uğursuz olsa səssizcə `null` qaytarılır.
+const _maxLastKnownAge = Duration(minutes: 10);
 
 /// Cihazın GPS-i ilə yaxınlıqdakı yerin tipini müəyyənləşdirir.
 ///
@@ -32,6 +43,26 @@ class LocationService {
   Future<String?> resolveNearbyPackId() async =>
       (await resolveNearbySample())?.packId;
 
+  /// Cari mövqeyi tapır: əvvəlcə təzə GPS sorğusu (bağlanmış saytlarda tez-tez
+  /// vaxtı keçir), timeout olsa cihazın son bilinən (keşlənmiş) mövqeyinə keçir
+  /// ki, qapalı məkanlarda "tapılmadı" halının qarşısı alınsın. Son mövqe
+  /// [_maxLastKnownAge]-dən köhnədirsə etibarsız sayılır.
+  Future<Position?> _getPosition() async {
+    try {
+      return await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.medium,
+          timeLimit: _gpsTimeout,
+        ),
+      );
+    } on TimeoutException {
+      final last = await Geolocator.getLastKnownPosition();
+      if (last == null) return null;
+      final age = DateTime.now().difference(last.timestamp);
+      return age <= _maxLastKnownAge ? last : null;
+    }
+  }
+
   /// Rutin toplama üçün: koordinat + təyin olunmuş pack + yerin adı. Bütün xəta
   /// halları (icazə/GPS/şəbəkə/timeout) sakitcə `null` qaytarır.
   Future<({double lat, double lng, String packId, String place})?>
@@ -39,12 +70,8 @@ class LocationService {
     try {
       if (!await _hasUsablePermission()) return null;
 
-      final position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
-          accuracy: LocationAccuracy.medium,
-          timeLimit: _requestTimeout,
-        ),
-      );
+      final position = await _getPosition();
+      if (position == null) return null;
 
       // 1) Əsas: server (Foursquare).
       final server = await _place.resolve(position.latitude, position.longitude);
@@ -59,7 +86,7 @@ class LocationService {
 
       // 2) Ehtiyat: OpenStreetMap.
       final tags = await _queryNearbyTags(position.latitude, position.longitude)
-          .timeout(_requestTimeout);
+          .timeout(_networkTimeout);
       if (tags == null) return null;
       final packId = packIdForOsmTags(tags);
       if (packId == null) return null;
@@ -96,35 +123,58 @@ class LocationService {
           permission == LocationPermission.deniedForever) {
         return 'Məkan icazəsi yoxdur (${permission.name}). Ayarlardan icazə ver.';
       }
-      final position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
-          accuracy: LocationAccuracy.medium,
-          timeLimit: _requestTimeout,
-        ),
-      );
+
+      var usedLastKnown = false;
+      Position? position;
+      try {
+        position = await Geolocator.getCurrentPosition(
+          locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.medium,
+            timeLimit: _gpsTimeout,
+          ),
+        );
+      } on TimeoutException {
+        position = await Geolocator.getLastKnownPosition();
+        usedLastKnown = true;
+      }
+      if (position == null) {
+        return 'GPS siqnalı ${_gpsTimeout.inSeconds}s ərzində tapılmadı və '
+            'cihazda son bilinən mövqe yoxdur. Açıq havada yenidən yoxla.';
+      }
+      final age = usedLastKnown
+          ? DateTime.now().difference(position.timestamp)
+          : Duration.zero;
+      if (usedLastKnown && age > _maxLastKnownAge) {
+        return 'GPS siqnalı ${_gpsTimeout.inSeconds}s ərzində tapılmadı. Son '
+            'bilinən mövqe ${age.inMinutes} dəqiqə köhnədir (etibarsız sayıldı) '
+            '— açıq havada yenidən yoxla.';
+      }
       final coord =
           '${position.latitude.toStringAsFixed(4)}, ${position.longitude.toStringAsFixed(4)}';
+      final source = usedLastKnown
+          ? ' (son bilinən, ${age.inMinutes} dəq əvvəl)'
+          : ' (təzə GPS)';
 
       final server = await _place.resolve(position.latitude, position.longitude);
       if (server != null) {
         final label = server.name.isNotEmpty ? server.name : server.category;
-        return 'Məkan: $coord\n'
+        return 'Məkan: $coord$source\n'
             'Tapıldı (server): $label\n'
             'Kateqoriya: ${server.category} → paket: ${server.packId}';
       }
 
       // Server nəticə vermədi — OSM ehtiyatını yoxla.
       final tags = await _queryNearbyTags(position.latitude, position.longitude)
-          .timeout(_requestTimeout);
+          .timeout(_networkTimeout);
       if (tags == null) {
-        return 'Məkan alındı: $coord\n'
+        return 'Məkan alındı: $coord$source\n'
             'Nə serverdə, nə OSM-də ${_searchRadiusMeters}m radiusda qeydiyyatlı '
             'yer tapılmadı (yəqin evdəsən). Kafe/market kimi yerdə yenidən yoxla.';
       }
       final tagStr =
           tags.entries.take(3).map((e) => '${e.key}=${e.value}').join(', ');
       final packId = packIdForOsmTags(tags);
-      return 'Məkan: $coord\nOSM tapdı: $tagStr\n'
+      return 'Məkan: $coord$source\nOSM tapdı: $tagStr\n'
           'Paket: ${packId ?? "bu tip paketimizdə yoxdur"}';
     } catch (e) {
       return 'Məkan alınmadı (GPS/internet xətası). Yenidən cəhd et.';

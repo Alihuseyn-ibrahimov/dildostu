@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+// Serverin öz Foursquare timeout-undan (6s, bax place_lookup.py
+// _TIMEOUT_SECONDS) bir qədər böyük saxlanır ki, server cavab verməkdə
+// olanda client vaxtından əvvəl kəsməsin.
 const _timeout = Duration(seconds: 8);
 
 /// Serverin tapdığı yer və ona uyğun söz paketi.
