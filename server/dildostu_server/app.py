@@ -44,6 +44,7 @@ from .models import (
     RoutineSummaryResponse,
     UserInfo,
 )
+from .audiobook_store import AudiobookStore
 from .place_lookup import PlaceLookup, PlaceLookupError
 from .routine_clustering import cluster_places
 from .providers import (
@@ -73,6 +74,10 @@ load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 app.state.place_lookup = PlaceLookup(os.environ.get("FOURSQUARE_API_KEY", ""))
 # İstifadəçi hesabları (Faza 1) — routine.db-dən ayrı fayl.
 app.state.user_store = UserStore(os.environ.get("USERS_DB_PATH", "users.db"))
+# Səsli kitablar — hazır MP3-lər, kod deploy-undan ayrı qovluq.
+app.state.audiobook_store = AudiobookStore(
+    os.environ.get("AUDIOBOOKS_DIR", "audiobooks")
+)
 
 
 def get_completers() -> dict[str, Completer]:
@@ -93,6 +98,11 @@ def get_routine_store() -> RoutineStore:
 def get_release_store() -> ReleaseStore:
     """Buraxılış store (test-də tmp_path ilə override olunur)."""
     return app.state.release_store
+
+
+def get_audiobook_store() -> AudiobookStore:
+    """Səsli kitab store (test-də tmp_path ilə override olunur)."""
+    return app.state.audiobook_store
 
 
 def get_place_lookup() -> PlaceLookup:
@@ -388,6 +398,36 @@ def routine_geofences(
     samples = store.recent(user["id"], limit=1000)
     zones = cluster_places(samples)[:_MAX_GEOFENCES]
     return GeofencesResponse(geofences=zones)
+
+
+# Səsli kitab audiosu DƏYİŞMƏZDİR (yeni məzmun = yeni chapter_id), ona görə
+# uzun müddət keşlənir — hər dinləmədə origin-ə getməsin (trafik + gecikmə).
+# Bu, APK-nın `_NO_STORE`-undan QƏSDƏN fərqlidir, səhv salma.
+_AUDIO_CACHE = {"Cache-Control": "public, max-age=31536000, immutable"}
+
+
+@app.get("/audiobooks")
+def audiobooks_manifest(
+    store: AudiobookStore = Depends(get_audiobook_store),
+) -> dict:
+    """Kitab/fəsil siyahısı — app bunu keşləyib offline da göstərir."""
+    manifest = store.manifest()
+    if manifest is None:
+        raise HTTPException(status_code=404, detail="Səsli kitab yoxdur")
+    return manifest
+
+
+@app.get("/audiobooks/{book_id}/{chapter_id}.mp3")
+def audiobook_chapter(
+    book_id: str,
+    chapter_id: str,
+    store: AudiobookStore = Depends(get_audiobook_store),
+) -> FileResponse:
+    """Fəslin MP3-ü. Range sorğuları dəstəklənir (sürüşdürmə üçün)."""
+    path = store.chapter_path(book_id, chapter_id)
+    if path is None:
+        raise HTTPException(status_code=404, detail="Fəsil tapılmadı")
+    return FileResponse(path, media_type="audio/mpeg", headers=_AUDIO_CACHE)
 
 
 # Buraxılış cavabları keşlənməməlidir — Cloudflare/proxy köhnə APK/versiya
