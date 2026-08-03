@@ -6,6 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import 'src/config.dart';
 import 'src/data/app_update_client.dart';
+import 'src/data/audiobook_client.dart';
 import 'src/data/auth_client.dart';
 import 'src/data/auth_repository.dart';
 import 'src/data/chat_client.dart';
@@ -27,6 +28,7 @@ import 'src/engine/pack_titles.dart';
 import 'src/engine/update_logic.dart';
 import 'src/models/app_version_info.dart';
 import 'src/models/user_profile.dart';
+import 'src/services/audio_player_service.dart';
 import 'src/services/battery_optimization_service.dart';
 import 'src/services/browser_launcher_service.dart';
 import 'src/services/build_flavor_service.dart';
@@ -34,6 +36,8 @@ import 'src/services/location_service.dart';
 import 'src/services/notification_service.dart';
 import 'src/services/routine_sampler.dart';
 import 'src/services/speaker.dart';
+import 'src/ui/audiobook_player_screen.dart';
+import 'src/ui/audiobooks_screen.dart';
 import 'src/ui/chat_screen.dart';
 import 'src/ui/essential_words_screen.dart';
 import 'src/ui/home_tab.dart';
@@ -186,6 +190,9 @@ class _BootstrapState extends State<_Bootstrap> {
   late final LocationService _location;
   late final LiveContentClient _live;
   final ChatClient _chat = ChatClient(baseUrl: AppConfig.serverBaseUrl);
+  final AudiobookClient _audiobooks =
+      AudiobookClient(baseUrl: AppConfig.serverBaseUrl);
+  final AudioPlayer _audioPlayer = const NativeAudioPlayer();
   late final RoutineClient _routine;
   final ProfileClient _profileClient = ProfileClient(baseUrl: AppConfig.serverBaseUrl);
   final AppUpdateClient _updateClient =
@@ -538,6 +545,31 @@ class _BootstrapState extends State<_Bootstrap> {
     ));
   }
 
+  /// Səsli kitablar: kitabxana → hekayə siyahısı → plyer.
+  void _openAudiobooks() {
+    navigatorKey.currentState?.push(MaterialPageRoute(
+      builder: (_) => AudiobooksScreen(
+        loader: _audiobooks.fetchLibrary,
+        onOpenBook: (book) =>
+            navigatorKey.currentState?.push(MaterialPageRoute(
+          builder: (_) => AudiobookChaptersScreen(
+            book: book,
+            onOpenChapter: (index) =>
+                navigatorKey.currentState?.push(MaterialPageRoute(
+              builder: (_) => AudiobookPlayerScreen(
+                book: book,
+                initialIndex: index,
+                player: _audioPlayer,
+                sourceFor: (b, c) =>
+                    _audiobooks.chapterUrl(b.bookId, c.chapterId),
+              ),
+            )),
+          ),
+        )),
+      ),
+    ));
+  }
+
   /// "AI nəyi öyrənib" ekranını açır (serverdəki rutin aqreqatı).
   void _openLearnedPlaces(_AppData data) {
     navigatorKey.currentState?.push(MaterialPageRoute(
@@ -672,6 +704,7 @@ class _BootstrapState extends State<_Bootstrap> {
             onLevelChanged: (level) => _changeLevel(data, level),
             resolveLivePlace: () => _resolveLivePlace(data),
             onOpenEssentialWords: () => _openEssentialWords(profile),
+            onOpenAudiobooks: _openAudiobooks,
             availableUpdate: _availableUpdate,
             onInstallUpdate: _availableUpdate == null ? null : _startUpdate,
             updateStage: _updateStage,

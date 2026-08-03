@@ -30,6 +30,7 @@ class HomeTab extends StatelessWidget {
     this.updateStage = UpdateStage.available,
     this.updateProgress,
     this.onOpenEssentialWords,
+    this.onOpenAudiobooks,
     this.now,
   });
 
@@ -42,6 +43,9 @@ class HomeTab extends StatelessWidget {
   /// asılı olmadığı üçün paket şəbəkəsindən ayrı, öz kartı var. Null olsa
   /// kart göstərilmir.
   final VoidCallback? onOpenEssentialWords;
+
+  /// Səsli kitablar bölməsi. Null olsa kart göstərilmir.
+  final VoidCallback? onOpenAudiobooks;
 
   /// Çətinlik səviyyəsi dəyişdikdə (profilə saxlanır). Null-dursa seçici
   /// göstərilmir.
@@ -104,7 +108,21 @@ class HomeTab extends StatelessWidget {
                   ),
                   if (onOpenEssentialWords != null) ...[
                     const SizedBox(height: AppSpacing.section),
-                    _EssentialWordsCard(onTap: onOpenEssentialWords!),
+                    _FeatureCard(
+                      icon: Icons.menu_book_outlined,
+                      title: 'Əsas lüğət',
+                      subtitle: '504 ən çox işlənən söz — səviyyənə uyğun',
+                      onTap: onOpenEssentialWords!,
+                    ),
+                  ],
+                  if (onOpenAudiobooks != null) ...[
+                    const SizedBox(height: AppSpacing.card),
+                    _FeatureCard(
+                      icon: Icons.headphones,
+                      title: 'Səsli kitablar',
+                      subtitle: 'Dinlə və eyni vaxtda mətni oxu',
+                      onTap: onOpenAudiobooks!,
+                    ),
                   ],
                   const SizedBox(height: AppSpacing.section),
                   Row(
@@ -321,16 +339,25 @@ class _LiveContextCardState extends State<_LiveContextCard> {
   }
 }
 
-/// "Əsas lüğət" — 504 ümumi söz bankına giriş, kontekstdən asılı olmadığı
-/// üçün paket şəbəkəsindən ayrı, tam enli kart kimi göstərilir.
-class _EssentialWordsCard extends StatelessWidget {
-  const _EssentialWordsCard({required this.onTap});
+/// Kontekstdən (məkandan) asılı olmayan bölmə kartı — "Əsas lüğət",
+/// "Səsli kitablar" kimi. Paket şəbəkəsindən ayrı, tam enli göstərilir.
+class _FeatureCard extends StatelessWidget {
+  const _FeatureCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
 
+  final IconData icon;
+  final String title;
+  final String subtitle;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final onColor = theme.colorScheme.onSecondaryContainer;
     return Card(
       color: theme.colorScheme.secondaryContainer,
       child: InkWell(
@@ -340,26 +367,23 @@ class _EssentialWordsCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Icon(Icons.menu_book_outlined,
-                  color: theme.colorScheme.onSecondaryContainer),
+              Icon(icon, color: onColor),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Əsas lüğət',
+                    Text(title,
                         style: theme.textTheme.titleMedium?.copyWith(
-                            color: theme.colorScheme.onSecondaryContainer,
-                            fontWeight: FontWeight.w600)),
+                            color: onColor, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 2),
-                    Text('504 ən çox işlənən söz — səviyyənə uyğun',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSecondaryContainer)),
+                    Text(subtitle,
+                        style: theme.textTheme.bodySmall
+                            ?.copyWith(color: onColor)),
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right,
-                  color: theme.colorScheme.onSecondaryContainer),
+              Icon(Icons.chevron_right, color: onColor),
             ],
           ),
         ),
