@@ -13,12 +13,18 @@ import io.flutter.plugin.common.MethodChannel
 // batareya optimallaşdırmasından (Doze) istisna olmaq lazımdır — əks halda
 // bəzi istehsalçılar (Samsung, Xiaomi) proqram bağlı olanda fon tapşırığını
 // öldürür və geofence bildirişi heç vaxt gəlmir.
-private const val CHANNEL = "dildostu/battery"
+private const val BATTERY_CHANNEL = "dildostu/battery"
+
+// Build "flavor" (direct/play) — main.dart bunu oxuyub Google Play
+// buraxılışında self-update/arxa-fon-məkan UI-larını gizlədir (bax
+// android/app/src/play/AndroidManifest.xml-dəki meta-data).
+private const val BUILD_CHANNEL = "dildostu/build_flavor"
+private const val META_IS_PLAY_BUILD = "dildostu.isPlayBuild"
 
 class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, BATTERY_CHANNEL)
             .setMethodCallHandler { call, result ->
                 when (call.method) {
                     "isIgnoringBatteryOptimizations" -> {
@@ -34,6 +40,19 @@ class MainActivity : FlutterActivity() {
                         } catch (e: Exception) {
                             result.success(false)
                         }
+                    }
+                    else -> result.notImplemented()
+                }
+            }
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, BUILD_CHANNEL)
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "isPlayBuild" -> {
+                        val appInfo = packageManager.getApplicationInfo(
+                            packageName, android.content.pm.PackageManager.GET_META_DATA
+                        )
+                        result.success(appInfo.metaData?.getBoolean(META_IS_PLAY_BUILD, false) ?: false)
                     }
                     else -> result.notImplemented()
                 }

@@ -19,7 +19,12 @@ class ProfileTab extends StatelessWidget {
 
   final VoidCallback onOpenSettings;
   final VoidCallback onOpenLearned;
-  final VoidCallback onOpenRoutine;
+
+  /// Rutin öyrənmə (arxa fon məkan) giriş nöqtəsi. `null`-dursa sətir
+  /// TAMAMILƏ gizlədilir — Google Play buraxılışında bu funksiya yoxdur
+  /// (manifestdə icazə silinib), yoxlanılmayan giriş nöqtəsi göstərmək
+  /// çaşdırıcı olardı.
+  final VoidCallback? onOpenRoutine;
   final VoidCallback onTestNotification;
 
   /// Cari hesabın e-poçtu.
@@ -78,12 +83,13 @@ class ProfileTab extends StatelessWidget {
             subtitle: 'Tez-tez getdiyin yerlər',
             onTap: onOpenLearned,
           ),
-          _Item(
-            icon: Icons.explore_outlined,
-            title: 'Rutin öyrənmə',
-            subtitle: 'Arxa fon məkan icazəsi',
-            onTap: onOpenRoutine,
-          ),
+          if (onOpenRoutine != null)
+            _Item(
+              icon: Icons.explore_outlined,
+              title: 'Rutin öyrənmə',
+              subtitle: 'Arxa fon məkan icazəsi',
+              onTap: onOpenRoutine,
+            ),
           const Divider(height: 32),
           Padding(
             padding: const EdgeInsets.fromLTRB(AppSpacing.screen, 0, 16, 8),

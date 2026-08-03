@@ -10,7 +10,12 @@ const _maxCount = 10;
 /// Dəyişikliklər dərhal SettingsRepository-ə saxlanır; növbəti app açılışında
 /// (main.dart bootstrap) yeni bildiriş cədvəli qurulur.
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key, required this.repository, this.buildLabel});
+  const SettingsScreen({
+    super.key,
+    required this.repository,
+    this.buildLabel,
+    this.onOpenPrivacyPolicy,
+  });
 
   final SettingsRepository repository;
 
@@ -18,6 +23,10 @@ class SettingsScreen extends StatefulWidget {
   /// üçün. Android Ayarlar yalnız versionName-i (həmişə "1.0.0") göstərdiyi
   /// üçün buradan görmək lazımdır. Null-dursa göstərilmir.
   final String? buildLabel;
+
+  /// Məxfilik siyasəti səhifəsini (brauzerdə) açır — Google Play tələbi:
+  /// tətbiq daxilindən siyasətə keçid olmalıdır.
+  final VoidCallback? onOpenPrivacyPolicy;
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -95,13 +104,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
-          if (widget.buildLabel != null) ...[
-            const Divider(),
+          const Divider(),
+          if (widget.onOpenPrivacyPolicy != null)
+            ListTile(
+              title: const Text('Məxfilik siyasəti'),
+              trailing: const Icon(Icons.open_in_new, size: 18),
+              onTap: widget.onOpenPrivacyPolicy,
+            ),
+          if (widget.buildLabel != null)
             ListTile(
               title: const Text('Buraxılış'),
               trailing: Text(widget.buildLabel!),
             ),
-          ],
         ],
       ),
     );

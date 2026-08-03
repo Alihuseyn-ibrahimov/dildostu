@@ -5,12 +5,13 @@ import 'package:flutter_test/flutter_test.dart';
 Widget _wrap({
   VoidCallback? onLogout,
   Future<void> Function()? onDeleteAccount,
+  VoidCallback? onOpenRoutine,
 }) =>
     MaterialApp(
       home: ProfileTab(
         onOpenSettings: () {},
         onOpenLearned: () {},
-        onOpenRoutine: () {},
+        onOpenRoutine: onOpenRoutine ?? () {},
         onTestNotification: () {},
         email: 'ali@example.com',
         onLogout: onLogout ?? () {},
@@ -55,5 +56,22 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(called, isTrue);
+  });
+
+  testWidgets('onOpenRoutine null olanda "Rutin öyrənmə" gizlədilir',
+      (tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: ProfileTab(
+        onOpenSettings: () {},
+        onOpenLearned: () {},
+        onOpenRoutine: null,
+        onTestNotification: () {},
+        email: 'ali@example.com',
+        onLogout: () {},
+        onDeleteAccount: () async {},
+      ),
+    ));
+
+    expect(find.text('Rutin öyrənmə'), findsNothing);
   });
 }

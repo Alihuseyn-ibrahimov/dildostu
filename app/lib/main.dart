@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'src/config.dart';
 import 'src/data/app_update_client.dart';
@@ -27,6 +28,7 @@ import 'src/engine/update_logic.dart';
 import 'src/models/app_version_info.dart';
 import 'src/models/user_profile.dart';
 import 'src/services/battery_optimization_service.dart';
+import 'src/services/build_flavor_service.dart';
 import 'src/services/location_service.dart';
 import 'src/services/notification_service.dart';
 import 'src/services/routine_sampler.dart';
@@ -136,6 +138,7 @@ class _AppData {
     this.manualContext,
     this.profileRepo,
     this.deviceId,
+    this.isPlayBuild,
   );
   final PackRepository packs;
   final ReviewRepository reviews;
@@ -143,6 +146,10 @@ class _AppData {
   final ManualContextRepository manualContext;
   final UserProfileRepository profileRepo;
   final String deviceId;
+
+  /// Google Play buraxılışıdırmı (bax `BuildFlavorService`) — `true`-dursa
+  /// self-update/arxa-fon-məkan UI-ları gizlədilir (Play siyasəti).
+  final bool isPlayBuild;
 }
 
 /// Repository-ləri yükləyir, profil yoxdursa onboarding göstərir, bildirişləri
@@ -170,6 +177,8 @@ class _BootstrapState extends State<_Bootstrap> {
   final Speaker _speaker = TtsSpeaker();
   final NotificationService _notifications = NotificationService();
   final BatteryOptimizationService _battery = BatteryOptimizationService();
+  final BuildFlavorService _buildFlavor = BuildFlavorService();
+  late final Future<bool> _isPlayBuildFuture;
   late final LocationService _location;
   late final LiveContentClient _live;
   final ChatClient _chat = ChatClient(baseUrl: AppConfig.serverBaseUrl);
@@ -187,6 +196,7 @@ class _BootstrapState extends State<_Bootstrap> {
   @override
   void initState() {
     super.initState();
+    _isPlayBuildFuture = _buildFlavor.isPlayBuild();
     _routine = RoutineClient(
       baseUrl: AppConfig.serverBaseUrl,
       token: _token,
@@ -234,7 +244,12 @@ class _BootstrapState extends State<_Bootstrap> {
 
   /// Serverdə yeni versiya varsa arxa planda yükləyir; nəticə HomeScreen-də
   /// "Yenilə" zolağı kimi göstərilir (təsdiq üçün toxunuş tələb olunur).
+  ///
+  /// Google Play buraxılışında tamamilə söndürülür — Play siyasəti tətbiqin
+  /// özünü yeniləməsini qadağan edir, yeniləmə yalnız Play-in öz mexanizmi
+  /// ilə olmalıdır.
   Future<void> _checkForUpdate() async {
+    if (await _isPlayBuildFuture) return;
     try {
       final packageInfo = await PackageInfo.fromPlatform();
       final currentVersionCode = int.parse(packageInfo.buildNumber);
@@ -303,6 +318,8 @@ class _BootstrapState extends State<_Bootstrap> {
     // nümunələr varsa hesaba bağla.
     await _routine.claimDevice(deviceId);
 
+    final isPlayBuild = await _isPlayBuildFuture;
+
     await _notifications.init(onTap: _openLive);
 
     final now = DateTime.now();
@@ -334,10 +351,12 @@ class _BootstrapState extends State<_Bootstrap> {
 
     // İcazə varsa: periodik tapşırığı yenidən qeyd et (app yeniləməsindən sonra
     // itə bilər) + dərhal ön-plan nümunəsi götür (WorkManager-ə güvənmə).
-    _startRoutineSampling(deviceId, packs);
+    // Play buraxılışında arxa fon məkan yoxdur (manifestdə icazə silinib) —
+    // heç cəhd etmə (Play siyasəti, V1.1-də ayrıca müraciətlə əlavə olunacaq).
+    if (!isPlayBuild) _startRoutineSampling(deviceId, packs);
 
-    return _AppData(
-        packs, reviews, settings, manualContext, profileRepo, deviceId);
+    return _AppData(packs, reviews, settings, manualContext, profileRepo,
+        deviceId, isPlayBuild);
   }
 
   /// App açılışda rutin toplamanı təmin edir: icazə varsa periodik tapşırığı
@@ -519,8 +538,14 @@ class _BootstrapState extends State<_Bootstrap> {
 
   void _openSettings(_AppData data) {
     navigatorKey.currentState?.push(MaterialPageRoute(
-      builder: (_) =>
-          SettingsScreen(repository: data.settings, buildLabel: _buildLabel),
+      builder: (_) => SettingsScreen(
+        repository: data.settings,
+        buildLabel: _buildLabel,
+        onOpenPrivacyPolicy: () => launchUrl(
+          Uri.parse('${AppConfig.serverBaseUrl}/privacy'),
+          mode: LaunchMode.externalApplication,
+        ),
+      ),
     ));
   }
 
@@ -593,7 +618,10 @@ class _BootstrapState extends State<_Bootstrap> {
           profile: ProfileTab(
             onOpenSettings: () => _openSettings(data),
             onOpenLearned: () => _openLearnedPlaces(data),
-            onOpenRoutine: () => _openRoutinePermission(data),
+            // Play buraxılışında bu funksiya yoxdur (manifestdə icazə silinib) —
+            // giriş nöqtəsi göstərilmir.
+            onOpenRoutine:
+                data.isPlayBuild ? null : () => _openRoutinePermission(data),
             onTestNotification: () => _testNotification(data),
             email: widget.auth.email ?? '',
             onLogout: _logout,

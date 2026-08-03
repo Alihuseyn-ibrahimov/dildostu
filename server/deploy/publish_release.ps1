@@ -19,7 +19,9 @@ $ErrorActionPreference = "Stop"
 $repoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $appDir = Join-Path $repoRoot "app"
 $pubspecPath = Join-Path $appDir "pubspec.yaml"
-$apkPath = Join-Path $appDir "build\app\outputs\flutter-apk\app-debug.apk"
+# "direct" flavor-un APK-sı — self-update yalnız bu flavor-da var (Google
+# Play flavor-u öz mexanizmini işlədir, bu skriptə ehtiyacı yoxdur).
+$apkPath = Join-Path $appDir "build\app\outputs\flutter-apk\app-direct-debug.apk"
 
 if (-not (Test-Path $apkPath)) {
     Write-Error "APK tapılmadı: $apkPath`nƏvvəlcə build_apk.bat ilə qurun."

@@ -61,4 +61,27 @@ void main() {
 
     expect(find.text('Buraxılış'), findsNothing);
   });
+
+  testWidgets('onOpenPrivacyPolicy verilibsə keçid göstərir və toxunanda çağırır',
+      (tester) async {
+    var called = false;
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(
+      home: SettingsScreen(
+        repository: repo,
+        onOpenPrivacyPolicy: () => called = true,
+      ),
+    ));
+
+    expect(find.text('Məxfilik siyasəti'), findsOneWidget);
+    await tester.tap(find.text('Məxfilik siyasəti'));
+    expect(called, isTrue);
+  });
+
+  testWidgets('onOpenPrivacyPolicy verilməyibsə göstərilmir', (tester) async {
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(home: SettingsScreen(repository: repo)));
+
+    expect(find.text('Məxfilik siyasəti'), findsNothing);
+  });
 }

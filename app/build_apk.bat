@@ -1,5 +1,8 @@
 @echo off
-REM DilDostu debug APK build (v5 - SDK paylasilan home qovluguna kocuruldu).
+REM DilDostu debug APK build (v6 - "direct" flavor -- Google Play flavor-u
+REM ayrildiqdan sonra assembleDebug ozu 2 APK qurur, bu skript yalniz
+REM gunluk pilot/test APK-sini (direct) qurur, build_apk_play.bat isə
+REM Play flavor-unu).
 
 set "JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-17.0.19.10-hotspot"
 set "ANDROID_HOME=C:\Users\Alihuseyn Ibrahimov\android-sdk"
@@ -12,8 +15,8 @@ echo === Kohne Gradle daemon-lari dayandirilir ===
 call gradlew.bat --stop
 
 echo.
-echo === Gradle assembleDebug (5-10 deqiqe cheke biler) ===
-call gradlew.bat assembleDebug --no-daemon
+echo === Gradle assembleDirectDebug (5-10 deqiqe cheke biler) ===
+call gradlew.bat assembleDirectDebug --no-daemon
 if errorlevel 1 (
     echo.
     echo XETA: gradle build ugursuz oldu. Bu pencereni acik saxlayin ve Claude-a ekran sheklini gonderin.
@@ -23,7 +26,7 @@ if errorlevel 1 (
 
 echo.
 echo === UGURLU! APK: ===
-set "APK1=%~dp0build\app\outputs\flutter-apk\app-debug.apk"
+set "APK1=%~dp0build\app\outputs\flutter-apk\app-direct-debug.apk"
 if exist "%APK1%" echo %APK1%
 echo.
 echo Bitdi. Bu pencereni baglaya bilersiniz - Claude APK-ni telefona quracaq.

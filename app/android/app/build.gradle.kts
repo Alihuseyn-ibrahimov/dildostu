@@ -42,6 +42,17 @@ android {
         versionName = pubspecVersion.second
     }
 
+    // "direct" — bugünkü davranış (pilot/test, app-daxili yeniləmə, arxa fon
+    // məkan). "play" — Google Play buraxılışı: app-daxili yeniləmə YOX (Play
+    // öz mexanizmini tələb edir), arxa fon məkan YOX (V1-də xüsusi baxış
+    // tələb etməmək üçün çıxarılıb — bax .planning/2026-08-03-dildostu-playstore).
+    // Fərq `src/play/AndroidManifest.xml`-dədir (icazə silinməsi + meta-data).
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("direct") { dimension = "distribution" }
+        create("play") { dimension = "distribution" }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

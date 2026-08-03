@@ -6,7 +6,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, Header, HTTPException, Response
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 
 import os
 
@@ -52,6 +52,7 @@ from .providers import (
 from .release_store import ReleaseStore
 from .routine_store import RoutineStore
 from .service import LiveService, ServiceError, run_chat
+from .static_pages import delete_account_html, privacy_policy_html
 from .user_store import DuplicateEmail, UserStore
 
 app = FastAPI(title="DilDostu Live")
@@ -152,6 +153,18 @@ def _service(completers: dict[str, Completer]) -> LiveService:
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok"}
+
+
+@app.get("/privacy", response_class=HTMLResponse)
+def privacy_policy() -> str:
+    """Google Play Store siyahısı üçün məcburi məxfilik siyasəti."""
+    return privacy_policy_html()
+
+
+@app.get("/delete-account", response_class=HTMLResponse)
+def delete_account_page() -> str:
+    """Google Play "data deletion" tələbi — tətbiqsiz də hesab silmə yolu."""
+    return delete_account_html()
 
 
 @app.post("/auth/register", response_model=AuthResponse, status_code=201)
