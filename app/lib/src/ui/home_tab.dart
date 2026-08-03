@@ -4,6 +4,7 @@ import '../data/pack_repository.dart';
 import '../models/app_version_info.dart';
 import '../models/user_profile.dart';
 import 'pack_icons.dart';
+import 'theme.dart';
 import 'update_banner.dart';
 
 /// Bir paket üçün canlı AI kartı açan callback (main.dart-da bağlanır).
@@ -13,8 +14,8 @@ typedef OpenLive = void Function(String packId, String title, UserProfile profil
 typedef ResolveLivePlace
     = Future<({String packId, String title, String placeName})?> Function();
 
-/// Ana səhifə tabı — salamlama, canlı "İndi haradayam?" məkan kartı və ikonlu
-/// söz paketləri. Update banner varsa yuxarıda göstərilir.
+/// Ana səhifə tabı — salamlama, çətinlik seçicisi, canlı məkan kartı və
+/// ikonlu paket şəbəkəsi (spec §4).
 class HomeTab extends StatelessWidget {
   const HomeTab({
     super.key,
@@ -22,9 +23,11 @@ class HomeTab extends StatelessWidget {
     required this.profile,
     required this.openLive,
     required this.onManualPlace,
+    this.onLevelChanged,
     this.resolveLivePlace,
     this.availableUpdate,
     this.onInstallUpdate,
+    this.now,
   });
 
   final PackRepository repository;
@@ -32,60 +35,148 @@ class HomeTab extends StatelessWidget {
   final OpenLive openLive;
   final VoidCallback onManualPlace;
 
+  /// Çətinlik səviyyəsi dəyişdikdə (profilə saxlanır). Null-dursa seçici
+  /// göstərilmir.
+  final ValueChanged<ProficiencyLevel>? onLevelChanged;
+
   /// Cari yeri canlı müəyyən edir (GPS→server). Null olsa kart manual rejimə
   /// keçir (köhnə davranış).
   final ResolveLivePlace? resolveLivePlace;
   final AppVersionInfo? availableUpdate;
   final VoidCallback? onInstallUpdate;
 
+  /// Salamlama mətnini vaxta görə seçmək üçün (testdə sabitlənir).
+  final DateTime? now;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final packs = repository.packs;
     return Scaffold(
-      appBar: AppBar(title: const Text('DilDostu')),
-      body: Column(
-        children: [
-          if (availableUpdate != null)
-            UpdateBanner(info: availableUpdate!, onInstall: onInstallUpdate!),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-              children: [
-                Text('Salam 👋',
-                    style: theme.textTheme.headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.bold)),
-                const SizedBox(height: 4),
-                Text('Bu gün hansı sözləri öyrənək?',
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(color: theme.colorScheme.outline)),
-                const SizedBox(height: 16),
-                _LiveContextCard(
-                  resolve: resolveLivePlace,
-                  onManualTap: onManualPlace,
-                  onOpenPack: (packId, title) =>
-                      openLive(packId, title, profile),
-                ),
-                const SizedBox(height: 20),
-                Text('Söz paketləri',
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w600)),
-                const SizedBox(height: 8),
-                for (final pack in packs)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: _PackCard(
-                      title: pack.titleAz,
-                      subtitle: '${pack.words.length} söz',
-                      icon: packIcon(pack.packId),
-                      onTap: () => openLive(pack.packId, pack.titleAz, profile),
+      body: SafeArea(
+        child: Column(
+          children: [
+            if (availableUpdate != null)
+              UpdateBanner(info: availableUpdate!, onInstall: onInstallUpdate!),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.screen, AppSpacing.screen, AppSpacing.screen, 12),
+                children: [
+                  Text(greetingFor(now ?? DateTime.now()),
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(color: theme.colorScheme.outline)),
+                  const SizedBox(height: 2),
+                  Text('Bu gün nə öyrənək?',
+                      style: theme.textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.w600)),
+                  if (onLevelChanged != null) ...[
+                    const SizedBox(height: AppSpacing.section),
+                    _LevelSelector(
+                      value: profile.level,
+                      onChanged: onLevelChanged!,
                     ),
+                  ],
+                  const SizedBox(height: AppSpacing.section),
+                  _LiveContextCard(
+                    resolve: resolveLivePlace,
+                    levelLabel: profile.level.labelAz,
+                    onManualTap: onManualPlace,
+                    onOpenPack: (packId, title) =>
+                        openLive(packId, title, profile),
                   ),
-              ],
+                  const SizedBox(height: AppSpacing.section),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Expanded(
+                        child: Text('Söz paketləri',
+                            style: theme.textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.w600)),
+                      ),
+                      Text('${packs.length} mövzu',
+                          style: theme.textTheme.bodySmall
+                              ?.copyWith(color: theme.colorScheme.outline)),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.card),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: AppSpacing.card,
+                      crossAxisSpacing: AppSpacing.card,
+                      childAspectRatio: 1.25,
+                    ),
+                    itemCount: packs.length,
+                    itemBuilder: (context, i) {
+                      final pack = packs[i];
+                      return _PackCard(
+                        title: pack.titleAz,
+                        subtitle:
+                            '${pack.words.length} söz · ${profile.level.labelAz.toLowerCase()}',
+                        icon: packIcon(pack.packId),
+                        onTap: () =>
+                            openLive(pack.packId, pack.titleAz, profile),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+    );
+  }
+}
+
+/// Günün vaxtına uyğun salamlama.
+String greetingFor(DateTime now) {
+  final hour = now.hour;
+  if (hour < 6) return 'Gecən xeyrə';
+  if (hour < 12) return 'Sabahın xeyir';
+  if (hour < 18) return 'Günortan xeyir';
+  return 'Axşamın xeyir';
+}
+
+/// Çətinlik səviyyəsi seçicisi — seçim bütün paketlərə tətbiq olunur (spec §1).
+class _LevelSelector extends StatelessWidget {
+  const _LevelSelector({required this.value, required this.onChanged});
+
+  final ProficiencyLevel value;
+  final ValueChanged<ProficiencyLevel> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Çətinlik səviyyəsi',
+            style: theme.textTheme.labelMedium
+                ?.copyWith(color: theme.colorScheme.outline)),
+        const SizedBox(height: 8),
+        SizedBox(
+          width: double.infinity,
+          child: SegmentedButton<ProficiencyLevel>(
+            showSelectedIcon: false,
+            segments: [
+              for (final level in ProficiencyLevel.values)
+                ButtonSegment(value: level, label: Text(level.labelAz)),
+            ],
+            selected: {value},
+            onSelectionChanged: (s) => onChanged(s.first),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(value.hintAz,
+            style: theme.textTheme.bodySmall
+                ?.copyWith(color: theme.colorScheme.outline)),
+      ],
     );
   }
 }
@@ -95,11 +186,13 @@ class HomeTab extends StatelessWidget {
 class _LiveContextCard extends StatefulWidget {
   const _LiveContextCard({
     required this.resolve,
+    required this.levelLabel,
     required this.onManualTap,
     required this.onOpenPack,
   });
 
   final ResolveLivePlace? resolve;
+  final String levelLabel;
   final VoidCallback onManualTap;
   final void Function(String packId, String title) onOpenPack;
 
@@ -142,30 +235,30 @@ class _LiveContextCardState extends State<_LiveContextCard> {
       titleText = 'Yerini müəyyən edirəm…';
       subtitleText = 'Bir saniyə';
       leading = SizedBox(
-        width: 24,
-        height: 24,
+        width: 22,
+        height: 22,
         child: CircularProgressIndicator(strokeWidth: 2.4, color: onColor),
       );
       onTap = () {};
     } else if (_place != null) {
       final place = _place!;
-      titleText = place.placeName.isNotEmpty
-          ? '📍 ${place.placeName}'
-          : place.title;
-      subtitleText = '${place.title} sözlərinə bax';
+      titleText =
+          place.placeName.isNotEmpty ? place.placeName : place.title;
+      subtitleText =
+          '${place.title} · ${widget.levelLabel.toLowerCase()} səviyyə';
       leading = Icon(Icons.my_location, color: onColor);
       onTap = () => widget.onOpenPack(place.packId, place.title);
     } else {
       titleText = 'İndi haradayam?';
       subtitleText = 'Olduğun yerə uyğun sözlər';
-      leading = Icon(Icons.place, color: onColor);
+      leading = Icon(Icons.place_outlined, color: onColor);
       onTap = widget.onManualTap;
     }
 
     return Card(
       color: theme.colorScheme.primaryContainer,
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusCard),
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -178,15 +271,19 @@ class _LiveContextCardState extends State<_LiveContextCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(titleText,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.titleMedium?.copyWith(
                             color: onColor, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 2),
                     Text(subtitleText,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.bodySmall
                             ?.copyWith(color: onColor)),
                   ],
                 ),
               ),
-              // Yenilə düyməsi (yer dəyişəndə əl ilə təzələmək üçün).
               if (widget.resolve != null && !_loading)
                 IconButton(
                   onPressed: _resolve,
@@ -203,7 +300,7 @@ class _LiveContextCardState extends State<_LiveContextCard> {
   }
 }
 
-/// İkonlu böyük söz paketi kartı.
+/// Şəbəkə düzümündə paket kartı — rəngli ikon plitəsi + ad + alt sətir.
 class _PackCard extends StatelessWidget {
   const _PackCard({
     required this.title,
@@ -221,39 +318,41 @@ class _PackCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Card(
-      margin: EdgeInsets.zero,
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusCard),
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(14),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                width: 46,
-                height: 46,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.secondaryContainer,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusControl),
                 ),
                 child: Icon(icon,
-                    color: theme.colorScheme.onSecondaryContainer, size: 24),
+                    color: theme.colorScheme.onSecondaryContainer, size: 21),
               ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title,
-                        style: theme.textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.w600)),
-                    Text(subtitle,
-                        style: theme.textTheme.bodySmall
-                            ?.copyWith(color: theme.colorScheme.outline)),
-                  ],
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleSmall
+                          ?.copyWith(fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 2),
+                  Text(subtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall
+                          ?.copyWith(color: theme.colorScheme.outline)),
+                ],
               ),
-              Icon(Icons.chevron_right, color: theme.colorScheme.outline),
             ],
           ),
         ),

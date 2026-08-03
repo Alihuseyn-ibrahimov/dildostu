@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../engine/level_content.dart';
 import '../models/live_message.dart';
 import '../models/user_profile.dart';
 import '../models/word.dart';
@@ -50,23 +51,26 @@ class LiveContentClient {
           jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>,
         );
       }
-      return _fallback(packId, recentWords);
+      return _fallback(packId, recentWords, profile.level);
     } catch (_) {
-      return _fallback(packId, recentWords);
+      return _fallback(packId, recentWords, profile.level);
     }
   }
 
-  /// Statik paketdən söz seç: mümkünsə son sözlərdə olmayan; paket yoxdursa
-  /// ilk mövcud paket. Heç bir söz yoxdursa StateError (paketlər boş olmamalı).
-  LiveMessage _fallback(String packId, List<String> recentWords) {
+  /// Statik paketdən söz seç: əvvəlcə istifadəçinin səviyyəsinə uyğun sözlər
+  /// süzülür (`wordsForLevel`, spec §3), sonra mümkünsə son sözlərdə olmayan
+  /// seçilir. Paket yoxdursa ilk mövcud paket; heç bir söz yoxdursa StateError.
+  LiveMessage _fallback(
+      String packId, List<String> recentWords, ProficiencyLevel level) {
     final pack = fallbackRepo.byId(packId) ??
         (fallbackRepo.packs.isNotEmpty ? fallbackRepo.packs.first : null);
     if (pack == null || pack.words.isEmpty) {
       throw StateError('Fallback üçün statik paket yoxdur');
     }
-    final Word word = pack.words.firstWhere(
+    final candidates = wordsForLevel(pack, level);
+    final Word word = candidates.firstWhere(
       (w) => !recentWords.contains(w.word),
-      orElse: () => pack.words.first,
+      orElse: () => candidates.first,
     );
     return LiveMessage.fromWord(word, pack.packId);
   }

@@ -5,13 +5,45 @@ AI çağırışları ayrı `providers.py`-dədir; buradakı hər şey unit test 
 
 from __future__ import annotations
 
-from .models import Context, Mode, UserProfile
+from .models import Context, Level, Mode, UserProfile
 
 _PURPOSE_AZ = {
     "travel": "səyahət üçün",
     "work": "iş üçün",
     "general": "ümumi məqsədlə",
 }
+
+# Spec §2 — səviyyələrin konkret tərifi. AI-nin "çətin"i subyektiv seçməməsi
+# üçün söz tipi, cümlə uzunluğu və qrammatika açıq yazılır.
+_LEVEL_RULES: dict[str, str] = {
+    "beginner": (
+        "SƏVİYYƏ: Asan (beginner). Ən çox işlənən TƏK sözlər seç "
+        "(gündəlik lüğətin ilk 500 sözü). Nümunə cümlə 4-6 sözdən ibarət, "
+        "yalnız indiki zaman. Məcazi mənalı ifadələri və çoxsözlü feil "
+        'birləşmələrini İŞLƏTMƏ. "level" sahəsi 1 olmalıdır.'
+    ),
+    "intermediate": (
+        "SƏVİYYƏ: Orta (intermediate). İfadələr və frazalar seç (tək söz yox). "
+        "Nümunə cümlə 6-10 sözdən ibarət; keçmiş və gələcək zaman, modal "
+        "feillər (can/should/would) işlət. "
+        '"level" sahəsi 2 olmalıdır.'
+    ),
+    "advanced": (
+        "SƏVİYYƏ: Çətin (advanced). Phrasal verb, idiom və nüanslı sözlər seç. "
+        "Nümunə cümlə 10-15 sözdən ibarət; şərt cümlələri (if/unless) və "
+        "passiv quruluş işlət. "
+        '"level" sahəsi 3 olmalıdır.'
+    ),
+}
+
+
+def level_instruction(level: Level) -> str:
+    """Səviyyə üçün AI təlimatı (spec §2 cədvəli).
+
+    Naməlum səviyyə gəlsə orta səviyyəyə düşür — prompt qurma heç vaxt
+    sınmamalıdır (pydantic onsuz da dəyəri doğrulayır).
+    """
+    return _LEVEL_RULES.get(level, _LEVEL_RULES["intermediate"])
 
 _MODE_INSTRUCTION = {
     "normal": "Situasiyaya uyğun faydalı bir söz/ifadə seç.",
@@ -45,11 +77,12 @@ def preferred_providers(mode: Mode) -> list[str]:
 
 
 def _profile_line(profile: UserProfile) -> str:
+    """Profil sətri + seçilmiş səviyyənin konkret qaydaları (spec §2)."""
     interests = ", ".join(profile.interests) if profile.interests else "yoxdur"
     return (
-        f"İstifadəçi profili: səviyyə={profile.level} (beginner/intermediate), "
-        f"məqsəd={profile.purpose} ({_PURPOSE_AZ[profile.purpose]}), "
-        f"maraqlar: {interests}."
+        f"İstifadəçi profili: məqsəd={profile.purpose} "
+        f"({_PURPOSE_AZ[profile.purpose]}), maraqlar: {interests}.\n"
+        f"{level_instruction(profile.level)}"
     )
 
 
@@ -98,8 +131,8 @@ def build_chat_system(profile: UserProfile, context: Context | None) -> str:
         "(İngilis söz/ifadələri nümunə kimi ver). Cavabların qısa, praktik və "
         "cəsarətləndirici olsun. İstifadəçi soruşanda tələffüz, nümunə cümlə və "
         "sadə izah ver.\n"
-        f"İstifadəçi səviyyəsi: {profile.level} (beginner/intermediate); "
-        f"məqsəd: {profile.purpose}.{ctx}"
+        f"məqsəd: {profile.purpose}.{ctx}\n"
+        f"{level_instruction(profile.level)}"
     )
 
 

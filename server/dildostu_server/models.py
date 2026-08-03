@@ -11,7 +11,9 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 Purpose = Literal["travel", "work", "general"]
-Level = Literal["beginner", "intermediate"]
+# Asan / Orta / Çətin (app UI adları). `advanced` 2026-08-03-də əlavə edildi —
+# köhnə cihaz profilləri ilk iki dəyəri işlətdiyi üçün geriyə uyğundur.
+Level = Literal["beginner", "intermediate", "advanced"]
 Mode = Literal["normal", "another_example", "simpler", "harder"]
 
 

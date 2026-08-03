@@ -1,14 +1,18 @@
+import pytest
+from pydantic import ValidationError
+
 from dildostu_server.models import Context, UserProfile
 from dildostu_server.prompts import (
     build_dayplan_prompt,
     build_generate_prompt,
+    level_instruction,
     preferred_providers,
 )
 
 
-def profile():
+def profile(level="beginner"):
     return UserProfile(
-        wake_hour=8, sleep_hour=23, purpose="travel", level="beginner",
+        wake_hour=8, sleep_hour=23, purpose="travel", level=level,
         interests=["yemək"],
     )
 
@@ -46,6 +50,69 @@ class TestGeneratePrompt:
             profile(), Context(pack_id="cafe", hour=9), mode="normal", recent_words=[]
         )
         assert "json" in user.lower()
+
+
+class TestLevelInstruction:
+    """Spec §2 — hər səviyyə AI-ya konkret, fərqli təlimat verməlidir."""
+
+    def test_all_three_levels_supported(self):
+        for level in ("beginner", "intermediate", "advanced"):
+            assert level_instruction(level)
+
+    def test_levels_differ_from_each_other(self):
+        texts = {
+            level_instruction(lvl)
+            for lvl in ("beginner", "intermediate", "advanced")
+        }
+        assert len(texts) == 3
+
+    def test_beginner_mentions_present_tense_and_short_sentence(self):
+        text = level_instruction("beginner").lower()
+        assert "indiki zaman" in text
+        assert "4-6" in text or "4–6" in text
+
+    def test_intermediate_mentions_past_future(self):
+        text = level_instruction("intermediate").lower()
+        assert "keçmiş" in text and "gələcək" in text
+
+    def test_advanced_mentions_idiom_and_phrasal(self):
+        text = level_instruction("advanced").lower()
+        assert "idiom" in text
+        assert "phrasal" in text
+
+    def test_each_level_states_target_word_level_number(self):
+        assert "1" in level_instruction("beginner")
+        assert "2" in level_instruction("intermediate")
+        assert "3" in level_instruction("advanced")
+
+
+class TestGeneratePromptCarriesLevel:
+    def test_advanced_profile_puts_advanced_rules_in_prompt(self):
+        _, user = build_generate_prompt(
+            profile("advanced"), Context(pack_id="cafe", hour=9),
+            mode="normal", recent_words=[],
+        )
+        assert "idiom" in user.lower()
+
+    def test_beginner_profile_does_not_ask_for_idioms(self):
+        _, user = build_generate_prompt(
+            profile("beginner"), Context(pack_id="cafe", hour=9),
+            mode="normal", recent_words=[],
+        )
+        assert "idiom" not in user.lower()
+
+    def test_dayplan_prompt_also_carries_level(self):
+        _, user = build_dayplan_prompt(profile("advanced"), ["cafe"], "2026-08-03")
+        assert "idiom" in user.lower()
+
+
+class TestAdvancedLevelAccepted:
+    def test_profile_accepts_advanced(self):
+        assert profile("advanced").level == "advanced"
+
+    def test_unknown_level_rejected(self):
+        with pytest.raises(ValidationError):
+            profile("expert")
 
 
 class TestDayPlanPrompt:

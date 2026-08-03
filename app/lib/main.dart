@@ -38,6 +38,7 @@ import 'src/ui/profile_tab.dart';
 import 'src/ui/progress_tab.dart';
 import 'src/ui/routine_permission_screen.dart';
 import 'src/ui/settings_screen.dart';
+import 'src/ui/theme.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -59,7 +60,7 @@ class DilDostuApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       title: 'DilDostu',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorSchemeSeed: Colors.teal, useMaterial3: true),
+      theme: buildAppTheme(),
       home: const _Bootstrap(),
     );
   }
@@ -365,6 +366,15 @@ class _BootstrapState extends State<_Bootstrap> {
     ));
   }
 
+  /// Ana səhifədəki çətinlik seçicisi — profilə saxlanır və dərhal tətbiq
+  /// olunur (növbəti AI sorğusu yeni səviyyə ilə gedir, spec §1).
+  Future<void> _changeLevel(_AppData data, ProficiencyLevel level) async {
+    final current = data.profileRepo.current;
+    if (current == null || current.level == level) return;
+    await data.profileRepo.save(current.copyWith(level: level));
+    if (mounted) setState(() {});
+  }
+
   void _openSettings(_AppData data) {
     navigatorKey.currentState?.push(MaterialPageRoute(
       builder: (_) =>
@@ -423,6 +433,7 @@ class _BootstrapState extends State<_Bootstrap> {
             openLive: (packId, title, p) =>
                 navigatorKey.currentState?.push(_liveRoute(packId, title, p)),
             onManualPlace: () => _openManualPlace(data),
+            onLevelChanged: (level) => _changeLevel(data, level),
             resolveLivePlace: () => _resolveLivePlace(data),
             availableUpdate: _availableUpdate,
             onInstallUpdate: _availableUpdate == null ? null : _installUpdate,

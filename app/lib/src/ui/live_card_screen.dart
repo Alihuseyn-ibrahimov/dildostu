@@ -1,7 +1,37 @@
 import 'package:flutter/material.dart';
 
 import '../models/live_message.dart';
+import '../models/user_profile.dart';
 import '../services/speaker.dart';
+
+/// Sözün çətinlik səviyyəsini göstərən kiçik nişan (spec §4).
+class _LevelChip extends StatelessWidget {
+  const _LevelChip({required this.level});
+
+  /// `LiveMessage.level` — 1-3.
+  final int level;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final match = ProficiencyLevel.values
+        .where((l) => l.wordLevel == level)
+        .firstOrNull;
+    if (match == null) return const SizedBox.shrink();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.secondaryContainer,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(match.labelAz,
+          style: theme.textTheme.labelMedium?.copyWith(
+            color: theme.colorScheme.onSecondaryContainer,
+            fontWeight: FontWeight.w600,
+          )),
+    );
+  }
+}
 
 /// Canlı AI mesajını göstərən kart: AI-nin dostcasına sətri + söz/IPA/tərcümə/
 /// nümunə + səsləndir + sürətli düymələr ("başqa nümunə/sadələşdir/çətinləşdir").
@@ -103,6 +133,8 @@ class _LiveCardScreenState extends State<LiveCardScreen> {
                     ),
                   ),
                   const SizedBox(height: 28),
+                  Center(child: _LevelChip(level: msg.level)),
+                  const SizedBox(height: 14),
                   Text(msg.word,
                       textAlign: TextAlign.center,
                       style: theme.textTheme.displaySmall

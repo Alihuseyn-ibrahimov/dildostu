@@ -63,15 +63,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             onSelectionChanged: (s) => setState(() => _purpose = s.first),
           ),
           const SizedBox(height: 20),
-          const Text('Səviyyən?'),
+          const Text('Çətinlik səviyyəsi?'),
           const SizedBox(height: 8),
           SegmentedButton<ProficiencyLevel>(
-            segments: const [
-              ButtonSegment(value: ProficiencyLevel.beginner, label: Text('Başlanğıc')),
-              ButtonSegment(value: ProficiencyLevel.intermediate, label: Text('Orta')),
+            segments: [
+              for (final level in ProficiencyLevel.values)
+                ButtonSegment(value: level, label: Text(level.labelAz)),
             ],
             selected: {_level},
             onSelectionChanged: (s) => setState(() => _level = s.first),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            _level.hintAz,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.outline,
+                ),
           ),
           const SizedBox(height: 20),
           Row(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'theme.dart';
+
 /// Profil tabı — ayarlar, "AI nəyi öyrənib", rutin öyrənmə naviqasiyası.
 /// Aşağıda kiçik "Developer" bölməsi (test bildirişi). Bütün hərəkətlər callback
 /// kimi verilir (main.dart bağlayır) — tab decoupled və testlənəndir.
@@ -44,7 +46,7 @@ class ProfileTab extends StatelessWidget {
           ),
           const Divider(height: 32),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            padding: const EdgeInsets.fromLTRB(AppSpacing.screen, 0, 16, 8),
             child: Text('Developer',
                 style: theme.textTheme.labelMedium
                     ?.copyWith(color: theme.colorScheme.outline)),
@@ -76,11 +78,27 @@ class _Item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      trailing: const Icon(Icons.chevron_right),
+      contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.screen, vertical: 4),
+      // Ana səhifədəki paket kartları ilə eyni ikon plitəsi (vahid görünüş).
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: theme.colorScheme.secondaryContainer,
+          borderRadius: BorderRadius.circular(AppSpacing.radiusControl),
+        ),
+        child:
+            Icon(icon, color: theme.colorScheme.onSecondaryContainer, size: 20),
+      ),
+      title: Text(title,
+          style: theme.textTheme.titleSmall
+              ?.copyWith(fontWeight: FontWeight.w600)),
+      subtitle: Text(subtitle, style: theme.textTheme.bodySmall),
+      trailing:
+          Icon(Icons.chevron_right, color: theme.colorScheme.outlineVariant),
       onTap: onTap,
     );
   }
