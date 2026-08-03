@@ -112,6 +112,27 @@ def build_generate_prompt(
     return _SYSTEM, user
 
 
+def build_pack_words_prompt(
+    profile: UserProfile,
+    pack_id: str,
+    count: int,
+) -> tuple[str, str]:
+    """Bir paket üçün söz SİYAHISI (söz siyahısı ekranı) — (system, user)."""
+    user = (
+        f"Sən Azərbaycanca danışan istifadəçiyə İngilis dili öyrədən dostcasına "
+        f"AI köməkçisən.\n{_profile_line(profile)}\n"
+        f"'{pack_id}' kontekstində ən faydalı {count} söz/ifadə seç. "
+        f"Sözlər bir-birini TƏKRAR ETMƏMƏLİ və eyni situasiyanın müxtəlif "
+        f"tərəflərini əhatə etməlidir.\n\n"
+        f"Hər element üçün sahələr:\n{_WORD_FIELDS_DESC}\n"
+        f'- "pack_id": "{pack_id}"\n\n'
+        'Yalnız bu formada JSON qaytar: {"messages": [ {pack_id, word, '
+        'translation_az, ipa, example, example_az, ai_line, level}, ... ]} '
+        f"— dəqiq {count} element."
+    )
+    return _SYSTEM, user
+
+
 def chat_preferred_providers() -> list[str]:
     """Söhbət üçün provayder sırası: Claude (keyfiyyət) → Groq (fallback)."""
     return ["claude", "groq"]

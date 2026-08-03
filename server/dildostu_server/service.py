@@ -12,11 +12,13 @@ from .models import (
     DayPlanResponse,
     GenerateRequest,
     LiveMessage,
+    UserProfile,
 )
 from .prompts import (
     build_chat_system,
     build_dayplan_prompt,
     build_generate_prompt,
+    build_pack_words_prompt,
     chat_preferred_providers,
     preferred_providers,
 )
@@ -56,6 +58,30 @@ class LiveService:
 
         self._cache[key] = message
         return message
+
+    def pack_words(
+        self, profile: UserProfile, pack_id: str, count: int
+    ) -> list[LiveMessage]:
+        """Paket üçün söz siyahısı (söz siyahısı ekranı).
+
+        Keş açarı (paket, səviyyə, say) — eyni paketi təkrar açanda AI-ya
+        yenidən sorğu getmir; səviyyə dəyişəndə isə yeni siyahı gəlir.
+        """
+        key = ("pack-words", pack_id, profile.level, count)
+        if key in self._cache:
+            return self._cache[key]
+
+        system, user = build_pack_words_prompt(profile, pack_id, count)
+        try:
+            text = complete_with_fallback(
+                system, user, preferred_providers("normal"), self._completers
+            )
+            words = parse_dayplan_response(text, [pack_id] * count)
+        except (AllProvidersFailed, ValueError) as exc:
+            raise ServiceError(str(exc)) from exc
+
+        self._cache[key] = words
+        return words
 
     def day_plan(self, req: DayPlanRequest) -> DayPlanResponse:
         system, user = build_dayplan_prompt(req.profile, req.pack_ids, req.date)

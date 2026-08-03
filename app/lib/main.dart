@@ -30,7 +30,8 @@ import 'src/services/speaker.dart';
 import 'src/ui/chat_screen.dart';
 import 'src/ui/home_tab.dart';
 import 'src/ui/learned_places_screen.dart';
-import 'src/ui/live_card_screen.dart';
+import 'src/ui/word_detail_screen.dart';
+import 'src/ui/word_list_screen.dart';
 import 'src/ui/main_shell.dart';
 import 'src/ui/manual_mode_screen.dart';
 import 'src/ui/onboarding_screen.dart';
@@ -279,33 +280,40 @@ class _BootstrapState extends State<_Bootstrap> {
     return (packId: sample.packId, title: title, placeName: sample.place);
   }
 
-  /// Bildiriş/paket tıklamasında canlı AI kartını açır (profil varsa).
+  /// Bildiriş/geofence tıklamasında həmin paketin söz siyahısını açır.
   void _openLive(String? packId) {
     if (packId == null) return;
     _future.then((data) {
       final profile = data.profileRepo.current;
       final pack = data.packs.byId(packId);
       if (profile == null || pack == null) return;
-      navigatorKey.currentState?.push(_liveRoute(pack.packId, pack.titleAz, profile));
+      navigatorKey.currentState
+          ?.push(_wordListRoute(pack.packId, pack.titleAz, profile));
     });
   }
 
-  MaterialPageRoute _liveRoute(String packId, String title, UserProfile profile) {
+  /// Paket → söz siyahısı ekranı. Siyahıdan sözə toxunanda ətraflı ekran açılır
+  /// (indeks ötürülür ki, orada "Əvvəlki/Növbəti" işləsin).
+  MaterialPageRoute _wordListRoute(
+      String packId, String title, UserProfile profile) {
     return MaterialPageRoute(
-      builder: (_) => LiveCardScreen(
+      builder: (_) => WordListScreen(
         title: title,
-        speaker: _speaker,
-        fetch: (mode) => _live.generate(
-          packId: packId,
-          hour: DateTime.now().hour,
-          profile: profile,
-          mode: mode,
-        ),
-        onAskQuestion: () => _openChat(
-          profile,
-          packId: packId,
-          greeting: '"$title" haqda nə soruşmaq istəyirsən? 🤖',
-        ),
+        loader: () => _live.packWords(packId: packId, profile: profile),
+        onOpenWord: (words, index) =>
+            navigatorKey.currentState?.push(MaterialPageRoute(
+          builder: (_) => WordDetailScreen(
+            title: title,
+            words: words,
+            initialIndex: index,
+            speaker: _speaker,
+            onAskQuestion: () => _openChat(
+              profile,
+              packId: packId,
+              greeting: '"$title" haqda nə soruşmaq istəyirsən? 🤖',
+            ),
+          ),
+        )),
       ),
     );
   }
@@ -431,7 +439,7 @@ class _BootstrapState extends State<_Bootstrap> {
             repository: data.packs,
             profile: profile,
             openLive: (packId, title, p) =>
-                navigatorKey.currentState?.push(_liveRoute(packId, title, p)),
+                navigatorKey.currentState?.push(_wordListRoute(packId, title, p)),
             onManualPlace: () => _openManualPlace(data),
             onLevelChanged: (level) => _changeLevel(data, level),
             resolveLivePlace: () => _resolveLivePlace(data),

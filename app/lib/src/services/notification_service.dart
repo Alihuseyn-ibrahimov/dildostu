@@ -89,7 +89,7 @@ class NotificationService {
   /// Geofence tetiklənməsi — istifadəçi tez-tez gəldiyi yerə çatanda (proqram
   /// bağlı olsa belə, WorkManager fon tick-indən) göstərilir. Toxunma
   /// `showNow`/`scheduleToday` ilə eyni payload konvensiyasını (pack_id)
-  /// paylaşır — main.dart-da eyni `onTap` LiveCardScreen-i açır.
+  /// paylaşır — main.dart-da eyni `onTap` söz siyahısı ekranını açır.
   Future<void> showArrival(String packId, String title) async {
     await _plugin.show(
       id: 7777,

@@ -19,6 +19,8 @@ from .models import (
     GenerateRequest,
     GeofencesResponse,
     LiveMessage,
+    PackWordsRequest,
+    PackWordsResponse,
     PlaceResolveRequest,
     PlaceResolveResponse,
     RoutineSampleRequest,
@@ -105,6 +107,19 @@ def day_plan(
         return _service(completers).day_plan(req)
     except ServiceError as exc:
         raise HTTPException(status_code=502, detail=str(exc))
+
+
+@app.post("/pack-words", response_model=PackWordsResponse)
+def pack_words(
+    req: PackWordsRequest,
+    completers: dict[str, Completer] = Depends(get_completers),
+) -> PackWordsResponse:
+    """Söz siyahısı ekranı üçün — paketin sözləri istifadəçi səviyyəsində."""
+    try:
+        words = _service(completers).pack_words(req.profile, req.pack_id, req.count)
+    except ServiceError as exc:
+        raise HTTPException(status_code=502, detail=str(exc))
+    return PackWordsResponse(words=words, source="ai")
 
 
 @app.post("/chat", response_model=ChatResponse)

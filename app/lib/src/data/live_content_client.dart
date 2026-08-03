@@ -57,6 +57,50 @@ class LiveContentClient {
     }
   }
 
+  /// Paketin söz SİYAHISI (söz siyahısı ekranı üçün). Server əlçatmazsa statik
+  /// paketin səviyyəyə uyğun sözlərinə düşür — ekran heç vaxt boş qalmır.
+  Future<List<LiveMessage>> packWords({
+    required String packId,
+    required UserProfile profile,
+    int count = 8,
+  }) async {
+    try {
+      final resp = await _http
+          .post(
+            Uri.parse('$baseUrl/pack-words'),
+            headers: const {'Content-Type': 'application/json'},
+            body: jsonEncode({
+              'profile': profile.toServerJson(),
+              'pack_id': packId,
+              'count': count,
+            }),
+          )
+          // Siyahı generasiyası tək sözdən uzun çəkir.
+          .timeout(const Duration(seconds: 25));
+      if (resp.statusCode == 200) {
+        final body =
+            jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
+        final raw = (body['words'] as List).cast<Map<String, dynamic>>();
+        if (raw.isNotEmpty) {
+          return [for (final w in raw) LiveMessage.fromServerJson(w)];
+        }
+      }
+      return _fallbackList(packId, profile.level);
+    } catch (_) {
+      return _fallbackList(packId, profile.level);
+    }
+  }
+
+  /// Offline siyahı — statik paketin səviyyəyə uyğun sözləri.
+  List<LiveMessage> _fallbackList(String packId, ProficiencyLevel level) {
+    final pack = fallbackRepo.byId(packId);
+    if (pack == null) return const [];
+    return [
+      for (final w in wordsForLevel(pack, level))
+        LiveMessage.fromWord(w, pack.packId),
+    ];
+  }
+
   /// Statik paketdən söz seç: əvvəlcə istifadəçinin səviyyəsinə uyğun sözlər
   /// süzülür (`wordsForLevel`, spec §3), sonra mümkünsə son sözlərdə olmayan
   /// seçilir. Paket yoxdursa ilk mövcud paket; heç bir söz yoxdursa StateError.

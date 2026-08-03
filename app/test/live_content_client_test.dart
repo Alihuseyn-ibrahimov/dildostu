@@ -108,4 +108,101 @@ void main() {
       expect(msg.isLive, isFalse);
     });
   });
+
+  group('packWords (söz siyahısı)', () {
+    String wordsResponse() => jsonEncode({
+          'words': [
+            {
+              'pack_id': 'cafe',
+              'word': 'latte',
+              'translation_az': 'latte',
+              'ipa': '/l/',
+              'example': 'A latte.',
+              'example_az': 'Bir latte.',
+              'ai_line': 'Kafedəsən!',
+              'level': 1,
+            },
+            {
+              'pack_id': 'cafe',
+              'word': 'receipt',
+              'translation_az': 'qəbz',
+              'ipa': '/r/',
+              'example': 'The receipt.',
+              'example_az': 'Qəbz.',
+              'ai_line': 'Kafedəsən!',
+              'level': 1,
+            },
+          ],
+        });
+
+    test('serverdən siyahı qaytarır', () async {
+      final mock = MockClient(
+          (req) async => http.Response.bytes(utf8.encode(wordsResponse()), 200));
+      final client = LiveContentClient(
+        baseUrl: 'http://x', httpClient: mock, fallbackRepo: _repo(),
+      );
+      final words = await client.packWords(packId: 'cafe', profile: _profile);
+      expect(words, hasLength(2));
+      expect(words.first.word, 'latte');
+      expect(words.first.isLive, isTrue);
+    });
+
+    test('düzgün endpoint və gövdə göndərir', () async {
+      String? path;
+      Map<String, dynamic>? body;
+      final mock = MockClient((req) async {
+        path = req.url.path;
+        body = jsonDecode(req.body) as Map<String, dynamic>;
+        return http.Response.bytes(utf8.encode(wordsResponse()), 200);
+      });
+      final client = LiveContentClient(
+        baseUrl: 'http://x', httpClient: mock, fallbackRepo: _repo(),
+      );
+      await client.packWords(packId: 'cafe', profile: _profile, count: 6);
+      expect(path, '/pack-words');
+      expect(body!['pack_id'], 'cafe');
+      expect(body!['count'], 6);
+      expect(body!['profile']['level'], 'beginner');
+    });
+
+    // Groq gündəlik limiti dolanda server 502 verir — ekran boş qalmamalıdır.
+    test('server 502 → statik paketin sözləri', () async {
+      final mock = MockClient((req) async => http.Response('err', 502));
+      final client = LiveContentClient(
+        baseUrl: 'http://x', httpClient: mock, fallbackRepo: _repo(),
+      );
+      final words = await client.packWords(packId: 'cafe', profile: _profile);
+      expect(words, hasLength(1));
+      expect(words.first.word, 'coffee');
+      expect(words.first.isLive, isFalse);
+    });
+
+    test('şəbəkə istisnası → statik fallback', () async {
+      final mock = MockClient((req) async => throw Exception('network'));
+      final client = LiveContentClient(
+        baseUrl: 'http://x', httpClient: mock, fallbackRepo: _repo(),
+      );
+      final words = await client.packWords(packId: 'cafe', profile: _profile);
+      expect(words.first.word, 'coffee');
+    });
+
+    test('boş server cavabı → statik fallback', () async {
+      final mock = MockClient((req) async =>
+          http.Response.bytes(utf8.encode(jsonEncode({'words': []})), 200));
+      final client = LiveContentClient(
+        baseUrl: 'http://x', httpClient: mock, fallbackRepo: _repo(),
+      );
+      final words = await client.packWords(packId: 'cafe', profile: _profile);
+      expect(words.first.word, 'coffee');
+      expect(words.first.isLive, isFalse);
+    });
+
+    test('naməlum paket → boş siyahı (xəta atmır)', () async {
+      final mock = MockClient((req) async => http.Response('err', 502));
+      final client = LiveContentClient(
+        baseUrl: 'http://x', httpClient: mock, fallbackRepo: _repo(),
+      );
+      expect(await client.packWords(packId: 'yoxdur', profile: _profile), isEmpty);
+    });
+  });
 }

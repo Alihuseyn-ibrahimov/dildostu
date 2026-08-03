@@ -64,6 +64,19 @@ class DayPlanResponse(BaseModel):
     source: Literal["ai", "fallback"] = "ai"
 
 
+class PackWordsRequest(BaseModel):
+    """Bir paket üçün söz siyahısı (söz siyahısı ekranı)."""
+
+    profile: UserProfile
+    pack_id: str = Field(min_length=1)
+    count: int = Field(default=8, ge=3, le=20)
+
+
+class PackWordsResponse(BaseModel):
+    words: list[LiveMessage]
+    source: Literal["ai", "fallback"] = "ai"
+
+
 class ChatMessage(BaseModel):
     role: Literal["user", "assistant"]
     content: str = Field(min_length=1)
