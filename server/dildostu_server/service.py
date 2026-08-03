@@ -17,6 +17,7 @@ from .models import (
 from .prompts import (
     build_chat_system,
     build_dayplan_prompt,
+    build_essential_words_prompt,
     build_generate_prompt,
     build_pack_words_prompt,
     chat_preferred_providers,
@@ -82,6 +83,31 @@ class LiveService:
 
         self._cache[key] = words
         return words
+
+    def essential_words(
+        self, profile: UserProfile, words: list[str]
+    ) -> list[LiveMessage]:
+        """504 sabit söz bankından verilmiş sözlər üçün pedaqoji "qabıq" yaradır.
+
+        Keş açarında sözlərin özü var (tuple) — səviyyə dəyişəndə fərqli söz
+        dəsti gəldiyi üçün eyni açar heç vaxt fərqli sözlər üçün istifadə
+        olunmur.
+        """
+        key = ("essential-words", tuple(words), profile.level)
+        if key in self._cache:
+            return self._cache[key]
+
+        system, user = build_essential_words_prompt(profile, words)
+        try:
+            text = complete_with_fallback(
+                system, user, preferred_providers("normal"), self._completers
+            )
+            messages = parse_dayplan_response(text, ["essential"] * len(words))
+        except (AllProvidersFailed, ValueError) as exc:
+            raise ServiceError(str(exc)) from exc
+
+        self._cache[key] = messages
+        return messages
 
     def day_plan(self, req: DayPlanRequest) -> DayPlanResponse:
         system, user = build_dayplan_prompt(req.profile, req.pack_ids, req.date)

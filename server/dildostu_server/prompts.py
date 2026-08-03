@@ -133,6 +133,31 @@ def build_pack_words_prompt(
     return _SYSTEM, user
 
 
+def build_essential_words_prompt(
+    profile: UserProfile,
+    words: list[str],
+) -> tuple[str, str]:
+    """Sabit söz siyahısı (504 ümumi söz bankından, bax essential_words.py)
+    üçün AZ tərcümə/IPA/nümunə yaradır — (system, user).
+
+    Fərqi `build_pack_words_prompt`-dan: AI sözləri ÖZÜ seçmir, ona VERİLİR —
+    yalnız pedaqoji "qabıq" (tərcümə, nümunə, ai_line) yaradır. Bu, kitabın
+    sınaqdan keçmiş söz seçimini qoruyub saxlayır.
+    """
+    word_list = ", ".join(words)
+    user = (
+        f"Sən Azərbaycanca danışan istifadəçiyə İngilis dili öyrədən dostcasına "
+        f"AI köməkçisən.\n{_profile_line(profile)}\n"
+        f"Aşağıdakı {len(words)} sözün HƏR BİRİ üçün ayrıca element yarat "
+        f"(sıra ilə, heç birini ƏVƏZ ETMƏ, dəyişdirmə, ötürmə): {word_list}\n\n"
+        f"Hər element üçün sahələr:\n{_WORD_FIELDS_DESC}\n\n"
+        'Yalnız bu formada JSON qaytar: {"messages": [ {word, translation_az, '
+        'ipa, example, example_az, ai_line, level}, ... ]} '
+        f"— dəqiq {len(words)} element, verilmiş sözlərlə eyni sırada."
+    )
+    return _SYSTEM, user
+
+
 def chat_preferred_providers() -> list[str]:
     """Söhbət üçün provayder sırası: Claude (keyfiyyət) → Groq (fallback)."""
     return ["claude", "groq"]

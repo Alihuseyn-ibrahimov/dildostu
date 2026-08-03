@@ -4,6 +4,7 @@ from pydantic import ValidationError
 from dildostu_server.models import Context, UserProfile
 from dildostu_server.prompts import (
     build_dayplan_prompt,
+    build_essential_words_prompt,
     build_generate_prompt,
     level_instruction,
     preferred_providers,
@@ -113,6 +114,31 @@ class TestAdvancedLevelAccepted:
     def test_unknown_level_rejected(self):
         with pytest.raises(ValidationError):
             profile("expert")
+
+
+class TestEssentialWordsPrompt:
+    def test_lists_the_exact_words(self):
+        _, user = build_essential_words_prompt(profile(), ["abandon", "keen", "tact"])
+        assert "abandon" in user
+        assert "keen" in user
+        assert "tact" in user
+
+    def test_forbids_substitution(self):
+        _, user = build_essential_words_prompt(profile(), ["abandon"])
+        assert "ƏVƏZ" in user.upper() or "TƏKRAR ETMƏ" in user.upper() or "DƏYİŞ" in user.upper()
+
+    def test_carries_level_rules(self):
+        _, user = build_essential_words_prompt(profile("advanced"), ["abandon"])
+        assert "idiom" in user.lower()
+
+    def test_asks_for_exact_count_matching_words(self):
+        words = ["abandon", "keen", "tact", "vacant"]
+        _, user = build_essential_words_prompt(profile(), words)
+        assert str(len(words)) in user
+
+    def test_asks_json_messages_array(self):
+        _, user = build_essential_words_prompt(profile(), ["abandon"])
+        assert "messages" in user
 
 
 class TestDayPlanPrompt:

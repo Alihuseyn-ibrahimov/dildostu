@@ -101,6 +101,21 @@ class PackWordsResponse(BaseModel):
     source: Literal["ai", "fallback"] = "ai"
 
 
+class EssentialWordsRequest(BaseModel):
+    """Əsas lüğət paketi — 504 sabit söz bankından növbəti dəst (offset ilə)."""
+
+    profile: UserProfile
+    offset: int = Field(default=0, ge=0)
+    count: int = Field(default=12, ge=3, le=20)
+
+
+class EssentialWordsResponse(BaseModel):
+    words: list[LiveMessage]
+    total: int
+    next_offset: int
+    source: Literal["ai", "fallback"] = "ai"
+
+
 class ChatMessage(BaseModel):
     role: Literal["user", "assistant"]
     content: str = Field(min_length=1)

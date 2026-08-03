@@ -18,6 +18,7 @@ from .auth import (
     verify_password,
     verify_token,
 )
+from .essential_words import words_for_level
 from .models import (
     AppVersionInfo,
     AuthResponse,
@@ -25,6 +26,8 @@ from .models import (
     ChatResponse,
     DayPlanRequest,
     DayPlanResponse,
+    EssentialWordsRequest,
+    EssentialWordsResponse,
     GenerateRequest,
     GeofencesResponse,
     LiveMessage,
@@ -272,6 +275,32 @@ def pack_words(
     except ServiceError as exc:
         raise HTTPException(status_code=502, detail=str(exc))
     return PackWordsResponse(words=words, source="ai")
+
+
+@app.post("/essential-words", response_model=EssentialWordsResponse)
+def essential_words(
+    req: EssentialWordsRequest,
+    completers: dict[str, Completer] = Depends(get_completers),
+) -> EssentialWordsResponse:
+    """Əsas lüğət (504 sabit söz bankı) — səviyyəyə uyğun növbəti dəst.
+
+    `offset` dövr edir (dövrə bir dəfə tam banka görə) — son sözdən sonra
+    yenidən əvvələ qayıdır ki, "növbəti dəst" düyməsi heç vaxt boş qalmasın.
+    """
+    pool = words_for_level(req.profile.level)
+    total = len(pool)
+    if total == 0:
+        raise HTTPException(status_code=404, detail="Bu səviyyə üçün söz yoxdur")
+    start = req.offset % total
+    end = start + req.count
+    batch = pool[start:end] if end <= total else pool[start:] + pool[: end - total]
+    try:
+        words = _service(completers).essential_words(req.profile, batch)
+    except ServiceError as exc:
+        raise HTTPException(status_code=502, detail=str(exc))
+    return EssentialWordsResponse(
+        words=words, total=total, next_offset=(start + req.count) % total
+    )
 
 
 @app.post("/chat", response_model=ChatResponse)
