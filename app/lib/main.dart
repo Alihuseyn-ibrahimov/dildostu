@@ -399,10 +399,25 @@ class _BootstrapState extends State<_Bootstrap> {
     final profileRepo = await UserProfileRepository.load();
     final deviceId = (await DeviceIdRepository.load()).deviceId;
 
+    final now = DateTime.now();
+    final manualSignal = manualContext.currentSignal(now: now);
+
+    // Bir-birindən ASILI OLMAYAN şəbəkə çağırışları PARALEL göndərilir.
+    // Əvvəllər ardıcıl idi (profil 8s + cihaz bağlama 15s + məkan GPS+server
+    // +OSM ~25s = ən pis halda ~48s) — istifadəçi bunu "ağ ekran" kimi qəbul
+    // edirdi, halbuki proqram donmurdu, sadəcə növbə ilə gözləyirdi.
+    // Fütürlər burada BAŞLADILIR (await olmadan) ki, hamısı eyni anda getsin.
+    final profileFuture = _profileClient.fetch(_token);
+    final claimFuture = _routine.claimDevice(deviceId);
+    final locationFuture = manualSignal == null
+        ? _location.resolveNearbyPackId()
+        : Future<String?>.value(null);
+    final notifInitFuture = _notifications.init(onTap: _openLive);
+
     // Server profili tək mənbədir (spec: hər istifadəçi üçün ayrıca AI
     // yanaşması) — hər girişdə yenidən çəkilir ki, eyni cihazda fərqli
     // istifadəçi daxil olanda əvvəlki istifadəçinin profili sızmasın.
-    final serverProfile = await _profileClient.fetch(_token);
+    final serverProfile = await profileFuture;
     if (serverProfile != null) {
       await profileRepo.save(serverProfile);
     } else {
@@ -411,25 +426,23 @@ class _BootstrapState extends State<_Bootstrap> {
 
     // Bu cihazda giriş edilmədən (köhnə buraxılışda) toplanmış anonim
     // nümunələr varsa hesaba bağla.
-    await _routine.claimDevice(deviceId);
+    await claimFuture;
 
     final isPlayBuild = await _isPlayBuildFuture;
 
-    await _notifications.init(onTap: _openLive);
+    await notifInitFuture;
 
-    final now = DateTime.now();
-    final manualSignal = manualContext.currentSignal(now: now);
     String? contextOverride = manualSignal?.packId;
-    if (contextOverride == null) {
-      final nearbyPackId = await _location.resolveNearbyPackId();
-      if (nearbyPackId != null && packs.byId(nearbyPackId) != null) {
-        contextOverride = resolveContextPack(
-          now: now,
-          timeBasedPackId: nearbyPackId,
-          manualSignal: null,
-          locationSignal: LocationSignal(packId: nearbyPackId, resolvedAt: now),
-        );
-      }
+    final nearbyPackId = await locationFuture;
+    if (contextOverride == null &&
+        nearbyPackId != null &&
+        packs.byId(nearbyPackId) != null) {
+      contextOverride = resolveContextPack(
+        now: now,
+        timeBasedPackId: nearbyPackId,
+        manualSignal: null,
+        locationSignal: LocationSignal(packId: nearbyPackId, resolvedAt: now),
+      );
     }
 
     await _notifications.scheduleToday(
@@ -721,7 +734,20 @@ class _BootstrapState extends State<_Bootstrap> {
           );
         }
         if (!snapshot.hasData) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          // Sadə boş spinner istifadəçiyə "ağ ekran" kimi görünürdü (xüsusən
+          // yükləmə bir neçə saniyə çəkəndə) — mətnlə aydınlaşdırılır.
+          return const Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16),
+                  Text('DilDostu yüklənir…'),
+                ],
+              ),
+            ),
+          );
         }
         final data = snapshot.data!;
 

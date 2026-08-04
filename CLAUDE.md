@@ -132,6 +132,23 @@ fərqlidir, səhv salma. id-lər yalnız `[a-z0-9-]` (path traversal bağlı).
 **Müəllif hüququ:** yalnız ictimai domen. Barron's 504 kimi qorunan kitabların
 mətni səsləndirilməməlidir — o kitabdan yalnız söz→dərs indeksi götürülüb.
 
+## App açılışı — "ağ ekran" səbəbi (2026-08-04)
+
+`main.dart`-ın `_bootstrap()`-u əvvəllər müstəqil şəbəkə çağırışlarını
+**ardıcıl** gözləyirdi: profil çəkmə (8s) + cihaz bağlama (15s) + məkan
+(GPS+server+OSM, ~25s) = ən pis halda **~48 saniyə**. İstifadəçi bunu çökmə
+zənn edib "ağ ekran" adlandırırdı — əslində proqram donmurdu, sadəcə növbə
+ilə gözləyirdi (logcat-da çökmə/ANR YOX idi, sadəcə 39s sükut).
+
+**Düzəliş:** bir-birindən asılı olmayan fütürlər (`profileFuture`,
+`claimFuture`, `locationFuture`, `notifInitFuture`) əvvəlcə BAŞLADILIR (await
+olmadan), sonra ayrıca gözlənilir — ən pis hal ~48s-dən ~25s-ə düşür (məkan
+zənciri özü daxilən ardıcıldır: GPS→server→OSM, bunu ayırmaq olmaz).
+
+**Dərs:** app açılışında YENİ şəbəkə çağırışı əlavə edəndə, onun mövcud
+zəncirə **ardıcıl** yoxsa **paralel** qoşulacağını düşün. Ardıcıl `await`
+zənciri asanlıqla 30-40+ saniyəyə çatır və istifadəçiyə "sınıb" kimi görünür.
+
 ## Yoxlama qaydası
 
 Hər dəyişiklikdən sonra: server `pytest -q`, app `flutter analyze` + `flutter test`.
