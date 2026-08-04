@@ -19,6 +19,19 @@
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
+        <!-- Impeller (Vulkan) bəzi Samsung cihazlarında sənədləşdirilmiş boş/ağ
+             ekran problemi verir (görülüb: logcat-da "Using the Impeller
+             rendering backend (Vulkan)" + VK_LAYER_KHRONOS_validation, sonra Ana
+             səhifə tabının məzmunu boş qalıb, heç bir Dart/native xəta olmadan).
+             Skia (OpenGL)-ə keçid. VACİB: Flutter mühərriki bu bayrağı
+             `ApplicationInfo.metaData`-dan oxuyur (PackageManager.GET_META_DATA
+             + getApplicationInfo) — <activity>-nin ÖZ metaData bucket-i AYRIDIR
+             (ActivityInfo.metaData), ona görə bu tag MÜTLƏQ <application>
+             səviyyəsində olmalıdır, <activity> daxilində YOX (birinci cəhddə
+             səhv yerdə idi, təsirsiz qalmışdı). -->
+        <meta-data
+          android:name="io.flutter.embedding.android.EnableImpeller"
+          android:value="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -36,15 +49,6 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
-            <!-- Impeller (Vulkan) bəzi Samsung cihazlarında sənədləşdirilmiş
-                 boş/ağ ekran problemi verir (görülüb: logcat-da "Using the
-                 Impeller rendering backend (Vulkan)" + VK_LAYER_KHRONOS_validation
-                 yükləməsi, sonra Ana səhifə tabının məzmunu boş qalıb, heç bir
-                 Dart/native xəta olmadan). Skia (OpenGL)-ə keçid — köhnə,
-                 daha sınanmış mühərrik. Nəticə telefonda yoxlanmalıdır. -->
-            <meta-data
-              android:name="io.flutter.embedding.android.EnableImpeller"
-              android:value="false" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

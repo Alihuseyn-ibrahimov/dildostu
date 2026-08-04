@@ -149,23 +149,25 @@ zənciri özü daxilən ardıcıldır: GPS→server→OSM, bunu ayırmaq olmaz).
 zəncirə **ardıcıl** yoxsa **paralel** qoşulacağını düşün. Ardıcıl `await`
 zənciri asanlıqla 30-40+ saniyəyə çatır və istifadəçiyə "sınıb" kimi görünür.
 
-## Ana səhifə boş qalır (Samsung + Impeller şübhəsi, 2026-08-04, açıq)
+## Ana səhifə boş qalırdı — Samsung + Impeller (HƏLL OLUNDU, 2026-08-04)
 
 v23-də bootstrap sürətləndirildikdən sonra da istifadəçi (Samsung Galaxy
-S926B) "ağ ekran" bildirməyə davam etdi — amma bu dəfə fərqli görüntü: aşağı
-naviqasiya paneli (4 tab) DÜZGÜN göstərilir, yalnız Ana səhifə tabının
-məzmunu (salamlama, paket şəbəkəsi və s.) boşdur. Logcat-da (real USB
-debugging ilə yoxlanılıb): **heç bir Dart/native çökmə, ANR, exception
-yoxdur** — "Fully drawn +894ms" tez gəlir.
-
-Şübhə: logda **"Using the Impeller rendering backend (Vulkan)"** +
-`VK_LAYER_KHRONOS_validation` yüklənməsi görünür — Flutter-in Impeller/Vulkan
+S926B) "ağ ekran" bildirdi — aşağı naviqasiya paneli (4 tab) DÜZGÜN göstərilir,
+yalnız Ana səhifə tabının məzmunu boşdur. Logcat-da heç bir Dart/native
+çökmə/ANR yoxdur. Səbəb: logda **"Using the Impeller rendering backend
+(Vulkan)"** + `VK_LAYER_KHRONOS_validation` — Flutter-in Impeller/Vulkan
 mühərriki ilə Samsung-un Vulkan drayverləri arasında sənədləşdirilmiş
-uyğunsuzluq sinfi var (boş səth, xətasız). v24-də `AndroidManifest.xml`-ə
-`io.flutter.embedding.android.EnableImpeller=false` əlavə olunub (Skia-ya
-keçid). **Hələ telefonda təsdiqlənməyib** — nəticəni yoxla, işləməsə bu
-nəzəriyyəni geri götür və HomeTab-ın öz build()-ini addım-addım sadələşdirib
-(paket şəbəkəsi, canlı kart və s. ayrı-ayrı silərək) test et.
+uyğunsuzluq (boş səth, xətasız).
+
+**Həll (v24, TƏSDİQLƏNDİ):** `AndroidManifest.xml`-ə
+`io.flutter.embedding.android.EnableImpeller=false`. **VACİB yer qaydası:**
+bu tag **`<application>` səviyyəsində** olmalıdır, `<activity>` daxilində
+YOX — Flutter mühərriki bunu `PackageManager.GET_META_DATA` ilə
+`ApplicationInfo.metaData`-dan oxuyur (`ActivityInfo.metaData` AYRI bucket-dir,
+activity-level tag-lər ora düşmür). Birinci cəhddə `<activity>` daxilinə
+qoyulmuşdu — logda "Using Impeller" davam edirdi, tamam təsirsiz idi.
+`<application>`-ə köçürüləndə engine "Impeller opt-out deprecated"
+xəbərdarlığı verdi (bayrağın qəbul olunduğunun sübutu) və problem düzəldi.
 
 ## Yoxlama qaydası
 
