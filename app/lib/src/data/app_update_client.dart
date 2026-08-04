@@ -23,17 +23,27 @@ class AppUpdateClient {
   final String baseUrl;
   final http.Client _http;
 
-  Future<AppVersionInfo?> fetchVersionInfo() async {
+  Future<AppVersionInfo?> fetchVersionInfo() async =>
+      (await fetchVersionInfoDetailed()).info;
+
+  /// Versiya yoxlaması + SƏBƏB. `fetchVersionInfo` uğursuzluğu `null`-a çevirir
+  /// və səbəbi itirir; diaqnostika ekranı üçün səbəb lazımdır.
+  ///
+  /// Bu funksiya ona görə var ki, yeniləmə mexanizmi aylarla səssizcə
+  /// sınmışdı və hansı addımın uğursuz olduğunu bilmək mümkün deyildi.
+  Future<({AppVersionInfo? info, String? error})> fetchVersionInfoDetailed() async {
     try {
       final resp = await _http
           .get(Uri.parse('$baseUrl/app/version'))
           .timeout(_versionTimeout);
-      if (resp.statusCode != 200) return null;
+      if (resp.statusCode != 200) {
+        return (info: null, error: 'server ${resp.statusCode} qaytardı');
+      }
       final body =
           jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
-      return AppVersionInfo.fromServerJson(body);
-    } catch (_) {
-      return null;
+      return (info: AppVersionInfo.fromServerJson(body), error: null);
+    } catch (e) {
+      return (info: null, error: '$e');
     }
   }
 

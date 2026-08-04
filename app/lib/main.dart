@@ -285,6 +285,48 @@ class _BootstrapState extends State<_Bootstrap> {
     }
   }
 
+  /// "Yeniləməni yoxla" (Ayarlar) — nə baş verdiyini AÇIQ mətnlə qaytarır.
+  ///
+  /// `_checkForUpdate`-dəki hər uğursuzluq yolu səssizdir (Play buraxılışı,
+  /// versiya oxunmaması, şəbəkə/403, xarab JSON) — hansının işlədiyini bilmək
+  /// mümkün deyildi və problem aylarla təkrarlandı. Burada hər yol öz mətnini
+  /// qaytarır ki, istifadəçi bir toxunuşla səbəbi görsün.
+  Future<String> _diagnoseUpdate() async {
+    if (await _isPlayBuildFuture) {
+      return 'Bu, Google Play buraxılışıdır — app-daxili yenilənmə '
+          'qəsdən söndürülüb (Play siyasəti).';
+    }
+    int currentCode;
+    String currentLabel;
+    try {
+      final info = await PackageInfo.fromPlatform();
+      currentCode = int.parse(info.buildNumber);
+      currentLabel = '${info.version}+${info.buildNumber}';
+    } catch (e) {
+      return 'Cari versiya oxunmadı: $e';
+    }
+
+    final result = await _updateClient.fetchVersionInfoDetailed();
+    if (result.error != null) {
+      return 'Sən: $currentLabel\nServerə çıxmaq alınmadı: ${result.error}';
+    }
+    final server = result.info!;
+    if (server.versionCode <= currentCode) {
+      return 'Sən: $currentLabel\nServer: ${server.versionName}\n'
+          '✅ Ən son versiyadasan.';
+    }
+    // Yeniləmə var — zolağı da göstər ki, yükləmək mümkün olsun.
+    if (mounted) {
+      setState(() {
+        _availableUpdate = server;
+        _updateStage = UpdateStage.available;
+        _updateProgress = null;
+      });
+    }
+    return 'Sən: $currentLabel\nServer: ${server.versionName}\n'
+        '⬇️ Yeni versiya var — ana səhifədəki "Yenilə" zolağına toxun.';
+  }
+
   /// "Yenilə" toxunuşu: APK-nı faiz göstərərək yükləyir, sonra sistem
   /// quraşdırıcısını açır. Uğursuz olsa zolaq "Yenidən cəhd et"-ə keçir —
   /// səssiz uğursuzluq olmamalıdır (əvvəl məhz bu, problemi gizlədirdi).
@@ -645,6 +687,7 @@ class _BootstrapState extends State<_Bootstrap> {
         buildLabel: _buildLabel,
         onOpenPrivacyPolicy: () =>
             _browserLauncher.openUrl('${AppConfig.serverBaseUrl}/privacy'),
+        onCheckUpdate: _diagnoseUpdate,
       ),
     ));
   }

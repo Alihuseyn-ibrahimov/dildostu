@@ -15,9 +15,17 @@ class SettingsScreen extends StatefulWidget {
     required this.repository,
     this.buildLabel,
     this.onOpenPrivacyPolicy,
+    this.onCheckUpdate,
   });
 
   final SettingsRepository repository;
+
+  /// Yeniləməni yoxlayır və NƏTİCƏNİ oxunaqlı mətnlə qaytarır.
+  ///
+  /// Bu, sadəcə rahatlıq deyil — yeniləmə mexanizmi bir neçə səssiz yolla
+  /// sına bilir və indiyə qədər hansının işlədiyini görmək mümkün deyildi.
+  /// Null olsa bölmə göstərilmir (məs. Play buraxılışı).
+  final Future<String> Function()? onCheckUpdate;
 
   /// Quraşdırılmış tam versiya (məs. "1.0.0+7") — auto-update diaqnostikası
   /// üçün. Android Ayarlar yalnız versionName-i (həmişə "1.0.0") göstərdiyi
@@ -34,11 +42,31 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   late Settings _settings;
+  bool _checking = false;
+  String? _updateReport;
 
   @override
   void initState() {
     super.initState();
     _settings = widget.repository.current;
+  }
+
+  Future<void> _checkUpdate() async {
+    setState(() {
+      _checking = true;
+      _updateReport = null;
+    });
+    String report;
+    try {
+      report = await widget.onCheckUpdate!();
+    } catch (e) {
+      report = 'Yoxlama alınmadı: $e';
+    }
+    if (!mounted) return;
+    setState(() {
+      _checking = false;
+      _updateReport = report;
+    });
   }
 
   Future<void> _update(Settings next) async {
@@ -116,6 +144,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: const Text('Buraxılış'),
               trailing: Text(widget.buildLabel!),
             ),
+          if (widget.onCheckUpdate != null) ...[
+            ListTile(
+              title: const Text('Yeniləməni yoxla'),
+              subtitle: const Text('Nəticə açıq mətnlə göstərilir'),
+              trailing: _checking
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2.4),
+                    )
+                  : const Icon(Icons.refresh),
+              onTap: _checking ? null : _checkUpdate,
+            ),
+            if (_updateReport != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  // Seçilə bilən: istifadəçi mətni kopyalayıb göndərə bilsin.
+                  child: SelectableText(
+                    _updateReport!,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+              ),
+          ],
         ],
       ),
     );

@@ -12,6 +12,8 @@ void main() {
     SharedPreferences.setMockInitialValues({});
   });
 
+  _diagnosticsTests();
+
   testWidgets('defolt dəyərləri göstərir', (tester) async {
     final repo = await SettingsRepository.load();
     await tester.pumpWidget(MaterialApp(home: SettingsScreen(repository: repo)));
@@ -83,5 +85,43 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: SettingsScreen(repository: repo)));
 
     expect(find.text('Məxfilik siyasəti'), findsNothing);
+  });
+}
+
+// --- Yeniləmə diaqnostikası (Ayarlar) ---
+// Yeniləmə mexanizmi bir neçə səssiz yolla sına bilirdi; bu bölmə nəticəni
+// açıq göstərir ki, səbəb bir toxunuşla görünsün.
+void _diagnosticsTests() {
+  testWidgets('onCheckUpdate yoxdursa bölmə göstərilmir', (tester) async {
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(
+        MaterialApp(home: SettingsScreen(repository: repo)));
+    expect(find.text('Yeniləməni yoxla'), findsNothing);
+  });
+
+  testWidgets('toxunanda nəticə mətni göstərilir', (tester) async {
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(
+      home: SettingsScreen(
+        repository: repo,
+        onCheckUpdate: () async => 'Sən: 1.0.0+20\n✅ Ən son versiyadasan.',
+      ),
+    ));
+    await tester.tap(find.text('Yeniləməni yoxla'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Ən son versiyadasan'), findsOneWidget);
+  });
+
+  testWidgets('yoxlama istisna atsa da səbəb göstərilir', (tester) async {
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(
+      home: SettingsScreen(
+        repository: repo,
+        onCheckUpdate: () async => throw Exception('SocketException'),
+      ),
+    ));
+    await tester.tap(find.text('Yeniləməni yoxla'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('SocketException'), findsOneWidget);
   });
 }

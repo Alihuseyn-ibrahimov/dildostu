@@ -30,6 +30,54 @@ void main() {
     expect(await client.fetchVersionInfo(), isNull);
   });
 
+  group('fetchVersionInfoDetailed (diaqnostika)', () {
+    test('uğurda info qaytarır, xəta yoxdur', () async {
+      final mock = MockClient((req) async => http.Response.bytes(
+          utf8.encode(jsonEncode(
+              {'version_code': 20, 'version_name': '1.0.0+20', 'notes': ''})),
+          200));
+      final r = await AppUpdateClient(baseUrl: 'http://x', httpClient: mock)
+          .fetchVersionInfoDetailed();
+      expect(r.info!.versionCode, 20);
+      expect(r.error, isNull);
+    });
+
+    test('403-də SƏBƏBİ qaytarır (səssiz null yox)', () async {
+      // Cloudflare bəzi User-Agent-ləri bloklayır — bu, canlıda baş verib.
+      final mock = MockClient((req) async => http.Response('blocked', 403));
+      final r = await AppUpdateClient(baseUrl: 'http://x', httpClient: mock)
+          .fetchVersionInfoDetailed();
+      expect(r.info, isNull);
+      expect(r.error, contains('403'));
+    });
+
+    test('şəbəkə istisnasının səbəbi qaytarılır', () async {
+      final mock = MockClient((req) async => throw Exception('SocketException'));
+      final r = await AppUpdateClient(baseUrl: 'http://x', httpClient: mock)
+          .fetchVersionInfoDetailed();
+      expect(r.info, isNull);
+      expect(r.error, contains('SocketException'));
+    });
+
+    test('xarab JSON-un səbəbi qaytarılır', () async {
+      final mock = MockClient(
+          (req) async => http.Response.bytes(utf8.encode('<html>'), 200));
+      final r = await AppUpdateClient(baseUrl: 'http://x', httpClient: mock)
+          .fetchVersionInfoDetailed();
+      expect(r.info, isNull);
+      expect(r.error, isNotNull);
+    });
+
+    test('fetchVersionInfo eyni məntiqə söykənir', () async {
+      final mock = MockClient((req) async => http.Response('x', 500));
+      expect(
+        await AppUpdateClient(baseUrl: 'http://x', httpClient: mock)
+            .fetchVersionInfo(),
+        isNull,
+      );
+    });
+  });
+
   test('downloadApk baytları fayla yazır və yolu qaytarır', () async {
     final mock = MockClient(
         (req) async => http.Response.bytes([1, 2, 3, 4], 200));
