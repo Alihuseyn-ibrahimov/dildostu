@@ -36,6 +36,15 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <!-- Impeller (Vulkan) bəzi Samsung cihazlarında sənədləşdirilmiş
+                 boş/ağ ekran problemi verir (görülüb: logcat-da "Using the
+                 Impeller rendering backend (Vulkan)" + VK_LAYER_KHRONOS_validation
+                 yükləməsi, sonra Ana səhifə tabının məzmunu boş qalıb, heç bir
+                 Dart/native xəta olmadan). Skia (OpenGL)-ə keçid — köhnə,
+                 daha sınanmış mühərrik. Nəticə telefonda yoxlanmalıdır. -->
+            <meta-data
+              android:name="io.flutter.embedding.android.EnableImpeller"
+              android:value="false" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

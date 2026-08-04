@@ -149,6 +149,24 @@ zənciri özü daxilən ardıcıldır: GPS→server→OSM, bunu ayırmaq olmaz).
 zəncirə **ardıcıl** yoxsa **paralel** qoşulacağını düşün. Ardıcıl `await`
 zənciri asanlıqla 30-40+ saniyəyə çatır və istifadəçiyə "sınıb" kimi görünür.
 
+## Ana səhifə boş qalır (Samsung + Impeller şübhəsi, 2026-08-04, açıq)
+
+v23-də bootstrap sürətləndirildikdən sonra da istifadəçi (Samsung Galaxy
+S926B) "ağ ekran" bildirməyə davam etdi — amma bu dəfə fərqli görüntü: aşağı
+naviqasiya paneli (4 tab) DÜZGÜN göstərilir, yalnız Ana səhifə tabının
+məzmunu (salamlama, paket şəbəkəsi və s.) boşdur. Logcat-da (real USB
+debugging ilə yoxlanılıb): **heç bir Dart/native çökmə, ANR, exception
+yoxdur** — "Fully drawn +894ms" tez gəlir.
+
+Şübhə: logda **"Using the Impeller rendering backend (Vulkan)"** +
+`VK_LAYER_KHRONOS_validation` yüklənməsi görünür — Flutter-in Impeller/Vulkan
+mühərriki ilə Samsung-un Vulkan drayverləri arasında sənədləşdirilmiş
+uyğunsuzluq sinfi var (boş səth, xətasız). v24-də `AndroidManifest.xml`-ə
+`io.flutter.embedding.android.EnableImpeller=false` əlavə olunub (Skia-ya
+keçid). **Hələ telefonda təsdiqlənməyib** — nəticəni yoxla, işləməsə bu
+nəzəriyyəni geri götür və HomeTab-ın öz build()-ini addım-addım sadələşdirib
+(paket şəbəkəsi, canlı kart və s. ayrı-ayrı silərək) test et.
+
 ## Yoxlama qaydası
 
 Hər dəyişiklikdən sonra: server `pytest -q`, app `flutter analyze` + `flutter test`.
