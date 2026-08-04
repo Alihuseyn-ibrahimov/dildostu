@@ -149,25 +149,37 @@ zənciri özü daxilən ardıcıldır: GPS→server→OSM, bunu ayırmaq olmaz).
 zəncirə **ardıcıl** yoxsa **paralel** qoşulacağını düşün. Ardıcıl `await`
 zənciri asanlıqla 30-40+ saniyəyə çatır və istifadəçiyə "sınıb" kimi görünür.
 
-## Ana səhifə boş qalırdı — Samsung + Impeller (HƏLL OLUNDU, 2026-08-04)
+## Ana səhifə boş qalırdı — ƏSL SƏBƏB HƏLL OLUNDU (2026-08-04)
 
-v23-də bootstrap sürətləndirildikdən sonra da istifadəçi (Samsung Galaxy
-S926B) "ağ ekran" bildirdi — aşağı naviqasiya paneli (4 tab) DÜZGÜN göstərilir,
-yalnız Ana səhifə tabının məzmunu boşdur. Logcat-da heç bir Dart/native
-çökmə/ANR yoxdur. Səbəb: logda **"Using the Impeller rendering backend
-(Vulkan)"** + `VK_LAYER_KHRONOS_validation` — Flutter-in Impeller/Vulkan
-mühərriki ilə Samsung-un Vulkan drayverləri arasında sənədləşdirilmiş
-uyğunsuzluq (boş səth, xətasız).
+**Kökündən səbəb:** `HomeTab`-ın `Column`-una "Yenilə" zolağı (`UpdateBanner`)
+**dinamik** əlavə olunurdu — app açılanda YOX, bir az sonra serverdən yeni
+versiya aşkarlananda (`setState` ilə). Bu, Samsung S926B-də `HomeTab`-ın
+bütün ListView məzmununu (salamlama, səviyyə seçici, kartlar, paket şəbəkəsi)
+**əbədi `NEEDS-LAYOUT`/`NEEDS-PAINT`** vəziyyətində saxlayıb tam boş göstərirdi
+— heç bir Dart/native xəta olmadan. Bu, canlı `flutter attach` + VM Service
+(`ext.flutter.debugDumpApp`) ilə **widget ağacını birbaşa telefondan oxuyaraq**
+sübut edildi: versiyalar üst-üstə düşəndə (banner yoxdursa) `GridView`/kartlar
+ağacda VAR idi; server versiyası yeni olub banner əlavə olunanda YOX idi.
 
-**Həll (v24, TƏSDİQLƏNDİ):** `AndroidManifest.xml`-ə
-`io.flutter.embedding.android.EnableImpeller=false`. **VACİB yer qaydası:**
-bu tag **`<application>` səviyyəsində** olmalıdır, `<activity>` daxilində
-YOX — Flutter mühərriki bunu `PackageManager.GET_META_DATA` ilə
-`ApplicationInfo.metaData`-dan oxuyur (`ActivityInfo.metaData` AYRI bucket-dir,
-activity-level tag-lər ora düşmür). Birinci cəhddə `<activity>` daxilinə
-qoyulmuşdu — logda "Using Impeller" davam edirdi, tamam təsirsiz idi.
-`<application>`-ə köçürüləndə engine "Impeller opt-out deprecated"
-xəbərdarlığı verdi (bayrağın qəbul olunduğunun sübutu) və problem düzəldi.
+İki yalan iz sınanıb rədd edildi (ikisi də sənəddə saxlanılır ki, təkrar
+sınanmasın):
+1. Bootstrap-ın ardıcıl şəbəkə çağırışları (v23-də paralelə keçirildi —
+   yaxşılaşdırma idi, amma əsl səbəb deyildi).
+2. Impeller (Vulkan) renderinq mühərriki (v24/v25-də söndürüldü,
+   `<application>` səviyyəsinə düzgün yerləşdirilərək təsdiqləndi işlədiyi —
+   amma problem YENƏ təkrarlandı, deməli bu da səbəb deyildi).
+
+**Əsl həll (v26):** yeniləmə axını (yoxla → yüklə → quraşdır) `HomeTab`-dan
+TAM ÇIXARILIB, **Ayarlar ekranına köçürülüb** (`SettingsScreen`). Ayarlar öz
+ayrı marşrutudur (`Navigator.push`) — Ana səhifənin widget ağacına heç vaxt
+toxunmur, ona görə bu problem sinfi kökündən aradan qalxır. `update_logic.dart`
+(artıq işlədilməyən köhnə müqayisə funksiyası) silindi.
+
+**Dərs:** Ana səhifə kimi **ilk açılan, ən çox baxılan** ekranlara sonradan
+`setState` ilə YENİ widget əlavə etmək (xüsusən şərti/dinamik renderinq)
+riskli ola bilər — bəzi cihazlarda layout/paint dövriyyəsini poza bilir.
+Bu cür dinamik məzmunu (bildiriş zolaqları və s.) ayrı, sabit marşrutlarda
+saxlamaq daha təhlükəsizdir.
 
 ## Yoxlama qaydası
 

@@ -1,40 +1,52 @@
 import 'package:flutter/material.dart';
 
 import '../data/settings_repository.dart';
+import '../models/app_version_info.dart';
 import '../models/settings.dart';
+import 'update_banner.dart';
 
 const _minCount = 5;
 const _maxCount = 10;
 
-/// Oyanma/yatma vaxtı və gündəlik bildiriş sayını tənzimləmək üçün ekran.
-/// Dəyişikliklər dərhal SettingsRepository-ə saxlanır; növbəti app açılışında
-/// (main.dart bootstrap) yeni bildiriş cədvəli qurulur.
+/// Oyanma/yatma vaxtı, gündəlik bildiriş sayı və yeniləmə üçün ekran.
+///
+/// Yeniləmə axını (yoxla → yüklə → quraşdır) QƏSDƏN Ana səhifədə DEYİL,
+/// burada göstərilir — Ana səhifədə dinamik "Yenilə" zolağı Samsung
+/// S926B-də bütün Ana səhifə tabını əbədi boş qoyurdu (bax `home_tab.dart`
+/// izahı). Bu ekran öz ayrı marşrutudur, o problemi kökündən aradan qaldırır.
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
     super.key,
     required this.repository,
     this.buildLabel,
     this.onOpenPrivacyPolicy,
-    this.onCheckUpdate,
+    this.fetchUpdate,
+    this.downloadUpdate,
+    this.onInstallApk,
   });
 
   final SettingsRepository repository;
 
-  /// Yeniləməni yoxlayır və NƏTİCƏNİ oxunaqlı mətnlə qaytarır.
-  ///
-  /// Bu, sadəcə rahatlıq deyil — yeniləmə mexanizmi bir neçə səssiz yolla
-  /// sına bilir və indiyə qədər hansının işlədiyini görmək mümkün deyildi.
-  /// Null olsa bölmə göstərilmir (məs. Play buraxılışı).
-  final Future<String> Function()? onCheckUpdate;
-
-  /// Quraşdırılmış tam versiya (məs. "1.0.0+7") — auto-update diaqnostikası
-  /// üçün. Android Ayarlar yalnız versionName-i (həmişə "1.0.0") göstərdiyi
-  /// üçün buradan görmək lazımdır. Null-dursa göstərilmir.
+  /// Quraşdırılmış tam versiya (məs. "1.0.0+7") — Android Ayarlar yalnız
+  /// versionName-i (həmişə "1.0.0") göstərdiyi üçün buradan görmək lazımdır.
   final String? buildLabel;
 
-  /// Məxfilik siyasəti səhifəsini (brauzerdə) açır — Google Play tələbi:
-  /// tətbiq daxilindən siyasətə keçid olmalıdır.
   final VoidCallback? onOpenPrivacyPolicy;
+
+  /// Serverdə yeni versiya varmı yoxlayır. `info` yenisi varsa, `error`
+  /// yoxlama uğursuz olsa (şəbəkə/403/server) SƏBƏBİ daşıyır — səssiz
+  /// uğursuzluq YOX, istifadəçi görməlidir. Null olsa bölmə göstərilmir
+  /// (məs. Play buraxılışı).
+  final Future<({AppVersionInfo? info, String? error})> Function()?
+      fetchUpdate;
+
+  /// APK-nı yükləyir, gedişatı `onProgress`-lə bildirir. Uğursuzsa null.
+  final Future<String?> Function(
+    void Function(int received, int? total) onProgress,
+  )? downloadUpdate;
+
+  /// Yüklənmiş APK-nı sistem quraşdırıcısına açır.
+  final Future<void> Function(String path)? onInstallApk;
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -42,31 +54,69 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   late Settings _settings;
-  bool _checking = false;
-  String? _updateReport;
+
+  bool _checkingUpdate = true;
+  String? _updateError;
+  AppVersionInfo? _availableUpdate;
+  UpdateStage _updateStage = UpdateStage.available;
+  double? _updateProgress;
 
   @override
   void initState() {
     super.initState();
     _settings = widget.repository.current;
+    if (widget.fetchUpdate != null) _checkUpdate();
   }
 
   Future<void> _checkUpdate() async {
     setState(() {
-      _checking = true;
-      _updateReport = null;
+      _checkingUpdate = true;
+      _updateError = null;
     });
-    String report;
     try {
-      report = await widget.onCheckUpdate!();
+      final result = await widget.fetchUpdate!();
+      if (!mounted) return;
+      setState(() {
+        _availableUpdate = result.info;
+        _updateError = result.error;
+        _checkingUpdate = false;
+      });
     } catch (e) {
-      report = 'Yoxlama alınmadı: $e';
+      if (!mounted) return;
+      setState(() {
+        _updateError = '$e';
+        _checkingUpdate = false;
+      });
     }
-    if (!mounted) return;
+  }
+
+  Future<void> _startDownload() async {
+    if (widget.downloadUpdate == null) return;
     setState(() {
-      _checking = false;
-      _updateReport = report;
+      _updateStage = UpdateStage.downloading;
+      _updateProgress = null;
     });
+    var lastPercent = -1;
+    final path = await widget.downloadUpdate!((received, total) {
+      if (!mounted || total == null || total <= 0) return;
+      final percent = received * 100 ~/ total;
+      if (percent == lastPercent) return;
+      lastPercent = percent;
+      setState(() => _updateProgress = received / total);
+    });
+    if (!mounted) return;
+    if (path == null) {
+      setState(() {
+        _updateStage = UpdateStage.failed;
+        _updateProgress = null;
+      });
+      return;
+    }
+    setState(() {
+      _updateStage = UpdateStage.available;
+      _updateProgress = null;
+    });
+    await widget.onInstallApk?.call(path);
   }
 
   Future<void> _update(Settings next) async {
@@ -76,6 +126,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(title: const Text('Ayarlar')),
       body: ListView(
@@ -144,37 +195,49 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: const Text('Buraxılış'),
               trailing: Text(widget.buildLabel!),
             ),
-          if (widget.onCheckUpdate != null) ...[
+          if (widget.fetchUpdate != null) ...[
             ListTile(
-              title: const Text('Yeniləməni yoxla'),
-              subtitle: const Text('Nəticə açıq mətnlə göstərilir'),
-              trailing: _checking
+              title: const Text('Yeniləmələr'),
+              subtitle: _checkingUpdate
+                  ? const Text('Yoxlanılır…')
+                  : _availableUpdate != null
+                      ? null
+                      : _updateError != null
+                          ? Text('Yoxlama alınmadı: ${_updateError!}')
+                          : const Text('Ən son versiyadasan'),
+              trailing: _checkingUpdate
                   ? const SizedBox(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2.4),
                     )
-                  : const Icon(Icons.refresh),
-              onTap: _checking ? null : _checkUpdate,
+                  : IconButton(
+                      icon: const Icon(Icons.refresh),
+                      tooltip: 'Yenidən yoxla',
+                      onPressed: _checkUpdate,
+                    ),
             ),
-            if (_updateReport != null)
+            if (_availableUpdate != null)
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  // Seçilə bilən: istifadəçi mətni kopyalayıb göndərə bilsin.
-                  child: SelectableText(
-                    _updateReport!,
-                    style: Theme.of(context).textTheme.bodySmall,
+                padding: const EdgeInsets.only(bottom: 12),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: UpdateBanner(
+                    info: _availableUpdate!,
+                    onInstall: _startDownload,
+                    stage: _updateStage,
+                    progress: _updateProgress,
                   ),
                 ),
               ),
           ],
+          const SizedBox(height: 8),
+          Text(
+            'DilDostu — kontekstli dil öyrənmə köməkçisi',
+            style: theme.textTheme.bodySmall
+                ?.copyWith(color: theme.colorScheme.outline),
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );

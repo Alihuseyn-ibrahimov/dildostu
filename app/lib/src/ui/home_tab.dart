@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../data/pack_repository.dart';
-import '../models/app_version_info.dart';
 import '../models/user_profile.dart';
 import 'pack_icons.dart';
 import 'theme.dart';
-import 'update_banner.dart';
 
 /// Bir paket üçün canlı AI kartı açan callback (main.dart-da bağlanır).
 typedef OpenLive = void Function(String packId, String title, UserProfile profile);
@@ -25,10 +23,6 @@ class HomeTab extends StatelessWidget {
     required this.onManualPlace,
     this.onLevelChanged,
     this.resolveLivePlace,
-    this.availableUpdate,
-    this.onInstallUpdate,
-    this.updateStage = UpdateStage.available,
-    this.updateProgress,
     this.onOpenEssentialWords,
     this.onOpenAudiobooks,
     this.now,
@@ -54,12 +48,6 @@ class HomeTab extends StatelessWidget {
   /// Cari yeri canlı müəyyən edir (GPS→server). Null olsa kart manual rejimə
   /// keçir (köhnə davranış).
   final ResolveLivePlace? resolveLivePlace;
-  final AppVersionInfo? availableUpdate;
-  final VoidCallback? onInstallUpdate;
-
-  /// Yeniləmə zolağının vəziyyəti (hazır / yüklənir / uğursuz) və faizi.
-  final UpdateStage updateStage;
-  final double? updateProgress;
 
   /// Salamlama mətnini vaxta görə seçmək üçün (testdə sabitlənir).
   final DateTime? now;
@@ -68,17 +56,18 @@ class HomeTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final packs = repository.packs;
+    // Yeniləmə zolağı QƏSDƏN burada YOXDUR — server v25-də yeni versiya
+    // aşkarlananda "Yenilə" zolağının Column-a dinamik əlavə olunması
+    // Samsung S926B-də ListView-in aşağısını əbədi NEEDS-LAYOUT/NEEDS-PAINT
+    // vəziyyətində qoyub tam boş göstərirdi (heç bir Dart/native xəta
+    // olmadan — VM Service widget dump-ı ilə təsdiqləndi). Yeniləmə indi
+    // yalnız Ayarlar ekranında göstərilir (bax `SettingsScreen`), o, Ana
+    // səhifədən tam ayrı bir marşrutdur və bu problemi kökündən aradan
+    // qaldırır.
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            if (availableUpdate != null)
-              UpdateBanner(
-                info: availableUpdate!,
-                onInstall: onInstallUpdate!,
-                stage: updateStage,
-                progress: updateProgress,
-              ),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(

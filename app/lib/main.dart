@@ -25,7 +25,6 @@ import 'src/data/user_profile_repository.dart';
 import 'src/engine/context_engine.dart';
 import 'src/engine/geofence_logic.dart';
 import 'src/engine/pack_titles.dart';
-import 'src/engine/update_logic.dart';
 import 'src/models/app_version_info.dart';
 import 'src/models/user_profile.dart';
 import 'src/services/audio_player_service.dart';
@@ -51,7 +50,6 @@ import 'src/ui/progress_tab.dart';
 import 'src/ui/routine_permission_screen.dart';
 import 'src/ui/settings_screen.dart';
 import 'src/ui/theme.dart';
-import 'src/ui/update_banner.dart';
 import 'src/ui/word_detail_screen.dart';
 import 'src/ui/word_list_screen.dart';
 
@@ -197,9 +195,6 @@ class _BootstrapState extends State<_Bootstrap> {
   final ProfileClient _profileClient = ProfileClient(baseUrl: AppConfig.serverBaseUrl);
   final AppUpdateClient _updateClient =
       AppUpdateClient(baseUrl: AppConfig.serverBaseUrl);
-  AppVersionInfo? _availableUpdate;
-  UpdateStage _updateStage = UpdateStage.available;
-  double? _updateProgress;
   String? _buildLabel;
   bool _loggingOut = false;
 
@@ -222,7 +217,25 @@ class _BootstrapState extends State<_Bootstrap> {
       ),
     );
     _future = _bootstrap();
-    _checkForUpdate(); // fire-and-forget — açılışı bloklamır
+    _loadBuildLabel(); // fire-and-forget — açılışı bloklamır
+  }
+
+  /// Buraxılış etiketini yükləyir (Ayarlarda "Buraxılış" sətri üçün).
+  ///
+  /// Yeniləmə YOXLAMASI burada YOXDUR — bax Ayarlar ekranındaki izah:
+  /// "Yenilə" zolağının Ana səhifədə dinamik göstərilməsi Samsung
+  /// S926B-də tabı əbədi boş qoyurdu. Yeniləmə indi tamamilə Ayarlar
+  /// ekranının öz məsuliyyətidir (`SettingsScreen.fetchUpdate`).
+  Future<void> _loadBuildLabel() async {
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      if (mounted) {
+        setState(() =>
+            _buildLabel = '${packageInfo.version}+${packageInfo.buildNumber}');
+      }
+    } catch (_) {
+      // Etiket göstərilməsə də app işləməlidir.
+    }
   }
 
   /// Token vaxtı keçib/hesab silinibsə (server 401 versə) sessiyanı bağlayıb
@@ -254,118 +267,37 @@ class _BootstrapState extends State<_Bootstrap> {
     widget.onLoggedOut();
   }
 
-  /// Serverdə yeni versiya varmı — YALNIZ yoxlayır (kiçik JSON sorğusu) və
-  /// tapılsa "Yenilə" zolağını DƏRHAL göstərir. Yükləmə istifadəçi zolağa
-  /// toxunanda başlayır (`_startUpdate`).
-  ///
-  /// Google Play buraxılışında tamamilə söndürülür — Play siyasəti tətbiqin
-  /// özünü yeniləməsini qadağan edir, yeniləmə yalnız Play-in öz mexanizmi
-  /// ilə olmalıdır.
-  Future<void> _checkForUpdate() async {
-    if (await _isPlayBuildFuture) return;
-    try {
-      final packageInfo = await PackageInfo.fromPlatform();
-      final currentVersionCode = int.parse(packageInfo.buildNumber);
-      if (mounted) {
-        setState(() =>
-            _buildLabel = '${packageInfo.version}+${packageInfo.buildNumber}');
-      }
-      final info = await checkForUpdate(
-        currentVersionCode: currentVersionCode,
-        fetchVersion: _updateClient.fetchVersionInfo,
-      );
-      if (info == null || !mounted) return;
-      setState(() {
-        _availableUpdate = info;
-        _updateStage = UpdateStage.available;
-        _updateProgress = null;
-      });
-    } catch (_) {
-      // Yeniləmə yoxlaması istifadəçini bloklamamalı.
-    }
-  }
-
-  /// "Yeniləməni yoxla" (Ayarlar) — nə baş verdiyini AÇIQ mətnlə qaytarır.
-  ///
-  /// `_checkForUpdate`-dəki hər uğursuzluq yolu səssizdir (Play buraxılışı,
-  /// versiya oxunmaması, şəbəkə/403, xarab JSON) — hansının işlədiyini bilmək
-  /// mümkün deyildi və problem aylarla təkrarlandı. Burada hər yol öz mətnini
-  /// qaytarır ki, istifadəçi bir toxunuşla səbəbi görsün.
-  Future<String> _diagnoseUpdate() async {
-    if (await _isPlayBuildFuture) {
-      return 'Bu, Google Play buraxılışıdır — app-daxili yenilənmə '
-          'qəsdən söndürülüb (Play siyasəti).';
-    }
+  /// Serverdə yeni versiya varmı yoxlayır — Ayarlar ekranı özü çağırır
+  /// (açılışda avtomatik + "yenidən yoxla" düyməsi ilə əl ilə). Google Play
+  /// buraxılışında `info: null, error: null` qaytarır (bölmə boş görünər) —
+  /// Play siyasəti app-daxili yeniləməni qadağan edir.
+  Future<({AppVersionInfo? info, String? error})> _fetchUpdateStatus() async {
+    if (await _isPlayBuildFuture) return (info: null, error: null);
     int currentCode;
-    String currentLabel;
     try {
       final info = await PackageInfo.fromPlatform();
       currentCode = int.parse(info.buildNumber);
-      currentLabel = '${info.version}+${info.buildNumber}';
     } catch (e) {
-      return 'Cari versiya oxunmadı: $e';
+      return (info: null, error: 'Cari versiya oxunmadı: $e');
     }
-
     final result = await _updateClient.fetchVersionInfoDetailed();
-    if (result.error != null) {
-      return 'Sən: $currentLabel\nServerə çıxmaq alınmadı: ${result.error}';
-    }
+    if (result.error != null) return (info: null, error: result.error);
     final server = result.info!;
-    if (server.versionCode <= currentCode) {
-      return 'Sən: $currentLabel\nServer: ${server.versionName}\n'
-          '✅ Ən son versiyadasan.';
-    }
-    // Yeniləmə var — zolağı da göstər ki, yükləmək mümkün olsun.
-    if (mounted) {
-      setState(() {
-        _availableUpdate = server;
-        _updateStage = UpdateStage.available;
-        _updateProgress = null;
-      });
-    }
-    return 'Sən: $currentLabel\nServer: ${server.versionName}\n'
-        '⬇️ Yeni versiya var — ana səhifədəki "Yenilə" zolağına toxun.';
+    if (server.versionCode <= currentCode) return (info: null, error: null);
+    return (info: server, error: null);
   }
 
-  /// "Yenilə" toxunuşu: APK-nı faiz göstərərək yükləyir, sonra sistem
-  /// quraşdırıcısını açır. Uğursuz olsa zolaq "Yenidən cəhd et"-ə keçir —
-  /// səssiz uğursuzluq olmamalıdır (əvvəl məhz bu, problemi gizlədirdi).
-  Future<void> _startUpdate() async {
-    if (_updateStage == UpdateStage.downloading) return;
-    setState(() {
-      _updateStage = UpdateStage.downloading;
-      _updateProgress = null;
-    });
-
+  /// APK-nı yükləyir (Ayarlar ekranı gedişatı öz vəziyyətində göstərir).
+  Future<String?> _downloadUpdate(
+    void Function(int received, int? total) onProgress,
+  ) {
     final destPath = '${Directory.systemTemp.path}/dildostu-update.apk';
-    var lastPercent = -1;
-    final path = await _updateClient.downloadApk(
-      destPath,
-      onProgress: (received, total) {
-        if (!mounted || total == null || total <= 0) return;
-        // Hər çanaqda setState çağırmaq UI-ı boğur — yalnız faiz dəyişəndə.
-        final percent = (received * 100 ~/ total);
-        if (percent == lastPercent) return;
-        lastPercent = percent;
-        setState(() => _updateProgress = received / total);
-      },
-    );
-    if (!mounted) return;
+    return _updateClient.downloadApk(destPath, onProgress: onProgress);
+  }
 
-    if (path == null) {
-      setState(() {
-        _updateStage = UpdateStage.failed;
-        _updateProgress = null;
-      });
-      return;
-    }
-    setState(() {
-      _updateStage = UpdateStage.available;
-      _updateProgress = null;
-    });
-
-    // APK-nı explicit .apk MIME ilə aç (bəzi cihazlarda ümumi tip quraşdırıcını
-    // açmır); xəta olsa istifadəçiyə göstər ki, diaqnoz mümkün olsun.
+  /// Yüklənmiş APK-nı sistem quraşdırıcısına açır. Uğursuz olsa göstərir —
+  /// səssiz uğursuzluq olmamalıdır (əvvəl məhz bu, problemi gizlədirdi).
+  Future<void> _installApk(String path) async {
     final result = await OpenFilex.open(
       path,
       type: 'application/vnd.android.package-archive',
@@ -700,7 +632,9 @@ class _BootstrapState extends State<_Bootstrap> {
         buildLabel: _buildLabel,
         onOpenPrivacyPolicy: () =>
             _browserLauncher.openUrl('${AppConfig.serverBaseUrl}/privacy'),
-        onCheckUpdate: _diagnoseUpdate,
+        fetchUpdate: _fetchUpdateStatus,
+        downloadUpdate: _downloadUpdate,
+        onInstallApk: _installApk,
       ),
     ));
   }
@@ -774,10 +708,6 @@ class _BootstrapState extends State<_Bootstrap> {
             resolveLivePlace: () => _resolveLivePlace(data),
             onOpenEssentialWords: () => _openEssentialWords(profile),
             onOpenAudiobooks: _openAudiobooks,
-            availableUpdate: _availableUpdate,
-            onInstallUpdate: _availableUpdate == null ? null : _startUpdate,
-            updateStage: _updateStage,
-            updateProgress: _updateProgress,
           ),
           chat: ChatScreen(
             sender: (history) =>

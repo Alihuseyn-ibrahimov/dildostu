@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:dildostu/src/data/settings_repository.dart';
+import 'package:dildostu/src/models/app_version_info.dart';
 import 'package:dildostu/src/models/settings.dart';
 import 'package:dildostu/src/ui/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+const _info = AppVersionInfo(versionCode: 20, versionName: '1.0.0+20');
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -12,7 +17,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
   });
 
-  _diagnosticsTests();
+  _updateFlowTests();
 
   testWidgets('defolt dəyərləri göstərir', (tester) async {
     final repo = await SettingsRepository.load();
@@ -88,28 +93,57 @@ void main() {
   });
 }
 
-// --- Yeniləmə diaqnostikası (Ayarlar) ---
-// Yeniləmə mexanizmi bir neçə səssiz yolla sına bilirdi; bu bölmə nəticəni
-// açıq göstərir ki, səbəb bir toxunuşla görünsün.
-void _diagnosticsTests() {
-  testWidgets('onCheckUpdate yoxdursa bölmə göstərilmir', (tester) async {
+// --- Yeniləmə axını (Ayarlar) ---
+//
+// Bu axın QƏSDƏN Ana səhifədə DEYİL, burada yaşayır: "Yenilə" zolağının Ana
+// səhifədə dinamik göstərilməsi Samsung S926B-də tabı əbədi boş qoyurdu
+// (bax home_tab.dart-dakı izah). Ayarlar öz ayrı marşrutu olduğu üçün bu
+// problem sinfini kökündən aradan qaldırır.
+void _updateFlowTests() {
+  testWidgets('fetchUpdate yoxdursa bölmə göstərilmir', (tester) async {
     final repo = await SettingsRepository.load();
     await tester.pumpWidget(
         MaterialApp(home: SettingsScreen(repository: repo)));
-    expect(find.text('Yeniləməni yoxla'), findsNothing);
+    expect(find.text('Yeniləmələr'), findsNothing);
   });
 
-  testWidgets('toxunanda nəticə mətni göstərilir', (tester) async {
+  testWidgets('açılışda avtomatik yoxlayır, yenisi yoxdursa "Ən son versiyadasan"',
+      (tester) async {
     final repo = await SettingsRepository.load();
     await tester.pumpWidget(MaterialApp(
       home: SettingsScreen(
         repository: repo,
-        onCheckUpdate: () async => 'Sən: 1.0.0+20\n✅ Ən son versiyadasan.',
+        fetchUpdate: () async => (info: null, error: null),
       ),
     ));
-    await tester.tap(find.text('Yeniləməni yoxla'));
     await tester.pumpAndSettle();
-    expect(find.textContaining('Ən son versiyadasan'), findsOneWidget);
+    expect(find.text('Ən son versiyadasan'), findsOneWidget);
+  });
+
+  testWidgets('yeni versiya varsa banner göstərilir', (tester) async {
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(
+      home: SettingsScreen(
+        repository: repo,
+        fetchUpdate: () async => (info: _info, error: null),
+      ),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('1.0.0+20'), findsOneWidget);
+    expect(find.text('Yenilə'), findsOneWidget);
+  });
+
+  testWidgets('yoxlama xətası səbəblə göstərilir (səssiz uğursuzluq yox)',
+      (tester) async {
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(
+      home: SettingsScreen(
+        repository: repo,
+        fetchUpdate: () async => (info: null, error: 'server 403 qaytardı'),
+      ),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('403'), findsOneWidget);
   });
 
   testWidgets('yoxlama istisna atsa da səbəb göstərilir', (tester) async {
@@ -117,11 +151,83 @@ void _diagnosticsTests() {
     await tester.pumpWidget(MaterialApp(
       home: SettingsScreen(
         repository: repo,
-        onCheckUpdate: () async => throw Exception('SocketException'),
+        fetchUpdate: () async => throw Exception('SocketException'),
       ),
     ));
-    await tester.tap(find.text('Yeniləməni yoxla'));
     await tester.pumpAndSettle();
     expect(find.textContaining('SocketException'), findsOneWidget);
+  });
+
+  testWidgets('yenidən yoxla düyməsi təkrar çağırır', (tester) async {
+    var calls = 0;
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(
+      home: SettingsScreen(
+        repository: repo,
+        fetchUpdate: () async {
+          calls++;
+          return (info: null, error: null);
+        },
+      ),
+    ));
+    await tester.pumpAndSettle();
+    expect(calls, 1);
+    await tester.tap(find.byIcon(Icons.refresh));
+    await tester.pumpAndSettle();
+    expect(calls, 2);
+  });
+
+  testWidgets('"Yenilə" toxunuşu yükləməni başladır və faiz göstərir',
+      (tester) async {
+    final completer = Completer<String?>();
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(
+      home: SettingsScreen(
+        repository: repo,
+        fetchUpdate: () async => (info: _info, error: null),
+        downloadUpdate: (onProgress) {
+          onProgress(50, 100);
+          return completer.future;
+        },
+      ),
+    ));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Yenilə'));
+    await tester.pump();
+    expect(find.textContaining('Yüklənir'), findsOneWidget);
+    completer.complete('/tmp/x.apk');
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('yükləmə uğurlu olanda quraşdırma çağırılır', (tester) async {
+    String? installed;
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(
+      home: SettingsScreen(
+        repository: repo,
+        fetchUpdate: () async => (info: _info, error: null),
+        downloadUpdate: (onProgress) async => '/tmp/x.apk',
+        onInstallApk: (path) async => installed = path,
+      ),
+    ));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Yenilə'));
+    await tester.pumpAndSettle();
+    expect(installed, '/tmp/x.apk');
+  });
+
+  testWidgets('yükləmə uğursuzsa "Yenidən cəhd et" göstərilir', (tester) async {
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(
+      home: SettingsScreen(
+        repository: repo,
+        fetchUpdate: () async => (info: _info, error: null),
+        downloadUpdate: (onProgress) async => null,
+      ),
+    ));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Yenilə'));
+    await tester.pumpAndSettle();
+    expect(find.text('Yenidən cəhd et'), findsOneWidget);
   });
 }
