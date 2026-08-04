@@ -132,6 +132,21 @@ fərqlidir, səhv salma. id-lər yalnız `[a-z0-9-]` (path traversal bağlı).
 **Müəllif hüququ:** yalnız ictimai domen. Barron's 504 kimi qorunan kitabların
 mətni səsləndirilməməlidir — o kitabdan yalnız söz→dərs indeksi götürülüb.
 
+## Səsli kitab — sözə toxunub mənasına bax (Faza 3, 2026-08-04)
+
+Fəsil mətnindəki hər sözü ayrıca toxunula bilən `TextSpan`-a bölürük
+(`tappable_text.dart`), toxunanda `POST /word-lookup` (word + sözün öz
+cümləsi kontekst kimi) → AZ tərcümə + IPA, aşağı vərəqdə göstərilir.
+
+- Server: yalnız `translation_az`+`ipa` istənir, **nümunə cümlə YOX** —
+  sözün öz cümləsi artıq ekranda görünür, təkrar yaratmaq token itkisidir.
+  Yalnız SÖZLƏ keşlənir (kontekstsiz) — nadir omonim səhvi ödün verilir,
+  sürət/qənaət üçün.
+- App: `RichText`-in `TextSpan`-ları `find.text()` ilə TAPILMIR (Flutter-in
+  standart tap axtarışı yalnız `Text`/`EditableText` widget-lərini görür) —
+  testdə `TapGestureRecognizer`-i birbaşa çağırmaq lazımdır (bax
+  `audiobook_screens_test.dart`-dakı `_tapWordSpan`).
+
 ## App açılışı — "ağ ekran" səbəbi (2026-08-04)
 
 `main.dart`-ın `_bootstrap()`-u əvvəllər müstəqil şəbəkə çağırışlarını

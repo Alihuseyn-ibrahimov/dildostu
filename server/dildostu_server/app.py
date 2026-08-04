@@ -43,6 +43,8 @@ from .models import (
     RoutineSampleRequest,
     RoutineSummaryResponse,
     UserInfo,
+    WordLookupRequest,
+    WordLookupResponse,
 )
 from .audiobook_store import AudiobookStore
 from .place_lookup import PlaceLookup, PlaceLookupError
@@ -311,6 +313,18 @@ def essential_words(
     return EssentialWordsResponse(
         words=words, total=total, next_offset=(start + req.count) % total
     )
+
+
+@app.post("/word-lookup", response_model=WordLookupResponse)
+def word_lookup(
+    req: WordLookupRequest,
+    completers: dict[str, Completer] = Depends(get_completers),
+) -> WordLookupResponse:
+    """Səsli kitabda toxunulan sözün tərcümə+IPA-sı (Faza 3)."""
+    try:
+        return _service(completers).word_lookup(req.word, req.context)
+    except ServiceError as exc:
+        raise HTTPException(status_code=502, detail=str(exc))
 
 
 @app.post("/chat", response_model=ChatResponse)

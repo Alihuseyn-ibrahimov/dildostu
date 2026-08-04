@@ -1,9 +1,29 @@
+import 'package:dildostu/src/data/word_lookup_client.dart';
 import 'package:dildostu/src/models/audiobook.dart';
 import 'package:dildostu/src/services/audio_player_service.dart';
 import 'package:dildostu/src/ui/audiobook_player_screen.dart';
 import 'package:dildostu/src/ui/audiobooks_screen.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+/// `buildTappableWordSpans` sözləri ayrıca `TextSpan`-lara böldüyü üçün
+/// `find.text('Fox')` onları tapmır (RichText-in daxili span-ları `Text`
+/// widget-i deyil) — recognizer-i birbaşa çağırırıq (real toxunuşu simulyasiya).
+void _tapWordSpan(WidgetTester tester, String word) {
+  final richText =
+      tester.widget<RichText>(find.byKey(const Key('chapter-text')));
+  void walk(InlineSpan span) {
+    if (span is TextSpan) {
+      if (span.text == word && span.recognizer is TapGestureRecognizer) {
+        (span.recognizer as TapGestureRecognizer).onTap!();
+        return;
+      }
+      span.children?.forEach(walk);
+    }
+  }
+  walk(richText.text!);
+}
 
 AudiobookChapter _ch(String id, String title, int sec) => AudiobookChapter(
       chapterId: id,
@@ -129,6 +149,11 @@ void main() {
             initialIndex: index,
             player: player,
             sourceFor: (b, c) => 'https://x/${b.bookId}/${c.chapterId}.mp3',
+            lookupWord: (word, sentence) async => WordLookupResult(
+              word: word,
+              translationAz: '$word-tərcümə',
+              ipa: '/x/',
+            ),
           ),
         );
 
@@ -146,7 +171,9 @@ void main() {
       await tester.pumpWidget(wrap(p));
       await tester.pump(const Duration(milliseconds: 500));
       expect(find.text('The Fox and the Grapes'), findsOneWidget);
-      expect(find.textContaining('mətni burada'), findsOneWidget);
+      final richText =
+          tester.widget<RichText>(find.byKey(const Key('chapter-text')));
+      expect(richText.text!.toPlainText(), contains('mətni burada'));
       expect(find.text('1 / 2'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
     });
@@ -221,6 +248,81 @@ void main() {
       await tester.pump(const Duration(milliseconds: 500));
       expect(p.played.length, greaterThanOrEqualTo(2));
       expect(p.played.last, contains('the-cat-and-the-mice'));
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('sözə toxunanda mənası aşağı vərəqdə göstərilir',
+        (tester) async {
+      final p = FakePlayer();
+      await tester.pumpWidget(MaterialApp(
+        home: AudiobookPlayerScreen(
+          book: _book(),
+          initialIndex: 0,
+          player: p,
+          sourceFor: (b, c) => 'https://x/${b.bookId}/${c.chapterId}.mp3',
+          lookupWord: (word, sentence) async => WordLookupResult(
+            word: word,
+            translationAz: 'tülkü',
+            ipa: '/fɒks/',
+          ),
+        ),
+      ));
+      await tester.pump(const Duration(milliseconds: 500));
+
+      _tapWordSpan(tester, 'Fox');
+      await tester.pumpAndSettle();
+
+      expect(find.text('tülkü'), findsOneWidget);
+      expect(find.text('/fɒks/'), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('sözə toxunanda kontekst (cümlə) ötürülür', (tester) async {
+      final p = FakePlayer();
+      String? capturedWord;
+      String? capturedSentence;
+      await tester.pumpWidget(MaterialApp(
+        home: AudiobookPlayerScreen(
+          book: _book(),
+          initialIndex: 0,
+          player: p,
+          sourceFor: (b, c) => 'https://x/${b.bookId}/${c.chapterId}.mp3',
+          lookupWord: (word, sentence) async {
+            capturedWord = word;
+            capturedSentence = sentence;
+            return WordLookupResult(word: word, translationAz: 'x', ipa: '/x/');
+          },
+        ),
+      ));
+      await tester.pump(const Duration(milliseconds: 500));
+
+      _tapWordSpan(tester, 'Fox');
+      await tester.pumpAndSettle();
+
+      expect(capturedWord, 'Fox');
+      expect(capturedSentence, contains('Fox'));
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('axtarış uğursuz olsa xəta + yenidən cəhd göstərilir',
+        (tester) async {
+      final p = FakePlayer();
+      await tester.pumpWidget(MaterialApp(
+        home: AudiobookPlayerScreen(
+          book: _book(),
+          initialIndex: 0,
+          player: p,
+          sourceFor: (b, c) => 'https://x/${b.bookId}/${c.chapterId}.mp3',
+          lookupWord: (word, sentence) async => throw StateError('502'),
+        ),
+      ));
+      await tester.pump(const Duration(milliseconds: 500));
+
+      _tapWordSpan(tester, 'Fox');
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('Tapılmadı'), findsOneWidget);
+      expect(find.text('Yenidən cəhd et'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
     });
   });

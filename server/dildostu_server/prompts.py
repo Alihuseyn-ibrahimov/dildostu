@@ -170,6 +170,23 @@ def build_essential_words_prompt(
     return _SYSTEM, user
 
 
+def build_word_lookup_prompt(word: str, context: str) -> tuple[str, str]:
+    """Səsli kitab mətnində toxunulan bir sözün mənası — (system, user).
+
+    Qəsdən YALNIZ tərcümə+IPA istənir (nümunə cümlə YOX) — sözün öz cümləsi
+    artıq ekranda görünür (kitabın mətni), təkrar yaratmağa ehtiyac yoxdur.
+    Bu, tokeni (və Groq günlük limitini) qənaətli saxlayır.
+    """
+    ctx_line = f'Cümlə: "{context}"\n' if context.strip() else ""
+    user = (
+        f'İngilis sözün bu kontekstdəki mənasına görə Azərbaycan tərcüməsini '
+        f"və IPA transkripsiyasını ver.\n"
+        f'Söz: "{word}"\n{ctx_line}\n'
+        'Yalnız bu formada JSON qaytar: {"translation_az": "...", "ipa": "/.../"}'
+    )
+    return _SYSTEM, user
+
+
 def chat_preferred_providers() -> list[str]:
     """Söhbət üçün provayder sırası: Claude (keyfiyyət) → Groq (fallback)."""
     return ["claude", "groq"]

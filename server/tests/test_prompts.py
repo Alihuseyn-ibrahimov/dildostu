@@ -6,6 +6,7 @@ from dildostu_server.prompts import (
     build_dayplan_prompt,
     build_essential_words_prompt,
     build_generate_prompt,
+    build_word_lookup_prompt,
     level_instruction,
     preferred_providers,
 )
@@ -146,6 +147,29 @@ class TestEssentialWordsPrompt:
     def test_asks_json_messages_array(self):
         _, user = build_essential_words_prompt(profile(), ["abandon"])
         assert "messages" in user
+
+
+class TestWordLookupPrompt:
+    def test_includes_word_and_context(self):
+        _, user = build_word_lookup_prompt("bank", "He sat by the river bank.")
+        assert "bank" in user
+        assert "river bank" in user
+
+    def test_context_optional(self):
+        _, user = build_word_lookup_prompt("bank", "")
+        assert "bank" in user
+        assert "Cümlə:" not in user
+
+    def test_asks_json_translation_and_ipa(self):
+        _, user = build_word_lookup_prompt("gallant", "He was a gallant man.")
+        assert "translation_az" in user
+        assert "ipa" in user
+
+    def test_does_not_ask_for_example(self):
+        # Sözün öz cümləsi artıq ekranda görünür — təkrar yaratmağa ehtiyac
+        # yoxdur (token qənaəti).
+        _, user = build_word_lookup_prompt("gallant", "He was a gallant man.")
+        assert "example" not in user
 
 
 class TestDayPlanPrompt:

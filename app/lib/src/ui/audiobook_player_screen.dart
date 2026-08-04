@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../data/word_lookup_client.dart';
 import '../models/audiobook.dart';
 import '../services/audio_player_service.dart';
+import 'tappable_text.dart';
 import 'theme.dart';
 
-/// Səsli kitab plyeri — dinlə + mətni oxu.
+/// Səsli kitab plyeri — dinlə + mətni oxu + naməlum sözə toxunub mənasına bax.
 ///
 /// Vəziyyət native tərəfdən dövri olaraq (`_pollInterval`) oxunur; EventChannel
 /// əvəzinə sorğu seçilib, çünki səth kiçik qalsın deyə (bax
@@ -18,6 +20,7 @@ class AudiobookPlayerScreen extends StatefulWidget {
     required this.initialIndex,
     required this.player,
     required this.sourceFor,
+    required this.lookupWord,
   });
 
   final Audiobook book;
@@ -26,6 +29,10 @@ class AudiobookPlayerScreen extends StatefulWidget {
 
   /// Fəsil → çalınacaq mənbə (URL və ya yerli fayl yolu).
   final String Function(Audiobook book, AudiobookChapter chapter) sourceFor;
+
+  /// Toxunulan sözün mənasını gətirir (kontekst = sözün keçdiyi cümlə).
+  final Future<WordLookupResult> Function(String word, String context)
+      lookupWord;
 
   @override
   State<AudiobookPlayerScreen> createState() => _AudiobookPlayerScreenState();
@@ -130,6 +137,30 @@ class _AudiobookPlayerScreenState extends State<AudiobookPlayerScreen> {
     return '$m:${s.toString().padLeft(2, '0')}';
   }
 
+  /// Toxunulan sözün cümləsini tapır — AI-yə düzgün məna üçün ötürülür
+  /// (məs. "bank" çay sahili/bank fərqi). Tapılmasa bütün fəsil mətni
+  /// (qısaldılmış) ehtiyat kimi ötürülür.
+  String _sentenceContaining(String text, String word) {
+    final boundary = RegExp(
+        r'\b' + RegExp.escape(word) + r'\b', caseSensitive: false);
+    final sentences = text.split(RegExp(r'(?<=[.!?])\s+'));
+    for (final s in sentences) {
+      if (boundary.hasMatch(s)) return s.trim();
+    }
+    return text.length > 200 ? text.substring(0, 200) : text;
+  }
+
+  void _onTapWord(String word) {
+    final sentence = _sentenceContaining(_chapter.text, word);
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (_) => _WordLookupSheet(
+        word: word,
+        lookup: () => widget.lookupWord(word, sentence),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -174,9 +205,16 @@ class _AudiobookPlayerScreenState extends State<AudiobookPlayerScreen> {
                       style: theme.textTheme.headlineSmall
                           ?.copyWith(fontWeight: FontWeight.w600)),
                   const SizedBox(height: 16),
-                  SelectableText(
-                    _chapter.text,
-                    style: theme.textTheme.bodyLarge?.copyWith(height: 1.6),
+                  RichText(
+                    key: const Key('chapter-text'),
+                    text: TextSpan(
+                      children: buildTappableWordSpans(
+                        text: _chapter.text,
+                        style: theme.textTheme.bodyLarge
+                            ?.copyWith(height: 1.6, color: theme.colorScheme.onSurface),
+                        onTapWord: _onTapWord,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -304,6 +342,91 @@ class _Controls extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Toxunulan sözün mənasını göstərən aşağı vərəq — özünü idarə edir
+/// (yüklənir/nəticə/xəta), ana ekranın vəziyyətinə bağlı deyil.
+class _WordLookupSheet extends StatefulWidget {
+  const _WordLookupSheet({required this.word, required this.lookup});
+
+  final String word;
+  final Future<WordLookupResult> Function() lookup;
+
+  @override
+  State<_WordLookupSheet> createState() => _WordLookupSheetState();
+}
+
+class _WordLookupSheetState extends State<_WordLookupSheet> {
+  bool _loading = true;
+  WordLookupResult? _result;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+    try {
+      final result = await widget.lookup();
+      if (!mounted) return;
+      setState(() {
+        _result = result;
+        _loading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _error = '$e';
+        _loading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.word,
+                style: theme.textTheme.headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 12),
+            if (_loading)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                child: Center(child: CircularProgressIndicator()),
+              )
+            else if (_error != null) ...[
+              Text('Tapılmadı: ${_error!}', style: theme.textTheme.bodyMedium),
+              const SizedBox(height: 10),
+              OutlinedButton.icon(
+                onPressed: _load,
+                icon: const Icon(Icons.refresh),
+                label: const Text('Yenidən cəhd et'),
+              ),
+            ] else ...[
+              Text(_result!.ipa,
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(color: theme.colorScheme.outline)),
+              const SizedBox(height: 4),
+              Text(_result!.translationAz, style: theme.textTheme.titleLarge),
+            ],
+          ],
         ),
       ),
     );

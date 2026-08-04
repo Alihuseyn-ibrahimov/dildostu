@@ -7,6 +7,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'src/config.dart';
 import 'src/data/app_update_client.dart';
 import 'src/data/audiobook_client.dart';
+import 'src/data/word_lookup_client.dart';
 import 'src/data/auth_client.dart';
 import 'src/data/auth_repository.dart';
 import 'src/data/chat_client.dart';
@@ -190,6 +191,8 @@ class _BootstrapState extends State<_Bootstrap> {
   final ChatClient _chat = ChatClient(baseUrl: AppConfig.serverBaseUrl);
   final AudiobookClient _audiobooks =
       AudiobookClient(baseUrl: AppConfig.serverBaseUrl);
+  final WordLookupClient _wordLookup =
+      WordLookupClient(baseUrl: AppConfig.serverBaseUrl);
   final AudioPlayer _audioPlayer = const NativeAudioPlayer();
   late final RoutineClient _routine;
   final ProfileClient _profileClient = ProfileClient(baseUrl: AppConfig.serverBaseUrl);
@@ -549,6 +552,8 @@ class _BootstrapState extends State<_Bootstrap> {
                 player: _audioPlayer,
                 sourceFor: (b, c) =>
                     _audiobooks.chapterUrl(b.bookId, c.chapterId),
+                lookupWord: (word, sentence) =>
+                    _wordLookup.lookup(word, context: sentence),
               ),
             )),
           ),

@@ -5,6 +5,7 @@ import pytest
 from dildostu_server.generator import (
     parse_dayplan_response,
     parse_generate_response,
+    parse_word_lookup_response,
 )
 from dildostu_server.models import Context
 
@@ -67,3 +68,26 @@ class TestParseDayPlan:
     def test_bad_dayplan_raises(self):
         with pytest.raises(ValueError):
             parse_dayplan_response("{}", ["morning"])
+
+
+class TestParseWordLookup:
+    def test_parses_translation_and_ipa(self):
+        payload = {"translation_az": "sahil", "ipa": "/bæŋk/"}
+        result = parse_word_lookup_response(json.dumps(payload), "bank")
+        assert result.word == "bank"
+        assert result.translation_az == "sahil"
+        assert result.ipa == "/bæŋk/"
+
+    def test_word_comes_from_query_not_ai(self):
+        # AI cavabında "word" olsa da, sorğudakı orijinal söz istifadə olunur.
+        payload = {"word": "BANK", "translation_az": "sahil", "ipa": "/bæŋk/"}
+        result = parse_word_lookup_response(json.dumps(payload), "bank")
+        assert result.word == "bank"
+
+    def test_missing_translation_raises(self):
+        with pytest.raises(ValueError):
+            parse_word_lookup_response(json.dumps({"ipa": "/bæŋk/"}), "bank")
+
+    def test_bad_json_raises(self):
+        with pytest.raises(ValueError):
+            parse_word_lookup_response("not json", "bank")

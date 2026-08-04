@@ -201,6 +201,24 @@ class GeofencesResponse(BaseModel):
     geofences: list[GeofenceZone] = Field(default_factory=list)
 
 
+class WordLookupRequest(BaseModel):
+    """Səsli kitab mətnində toxunulan sözün mənasını soruşur.
+
+    `context` sözün keçdiyi cümlədir (kitabın ictimai domen mətnindən —
+    artıq app-a göndərilib, burada təkrar SAXLANMIR, yalnız AI-yə düzgün
+    məna üçün ötürülür, məs. "bank" çay sahili/bank fərqi).
+    """
+
+    word: str = Field(min_length=1, max_length=50)
+    context: str = Field(default="", max_length=500)
+
+
+class WordLookupResponse(BaseModel):
+    word: str = Field(min_length=1)
+    translation_az: str = Field(min_length=1)
+    ipa: str = Field(min_length=1)
+
+
 class AppVersionInfo(BaseModel):
     """Serverdəki ən son buraxılış — app açılışda bunu özü ilə müqayisə edir."""
 

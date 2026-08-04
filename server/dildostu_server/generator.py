@@ -7,7 +7,7 @@ import re
 
 from pydantic import ValidationError
 
-from .models import Context, LiveMessage
+from .models import Context, LiveMessage, WordLookupResponse
 
 
 def _extract_json(text: str):
@@ -32,6 +32,16 @@ def parse_generate_response(text: str, context: Context) -> LiveMessage:
         return LiveMessage(**obj)
     except ValidationError as exc:
         raise ValueError(f"LiveMessage sxem xətası: {exc}") from exc
+
+
+def parse_word_lookup_response(text: str, word: str) -> WordLookupResponse:
+    """Söz axtarışı cavabını çevir (word AI-nin cavabına yox, sorğuya görə)."""
+    obj = _extract_json(text)
+    obj["word"] = word
+    try:
+        return WordLookupResponse(**obj)
+    except ValidationError as exc:
+        raise ValueError(f"WordLookup sxem xətası: {exc}") from exc
 
 
 def parse_dayplan_response(text: str, pack_ids: list[str]) -> list[LiveMessage]:

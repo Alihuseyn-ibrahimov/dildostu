@@ -5,7 +5,11 @@ Endpoint-dən ayrıdır ki, completer və keş inject oluna (test üçün mock).
 
 from __future__ import annotations
 
-from .generator import parse_dayplan_response, parse_generate_response
+from .generator import (
+    parse_dayplan_response,
+    parse_generate_response,
+    parse_word_lookup_response,
+)
 from .models import (
     ChatRequest,
     DayPlanRequest,
@@ -13,6 +17,7 @@ from .models import (
     GenerateRequest,
     LiveMessage,
     UserProfile,
+    WordLookupResponse,
 )
 from .prompts import (
     build_chat_system,
@@ -20,6 +25,7 @@ from .prompts import (
     build_essential_words_prompt,
     build_generate_prompt,
     build_pack_words_prompt,
+    build_word_lookup_prompt,
     chat_preferred_providers,
     preferred_providers,
 )
@@ -108,6 +114,28 @@ class LiveService:
 
         self._cache[key] = messages
         return messages
+
+    def word_lookup(self, word: str, context: str) -> WordLookupResponse:
+        """Səsli kitab mətnində toxunulan sözün mənası.
+
+        Yalnız SÖZLƏ keşlənir (kontekst yox) — eyni sözün fərqli cümlələrdə
+        nadir mənası dəyişsə də, sürət/qənaət üçün bu ödün verilir.
+        """
+        key = ("word-lookup", word.lower())
+        if key in self._cache:
+            return self._cache[key]
+
+        system, user = build_word_lookup_prompt(word, context)
+        try:
+            text = complete_with_fallback(
+                system, user, preferred_providers("normal"), self._completers
+            )
+            result = parse_word_lookup_response(text, word)
+        except (AllProvidersFailed, ValueError) as exc:
+            raise ServiceError(str(exc)) from exc
+
+        self._cache[key] = result
+        return result
 
     def day_plan(self, req: DayPlanRequest) -> DayPlanResponse:
         system, user = build_dayplan_prompt(req.profile, req.pack_ids, req.date)
