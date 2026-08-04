@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/live_message.dart';
+import 'accent_colors.dart';
 import 'theme.dart';
 
 typedef EssentialWordsLoader = Future<
@@ -21,12 +22,17 @@ class EssentialWordsScreen extends StatefulWidget {
     super.key,
     required this.loader,
     required this.onOpenWord,
+    this.accent,
   });
 
   final EssentialWordsLoader loader;
 
   /// Siyahıdan sözə keçid: bütün siyahı + seçilən indeks.
   final void Function(List<LiveMessage> words, int index) onOpenWord;
+
+  /// Xüsusiyyətin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
+  /// mövcud neytral tema rəngləri işlədilir.
+  final AccentColor? accent;
 
   @override
   State<EssentialWordsScreen> createState() => _EssentialWordsScreenState();
@@ -76,7 +82,10 @@ class _EssentialWordsScreenState extends State<EssentialWordsScreen> {
     final words = _words;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Əsas lüğət')),
+      appBar: AppBar(
+        title: const Text('Əsas lüğət'),
+        backgroundColor: widget.accent?.tint,
+      ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null

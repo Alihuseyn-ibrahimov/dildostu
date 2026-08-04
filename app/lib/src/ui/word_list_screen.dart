@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/live_message.dart';
+import 'accent_colors.dart';
 import 'theme.dart';
 
 /// Bir paketin söz siyahısı — hər sətir söz + tərcümə; toxunanda həmin sözün
@@ -14,6 +15,7 @@ class WordListScreen extends StatefulWidget {
     required this.title,
     required this.loader,
     required this.onOpenWord,
+    this.accent,
   });
 
   final String title;
@@ -21,6 +23,10 @@ class WordListScreen extends StatefulWidget {
 
   /// Siyahıdan sözə keçid: bütün siyahı + seçilən indeks.
   final void Function(List<LiveMessage> words, int index) onOpenWord;
+
+  /// Paketin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
+  /// mövcud neytral tema rəngləri işlədilir.
+  final AccentColor? accent;
 
   @override
   State<WordListScreen> createState() => _WordListScreenState();
@@ -50,9 +56,13 @@ class _WordListScreenState extends State<WordListScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final words = _words;
+    final accent = widget.accent;
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        title: Text(widget.title),
+        backgroundColor: accent?.tint,
+      ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : (words == null || words.isEmpty)
@@ -96,7 +106,8 @@ class _WordListScreenState extends State<WordListScreen> {
                                 width: 28,
                                 child: Text('${i + 1}',
                                     style: theme.textTheme.bodySmall?.copyWith(
-                                        color: theme.colorScheme.outline)),
+                                        color: accent?.accent ??
+                                            theme.colorScheme.outline)),
                               ),
                               Expanded(
                                 child: Column(
@@ -117,7 +128,8 @@ class _WordListScreenState extends State<WordListScreen> {
                                 ),
                               ),
                               Icon(Icons.chevron_right,
-                                  color: theme.colorScheme.outlineVariant),
+                                  color: accent?.accent ??
+                                      theme.colorScheme.outlineVariant),
                             ],
                           ),
                         ),

@@ -1,4 +1,5 @@
 import 'package:dildostu/src/models/live_message.dart';
+import 'package:dildostu/src/ui/accent_colors.dart';
 import 'package:dildostu/src/ui/essential_words_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -84,6 +85,22 @@ void main() {
 
     expect(passedIndex, 1);
     expect(passedWords, hasLength(2));
+  });
+
+  testWidgets('accent verilibsə AppBar fonu tint-ə dəyişir', (tester) async {
+    final accent = accentFor('essential');
+    await tester.pumpWidget(MaterialApp(
+      home: EssentialWordsScreen(
+        loader: (offset) async =>
+            (words: [_msg('abandon', 'tərk etmək')], total: 168, nextOffset: 12),
+        onOpenWord: (_, _) {},
+        accent: accent,
+      ),
+    ));
+    await tester.pumpAndSettle();
+
+    final appBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect(appBar.backgroundColor, accent.tint);
   });
 
   testWidgets('xəta olsa mesaj və yenidən cəhd düyməsi göstərilir',

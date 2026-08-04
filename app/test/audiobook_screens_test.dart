@@ -1,6 +1,7 @@
 import 'package:dildostu/src/data/word_lookup_client.dart';
 import 'package:dildostu/src/models/audiobook.dart';
 import 'package:dildostu/src/services/audio_player_service.dart';
+import 'package:dildostu/src/ui/accent_colors.dart';
 import 'package:dildostu/src/ui/audiobook_player_screen.dart';
 import 'package:dildostu/src/ui/audiobooks_screen.dart';
 import 'package:flutter/gestures.dart';
@@ -108,6 +109,32 @@ void main() {
       expect(find.text('Yenidən cəhd et'), findsOneWidget);
     });
 
+    testWidgets('accent verilibsə AppBar və kitab kartı rəngi dəyişir',
+        (tester) async {
+      final accent = accentFor('audiobooks');
+      await tester.pumpWidget(MaterialApp(
+        home: AudiobooksScreen(
+          loader: () async => [_book()],
+          onOpenBook: (_) {},
+          accent: accent,
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      final appBar = tester.widget<AppBar>(find.byType(AppBar));
+      expect(appBar.backgroundColor, accent.tint);
+
+      final iconContainer = tester.widget<Container>(
+        find
+            .ancestor(
+                of: find.byIcon(Icons.headphones),
+                matching: find.byType(Container))
+            .first,
+      );
+      final decoration = iconContainer.decoration as BoxDecoration;
+      expect(decoration.color, accent.tint);
+    });
+
     testWidgets('kitaba toxunanda callback çağırılır', (tester) async {
       Audiobook? opened;
       await tester.pumpWidget(MaterialApp(
@@ -143,7 +170,8 @@ void main() {
   });
 
   group('AudiobookPlayerScreen', () {
-    Widget wrap(FakePlayer player, {int index = 0}) => MaterialApp(
+    Widget wrap(FakePlayer player, {int index = 0, AccentColor? accent}) =>
+        MaterialApp(
           home: AudiobookPlayerScreen(
             book: _book(),
             initialIndex: index,
@@ -154,6 +182,7 @@ void main() {
               translationAz: '$word-tərcümə',
               ipa: '/x/',
             ),
+            accent: accent,
           ),
         );
 
@@ -301,6 +330,24 @@ void main() {
 
       expect(capturedWord, 'Fox');
       expect(capturedSentence, contains('Fox'));
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('accent verilibsə AppBar və çal düyməsi rəngi dəyişir',
+        (tester) async {
+      final p = FakePlayer();
+      final accent = accentFor('audiobooks');
+      await tester.pumpWidget(wrap(p, accent: accent));
+      await tester.pump(const Duration(milliseconds: 500));
+
+      final appBar = tester.widget<AppBar>(find.byType(AppBar));
+      expect(appBar.backgroundColor, accent.tint);
+
+      final playButton = tester.widget<IconButton>(
+        find.widgetWithIcon(IconButton, Icons.pause),
+      );
+      expect(playButton.style?.backgroundColor?.resolve(<WidgetState>{}),
+          accent.accent);
       await tester.pumpWidget(const SizedBox());
     });
 

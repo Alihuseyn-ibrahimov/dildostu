@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/pack_repository.dart';
 import '../models/user_profile.dart';
+import 'accent_colors.dart';
 import 'pack_icons.dart';
 import 'theme.dart';
 
@@ -101,6 +102,7 @@ class HomeTab extends StatelessWidget {
                       icon: Icons.menu_book_outlined,
                       title: 'Əsas lüğət',
                       subtitle: '504 ən çox işlənən söz — səviyyənə uyğun',
+                      accent: accentFor('essential'),
                       onTap: onOpenEssentialWords!,
                     ),
                   ],
@@ -110,6 +112,7 @@ class HomeTab extends StatelessWidget {
                       icon: Icons.headphones,
                       title: 'Səsli kitablar',
                       subtitle: 'Dinlə və eyni vaxtda mətni oxu',
+                      accent: accentFor('audiobooks'),
                       onTap: onOpenAudiobooks!,
                     ),
                   ],
@@ -147,6 +150,7 @@ class HomeTab extends StatelessWidget {
                         subtitle:
                             '${pack.words.length} söz · ${profile.level.labelAz.toLowerCase()}',
                         icon: packIcon(pack.packId),
+                        accent: accentFor(pack.packId),
                         onTap: () =>
                             openLive(pack.packId, pack.titleAz, profile),
                       );
@@ -336,6 +340,7 @@ class _FeatureCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.onTap,
+    this.accent,
   });
 
   final IconData icon;
@@ -343,12 +348,17 @@ class _FeatureCard extends StatelessWidget {
   final String subtitle;
   final VoidCallback onTap;
 
+  /// Xüsusiyyətin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
+  /// mövcud neytral `secondaryContainer` işlədilir.
+  final AccentColor? accent;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final onColor = theme.colorScheme.onSecondaryContainer;
+    final cardColor = accent?.tint ?? theme.colorScheme.secondaryContainer;
+    final onColor = accent?.accent ?? theme.colorScheme.onSecondaryContainer;
     return Card(
-      color: theme.colorScheme.secondaryContainer,
+      color: cardColor,
       child: InkWell(
         borderRadius: BorderRadius.circular(AppSpacing.radiusCard),
         onTap: onTap,
@@ -388,6 +398,7 @@ class _PackCard extends StatelessWidget {
     required this.subtitle,
     required this.icon,
     required this.onTap,
+    this.accent,
   });
 
   final String title;
@@ -395,9 +406,15 @@ class _PackCard extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
 
+  /// Paketin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
+  /// mövcud neytral `secondaryContainer` işlədilir.
+  final AccentColor? accent;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final tileColor = accent?.tint ?? theme.colorScheme.secondaryContainer;
+    final iconColor = accent?.accent ?? theme.colorScheme.onSecondaryContainer;
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(AppSpacing.radiusCard),
@@ -412,11 +429,10 @@ class _PackCard extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.secondaryContainer,
+                  color: tileColor,
                   borderRadius: BorderRadius.circular(AppSpacing.radiusControl),
                 ),
-                child: Icon(icon,
-                    color: theme.colorScheme.onSecondaryContainer, size: 21),
+                child: Icon(icon, color: iconColor, size: 21),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

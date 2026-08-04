@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../data/word_lookup_client.dart';
 import '../models/audiobook.dart';
 import '../services/audio_player_service.dart';
+import 'accent_colors.dart';
 import 'tappable_text.dart';
 import 'theme.dart';
 
@@ -21,6 +22,7 @@ class AudiobookPlayerScreen extends StatefulWidget {
     required this.player,
     required this.sourceFor,
     required this.lookupWord,
+    this.accent,
   });
 
   final Audiobook book;
@@ -33,6 +35,10 @@ class AudiobookPlayerScreen extends StatefulWidget {
   /// Toxunulan sözün mənasını gətirir (kontekst = sözün keçdiyi cümlə).
   final Future<WordLookupResult> Function(String word, String context)
       lookupWord;
+
+  /// Xüsusiyyətin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
+  /// mövcud neytral tema rəngləri işlədilir.
+  final AccentColor? accent;
 
   @override
   State<AudiobookPlayerScreen> createState() => _AudiobookPlayerScreenState();
@@ -165,7 +171,10 @@ class _AudiobookPlayerScreenState extends State<AudiobookPlayerScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(widget.book.titleAz)),
+      appBar: AppBar(
+        title: Text(widget.book.titleAz),
+        backgroundColor: widget.accent?.tint,
+      ),
       body: Column(
         children: [
           if (_error != null)
@@ -236,6 +245,7 @@ class _AudiobookPlayerScreenState extends State<AudiobookPlayerScreen> {
             onNext: _index < widget.book.chapters.length - 1
                 ? () => _goto(_index + 1)
                 : null,
+            accent: widget.accent,
           ),
         ],
       ),
@@ -255,6 +265,7 @@ class _Controls extends StatelessWidget {
     required this.onForward,
     this.onPrev,
     this.onNext,
+    this.accent,
   });
 
   final AudioPlaybackState state;
@@ -267,6 +278,7 @@ class _Controls extends StatelessWidget {
   final VoidCallback onForward;
   final VoidCallback? onPrev;
   final VoidCallback? onNext;
+  final AccentColor? accent;
 
   @override
   Widget build(BuildContext context) {
@@ -323,6 +335,12 @@ class _Controls extends StatelessWidget {
                       : IconButton.filled(
                           iconSize: 34,
                           onPressed: onToggle,
+                          style: accent == null
+                              ? null
+                              : IconButton.styleFrom(
+                                  backgroundColor: accent!.accent,
+                                  foregroundColor: accent!.onAccent,
+                                ),
                           icon: Icon(state.playing
                               ? Icons.pause
                               : Icons.play_arrow),

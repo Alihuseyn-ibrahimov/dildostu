@@ -1,5 +1,6 @@
 import 'package:dildostu/src/data/pack_repository.dart';
 import 'package:dildostu/src/models/user_profile.dart';
+import 'package:dildostu/src/ui/accent_colors.dart';
 import 'package:dildostu/src/ui/home_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -72,6 +73,18 @@ void main() {
     await tester.pumpWidget(wrap(openLive: (packId, _, _) => openedPack = packId));
     await tester.tap(find.text('Kafedə'));
     expect(openedPack, 'cafe');
+  });
+
+  testWidgets('paket kartının ikon plitəsi öz aksent rənginə malikdir',
+      (tester) async {
+    await tester.pumpWidget(wrap());
+    final iconFinder = find.byIcon(Icons.local_cafe);
+    expect(iconFinder, findsOneWidget);
+    final container = tester.widget<Container>(
+      find.ancestor(of: iconFinder, matching: find.byType(Container)).first,
+    );
+    final decoration = container.decoration as BoxDecoration;
+    expect(decoration.color, accentFor('cafe').tint);
   });
 
   group('çətinlik seçicisi', () {

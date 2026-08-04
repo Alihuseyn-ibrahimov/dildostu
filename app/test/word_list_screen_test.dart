@@ -1,4 +1,5 @@
 import 'package:dildostu/src/models/live_message.dart';
+import 'package:dildostu/src/ui/accent_colors.dart';
 import 'package:dildostu/src/ui/word_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -67,6 +68,22 @@ void main() {
 
     expect(passedIndex, 1);
     expect(passedWords, hasLength(2));
+  });
+
+  testWidgets('accent verilibsə AppBar fonu tint-ə dəyişir', (tester) async {
+    final accent = accentFor('airport');
+    await tester.pumpWidget(MaterialApp(
+      home: WordListScreen(
+        title: 'Aeroportda',
+        loader: () async => [_msg('gate', 'qapı')],
+        onOpenWord: (_, _) {},
+        accent: accent,
+      ),
+    ));
+    await tester.pumpAndSettle();
+
+    final appBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect(appBar.backgroundColor, accent.tint);
   });
 
   testWidgets('boş siyahıda mesaj və yenidən cəhd düyməsi', (tester) async {

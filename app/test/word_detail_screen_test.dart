@@ -1,5 +1,6 @@
 import 'package:dildostu/src/models/live_message.dart';
 import 'package:dildostu/src/services/speaker.dart';
+import 'package:dildostu/src/ui/accent_colors.dart';
 import 'package:dildostu/src/ui/word_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,6 +33,7 @@ Widget _screen(
   List<LiveMessage> words, {
   int initialIndex = 0,
   Speaker? speaker,
+  AccentColor? accent,
 }) =>
     MaterialApp(
       home: WordDetailScreen(
@@ -39,6 +41,7 @@ Widget _screen(
         words: words,
         initialIndex: initialIndex,
         speaker: speaker ?? FakeSpeaker(),
+        accent: accent,
       ),
     );
 
@@ -132,6 +135,24 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Çətin'), findsOneWidget);
+  });
+
+  testWidgets('accent verilibsə AppBar fonu və Səsləndir düyməsi dəyişir',
+      (tester) async {
+    final accent = accentFor('cafe');
+    await tester.pumpWidget(_screen([_msg('coffee')], accent: accent));
+    await tester.pumpAndSettle();
+
+    final appBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect(appBar.backgroundColor, accent.tint);
+
+    final speakButton = tester.widget<FilledButton>(
+      find.ancestor(
+          of: find.text('Səsləndir'), matching: find.byType(FilledButton)),
+    );
+    expect(
+        speakButton.style?.backgroundColor?.resolve(<WidgetState>{}),
+        accent.tint);
   });
 
   testWidgets('boş siyahı sınmır', (tester) async {

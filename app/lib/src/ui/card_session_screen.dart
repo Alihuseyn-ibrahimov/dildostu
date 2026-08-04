@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/review_repository.dart';
 import '../models/word.dart';
 import '../services/speaker.dart';
+import 'accent_colors.dart';
 import 'word_card_view.dart';
 
 /// Sessiyada göstəriləcək bir söz — `wordKey` ReviewRepository-də unikal
@@ -24,12 +25,18 @@ class CardSessionScreen extends StatefulWidget {
     required this.entries,
     required this.speaker,
     required this.reviewRepository,
+    this.accent,
   });
 
   final String title;
   final List<SessionEntry> entries;
   final Speaker speaker;
   final ReviewRepository reviewRepository;
+
+  /// Paketin sabit aksent rəngi (bax `accent_colors.dart`). Yalnız TƏK
+  /// paketdən açılan sessiyada verilir (manual seçim) — qarışıq paketli
+  /// sessiyada (Axşam təkrarı) `null` qalır.
+  final AccentColor? accent;
 
   @override
   State<CardSessionScreen> createState() => _CardSessionScreenState();
@@ -70,6 +77,7 @@ class _CardSessionScreenState extends State<CardSessionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        backgroundColor: widget.accent?.tint,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
           child: LinearProgressIndicator(
@@ -87,6 +95,7 @@ class _CardSessionScreenState extends State<CardSessionScreen> {
                 word: entries[i].word,
                 speaker: widget.speaker,
                 onReview: _handleReview,
+                accent: widget.accent,
               ),
             ),
     );

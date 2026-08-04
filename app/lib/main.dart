@@ -22,6 +22,7 @@ import 'src/data/profile_client.dart';
 import 'src/data/review_repository.dart';
 import 'src/data/routine_client.dart';
 import 'src/data/settings_repository.dart';
+import 'src/data/tts_telemetry_repository.dart';
 import 'src/data/user_profile_repository.dart';
 import 'src/engine/context_engine.dart';
 import 'src/engine/geofence_logic.dart';
@@ -36,6 +37,7 @@ import 'src/services/location_service.dart';
 import 'src/services/notification_service.dart';
 import 'src/services/routine_sampler.dart';
 import 'src/services/speaker.dart';
+import 'src/ui/accent_colors.dart';
 import 'src/ui/audiobook_player_screen.dart';
 import 'src/ui/audiobooks_screen.dart';
 import 'src/ui/chat_screen.dart';
@@ -180,7 +182,7 @@ class _Bootstrap extends StatefulWidget {
 
 class _BootstrapState extends State<_Bootstrap> {
   late final Future<_AppData> _future;
-  final Speaker _speaker = TtsSpeaker();
+  final TtsSpeaker _speaker = TtsSpeaker();
   final NotificationService _notifications = NotificationService();
   final BatteryOptimizationService _battery = BatteryOptimizationService();
   final BuildFlavorService _buildFlavor = BuildFlavorService();
@@ -221,6 +223,32 @@ class _BootstrapState extends State<_Bootstrap> {
     );
     _future = _bootstrap();
     _loadBuildLabel(); // fire-and-forget — açılışı bloklamır
+    _autoCheckForUpdate(); // fire-and-forget — istifadəçi Ayarlara getmədən
+    // Faza 0 (ElevenLabs planı) baseline ölçüsü — `flutter_tts` uğursuzluq
+    // faizini toplayır. Konstruktor sinxrondur (dispose() həmişə işləsin
+    // deyə), ona görə repository sonradan bağlanır.
+    TtsTelemetryRepository.load().then((t) => _speaker.telemetry = t);
+  }
+
+  /// App açılışında arxa fonda: yeni versiya varsa dərhal yükləyib sistem
+  /// quraşdırıcısını açır — istifadəçi Ayarlar ekranına girib "Yenilə"yə
+  /// toxunmalı olmasın. Ana səhifənin widget ağacına toxunmur (bax
+  /// `_loadBuildLabel` yanındakı izah — HomeTab-a dinamik UI əlavə etmək
+  /// riskli olub), sadəcə şəbəkə/fayl əməliyyatıdır və sonda `OpenFilex.open`
+  /// sistemin öz quraşdırma dialoqunu açır (Android buna görə hələ də bir
+  /// toxunuş tələb edir — tam səssiz quraşdırma mümkün deyil).
+  Future<void> _autoCheckForUpdate() async {
+    try {
+      final status = await _fetchUpdateStatus();
+      if (status.info == null) return;
+      final destPath = '${Directory.systemTemp.path}/dildostu-update.apk';
+      final path = await _updateClient.downloadApk(destPath);
+      if (path == null) return;
+      await _installApk(path);
+    } catch (_) {
+      // Arxa fon yoxlaması — istifadəçini bloklamamalı; Ayarlar ekranı
+      // hələ də əl ilə yoxlama/yükləmə təklif edir.
+    }
   }
 
   /// Buraxılış etiketini yükləyir (Ayarlarda "Buraxılış" sətri üçün).
@@ -489,10 +517,12 @@ class _BootstrapState extends State<_Bootstrap> {
   /// (indeks ötürülür ki, orada "Əvvəlki/Növbəti" işləsin).
   MaterialPageRoute _wordListRoute(
       String packId, String title, UserProfile profile) {
+    final accent = accentFor(packId);
     return MaterialPageRoute(
       builder: (_) => WordListScreen(
         title: title,
         loader: () => _live.packWords(packId: packId, profile: profile),
+        accent: accent,
         onOpenWord: (words, index) =>
             navigatorKey.currentState?.push(MaterialPageRoute(
           builder: (_) => WordDetailScreen(
@@ -500,6 +530,7 @@ class _BootstrapState extends State<_Bootstrap> {
             words: words,
             initialIndex: index,
             speaker: _speaker,
+            accent: accent,
             onAskQuestion: () => _openChat(
               profile,
               packId: packId,
@@ -514,10 +545,12 @@ class _BootstrapState extends State<_Bootstrap> {
   /// "Əsas lüğət" (504 sabit söz bankı) ekranını açır — kontekstdən
   /// (məkan/paket) asılı deyil, birbaşa istifadəçinin cari səviyyəsindən.
   void _openEssentialWords(UserProfile profile) {
+    final accent = accentFor('essential');
     navigatorKey.currentState?.push(MaterialPageRoute(
       builder: (_) => EssentialWordsScreen(
         loader: (offset) =>
             _live.essentialWords(profile: profile, offset: offset),
+        accent: accent,
         onOpenWord: (words, index) =>
             navigatorKey.currentState?.push(MaterialPageRoute(
           builder: (_) => WordDetailScreen(
@@ -525,6 +558,7 @@ class _BootstrapState extends State<_Bootstrap> {
             words: words,
             initialIndex: index,
             speaker: _speaker,
+            accent: accent,
             onAskQuestion: () => _openChat(
               profile,
               greeting: 'Bu sözlər haqda nə soruşmaq istəyirsən? 🤖',
@@ -537,13 +571,16 @@ class _BootstrapState extends State<_Bootstrap> {
 
   /// Səsli kitablar: kitabxana → hekayə siyahısı → plyer.
   void _openAudiobooks() {
+    final accent = accentFor('audiobooks');
     navigatorKey.currentState?.push(MaterialPageRoute(
       builder: (_) => AudiobooksScreen(
         loader: _audiobooks.fetchLibrary,
+        accent: accent,
         onOpenBook: (book) =>
             navigatorKey.currentState?.push(MaterialPageRoute(
           builder: (_) => AudiobookChaptersScreen(
             book: book,
+            accent: accent,
             onOpenChapter: (index) =>
                 navigatorKey.currentState?.push(MaterialPageRoute(
               builder: (_) => AudiobookPlayerScreen(
@@ -554,6 +591,7 @@ class _BootstrapState extends State<_Bootstrap> {
                     _audiobooks.chapterUrl(b.bookId, c.chapterId),
                 lookupWord: (word, sentence) =>
                     _wordLookup.lookup(word, context: sentence),
+                accent: accent,
               ),
             )),
           ),
@@ -596,6 +634,9 @@ class _BootstrapState extends State<_Bootstrap> {
     navigatorKey.currentState?.push(MaterialPageRoute(
       builder: (_) => ChatScreen(
         greeting: greeting,
+        // Chat sabit öz rənginə malikdir (paketdən açılsa belə) — dizayn
+        // sənədinin qərarı: kontekstsiz xüsusiyyətlər öz kimliyini saxlayır.
+        accent: accentFor('chat'),
         sender: (history) => _chat.send(
           profile: profile,
           history: history,
@@ -640,6 +681,7 @@ class _BootstrapState extends State<_Bootstrap> {
         fetchUpdate: _fetchUpdateStatus,
         downloadUpdate: _downloadUpdate,
         onInstallApk: _installApk,
+        ttsTelemetry: _speaker.telemetrySnapshot,
       ),
     ));
   }

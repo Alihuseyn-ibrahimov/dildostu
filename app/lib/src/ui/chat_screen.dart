@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/chat_message.dart';
+import 'accent_colors.dart';
 
 /// AI ilə iki-tərəfli söhbət ekranı. `sender` cari tarixçəni serverə göndərib
 /// AI cavabını qaytarır (main.dart-da ChatClient-ə bağlanır; testdə fake).
@@ -9,6 +10,7 @@ class ChatScreen extends StatefulWidget {
     super.key,
     required this.sender,
     this.greeting,
+    this.accent,
   });
 
   /// Bütün tarixçəni alıb AI cavabını (və ya xəta atır) qaytarır.
@@ -16,6 +18,10 @@ class ChatScreen extends StatefulWidget {
 
   /// İlk açılışda göstərilən AI salamı (məs. kartdan gələndə kontekstli).
   final String? greeting;
+
+  /// Xüsusiyyətin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
+  /// mövcud neytral tema rəngləri işlədilir.
+  final AccentColor? accent;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -78,7 +84,10 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('AI ilə söhbət')),
+      appBar: AppBar(
+        title: const Text('AI ilə söhbət'),
+        backgroundColor: widget.accent?.tint,
+      ),
       body: Column(
         children: [
           Expanded(
@@ -88,7 +97,7 @@ class _ChatScreenState extends State<ChatScreen> {
               itemCount: _messages.length + (_sending ? 1 : 0),
               itemBuilder: (context, i) {
                 if (i == _messages.length) return const _TypingBubble();
-                return _Bubble(message: _messages[i]);
+                return _Bubble(message: _messages[i], accent: widget.accent);
               },
             ),
           ),
@@ -126,13 +135,16 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class _Bubble extends StatelessWidget {
-  const _Bubble({required this.message});
+  const _Bubble({required this.message, this.accent});
   final ChatMessage message;
+  final AccentColor? accent;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isUser = message.role == ChatRole.user;
+    final userColor = accent?.accent ?? theme.colorScheme.primary;
+    final onUserColor = accent?.onAccent ?? theme.colorScheme.onPrimary;
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
@@ -141,15 +153,12 @@ class _Bubble extends StatelessWidget {
         constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width * 0.78),
         decoration: BoxDecoration(
-          color: isUser
-              ? theme.colorScheme.primary
-              : theme.colorScheme.surfaceContainerHighest,
+          color: isUser ? userColor : theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(14),
         ),
         child: Text(
           message.content,
-          style: TextStyle(
-              color: isUser ? theme.colorScheme.onPrimary : null),
+          style: TextStyle(color: isUser ? onUserColor : null),
         ),
       ),
     );

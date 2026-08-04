@@ -4,6 +4,7 @@ import '../data/manual_context_repository.dart';
 import '../data/pack_repository.dart';
 import '../data/review_repository.dart';
 import '../services/speaker.dart';
+import 'accent_colors.dart';
 import 'card_session_screen.dart';
 
 /// "İndi haradayam?" — istifadəçi kateqoriyanı özü seçir (spec §3.2 manual
@@ -33,8 +34,14 @@ class ManualModeScreen extends StatelessWidget {
         itemCount: packs.length,
         itemBuilder: (context, i) {
           final pack = packs[i];
+          final accent = accentFor(pack.packId);
           return Card(
             child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: accent.tint,
+                foregroundColor: accent.accent,
+                child: const Icon(Icons.place_outlined, size: 18),
+              ),
               title: Text(pack.titleAz),
               trailing: const Icon(Icons.chevron_right),
               onTap: () async {
@@ -53,6 +60,7 @@ class ManualModeScreen extends StatelessWidget {
                       ],
                       speaker: speaker,
                       reviewRepository: reviewRepository,
+                      accent: accent,
                     ),
                   ),
                 );

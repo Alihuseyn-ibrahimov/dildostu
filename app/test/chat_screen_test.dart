@@ -1,4 +1,5 @@
 import 'package:dildostu/src/models/chat_message.dart';
+import 'package:dildostu/src/ui/accent_colors.dart';
 import 'package:dildostu/src/ui/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -35,6 +36,32 @@ void main() {
       ),
     ));
     expect(find.text('Salam! Kafedə söz öyrənək 🤖'), findsOneWidget);
+  });
+
+  testWidgets('accent verilibsə AppBar fonu və user baloncuğu dəyişir',
+      (tester) async {
+    final accent = accentFor('chat');
+    await tester.pumpWidget(MaterialApp(
+      home: ChatScreen(
+        sender: (h) async => 'cavab',
+        accent: accent,
+      ),
+    ));
+
+    final appBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect(appBar.backgroundColor, accent.tint);
+
+    await tester.enterText(find.byType(TextField), 'salam');
+    await tester.tap(find.byIcon(Icons.send));
+    await tester.pumpAndSettle();
+
+    final bubble = tester.widget<Container>(
+      find
+          .ancestor(of: find.text('salam'), matching: find.byType(Container))
+          .first,
+    );
+    final decoration = bubble.decoration as BoxDecoration;
+    expect(decoration.color, accent.accent);
   });
 
   testWidgets('sender xəta atsa xəta baloncuğu göstərilir', (tester) async {

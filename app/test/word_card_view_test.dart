@@ -1,5 +1,6 @@
 import 'package:dildostu/src/models/word.dart';
 import 'package:dildostu/src/services/speaker.dart';
+import 'package:dildostu/src/ui/accent_colors.dart';
 import 'package:dildostu/src/ui/word_card_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -44,6 +45,25 @@ void main() {
     await tester.tap(find.text('Səsləndir'));
     await tester.pump();
     expect(speaker.spoken, ['receipt']);
+  });
+
+  testWidgets('accent verilibsə Səsləndir düyməsi öz rənginə malikdir',
+      (tester) async {
+    final accent = accentFor('cafe');
+    await tester.pumpWidget(_host(
+      WordCardView(
+        word: _word,
+        speaker: FakeSpeaker(),
+        onReview: (_) {},
+        accent: accent,
+      ),
+    ));
+    final button = tester.widget<FilledButton>(
+      find.ancestor(
+          of: find.text('Səsləndir'), matching: find.byType(FilledButton)),
+    );
+    expect(button.style?.backgroundColor?.resolve(<WidgetState>{}),
+        accent.tint);
   });
 
   testWidgets('Bilirəm/Sonra düymələri düzgün nəticə verir', (tester) async {

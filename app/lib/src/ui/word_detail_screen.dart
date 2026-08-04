@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/live_message.dart';
 import '../models/user_profile.dart';
 import '../services/speaker.dart';
+import 'accent_colors.dart';
 import 'theme.dart';
 
 /// Bir sözün ətraflı ekranı — söz, IPA, tərcümə, nümunə cümlə, səsləndirmə.
@@ -16,6 +17,7 @@ class WordDetailScreen extends StatefulWidget {
     required this.speaker,
     this.initialIndex = 0,
     this.onAskQuestion,
+    this.accent,
   });
 
   final String title;
@@ -25,6 +27,10 @@ class WordDetailScreen extends StatefulWidget {
 
   /// "Sual ver" — AI söhbətini bu kontekstlə açır (main.dart bağlayır).
   final VoidCallback? onAskQuestion;
+
+  /// Paketin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
+  /// mövcud neytral tema rəngləri işlədilir.
+  final AccentColor? accent;
 
   @override
   State<WordDetailScreen> createState() => _WordDetailScreenState();
@@ -74,6 +80,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        backgroundColor: widget.accent?.tint,
         actions: [
           if (widget.onAskQuestion != null)
             IconButton(
@@ -104,6 +111,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
               itemBuilder: (context, i) => _WordDetailBody(
                 message: widget.words[i],
                 onSpeak: () => widget.speaker.speak(widget.words[i].word),
+                accent: widget.accent,
               ),
             ),
           ),
@@ -131,6 +139,12 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                     child: FilledButton.icon(
                       onPressed:
                           _index < _lastIndex ? () => _goTo(_index + 1) : null,
+                      style: widget.accent == null
+                          ? null
+                          : FilledButton.styleFrom(
+                              backgroundColor: widget.accent!.accent,
+                              foregroundColor: widget.accent!.onAccent,
+                            ),
                       iconAlignment: IconAlignment.end,
                       icon: const Icon(Icons.chevron_right),
                       label: const Text('Növbəti'),
@@ -148,10 +162,15 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
 
 /// Tək sözün gövdəsi (PageView səhifəsi).
 class _WordDetailBody extends StatelessWidget {
-  const _WordDetailBody({required this.message, required this.onSpeak});
+  const _WordDetailBody({
+    required this.message,
+    required this.onSpeak,
+    this.accent,
+  });
 
   final LiveMessage message;
   final VoidCallback onSpeak;
+  final AccentColor? accent;
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +188,7 @@ class _WordDetailBody extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer,
+              color: accent?.tint ?? theme.colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(AppSpacing.radiusCard),
             ),
             child: Row(
@@ -178,7 +197,8 @@ class _WordDetailBody extends StatelessWidget {
                 Expanded(
                   child: Text(message.aiLine,
                       style: theme.textTheme.titleMedium?.copyWith(
-                          color: theme.colorScheme.onPrimaryContainer)),
+                          color: accent?.accent ??
+                              theme.colorScheme.onPrimaryContainer)),
                 ),
               ],
             ),
@@ -237,6 +257,12 @@ class _WordDetailBody extends StatelessWidget {
           const SizedBox(height: AppSpacing.section),
           FilledButton.tonalIcon(
             onPressed: onSpeak,
+            style: accent == null
+                ? null
+                : FilledButton.styleFrom(
+                    backgroundColor: accent!.tint,
+                    foregroundColor: accent!.accent,
+                  ),
             icon: const Icon(Icons.volume_up),
             label: const Text('Səsləndir'),
           ),

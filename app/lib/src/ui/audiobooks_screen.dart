@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/audiobook.dart';
+import 'accent_colors.dart';
 import 'theme.dart';
 
 /// Səsli kitab kitabxanası — kitab siyahısı.
@@ -12,10 +13,15 @@ class AudiobooksScreen extends StatefulWidget {
     super.key,
     required this.loader,
     required this.onOpenBook,
+    this.accent,
   });
 
   final Future<List<Audiobook>> Function() loader;
   final void Function(Audiobook book) onOpenBook;
+
+  /// Xüsusiyyətin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
+  /// mövcud neytral tema rəngləri işlədilir.
+  final AccentColor? accent;
 
   @override
   State<AudiobooksScreen> createState() => _AudiobooksScreenState();
@@ -58,7 +64,10 @@ class _AudiobooksScreenState extends State<AudiobooksScreen> {
   Widget build(BuildContext context) {
     final books = _books;
     return Scaffold(
-      appBar: AppBar(title: const Text('Səsli kitablar')),
+      appBar: AppBar(
+        title: const Text('Səsli kitablar'),
+        backgroundColor: widget.accent?.tint,
+      ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
@@ -72,6 +81,7 @@ class _AudiobooksScreenState extends State<AudiobooksScreen> {
                       itemBuilder: (context, i) => _BookCard(
                         book: books[i],
                         onTap: () => widget.onOpenBook(books[i]),
+                        accent: widget.accent,
                       ),
                     ),
     );
@@ -79,10 +89,11 @@ class _AudiobooksScreenState extends State<AudiobooksScreen> {
 }
 
 class _BookCard extends StatelessWidget {
-  const _BookCard({required this.book, required this.onTap});
+  const _BookCard({required this.book, required this.onTap, this.accent});
 
   final Audiobook book;
   final VoidCallback onTap;
+  final AccentColor? accent;
 
   @override
   Widget build(BuildContext context) {
@@ -100,11 +111,12 @@ class _BookCard extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.secondaryContainer,
+                  color: accent?.tint ?? theme.colorScheme.secondaryContainer,
                   borderRadius: BorderRadius.circular(AppSpacing.radiusControl),
                 ),
                 child: Icon(Icons.headphones,
-                    color: theme.colorScheme.onSecondaryContainer),
+                    color: accent?.accent ??
+                        theme.colorScheme.onSecondaryContainer),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -146,16 +158,21 @@ class AudiobookChaptersScreen extends StatelessWidget {
     super.key,
     required this.book,
     required this.onOpenChapter,
+    this.accent,
   });
 
   final Audiobook book;
   final void Function(int index) onOpenChapter;
 
+  /// Xüsusiyyətin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
+  /// mövcud neytral tema rəngləri işlədilir.
+  final AccentColor? accent;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(book.titleAz)),
+      appBar: AppBar(title: Text(book.titleAz), backgroundColor: accent?.tint),
       body: ListView.separated(
         padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.screen, vertical: 12),

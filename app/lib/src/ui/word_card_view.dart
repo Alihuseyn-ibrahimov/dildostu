@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../engine/review_engine.dart' show ReviewOutcome;
 import '../models/word.dart';
 import '../services/speaker.dart';
+import 'accent_colors.dart';
 
 export '../engine/review_engine.dart' show ReviewOutcome;
 
@@ -14,11 +15,16 @@ class WordCardView extends StatelessWidget {
     required this.word,
     required this.speaker,
     required this.onReview,
+    this.accent,
   });
 
   final Word word;
   final Speaker speaker;
   final ValueChanged<ReviewOutcome> onReview;
+
+  /// Paketin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
+  /// mövcud neytral tema rəngləri işlədilir.
+  final AccentColor? accent;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +74,12 @@ class WordCardView extends StatelessWidget {
           const SizedBox(height: 24),
           FilledButton.tonalIcon(
             onPressed: () => speaker.speak(word.word),
+            style: accent == null
+                ? null
+                : FilledButton.styleFrom(
+                    backgroundColor: accent!.tint,
+                    foregroundColor: accent!.accent,
+                  ),
             icon: const Icon(Icons.volume_up),
             label: const Text('Səsləndir'),
           ),
