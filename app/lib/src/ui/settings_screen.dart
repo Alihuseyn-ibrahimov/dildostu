@@ -217,19 +217,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       onPressed: _checkUpdate,
                     ),
             ),
-            if (_availableUpdate != null)
-              Padding(
+            // QƏSDƏN Visibility(maintainState: true) — UpdateBanner elementi
+            // ilk build-dən sonra HEÇ VAXT unmount/remount olunmur, yalnız
+            // görünürlüyü keçir. Əvvəllər `if (_availableUpdate != null)`
+            // ilə ListView-un children siyahısına setState-dən sonra DİNAMİK
+            // əlavə olunurdu — bu, Samsung S926B-də `home_tab.dart`-da
+            // sənədləşmiş eyni "NEEDS-LAYOUT əbədi qalır" bug-ını bu ekranda
+            // da təkrarlatdı (yoxlama "yeniləmə tapıldı" göstərirdi — subtitle
+            // boş qalırdı — amma banner özü heç görünmürdü). Kök səbəb Home
+            // tab-a xas deyilmiş: setState ilə YENİ widget əlavə etmək
+            // riskli imiş, hansı ekranda olursa olsun.
+            Visibility(
+              visible: _availableUpdate != null,
+              maintainState: true,
+              maintainAnimation: true,
+              maintainSize: false,
+              child: Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: UpdateBanner(
-                    info: _availableUpdate!,
+                    info: _availableUpdate ?? const AppVersionInfo(
+                      versionCode: 0,
+                      versionName: '',
+                    ),
                     onInstall: _startDownload,
                     stage: _updateStage,
                     progress: _updateProgress,
                   ),
                 ),
               ),
+            ),
           ],
           const SizedBox(height: 8),
           Text(
