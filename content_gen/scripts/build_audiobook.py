@@ -56,7 +56,11 @@ PIPER_ZIP_URL = (
 VOICES: dict[str, str] = {
     "en": "en/en_US/lessac/medium/en_US-lessac-medium",
     "ru": "ru/ru_RU/irina/medium/ru_RU-irina-medium",
-    "es": "es/es_ES/davefx/medium/es_ES-davefx-medium",
+    # es_ES-in "medium" səsləri (davefx/sharvard) kişi və qalın səslidir;
+    # es_AR/daniela da dinlənildi — çox qalın gəldi. Seçilən: es_MX/claude
+    # "high" — gənc, aydın qadın səsi (Meksika aksenti). İstifadəçi
+    # 2026-08-05-də üç nümunəni dinləyib bunu seçdi.
+    "es": "es/es_MX/claude/high/es_MX-claude-high",
 }
 
 
