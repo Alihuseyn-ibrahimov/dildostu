@@ -108,11 +108,13 @@ def _word_fields_desc(target_lang: str) -> str:
 def preferred_providers(mode: Mode) -> list[str]:
     """Mode-a görə provayder sırası: adi → Groq (ucuz); fərdi → Claude (keyfiyyət).
 
-    Hər ikisində fallback var (biri uğursuz olsa digəri).
+    Gemini hər ikisinin sonunda ehtiyat kimi dayanır — Groq-un 100K TPD
+    limiti dəyəndə (bax dildostu/CLAUDE.md) VPS-də Claude açarı da yoxdursa,
+    generasiya 502 qaytarmaq əvəzinə Gemini-ə keçir.
     """
     if mode == "normal":
-        return ["groq", "claude"]
-    return ["claude", "groq"]
+        return ["groq", "claude", "gemini"]
+    return ["claude", "groq", "gemini"]
 
 
 # Yumşaq yönləndirmə — kontekstə uyğun söz həmişə prioritetdir, bu yalnız
@@ -267,8 +269,8 @@ def build_word_lookup_prompt(word: str, context: str) -> tuple[str, str]:
 
 
 def chat_preferred_providers() -> list[str]:
-    """Söhbət üçün provayder sırası: Claude (keyfiyyət) → Groq (fallback)."""
-    return ["claude", "groq"]
+    """Söhbət üçün provayder sırası: Claude (keyfiyyət) → Groq → Gemini (ehtiyat)."""
+    return ["claude", "groq", "gemini"]
 
 
 # İstifadəçi 2026-08-04-də verdi — mövzu izahı istəyəndə AI-nin izlədiyi

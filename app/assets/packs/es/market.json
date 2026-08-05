@@ -1,0 +1,104 @@
+{
+  "pack_id": "market",
+  "target_lang": "es",
+  "ui_lang": "az",
+  "title_az": "Marketdə / alış-veriş",
+  "words": [
+    {
+      "word": "hola",
+      "translation_az": "Salam",
+      "ipa": "/ˈola/",
+      "example": "Hola, ¿cómo está?",
+      "example_az": "Salam, necəsiniz?",
+      "level": 1
+    },
+    {
+      "word": "por favor",
+      "translation_az": "Zəhmət olmasa",
+      "ipa": "/poɾ faˈβoɾ/",
+      "example": "¿Me puede ayudar, por favor?",
+      "example_az": "Zəhmət olmasa, mənə kömək edə bilərsiniz?",
+      "level": 1
+    },
+    {
+      "word": "gracias",
+      "translation_az": "Təşəkkür edirəm",
+      "ipa": "/ˈɡɾasjas/",
+      "example": "Gracias por su ayuda.",
+      "example_az": "Köməyinizə görə təşəkkür edirəm.",
+      "level": 1
+    },
+    {
+      "word": "¿cuánto cuesta?",
+      "translation_az": "Neçəyədir? / Qiyməti nə qədərdir?",
+      "ipa": "/ˈkwanto ˈkwesta/",
+      "example": "¿Cuánto cuesta esta manzana?",
+      "example_az": "Bu alma neçəyədir?",
+      "level": 1
+    },
+    {
+      "word": "quiero",
+      "translation_az": "İstəyirəm",
+      "ipa": "/ˈkjeɾo/",
+      "example": "Quiero dos kilos de patatas.",
+      "example_az": "İki kilo kartof istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "¿tiene...?",
+      "translation_az": "Varınızdırmı...?",
+      "ipa": "/ˈtjene/",
+      "example": "¿Tiene pan fresco?",
+      "example_az": "Təzə çörəyiniz var?",
+      "level": 1
+    },
+    {
+      "word": "este / esta",
+      "translation_az": "Bu (kişi/qadın cinsi)",
+      "ipa": "/ˈeste/ / /ˈesta/",
+      "example": "Quiero este, y también esta fruta.",
+      "example_az": "Bunu istəyirəm, həm də bu meyvəni.",
+      "level": 1
+    },
+    {
+      "word": "un kilo de",
+      "translation_az": "Bir kiloqram",
+      "ipa": "/un ˈkilo ðe/",
+      "example": "Necesito un kilo de manzanas.",
+      "example_az": "Bir kilo alma lazımdır.",
+      "level": 2
+    },
+    {
+      "word": "bolsa",
+      "translation_az": "Torba / Paket",
+      "ipa": "/ˈbolsa/",
+      "example": "¿Necesita una bolsa?",
+      "example_az": "Torba lazımdır?",
+      "level": 2
+    },
+    {
+      "word": "la caja",
+      "translation_az": "Kassa",
+      "ipa": "/la ˈkaxa/",
+      "example": "¿Dónde está la caja?",
+      "example_az": "Kassa haradadır?",
+      "level": 2
+    },
+    {
+      "word": "¿puedo pagar con tarjeta?",
+      "translation_az": "Kartla ödəyə bilərəm?",
+      "ipa": "/ˈpweðo paˈɣaɾ kon taɾˈxeta/",
+      "example": "Disculpe, ¿puedo pagar con tarjeta?",
+      "example_az": "Bağışlayın, kartla ödəyə bilərəm?",
+      "level": 2
+    },
+    {
+      "word": "agua",
+      "translation_az": "Su",
+      "ipa": "/ˈaɣwa/",
+      "example": "Quiero una botella de agua, por favor.",
+      "example_az": "Zəhmət olmasa, bir şüşə su istəyirəm.",
+      "level": 1
+    }
+  ]
+}

@@ -53,6 +53,25 @@ BOOKS: dict[str, dict] = {
         "body_marker": "ÆSOP'S FABLES",
         "min_words": 30,
         "lang": "en",
+        "splitter": "generic",
+    },
+    # Samaniego — Ezop-un tərcüməsi DEYİL, əsl İSPAN dilində yazılmış
+    # klassik təmsillər (1781) — ispan məktəblərində Ezop qədər tanınır,
+    # dil öyrənənlər üçün pedaqoji cəhətdən ideal paralel.
+    "samaniego": {
+        "gutenberg_id": 55206,
+        "title_en": "Fables (Samaniego)",
+        "title_az": "Samaniego Təmsilləri",
+        "author": "Félix María Samaniego (1781)",
+        "source": "Project Gutenberg #55206 — ictimai domen",
+        "level": "intermediate",  # 18-ci əsr şeir dili, nəsr Aesop-dan çətindir
+        "body_marker": "LIBRO PRIMERO",
+        "min_words": 15,  # təmsillər qısa şeirdir, Aesop-un nəsr həddi uyğun deyil
+        "lang": "es",
+        "splitter": "fabulas",
+        # "LIBRO PRIMERO" kitabın SONUNDAKI səhifəli indeksdə də təkrarlanır —
+        # bizə BİRİNCİ (əsl başlanğıc) keçid lazımdır, sonuncu yox.
+        "marker_occurrence": "first",
     },
 }
 
@@ -82,6 +101,20 @@ def after_last_marker(text: str, marker: str) -> str:
     başında olur; bizə gövdə lazımdır, ona görə sonuncu keçid götürülür.
     """
     idx = text.rfind(marker)
+    if idx == -1:
+        return text
+    line_end = text.find("\n", idx)
+    return text if line_end == -1 else text[line_end + 1 :]
+
+
+def after_first_marker(text: str, marker: str) -> str:
+    """`marker` sətrinin BİRİNCİ keçidindən sonrakı hissəni qaytarır.
+
+    `after_last_marker`-in əksi — Samaniego "Fábulas" nəşrində "LIBRO
+    PRIMERO" gövdənin başında BİR dəfə, kitabın SONUNDAKI indeksdə isə
+    TƏKRAR keçir (səhifə nömrəli siyahı) — `rfind` indeksə düşərdi.
+    """
+    idx = text.find(marker)
     if idx == -1:
         return text
     line_end = text.find("\n", idx)
@@ -127,14 +160,40 @@ def slugify(title: str) -> str:
     return slug.strip("-")
 
 
+def dedupe_chapter_ids(chapters: list[Chapter]) -> list[Chapter]:
+    """Eyni `chapter_id`-li fəsilləri `-2`, `-3`, ... ilə fərqləndirir.
+
+    Mp3 fayl adı = `chapter_id` (bax `build_audiobook.py`) — iki fəslin
+    başlığı slugify-dən sonra üst-üstə düşsə (məs. Samaniego-da iki fərqli
+    kitabda eyni "El Asno y el Caballo." adlı fabl, 2026-08-05-də tapıldı),
+    ikincisi diskdə birincinin faylını SİLİB ƏVƏZ EDİR — səssiz məlumat
+    itkisi. Bu yalnız disk/keş açarı üçündür, `title_en` toxunulmaz qalır.
+    """
+    seen: dict[str, int] = {}
+    result: list[Chapter] = []
+    for chapter in chapters:
+        base = chapter.chapter_id
+        seen[base] = seen.get(base, 0) + 1
+        occurrence = seen[base]
+        chapter_id = base if occurrence == 1 else f"{base}-{occurrence}"
+        result.append(
+            Chapter(chapter_id=chapter_id, title_en=chapter.title_en, text=chapter.text)
+        )
+    return result
+
+
 def clean_text(text: str) -> str:
     """Səsləndirilməyə hazır mətn: naşir markerlərini atır, boşluqları səliqəyə salır.
 
     `[Illustration: ...]` kimi markerlər qalsa TTS onları UCADAN OXUYUR —
-    dinləyici "illustration the fox and the grapes" eşidər.
+    dinləyici "illustration the fox and the grapes" eşidər. `[imagen]`
+    (İspan mənbələrində) və `[12]` kimi qeyd/footnote istinadları (Samaniego
+    "Fábulas" nəşrində hər səhifədə onlarla var) eyni səbəbdən silinir.
     """
     # Çoxsətirli də ola bilər, ona görə DOTALL.
     cleaned = re.sub(r"\[Illustration:.*?\]", "", text, flags=re.DOTALL)
+    cleaned = re.sub(r"\[imagen\]", "", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"\[\d+\]", "", cleaned)
     # 3+ sətir sonu → abzas ayrıcı (2 sətir sonu qorunur).
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
     # Sətir sonundakı boşluqlar.
@@ -178,11 +237,61 @@ def split_chapters(body: str) -> list[Chapter]:
         elif title is not None:
             buffer.append(line)
     flush()
-    return chapters
+    return dedupe_chapter_ids(chapters)
+
+
+# "FÁBULA PRIMERA", "FÁBULA II", "FÁBULA III" — Samaniego nəşrinin fəsil
+# markeri. İngilis Aesop-dan fərqli olaraq başlığın özü (məs. "La Cigarra y
+# la Hormiga") BÖYÜK HƏRFLƏ deyil, adi cümlə kimi yazılıb — `is_title_line`
+# bura uyğun gəlmir, ayrıca funksiya lazımdır.
+_FABULA_HEADING = re.compile(r"^FÁBULA\b")
+# Fabllardan SONRA gələn qeydlər (footnote mətnləri) + nəşriyyat elanı bloku
+# — kəsilməsə son fablın gövdəsinə qarışar (bax content_gen/CLAUDE.md-dəki
+# tapıntı, 2026-08-05).
+_NOTES_APPENDIX_MARKER = "\nNOTAS:"
+
+
+def split_fabulas(body: str) -> list[Chapter]:
+    """Samaniego "Fábulas" formatını bölür: `FÁBULA N` başlığından sonra
+    (şəkil markerini keçib) gələn İLK QEYRI-BOŞ sətir fablın öz adıdır.
+    """
+    body = body.split(_NOTES_APPENDIX_MARKER)[0]
+    lines = body.splitlines()
+    chapters: list[Chapter] = []
+    i, n = 0, len(lines)
+    while i < n:
+        if not _FABULA_HEADING.match(lines[i].strip()):
+            i += 1
+            continue
+        i += 1
+        while i < n and (not lines[i].strip() or lines[i].strip().lower() == "[imagen]"):
+            i += 1
+        if i >= n:
+            break
+        title = lines[i].strip()
+        i += 1
+        body_lines: list[str] = []
+        while i < n and not _FABULA_HEADING.match(lines[i].strip()) and not lines[
+            i
+        ].strip().startswith("LIBRO "):
+            body_lines.append(lines[i])
+            i += 1
+        text = clean_text("\n".join(body_lines))
+        if text:
+            chapters.append(Chapter(chapter_id=slugify(title), title_en=title, text=text))
+    return dedupe_chapter_ids(chapters)
 
 
 def humanize_title(title: str) -> str:
-    """'THE FOX AND THE GRAPES' → 'The Fox and the Grapes' (oxunaqlı)."""
+    """'THE FOX AND THE GRAPES' → 'The Fox and the Grapes' (oxunaqlı).
+
+    YALNIZ tam BÖYÜK HƏRFLİ başlıqlara tətbiq edilməlidir (Aesop mənbəyi
+    belədir) — artıq düzgün yazılmış başlıq (Samaniego: "La Cigarra y la
+    Hormiga") buradan keçsə İngilis kiçik-söz siyahısı Ispan sözlərini
+    tanımayıb səhv böyük hərflə yazardı ("La Cigarra Y La Hormiga").
+    """
+    if title != title.upper():
+        return title
     small = {"a", "an", "and", "the", "of", "or", "in", "on", "at", "to", "his",
              "her", "its", "that", "who", "with", "for", "but"}
     words = title.strip().lower().split()

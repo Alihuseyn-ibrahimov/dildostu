@@ -1,0 +1,104 @@
+{
+  "pack_id": "transport",
+  "target_lang": "es",
+  "ui_lang": "az",
+  "title_az": "Nəqliyyat",
+  "words": [
+    {
+      "word": "taxi",
+      "translation_az": "taksi",
+      "ipa": "/ˈtak.si/",
+      "example": "Necesito un taxi al aeropuerto.",
+      "example_az": "Hava limanına taksi lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "autobús",
+      "translation_az": "avtobus",
+      "ipa": "/au̯.toˈβus/",
+      "example": "¿Dónde está la parada de autobús más cercana?",
+      "example_az": "Ən yaxın avtobus dayanacağı haradadır?",
+      "level": 1
+    },
+    {
+      "word": "metro",
+      "translation_az": "metro",
+      "ipa": "/ˈme.tɾo/",
+      "example": "Prefiero ir en metro, es más rápido.",
+      "example_az": "Metro ilə getməyə üstünlük verirəm, daha sürətlidir.",
+      "level": 1
+    },
+    {
+      "word": "billete",
+      "translation_az": "bilet",
+      "ipa": "/biˈʎe.te/",
+      "example": "Quiero comprar un billete para Madrid.",
+      "example_az": "Madridə bir bilet almaq istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "¿dónde está...?",
+      "translation_az": "...haradadır?",
+      "ipa": "/ˈdon.de esˈta/",
+      "example": "¿Dónde está la estación de tren?",
+      "example_az": "Qatar stansiyası haradadır?",
+      "level": 1
+    },
+    {
+      "word": "¿cuánto cuesta...?",
+      "translation_az": "...neçəyədir?",
+      "ipa": "/ˈkwan.to ˈkwes.ta/",
+      "example": "¿Cuánto cuesta un billete de metro?",
+      "example_az": "Metro bileti neçəyədir?",
+      "level": 1
+    },
+    {
+      "word": "parada",
+      "translation_az": "dayanacaq",
+      "ipa": "/paˈɾa.ða/",
+      "example": "La próxima parada es la nuestra.",
+      "example_az": "Növbəti dayanacaq bizimkidir.",
+      "level": 2
+    },
+    {
+      "word": "dirección",
+      "translation_az": "ünvan / istiqamət",
+      "ipa": "/di.ɾekˈsjon/",
+      "example": "¿Podría darme la dirección del hotel?",
+      "example_az": "Mənə otelin ünvanını verə bilərsinizmi?",
+      "level": 2
+    },
+    {
+      "word": "izquierda",
+      "translation_az": "sol",
+      "ipa": "/isˈkjeɾ.ða/",
+      "example": "Gire a la izquierda en el semáforo.",
+      "example_az": "Svetoforda sola dönün.",
+      "level": 2
+    },
+    {
+      "word": "derecha",
+      "translation_az": "sağ",
+      "ipa": "/deˈɾe.tʃa/",
+      "example": "El museo está a la derecha.",
+      "example_az": "Muzey sağdadır.",
+      "level": 2
+    },
+    {
+      "word": "todo recto",
+      "translation_az": "düz irəli",
+      "ipa": "/ˈto.ðo ˈrek.to/",
+      "example": "Siga todo recto por esta calle.",
+      "example_az": "Bu küçə ilə düz irəli gedin.",
+      "level": 2
+    },
+    {
+      "word": "por favor",
+      "translation_az": "zəhmət olmasa",
+      "ipa": "/poɾ faˈβoɾ/",
+      "example": "¿Un billete a Sevilla, por favor?",
+      "example_az": "Sevilyaya bir bilet, zəhmət olmasa?",
+      "level": 1
+    }
+  ]
+}

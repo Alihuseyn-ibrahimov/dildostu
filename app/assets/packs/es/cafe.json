@@ -1,0 +1,104 @@
+{
+  "pack_id": "cafe",
+  "target_lang": "es",
+  "ui_lang": "az",
+  "title_az": "Kafedə",
+  "words": [
+    {
+      "word": "café",
+      "translation_az": "kofe",
+      "ipa": "/kaˈfe/",
+      "example": "Me gustaría un café.",
+      "example_az": "Mənə kofe lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "té",
+      "translation_az": "çay",
+      "ipa": "/te/",
+      "example": "¿Puedo pedir un té?",
+      "example_az": "Mən çaya sifariş verə bilərəm?",
+      "level": 1
+    },
+    {
+      "word": "leche",
+      "translation_az": "süd",
+      "ipa": "/ˈletʃe/",
+      "example": "Me pone un poco de leche.",
+      "example_az": "Mənə azca süd əlavə edin.",
+      "level": 1
+    },
+    {
+      "word": "azúcar",
+      "translation_az": "şəkər",
+      "ipa": "/aˈθukar/",
+      "example": "¿Puedo tener azúcar?",
+      "example_az": "Mənə şəkər verə bilərsiniz?",
+      "level": 1
+    },
+    {
+      "word": "la cuenta",
+      "translation_az": "hesab",
+      "ipa": "/la ˈkwɛnta/",
+      "example": "Me trae la cuenta, por favor.",
+      "example_az": "Xahiş edirəm, mənə hesab gətirin.",
+      "level": 2
+    },
+    {
+      "word": "agua",
+      "translation_az": "su",
+      "ipa": "/ˈaɣwa/",
+      "example": "Me das agua, por favor.",
+      "example_az": "Xahiş edirəm, mənə su ver.",
+      "level": 1
+    },
+    {
+      "word": "pagar",
+      "translation_az": "ödəmək",
+      "ipa": "/paˈɣar/",
+      "example": "Voy a pagar con tarjeta.",
+      "example_az": "Mən kartla ödəyəcəyəm.",
+      "level": 2
+    },
+    {
+      "word": "propina",
+      "translation_az": "bağış",
+      "ipa": "/proˈpina/",
+      "example": "Dejo una propina para ti.",
+      "example_az": "Sənə bağış qoyuram.",
+      "level": 2
+    },
+    {
+      "word": "¿cuánto cuesta?",
+      "translation_az": "nə qədər başa gəlir?",
+      "ipa": "/ˈkwɑnto ˈkwɛsta/",
+      "example": "¿Cuánto cuesta este café?",
+      "example_az": "Bu kofe nə qədər başa gəlir?",
+      "level": 2
+    },
+    {
+      "word": "sin azúcar",
+      "translation_az": "şəkərsiz",
+      "ipa": "/sin aˈθukar/",
+      "example": "Me lo preparas sin azúcar.",
+      "example_az": "Onu mənə şəkərsiz hazırla.",
+      "level": 2
+    },
+    {
+      "word": "con leche",
+      "translation_az": "südlü",
+      "ipa": "/kon ˈletʃe/",
+      "example": "Me tomas un café con leche.",
+      "example_az": "Mənə südlü kofe gətir.",
+      "level": 2
+    },
+    {
+      "word": "¿dónde está...?",
+      "translation_az": "...haradadır?",
+      "ipa": "/ˈdoŋde ˈes.ta/",
+      "example": "¿Dónde está el baño?",
+      "example_az": "Tualet haradadır?",
+      "level": 3
+    }
+  ]
+}

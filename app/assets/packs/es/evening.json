@@ -1,0 +1,104 @@
+{
+  "pack_id": "evening",
+  "target_lang": "es",
+  "ui_lang": "az",
+  "title_az": "Axşam / günün sonu",
+  "words": [
+    {
+      "word": "buenas noches",
+      "translation_az": "Axşamınız xeyir / Gecəniz xeyir",
+      "ipa": "/ˌbwenas ˈnoʧes/",
+      "example": "Buenas noches a todos.",
+      "example_az": "Hər kəsə axşamınız xeyir.",
+      "level": 1
+    },
+    {
+      "word": "cenar",
+      "translation_az": "Şam yeməyi yemək",
+      "ipa": "/seˈnaɾ/",
+      "example": "¿A qué hora vamos a cenar?",
+      "example_az": "Saat neçədə şam yeməyi yeyəcəyik?",
+      "level": 1
+    },
+    {
+      "word": "la cena",
+      "translation_az": "Şam yeməyi",
+      "ipa": "/la ˈsena/",
+      "example": "La cena estuvo deliciosa.",
+      "example_az": "Şam yeməyi ləzzətli idi.",
+      "level": 1
+    },
+    {
+      "word": "descansar",
+      "translation_az": "Dincəlmək",
+      "ipa": "/deskanˈsaɾ/",
+      "example": "Necesito descansar un poco.",
+      "example_az": "Bir az dincəlməliyəm.",
+      "level": 2
+    },
+    {
+      "word": "estoy cansado/a",
+      "translation_az": "Yorğunam (kişi/qadın)",
+      "ipa": "/esˈtoj kanˈsaðo/",
+      "example": "Estoy cansado después de caminar todo el día.",
+      "example_az": "Bütün gün gəzdikdən sonra yorğunam.",
+      "level": 1
+    },
+    {
+      "word": "dormir",
+      "translation_az": "Yatmaq",
+      "ipa": "/doɾˈmiɾ/",
+      "example": "Quiero dormir hasta tarde mañana.",
+      "example_az": "Sabah gecəyə qədər yatmaq istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "relajarse",
+      "translation_az": "Rahatlamaq",
+      "ipa": "/relaˈxaɾse/",
+      "example": "Después del trabajo, me gusta relajarme.",
+      "example_az": "İşdən sonra rahatlamağı sevirəm.",
+      "level": 2
+    },
+    {
+      "word": "¿Qué tal tu día?",
+      "translation_az": "Günün necə keçdi?",
+      "ipa": "/ke tal tu ˈðia/",
+      "example": "¿Qué tal tu día en la ciudad?",
+      "example_az": "Şəhərdə günün necə keçdi?",
+      "level": 2
+    },
+    {
+      "word": "hasta mañana",
+      "translation_az": "Sabaha qədər",
+      "ipa": "/ˈasta maˈɲana/",
+      "example": "Me voy a la cama, hasta mañana.",
+      "example_az": "Yatağa gedirəm, sabaha qədər.",
+      "level": 1
+    },
+    {
+      "word": "un vaso de agua",
+      "translation_az": "Bir stəkan su",
+      "ipa": "/um ˈbaso ðe ˈaɣwa/",
+      "example": "¿Podría tener un vaso de agua, por favor?",
+      "example_az": "Zəhmət olmasa, bir stəkan su ala bilərəmmi?",
+      "level": 2
+    },
+    {
+      "word": "la cama",
+      "translation_az": "Yataq",
+      "ipa": "/la ˈkama/",
+      "example": "Es hora de ir a la cama.",
+      "example_az": "Yatağa getmək vaxtıdır.",
+      "level": 1
+    },
+    {
+      "word": "soñar",
+      "translation_az": "Yuxu görmək / Xəyal etmək",
+      "ipa": "/soˈɲaɾ/",
+      "example": "Espero soñar con cosas bonitas.",
+      "example_az": "Ümid edirəm gözəl şeylər yuxu görərəm.",
+      "level": 2
+    }
+  ]
+}

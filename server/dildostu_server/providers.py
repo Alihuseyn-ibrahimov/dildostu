@@ -17,6 +17,7 @@ ChatCompleter = Callable[[str, list], str]  # (system, messages) -> text
 
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 CLAUDE_MODEL = os.environ.get("CLAUDE_MODEL", "claude-sonnet-5")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
 _ENV_PATH = Path(__file__).resolve().parents[1] / ".env"
 
@@ -68,13 +69,15 @@ def chat_with_fallback(
 
 
 def build_chat_completers() -> dict[str, ChatCompleter]:
-    """Söhbət (messages massivi) üçün Groq/Claude completer-ləri."""
+    """Söhbət (messages massivi) üçün Groq/Claude/Gemini completer-ləri."""
     load_dotenv(_ENV_PATH)
     completers: dict[str, ChatCompleter] = {}
     if os.environ.get("GROQ_API_KEY"):
         completers["groq"] = _groq_chat_completer(GROQ_MODEL)
     if os.environ.get("ANTHROPIC_API_KEY"):
         completers["claude"] = _claude_chat_completer(CLAUDE_MODEL)
+    if os.environ.get("GEMINI_API_KEY"):
+        completers["gemini"] = _gemini_chat_completer(GEMINI_MODEL)
     return completers
 
 
@@ -112,14 +115,65 @@ def _claude_chat_completer(model: str) -> ChatCompleter:
     return complete
 
 
+def _gemini_chat_completer(model: str) -> ChatCompleter:
+    from google import genai
+    from google.genai import types
+
+    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+
+    def complete(system: str, messages: list) -> str:
+        # Gemini-nin "contents" formatı fərqlidir: "assistant" yox "model"
+        # rolu gözlənilir, "content" sahəsi yox "parts" massivi.
+        contents = [
+            {
+                "role": "model" if m["role"] == "assistant" else m["role"],
+                "parts": [{"text": m["content"]}],
+            }
+            for m in messages
+        ]
+        resp = client.models.generate_content(
+            model=model,
+            contents=contents,
+            config=types.GenerateContentConfig(
+                system_instruction=system, temperature=0.6
+            ),
+        )
+        return resp.text
+
+    return complete
+
+
+def _gemini_completer(model: str) -> Completer:
+    from google import genai
+    from google.genai import types
+
+    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+
+    def complete(system: str, user: str) -> str:
+        resp = client.models.generate_content(
+            model=model,
+            contents=user,
+            config=types.GenerateContentConfig(
+                system_instruction=system,
+                temperature=0.5,
+                response_mime_type="application/json",
+            ),
+        )
+        return resp.text
+
+    return complete
+
+
 def build_completers() -> dict[str, Completer]:
-    """Mövcud API açarlarına görə Groq/Claude completer-lərini qur (şəbəkə)."""
+    """Mövcud API açarlarına görə Groq/Claude/Gemini completer-lərini qur (şəbəkə)."""
     load_dotenv(_ENV_PATH)
     completers: dict[str, Completer] = {}
     if os.environ.get("GROQ_API_KEY"):
         completers["groq"] = _groq_completer(GROQ_MODEL)
     if os.environ.get("ANTHROPIC_API_KEY"):
         completers["claude"] = _claude_completer(CLAUDE_MODEL)
+    if os.environ.get("GEMINI_API_KEY"):
+        completers["gemini"] = _gemini_completer(GEMINI_MODEL)
     return completers
 
 

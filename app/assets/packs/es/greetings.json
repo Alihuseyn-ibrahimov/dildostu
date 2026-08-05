@@ -1,0 +1,104 @@
+{
+  "pack_id": "greetings",
+  "target_lang": "es",
+  "ui_lang": "az",
+  "title_az": "Salamlaşma və tanışlıq",
+  "words": [
+    {
+      "word": "hola",
+      "translation_az": "salam",
+      "ipa": "/ˈola/",
+      "example": "Hola, ¿cómo estás?",
+      "example_az": "Salam, necəsən?",
+      "level": 1
+    },
+    {
+      "word": "adiós",
+      "translation_az": "sag olun",
+      "ipa": "/aˈðjoθ/",
+      "example": "Adiós, hasta mañana.",
+      "example_az": "Sag olun, sabahın xeyir.",
+      "level": 1
+    },
+    {
+      "word": "gracias",
+      "translation_az": "təşəkkür",
+      "ipa": "/ˈɣɾaθjas/",
+      "example": "Gracias por tu ayuda.",
+      "example_az": "Köməyinə görə təşəkkür.",
+      "level": 1
+    },
+    {
+      "word": "por favor",
+      "translation_az": "zəhmət olmasa",
+      "ipa": "/por faˈβor/",
+      "example": "Por favor, ¿dónde está el baño?",
+      "example_az": "Zəhmət olmasa, tualet haradadır?",
+      "level": 1
+    },
+    {
+      "word": "lo siento",
+      "translation_az": "üzgünəm",
+      "ipa": "/lo ˈsjeɲto/",
+      "example": "Lo siento, no hablo español.",
+      "example_az": "Üzgünəm, ispan dilini danışa bilmirəm.",
+      "level": 1
+    },
+    {
+      "word": "¿cómo estás?",
+      "translation_az": "necəsən",
+      "ipa": "/ˈkomo esˈtas/",
+      "example": "¿Cómo estás hoy?",
+      "example_az": "Bu gün necəsən?",
+      "level": 1
+    },
+    {
+      "word": "me llamo",
+      "translation_az": "mənim adım",
+      "ipa": "/me ˈʎa.mo/",
+      "example": "Me llamo Juan.",
+      "example_az": "Mənim adım Xuan.",
+      "level": 1
+    },
+    {
+      "word": "soy de",
+      "translation_az": "mən ...-danam",
+      "ipa": "/soj ðe/",
+      "example": "Soy de Azerbaiyán.",
+      "example_az": "Mən Azərbaycandanam.",
+      "level": 2
+    },
+    {
+      "word": "encantado",
+      "translation_az": "şad oldum",
+      "ipa": "/eŋkantaˈðo/",
+      "example": "Encantado de conocerte.",
+      "example_az": "Səni tanıyaraq şad oldum.",
+      "level": 2
+    },
+    {
+      "word": "¿de dónde eres?",
+      "translation_az": "haradan sən",
+      "ipa": "/de ˈdoŋde ˈeɾes/",
+      "example": "¿De dónde eres?",
+      "example_az": "Haradan sən?",
+      "level": 1
+    },
+    {
+      "word": "mucho gusto",
+      "translation_az": "çox şad oldum",
+      "ipa": "/ˈmu.tʃo ˈɣusto/",
+      "example": "Mucho gusto en conocerte.",
+      "example_az": "Səni tanıyaraq çox şad oldum.",
+      "level": 2
+    },
+    {
+      "word": "hasta luego",
+      "translation_az": "sonra görüşərik",
+      "ipa": "/ˈasta ˈlweɣo/",
+      "example": "Hasta luego, que tengas un buen día.",
+      "example_az": "Sonra görüşərik, yaxşı gün keçir.",
+      "level": 1
+    }
+  ]
+}

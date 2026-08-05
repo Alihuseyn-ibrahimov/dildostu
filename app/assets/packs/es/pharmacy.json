@@ -1,0 +1,104 @@
+{
+  "pack_id": "pharmacy",
+  "target_lang": "es",
+  "ui_lang": "az",
+  "title_az": "Aptekdə",
+  "words": [
+    {
+      "word": "farmacia",
+      "translation_az": "aptek",
+      "ipa": "/faɾˈmasja/",
+      "example": "¿Dónde está la farmacia más cercana?",
+      "example_az": "Ən yaxın aptek haradadır?",
+      "level": 1
+    },
+    {
+      "word": "medicamento",
+      "translation_az": "dərman",
+      "ipa": "/meðikaˈmento/",
+      "example": "Necesito un medicamento para el dolor de cabeza.",
+      "example_az": "Baş ağrısı üçün dərman lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "tengo dolor de...",
+      "translation_az": "...ağrım var",
+      "ipa": "/ˈtenɡo ðoˈloɾ ðe/",
+      "example": "Tengo dolor de garganta.",
+      "example_az": "Boğazım ağrıyır.",
+      "level": 1
+    },
+    {
+      "word": "¿tiene algo para...?",
+      "translation_az": "...üçün bir şeyiniz var?",
+      "ipa": "/ˈtjene ˈalɣo ˈpaɾa/",
+      "example": "¿Tiene algo para la tos?",
+      "example_az": "Öskürək üçün bir şeyiniz var?",
+      "level": 1
+    },
+    {
+      "word": "receta",
+      "translation_az": "resept",
+      "ipa": "/reˈseta/",
+      "example": "¿Necesito una receta para este medicamento?",
+      "example_az": "Bu dərman üçün resept lazımdır?",
+      "level": 2
+    },
+    {
+      "word": "¿cómo se toma?",
+      "translation_az": "Necə qəbul edilir?",
+      "ipa": "/ˈkomo se ˈtoma/",
+      "example": "¿Cómo se toma este medicamento?",
+      "example_az": "Bu dərman necə qəbul edilir?",
+      "level": 1
+    },
+    {
+      "word": "dosis",
+      "translation_az": "doza",
+      "ipa": "/ˈdosis/",
+      "example": "¿Cuál es la dosis recomendada?",
+      "example_az": "Tövsiyə olunan doza nədir?",
+      "level": 2
+    },
+    {
+      "word": "pastilla",
+      "translation_az": "həb",
+      "ipa": "/pasˈtiʎa/",
+      "example": "Tome una pastilla antes de dormir.",
+      "example_az": "Yatmazdan əvvəl bir həb qəbul edin.",
+      "level": 1
+    },
+    {
+      "word": "fiebre",
+      "translation_az": "qızdırma",
+      "ipa": "/ˈfjeβɾe/",
+      "example": "Tengo fiebre y me siento muy cansado.",
+      "example_az": "Qızdırmam var və özümü çox yorğun hiss edirəm.",
+      "level": 1
+    },
+    {
+      "word": "alérgico a...",
+      "translation_az": "...alerjisi var",
+      "ipa": "/aˈleɾxiko a/",
+      "example": "Soy alérgico a la penicilina.",
+      "example_az": "Mənim penisilinə alerjim var.",
+      "level": 2
+    },
+    {
+      "word": "venda",
+      "translation_az": "sarğı",
+      "ipa": "/ˈbenda/",
+      "example": "Necesito una venda para mi herida.",
+      "example_az": "Yaram üçün sarğı lazımdır.",
+      "level": 2
+    },
+    {
+      "word": "¿cuánto cuesta?",
+      "translation_az": "Neçəyədir?",
+      "ipa": "/ˈkwanto ˈkwesta/",
+      "example": "¿Cuánto cuesta este medicamento?",
+      "example_az": "Bu dərman neçəyədir?",
+      "level": 1
+    }
+  ]
+}

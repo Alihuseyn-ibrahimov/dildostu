@@ -25,13 +25,22 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from dildostu_content.audiobooks import (  # noqa: E402
     BOOKS,
+    after_first_marker,
     after_last_marker,
     build_manifest,
     drop_non_narrative,
     humanize_title,
     split_chapters,
+    split_fabulas,
     strip_gutenberg_wrapper,
 )
+
+MARKER_FINDERS = {"first": after_first_marker, "last": after_last_marker}
+
+# `BOOKS[book]["splitter"]` bu xəritədəki açara uyğun gəlir — yeni mənbə
+# formatı gələndə (bax `split_fabulas`-ın niyə ayrıca funksiya olduğuna dair
+# audiobooks.py-dəki qeyd) buraya bir sətir əlavə etmək kifayətdir.
+SPLITTERS = {"generic": split_chapters, "fabulas": split_fabulas}
 
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / ".tools"
@@ -47,6 +56,7 @@ PIPER_ZIP_URL = (
 VOICES: dict[str, str] = {
     "en": "en/en_US/lessac/medium/en_US-lessac-medium",
     "ru": "ru/ru_RU/irina/medium/ru_RU-irina-medium",
+    "es": "es/es_ES/davefx/medium/es_ES-davefx-medium",
 }
 
 
@@ -151,8 +161,10 @@ def main() -> None:
     exe, model = ensure_piper(lang)
 
     raw = fetch_book_text(meta["gutenberg_id"])
-    body = after_last_marker(strip_gutenberg_wrapper(raw), meta["body_marker"])
-    chapters = drop_non_narrative(split_chapters(body), min_words=meta["min_words"])
+    find_marker = MARKER_FINDERS[meta.get("marker_occurrence", "last")]
+    body = find_marker(strip_gutenberg_wrapper(raw), meta["body_marker"])
+    splitter = SPLITTERS[meta.get("splitter", "generic")]
+    chapters = drop_non_narrative(splitter(body), min_words=meta["min_words"])
     if args.limit:
         chapters = chapters[: args.limit]
     if not chapters:
@@ -189,6 +201,17 @@ def main() -> None:
         lang=lang,
     )
     manifest_path = out_dir / "manifest.json"
+    # MÜHÜM: manifest.json BÜTÜN kitabları saxlayır (bir kitab = bir sətir
+    # `books` massivində). Sadəcə əvəz etsək əvvəllər qurulmuş digər
+    # kitablar (məs. "aesop") itər — mövcud faylı oxuyub bu kitabın
+    # girişini əvəz edirik, qalanlarına toxunmuruq.
+    existing_books: list[dict] = []
+    if manifest_path.exists():
+        existing = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+        existing_books = [
+            b for b in existing.get("books", []) if b["book_id"] != args.book
+        ]
+    manifest["books"] = existing_books + manifest["books"]
     manifest_path.write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
     )

@@ -1,0 +1,104 @@
+{
+  "pack_id": "restaurant",
+  "target_lang": "es",
+  "ui_lang": "az",
+  "title_az": "Restoranda",
+  "words": [
+    {
+      "word": "reserva",
+      "translation_az": "qəbul",
+      "ipa": "/reˈseɾba/",
+      "example": "Quiero hacer una reserva para dos personas.",
+      "example_az": "Mən iki nəfər üçün yer ayırtmaq istəyirəm.",
+      "level": 2
+    },
+    {
+      "word": "menú",
+      "translation_az": "menyu",
+      "ipa": "/meˈnu/",
+      "example": "¿Puedo ver el menú, por favor?",
+      "example_az": "Zəhmət olmasa, menyunu göstərə bilərsiniz?",
+      "level": 1
+    },
+    {
+      "word": "pedir",
+      "translation_az": "sifariş vermək",
+      "ipa": "/peˈðiɾ/",
+      "example": "Voy a pedir la ensalada de atún.",
+      "example_az": "Mən tun balığı salatı sifariş edəcəyəm.",
+      "level": 2
+    },
+    {
+      "word": "cuenta",
+      "translation_az": "hesab",
+      "ipa": "/ˈkwenta/",
+      "example": "¿Puedo pagar la cuenta, por favor?",
+      "example_az": "Zəhmət olmasa, hesabımı ödəyə bilərəm?",
+      "level": 1
+    },
+    {
+      "word": "vegetariano",
+      "translation_az": "bitərəv",
+      "ipa": "/bexe.tɾjaˈno/",
+      "example": "Soy vegetariano, ¿qué opciones hay?",
+      "example_az": "Mən bitərəvəm, hansı variantlar var?",
+      "level": 3
+    },
+    {
+      "word": "sin gluten",
+      "translation_az": "qlyuten olmadan",
+      "ipa": "/sin ˈɣlu.ten/",
+      "example": "Necesito algo sin gluten, por favor.",
+      "example_az": "Zəhmət olmasa, mənə qlyuten olmayan bir şey lazımdır.",
+      "level": 2
+    },
+    {
+      "word": "la carta",
+      "translation_az": "kart",
+      "ipa": "/la ˈkaɾta/",
+      "example": "Me gustaría ver la carta, por favor.",
+      "example_az": "Zəhmət olmasa, kartı göstərə bilərsiniz?",
+      "level": 1
+    },
+    {
+      "word": "mesa",
+      "translation_az": "stol",
+      "ipa": "/ˈme.sa/",
+      "example": "¿Dónde está la mesa número tres?",
+      "example_az": "Üç nömrəli stol haradadır?",
+      "level": 1
+    },
+    {
+      "word": "propina",
+      "translation_az": "bağış",
+      "ipa": "/proˈpi.na/",
+      "example": "¿Cuánto dejo de propina?",
+      "example_az": "Nə qədər bağış qoyum?",
+      "level": 2
+    },
+    {
+      "word": "tarjeta",
+      "translation_az": "kredit kartı",
+      "ipa": "/taɾˈxe.ta/",
+      "example": "Puedo pagar con tarjeta de crédito.",
+      "example_az": "Mən kredit kartı ilə ödəyə bilərəm.",
+      "level": 2
+    },
+    {
+      "word": "especialidad",
+      "translation_az": "xüsusiyyət",
+      "ipa": "/es.pe.si.aɾiˈðað/",
+      "example": "¿Cuál es la especialidad de la casa?",
+      "example_az": "Evin xüsusiyyəti nədir?",
+      "level": 3
+    },
+    {
+      "word": "check",
+      "translation_az": "yoxlamaq",
+      "ipa": "/tʃek/",
+      "example": "¿Puedo pedir el check, por favor?",
+      "example_az": "Zəhmət olmasa, yoxlama istəyə bilərəm?",
+      "level": 1
+    }
+  ]
+}

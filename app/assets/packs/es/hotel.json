@@ -1,0 +1,96 @@
+{
+  "pack_id": "hotel",
+  "target_lang": "es",
+  "ui_lang": "az",
+  "title_az": "Oteldə",
+  "words": [
+    {
+      "word": "tengo una reserva",
+      "translation_az": "Rezervasiyam var.",
+      "ipa": "/ˈteŋɡo ˈuna reˈseɾβa/",
+      "example": "Tengo una reserva a nombre de Smith.",
+      "example_az": "Smit adı ilə rezervasiyam var.",
+      "level": 1
+    },
+    {
+      "word": "la llave",
+      "translation_az": "açar",
+      "ipa": "/la ˈʎaβe/",
+      "example": "¿Me puede dar la llave de la habitación?",
+      "example_az": "Mənə otağın açarını verə bilərsiniz?",
+      "level": 1
+    },
+    {
+      "word": "habitación individual / doble",
+      "translation_az": "tək nəfərlik / iki nəfərlik otaq",
+      "ipa": "/aβitaˈθjon indiβiˈðwal / ˈdoβle/",
+      "example": "¿Tiene una habitación doble disponible?",
+      "example_az": "İki nəfərlik otağınız varmı?",
+      "level": 2
+    },
+    {
+      "word": "el baño",
+      "translation_az": "vanna otağı",
+      "ipa": "/el ˈbaɲo/",
+      "example": "¿Dónde está el baño?",
+      "example_az": "Vanna otağı haradadır?",
+      "level": 1
+    },
+    {
+      "word": "el desayuno",
+      "translation_az": "səhər yeməyi",
+      "ipa": "/el desaˈʝuno/",
+      "example": "¿A qué hora es el desayuno?",
+      "example_az": "Səhər yeməyi saat neçədədir?",
+      "level": 1
+    },
+    {
+      "word": "el wifi",
+      "translation_az": "Wi-Fi",
+      "ipa": "/el ˈwifi/",
+      "example": "¿Cuál es la contraseña del wifi?",
+      "example_az": "Wi-Fi-ın şifrəsi nədir?",
+      "level": 1
+    },
+    {
+      "word": "check-in / check-out",
+      "translation_az": "qeydiyyat / çıxış",
+      "ipa": "/tʃek ˈin / tʃek ˈawt/",
+      "example": "¿A qué hora es el check-out?",
+      "example_az": "Çıxış saat neçədədir?",
+      "level": 2
+    },
+    {
+      "word": "¿puede ayudarme?",
+      "translation_az": "Mənə kömək edə bilərsiniz?",
+      "ipa": "/¿ˈpweðe aʝuˈðaɾme?/",
+      "example": "Tengo un problema, ¿puede ayudarme?",
+      "example_az": "Bir problemim var, mənə kömək edə bilərsiniz?",
+      "level": 1
+    },
+    {
+      "word": "quisiera...",
+      "translation_az": "İstərdim...",
+      "ipa": "/kiˈsjeɾa/",
+      "example": "Quisiera una toalla extra.",
+      "example_az": "Əlavə dəsmal istərdim.",
+      "level": 2
+    },
+    {
+      "word": "¿hay...?",
+      "translation_az": "Var...?",
+      "ipa": "/¿ˈai?/",
+      "example": "¿Hay un gimnasio en el hotel?",
+      "example_az": "Oteldə idman zalı varmı?",
+      "level": 1
+    },
+    {
+      "word": "la factura",
+      "translation_az": "hesab / faktura",
+      "ipa": "/la fakˈtuɾa/",
+      "example": "¿Me puede traer la factura, por favor?",
+      "example_az": "Zəhmət olmasa, hesabı gətirə bilərsiniz?",
+      "level": 2
+    }
+  ]
+}

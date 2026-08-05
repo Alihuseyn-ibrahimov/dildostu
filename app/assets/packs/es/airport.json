@@ -1,0 +1,104 @@
+{
+  "pack_id": "airport",
+  "target_lang": "es",
+  "ui_lang": "az",
+  "title_az": "Hava limanında",
+  "words": [
+    {
+      "word": "el pasaporte",
+      "translation_az": "pasport",
+      "ipa": "/el pa.saˈpoɾ.te/",
+      "example": "¿Puedo ver su pasaporte, por favor?",
+      "example_az": "Zəhmət olmasa, pasportunuzu görə bilərəm?",
+      "level": 1
+    },
+    {
+      "word": "la tarjeta de embarque",
+      "translation_az": "minik bileti",
+      "ipa": "/la taɾˈxe.ta ðe emˈbaɾ.ke/",
+      "example": "Necesito su tarjeta de embarque para escanearla.",
+      "example_az": "Skan etmək üçün minik biletinizə ehtiyacım var.",
+      "level": 1
+    },
+    {
+      "word": "el mostrador de facturación",
+      "translation_az": "qeydiyyat masası",
+      "ipa": "/el mos.tɾaˈðoɾ ðe fak.tu.ɾaˈθjon/",
+      "example": "El mostrador de facturación para su vuelo está cerrado.",
+      "example_az": "Sizin uçuşunuz üçün qeydiyyat masası bağlıdır.",
+      "level": 2
+    },
+    {
+      "word": "la puerta de embarque",
+      "translation_az": "minik qapısı",
+      "ipa": "/la ˈpweɾ.ta ðe emˈbaɾ.ke/",
+      "example": "Su puerta de embarque es la B23.",
+      "example_az": "Sizin minik qapınız B23-dür.",
+      "level": 1
+    },
+    {
+      "word": "el vuelo",
+      "translation_az": "uçuş",
+      "ipa": "/el ˈbwe.lo/",
+      "example": "Mi vuelo a Madrid sale a las diez.",
+      "example_az": "Madridə uçuşum saat onda qalxır.",
+      "level": 1
+    },
+    {
+      "word": "retrasado",
+      "translation_az": "gecikmiş",
+      "ipa": "/re.tɾaˈsa.ðo/",
+      "example": "Nuestro vuelo está retrasado una hora.",
+      "example_az": "Uçuşumuz bir saat gecikir.",
+      "level": 2
+    },
+    {
+      "word": "el equipaje",
+      "translation_az": "baqaj",
+      "ipa": "/el e.kiˈpa.xe/",
+      "example": "¿Dónde puedo recoger mi equipaje?",
+      "example_az": "Baqajımı haradan götürə bilərəm?",
+      "level": 1
+    },
+    {
+      "word": "seguridad",
+      "translation_az": "təhlükəsizlik",
+      "ipa": "/se.ɣu.ɾiˈðað/",
+      "example": "Ahora tenemos que pasar por seguridad.",
+      "example_az": "İndi təhlükəsizlikdən keçməliyik.",
+      "level": 1
+    },
+    {
+      "word": "¿A qué hora embarcamos?",
+      "translation_az": "Saat neçədə minirik?",
+      "ipa": "/a ke ˈo.ɾa em.baɾˈka.mos/",
+      "example": "¿A qué hora embarcamos para el vuelo a Barcelona?",
+      "example_az": "Barselonaya uçuş üçün saat neçədə minirik?",
+      "level": 2
+    },
+    {
+      "word": "¿Dónde está...?",
+      "translation_az": "...haradadır?",
+      "ipa": "/ˈdon.de esˈta/",
+      "example": "¿Dónde está la terminal 3?",
+      "example_az": "Terminal 3 haradadır?",
+      "level": 1
+    },
+    {
+      "word": "¿Es este mi asiento?",
+      "translation_az": "Bu mənim yerimdir?",
+      "ipa": "/es ˈes.te mi aˈsjen.to/",
+      "example": "Disculpe, ¿es este mi asiento o el suyo?",
+      "example_az": "Bağışlayın, bu mənim yerimdir, yoxsa sizin?",
+      "level": 1
+    },
+    {
+      "word": "¿Puedo llevar esto en cabina?",
+      "translation_az": "Bunu salona götürə bilərəm?",
+      "ipa": "/ˈpwe.ðo ʝeˈβaɾ ˈes.to en kaˈβi.na/",
+      "example": "¿Puedo llevar esta mochila en cabina?",
+      "example_az": "Bu kürək çantasını salona götürə bilərəmmi?",
+      "level": 2
+    }
+  ]
+}

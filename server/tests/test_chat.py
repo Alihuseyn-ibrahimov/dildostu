@@ -18,12 +18,14 @@ class TestBuildChatCompleters:
         monkeypatch.setattr("dildostu_server.providers.load_dotenv", lambda *a, **k: None)
         monkeypatch.delenv("GROQ_API_KEY", raising=False)
         monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+        monkeypatch.delenv("GEMINI_API_KEY", raising=False)
         assert build_chat_completers() == {}
 
     def test_builds_groq_when_key_present(self, monkeypatch):
         monkeypatch.setattr("dildostu_server.providers.load_dotenv", lambda *a, **k: None)
         monkeypatch.setenv("GROQ_API_KEY", "test-key")
         monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+        monkeypatch.delenv("GEMINI_API_KEY", raising=False)
         assert "groq" in build_chat_completers()
 
 

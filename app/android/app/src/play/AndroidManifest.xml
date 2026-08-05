@@ -11,7 +11,8 @@
         tools:node="remove"/>
 
     <application
-        android:usesCleartextTraffic="false">
+        android:usesCleartextTraffic="false"
+        tools:replace="android:usesCleartextTraffic">
         <!-- main.dart bunu native kanaldan (dildostu/build_flavor) oxuyur ki,
              self-update/arxa-fon-məkan UI-larını göstərməsin. -->
         <meta-data android:name="dildostu.isPlayBuild" android:value="true"/>

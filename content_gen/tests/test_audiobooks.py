@@ -7,13 +7,17 @@ import pytest
 
 from dildostu_content.audiobooks import (
     Chapter,
+    after_first_marker,
     after_last_marker,
     build_manifest,
     clean_text,
+    dedupe_chapter_ids,
     drop_non_narrative,
+    humanize_title,
     is_title_line,
     slugify,
     split_chapters,
+    split_fabulas,
     strip_gutenberg_wrapper,
 )
 
@@ -32,6 +36,20 @@ class TestCleanText:
         cleaned = clean_text(text)
         assert "Illustration" not in cleaned
         assert "LONG CAPTION" not in cleaned
+
+    def test_removes_imagen_marker(self):
+        # Samaniego (İspan) nəşrində "[Illustration: ...]" əvəzinə "[imagen]".
+        text = "FÁBULA II\n\n[imagen]\n\nLa Cigarra y la Hormiga"
+        cleaned = clean_text(text)
+        assert "imagen" not in cleaned.lower()
+        assert "La Cigarra y la Hormiga" in cleaned
+
+    def test_removes_footnote_reference_numbers(self):
+        text = "Vióse desproveída[15]\nDel preciso sustento[16]."
+        cleaned = clean_text(text)
+        assert "[15]" not in cleaned
+        assert "[16]" not in cleaned
+        assert "desproveída" in cleaned
 
     def test_collapses_excess_blank_lines(self):
         assert "\n\n\n" not in clean_text("A.\n\n\n\n\nB.")
@@ -88,6 +106,17 @@ class TestAfterLastMarker:
 
     def test_missing_marker_returns_input(self):
         assert after_last_marker("mətn", "YOXDUR") == "mətn"
+
+
+class TestAfterFirstMarker:
+    def test_takes_text_after_first_occurrence(self):
+        # Samaniego: "LIBRO PRIMERO" gövdənin başında BİR dəfə, kitab
+        # sonundakı səhifəli indeksdə TƏKRAR keçir — bizə BİRİNCİSİ lazımdır.
+        text = "LIBRO PRIMERO\n\nƏsl gövdə\n\nİndeks\n\nLIBRO PRIMERO   13"
+        assert after_first_marker(text, "LIBRO PRIMERO").strip().startswith("Əsl gövdə")
+
+    def test_missing_marker_returns_input(self):
+        assert after_first_marker("mətn", "YOXDUR") == "mətn"
 
 
 class TestIsTitleLine:
@@ -201,6 +230,140 @@ A Man and his Wife had a Goose which laid a Golden Egg every day.
 
     def test_empty_body_gives_no_chapters(self):
         assert split_chapters("") == []
+
+
+class TestSplitFabulas:
+    """Samaniego "Fábulas" formatı — 2026-08-05, bax audiobooks.py qeydi."""
+
+    BODY = """LIBRO PRIMERO
+
+FÁBULA PRIMERA
+
+[imagen]
+
+Título De Prueba
+
+    Un texto de ejemplo
+    con varias líneas.
+
+
+FÁBULA II
+
+[imagen]
+
+La Cigarra y la Hormiga
+
+    Cantando la Cigarra,
+    Pasó el verano entero.
+
+
+FÁBULA III
+
+El Muchacho y la Fortuna.
+
+    Á la orilla de un pozo,
+    Sobre la fresca hierba.
+"""
+
+    def test_splits_into_chapters(self):
+        chapters = split_fabulas(self.BODY)
+        assert len(chapters) == 3
+        assert chapters[1].title_en == "La Cigarra y la Hormiga"
+        assert chapters[2].title_en == "El Muchacho y la Fortuna."
+
+    def test_chapter_ids_are_slugs(self):
+        chapters = split_fabulas(self.BODY)
+        assert chapters[1].chapter_id == "la-cigarra-y-la-hormiga"
+
+    def test_title_not_uppercased_required(self):
+        # Aesop-dan fərqli: başlıq artıq düzgün yazılıb, BÖYÜK HƏRF DEYİL.
+        chapters = split_fabulas(self.BODY)
+        assert chapters[1].title_en != chapters[1].title_en.upper()
+
+    def test_imagen_marker_skipped_before_title(self):
+        chapters = split_fabulas(self.BODY)
+        for ch in chapters:
+            assert "imagen" not in ch.title_en.lower()
+            assert "imagen" not in ch.text.lower()
+
+    def test_text_excludes_heading_and_title(self):
+        chapters = split_fabulas(self.BODY)
+        assert "FÁBULA" not in chapters[1].text
+        assert "La Cigarra y la Hormiga" not in chapters[1].text
+        assert "Cantando la Cigarra" in chapters[1].text
+
+    def test_libro_heading_does_not_become_chapter_body(self):
+        # "FÁBULA III" başlıqsız (birbaşa mixed-case başlıq, [imagen] yoxdur)
+        # — funksiya buna da davam etməlidir.
+        chapters = split_fabulas(self.BODY)
+        assert chapters[2].title_en == "El Muchacho y la Fortuna."
+        assert "Á la orilla" in chapters[2].text
+
+    def test_content_after_notas_marker_excluded(self):
+        body = self.BODY + "\nNOTAS:\n\n[1] Bu qeyd səsləndirilməməlidir.\n"
+        chapters = split_fabulas(body)
+        assert len(chapters) == 3
+        assert all("qeyd səsləndirilməməlidir" not in c.text for c in chapters)
+
+    def test_empty_body_gives_no_chapters(self):
+        assert split_fabulas("") == []
+
+    def test_duplicate_titles_across_libros_get_unique_ids(self):
+        # 2026-08-05: Samaniego mənbəyində iki AYRI kitabda ("LIBRO PRIMERO",
+        # "LIBRO TERCERO") eyni başlıqlı fabl var ("El Asno y el Caballo.") —
+        # slugify eyni id versə ikincinin mp3-ü birincinin faylını
+        # DİSKDƏ ÜSTÜNDƏN YAZIR (bax build_audiobook.py, fayl adı = chapter_id).
+        body = (
+            "LIBRO PRIMERO\n\nFÁBULA I\n\nEl Asno y el Caballo.\n\n"
+            "    Primer texto.\n\n\n"
+            "LIBRO TERCERO\n\nFÁBULA I\n\nEl Asno y el Caballo.\n\n"
+            "    Segundo texto distinto.\n"
+        )
+        chapters = split_fabulas(body)
+        ids = [c.chapter_id for c in chapters]
+        assert len(ids) == len(set(ids))
+        assert ids == ["el-asno-y-el-caballo", "el-asno-y-el-caballo-2"]
+        # Başlıq özü toxunulmaz qalır (yalnız disk/keş açarı fərqlənir).
+        assert chapters[1].title_en == "El Asno y el Caballo."
+
+
+class TestDedupeChapterIds:
+    def test_first_occurrence_keeps_original_id(self):
+        chapters = [
+            Chapter(chapter_id="a", title_en="A", text="x"),
+            Chapter(chapter_id="a", title_en="A", text="y"),
+            Chapter(chapter_id="a", title_en="A", text="z"),
+        ]
+        result = dedupe_chapter_ids(chapters)
+        assert [c.chapter_id for c in result] == ["a", "a-2", "a-3"]
+
+    def test_no_collision_leaves_ids_untouched(self):
+        chapters = [
+            Chapter(chapter_id="a", title_en="A", text="x"),
+            Chapter(chapter_id="b", title_en="B", text="y"),
+        ]
+        result = dedupe_chapter_ids(chapters)
+        assert [c.chapter_id for c in result] == ["a", "b"]
+
+    def test_title_and_text_preserved(self):
+        chapters = [
+            Chapter(chapter_id="a", title_en="First", text="x"),
+            Chapter(chapter_id="a", title_en="Second", text="y"),
+        ]
+        result = dedupe_chapter_ids(chapters)
+        assert result[1].title_en == "Second"
+        assert result[1].text == "y"
+
+
+class TestHumanizeTitle:
+    def test_uppercase_title_is_humanized(self):
+        assert humanize_title("THE FOX AND THE GRAPES") == "The Fox and the Grapes"
+
+    def test_already_cased_title_left_untouched(self):
+        # Samaniego başlıqları artıq düzgün yazılıb — İngilis kiçik-söz
+        # siyahısı (a/the/and) ispan sözlərini ("y", "la") tanımadığı üçün
+        # yenidən keçirilsə səhv nəticə verərdi ("La Cigarra Y La Hormiga").
+        assert humanize_title("La Cigarra y la Hormiga") == "La Cigarra y la Hormiga"
 
 
 class TestBuildManifest:

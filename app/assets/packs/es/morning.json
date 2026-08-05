@@ -1,0 +1,104 @@
+{
+  "pack_id": "morning",
+  "target_lang": "es",
+  "ui_lang": "az",
+  "title_az": "Səhər rutini",
+  "words": [
+    {
+      "word": "buenos días",
+      "translation_az": "gün aydın",
+      "ipa": "/ˈbwe.nos ˈdi.as/",
+      "example": "Buenos días, ¿cómo estás?",
+      "example_az": "Gün aydın, necəsən?",
+      "level": 1
+    },
+    {
+      "word": "desayuno",
+      "translation_az": "səhər yeməyi",
+      "ipa": "/desaˈju.no/",
+      "example": "Voy a preparar el desayuno.",
+      "example_az": "Səhər yeməyini hazırlamağa gedirəm.",
+      "level": 1
+    },
+    {
+      "word": "café",
+      "translation_az": "qəhvə",
+      "ipa": "/kaˈfe/",
+      "example": "Me gustaría un café, por favor.",
+      "example_az": "Xahiş edirəm, mənə qəhvə versən.",
+      "level": 1
+    },
+    {
+      "word": "dormir",
+      "translation_az": "yuxu",
+      "ipa": "/dorˈmir/",
+      "example": "Necesito dormir un poco más.",
+      "example_az": "Mənə bir az daha yuxu lazımdır.",
+      "level": 2
+    },
+    {
+      "word": "baño",
+      "translation_az": "duş",
+      "ipa": "/ˈba.ɲo/",
+      "example": "Voy al baño a lavarme.",
+      "example_az": "Duşa gedib yuyunmağa gedirəm.",
+      "level": 1
+    },
+    {
+      "word": "cepillo",
+      "translation_az": "fırça",
+      "ipa": "/θeˈpi.ʎo/",
+      "example": "Necesito un cepillo de dientes.",
+      "example_az": "Mənə diş fırçası lazımdır.",
+      "level": 2
+    },
+    {
+      "word": "maquillaje",
+      "translation_az": "makiyaj",
+      "ipa": "/ma.kiˈja.xe/",
+      "example": "Ella se pone maquillaje antes de salir.",
+      "example_az": "O, çıxmaqdan əvvəl makiyaj edir.",
+      "level": 2
+    },
+    {
+      "word": "despertador",
+      "translation_az": "səhər saatı",
+      "ipa": "/desper.taˈðor/",
+      "example": "Mi despertador suena a las 7.",
+      "example_az": "Mənim səhər saatım saat 7-də çalır.",
+      "level": 2
+    },
+    {
+      "word": "ropa",
+      "translation_az": "paltar",
+      "ipa": "/ˈro.pa/",
+      "example": "Voy a ponerme ropa limpia.",
+      "example_az": "Mən təmiz paltar geyəcəyəm.",
+      "level": 1
+    },
+    {
+      "word": "zapatillas",
+      "translation_az": "ayaqqabı",
+      "ipa": "/θapaˈti.ʎas/",
+      "example": "Necesito zapatillas cómodas.",
+      "example_az": "Mənə rahat ayaqqabı lazımdır.",
+      "level": 2
+    },
+    {
+      "word": "espejo",
+      "translation_az": "güzgü",
+      "ipa": "/esˈpe.xo/",
+      "example": "Me miro en el espejo.",
+      "example_az": "Mən özümü güzgüdə görmüşəm.",
+      "level": 2
+    },
+    {
+      "word": "reloj",
+      "translation_az": "saat",
+      "ipa": "/reˈlox/",
+      "example": "Necesito ponerme el reloj.",
+      "example_az": "Mən saat taxmağa ehtiyacım var.",
+      "level": 1
+    }
+  ]
+}
