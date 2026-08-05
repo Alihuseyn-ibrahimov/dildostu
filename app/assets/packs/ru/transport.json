@@ -1,0 +1,104 @@
+{
+  "pack_id": "transport",
+  "target_lang": "ru",
+  "ui_lang": "az",
+  "title_az": "Nəqliyyat",
+  "words": [
+    {
+      "word": "метро",
+      "translation_az": "metropoliten",
+      "ipa": "/mʲɪˈtro/",
+      "example": "Мы поедем в центр на метро.",
+      "example_az": "Biz mərkəzə metropolitenlə getməyəcəyik.",
+      "level": 1
+    },
+    {
+      "word": "остановка",
+      "translation_az": "dayanacaq",
+      "ipa": "/ɐstɐnɐˈvkɐ/",
+      "example": "Остановка находится рядом с нашим отелем.",
+      "example_az": "Dayanacaq bizim otelimizə yaxın yerləşir.",
+      "level": 2
+    },
+    {
+      "word": "билет",
+      "translation_az": "bilet",
+      "ipa": "/bʲɪˈlʲet/",
+      "example": "Я купил билет на автобус.",
+      "example_az": "Mən avtobus biletini aldım.",
+      "level": 1
+    },
+    {
+      "word": "такси",
+      "translation_az": "taksi",
+      "ipa": "/ˈtaksʲɪ/",
+      "example": "Мы вызовем такси из отеля.",
+      "example_az": "Biz oteldən taksi çağıraq.",
+      "level": 1
+    },
+    {
+      "word": "автобус",
+      "translation_az": "avtobus",
+      "ipa": "/ɐftɐˈbus/",
+      "example": "Автобус идет в аэропорт.",
+      "example_az": "Avtobus hava limanına gedir.",
+      "level": 1
+    },
+    {
+      "word": "маршрут",
+      "translation_az": "marşrut",
+      "ipa": "/mɐrˈʂrut/",
+      "example": "Мы выбрали маршрут через центр города.",
+      "example_az": "Biz şəhər mərkəzindən keçən marşrutu seçdik.",
+      "level": 2
+    },
+    {
+      "word": "влево",
+      "translation_az": "sola",
+      "ipa": "/vlʲɪˈvo/",
+      "example": "Нужно повернуть влево на следующем перекрёстке.",
+      "example_az": "Növbəti küçədə sola dönmək lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "вправо",
+      "translation_az": "sağa",
+      "ipa": "/vˈpravə/",
+      "example": "Я повернул вправо и увидел магазин.",
+      "example_az": "Sağa döndüm və mağazanı gördüm.",
+      "level": 1
+    },
+    {
+      "word": "прямо",
+      "translation_az": "düzdən",
+      "ipa": "/ˈprʲamə/",
+      "example": "Идите прямо до конца улицы.",
+      "example_az": "Küçənin sonuna qədər düzdən getmək lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "где",
+      "translation_az": "harada",
+      "ipa": "/ɡdʲe/",
+      "example": "Где находится ближайшая остановка?",
+      "example_az": "Yaxın dayanacaq harada yerləşir?",
+      "level": 1
+    },
+    {
+      "word": "как пройти",
+      "translation_az": "necə getmək",
+      "ipa": "/kak proˈitʲ/",
+      "example": "Скажите, как пройти до вокзала?",
+      "example_az": "Dəmir yoluna necə getmək lazım olduğunu deyin.",
+      "level": 2
+    },
+    {
+      "word": "стоимость",
+      "translation_az": "qiymət",
+      "ipa": "/stɐˈjɪstʲ/",
+      "example": "Скажите, сколько стоит билет?",
+      "example_az": "Biletin qiyməti nə qədərdir, deyin.",
+      "level": 2
+    }
+  ]
+}

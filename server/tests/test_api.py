@@ -8,10 +8,12 @@ from dildostu_server.app import (
     get_chat_completers,
     get_completers,
     get_current_user,
+    get_memory_store,
     get_place_lookup,
     get_release_store,
     get_routine_store,
 )
+from dildostu_server.memory_store import MemoryStore
 from dildostu_server.place_lookup import PlaceLookup, PlaceLookupError
 from dildostu_server.release_store import ReleaseStore
 from dildostu_server.routine_store import RoutineStore
@@ -59,6 +61,10 @@ PROFILE = {
     "wake_hour": 8, "sleep_hour": 23, "purpose": "travel",
     "level": "beginner", "interests": [],
 }
+
+# Faza 2: bir çox endpoint token tələb edir. Testlərdə auth-u sabit
+# istifadəçi ilə əvəz edirik (auth məntiqi ayrıca test_auth_api.py-də yoxlanır).
+_TEST_USER = {"id": 1, "email": "test@example.com", "created_at": "2026-08-03T00:00:00+00:00"}
 
 
 class TestGenerateEndpoint:
@@ -126,8 +132,10 @@ class TestDayPlanEndpoint:
         assert r.status_code == 502
 
 
-def override_chat(chat_completers):
+def override_chat(chat_completers, *, memory=None, user=None):
     app.dependency_overrides[get_chat_completers] = lambda: chat_completers
+    app.dependency_overrides[get_current_user] = lambda: user or _TEST_USER
+    app.dependency_overrides[get_memory_store] = lambda: memory or MemoryStore(":memory:")
     return TestClient(app)
 
 
@@ -173,10 +181,59 @@ class TestChatEndpoint:
         })
         assert r.status_code == 502
 
+    def test_requires_auth(self):
+        app.dependency_overrides[get_chat_completers] = lambda: {
+            "claude": lambda s, m: "x"
+        }
+        app.dependency_overrides[get_memory_store] = lambda: MemoryStore(":memory:")
+        r = TestClient(app).post("/chat", json={
+            "profile": PROFILE,
+            "messages": [{"role": "user", "content": "salam"}],
+        })
+        assert r.status_code == 401
 
-# Faza 2: rutin/məkan endpoint-ləri token tələb edir. Testlərdə auth-u sabit
-# istifadəçi ilə əvəz edirik (auth məntiqi ayrıca test_auth_api.py-də yoxlanır).
-_TEST_USER = {"id": 1, "email": "test@example.com", "created_at": "2026-08-03T00:00:00+00:00"}
+    def test_reply_and_facts_persisted_to_memory(self):
+        memory = MemoryStore(":memory:")
+        client = override_chat(
+            {"claude": lambda s, m: "Salam Elvin![[YADDA: Adı Elvin]]"},
+            memory=memory,
+        )
+        r = client.post("/chat", json={
+            "profile": PROFILE,
+            "messages": [{"role": "user", "content": "Adım Elvindir"}],
+        })
+        assert r.json()["reply"] == "Salam Elvin!"
+        assert memory.recent_facts(1) == ["Adı Elvin"]
+        assert [m["role"] for m in memory.recent_messages(1)] == ["user", "assistant"]
+
+
+class TestChatHistoryEndpoint:
+    def test_returns_own_history(self):
+        memory = MemoryStore(":memory:")
+        memory.add_message(1, "user", "salam")
+        memory.add_message(1, "assistant", "salam!")
+        client = override_chat({}, memory=memory)
+        r = client.get("/chat/history")
+        assert r.status_code == 200
+        messages = r.json()["messages"]
+        assert [m["content"] for m in messages] == ["salam", "salam!"]
+
+    def test_does_not_leak_other_users_history(self):
+        memory = MemoryStore(":memory:")
+        memory.add_message(2, "user", "başqasının mesajı")
+        client = override_chat({}, memory=memory)  # user id=1
+        r = client.get("/chat/history")
+        assert r.json()["messages"] == []
+
+    def test_new_user_empty(self):
+        client = override_chat({}, memory=MemoryStore(":memory:"))
+        r = client.get("/chat/history")
+        assert r.json()["messages"] == []
+
+    def test_requires_auth(self):
+        app.dependency_overrides[get_memory_store] = lambda: MemoryStore(":memory:")
+        r = TestClient(app).get("/chat/history")
+        assert r.status_code == 401
 
 
 def override_routine(store, user=None):

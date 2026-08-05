@@ -11,13 +11,21 @@ class ChatScreen extends StatefulWidget {
     required this.sender,
     this.greeting,
     this.accent,
+    this.historyLoader,
   });
 
   /// Bütün tarixçəni alıb AI cavabını (və ya xəta atır) qaytarır.
   final Future<String> Function(List<ChatMessage> history) sender;
 
   /// İlk açılışda göstərilən AI salamı (məs. kartdan gələndə kontekstli).
+  /// Saxlanmış tarixçə boş deyilsə göstərilmir (təkrar salamlama qarışıqlıq
+  /// yaradar) — bax `historyLoader`.
   final String? greeting;
+
+  /// Saxlanmış çat tarixçəsini gətirir (bax spec:
+  /// 2026-08-04-chat-memory-design.md). Null olsa mövcud davranış (yalnız
+  /// `greeting`, tarixçə yoxdur) dəyişmir.
+  final Future<List<ChatMessage>> Function()? historyLoader;
 
   /// Xüsusiyyətin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
   /// mövcud neytral tema rəngləri işlədilir.
@@ -36,7 +44,21 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.greeting != null) {
+    final loader = widget.historyLoader;
+    if (loader != null) {
+      loader().then((history) {
+        if (!mounted) return;
+        setState(() {
+          if (history.isNotEmpty) {
+            _messages.addAll(history);
+          } else if (widget.greeting != null) {
+            _messages.add(
+                ChatMessage(role: ChatRole.assistant, content: widget.greeting!));
+          }
+        });
+        _scrollToEnd();
+      });
+    } else if (widget.greeting != null) {
       _messages.add(ChatMessage(role: ChatRole.assistant, content: widget.greeting!));
     }
   }

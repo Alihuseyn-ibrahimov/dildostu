@@ -6,6 +6,8 @@ __pycache__/
 routine.db
 # İstifadəçi hesabları — şifrə hash-ləri var, heç vaxt commit edilmir.
 users.db
+# Çat tarixçəsi + öyrənilən faktlar — şəxsi data, heç vaxt commit edilmir.
+memory.db
 *.log
 
 # Kök .gitignore-da qlobal "test_api.py" qaydası var (əlaqəsiz layihə üçün) —

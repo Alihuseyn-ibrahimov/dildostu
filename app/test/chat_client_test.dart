@@ -19,7 +19,7 @@ void main() {
   test('serverin cavabını qaytarır', () async {
     final mock = MockClient((req) async =>
         http.Response.bytes(utf8.encode(jsonEncode({'reply': 'Salam!'})), 200));
-    final client = ChatClient(baseUrl: 'http://x', httpClient: mock);
+    final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
     final reply = await client.send(
       profile: _profile,
       history: [const ChatMessage(role: ChatRole.user, content: 'salam')],
@@ -33,7 +33,7 @@ void main() {
       body = jsonDecode(req.body) as Map<String, dynamic>;
       return http.Response.bytes(utf8.encode(jsonEncode({'reply': 'ok'})), 200);
     });
-    final client = ChatClient(baseUrl: 'http://x', httpClient: mock);
+    final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
     await client.send(
       profile: _profile,
       history: [
@@ -55,7 +55,7 @@ void main() {
       body = jsonDecode(req.body) as Map<String, dynamic>;
       return http.Response.bytes(utf8.encode(jsonEncode({'reply': 'ok'})), 200);
     });
-    final client = ChatClient(baseUrl: 'http://x', httpClient: mock);
+    final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
     final history = [
       for (var i = 0; i < 20; i++)
         ChatMessage(role: ChatRole.user, content: 'mesaj $i'),
@@ -67,7 +67,7 @@ void main() {
 
   test('server xətası istisna atır', () async {
     final mock = MockClient((req) async => http.Response('err', 502));
-    final client = ChatClient(baseUrl: 'http://x', httpClient: mock);
+    final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
     expect(
       () => client.send(
         profile: _profile,
@@ -75,5 +75,60 @@ void main() {
       ),
       throwsA(isA<ChatException>()),
     );
+  });
+
+  test('send Authorization başlığı göndərir', () async {
+    String? authHeader;
+    final mock = MockClient((req) async {
+      authHeader = req.headers['Authorization'];
+      return http.Response.bytes(utf8.encode(jsonEncode({'reply': 'ok'})), 200);
+    });
+    final client = ChatClient(baseUrl: 'http://x', token: 'sirr-token', httpClient: mock);
+    await client.send(
+      profile: _profile,
+      history: [const ChatMessage(role: ChatRole.user, content: 'salam')],
+    );
+    expect(authHeader, 'Bearer sirr-token');
+  });
+
+  group('fetchHistory', () {
+    test('Authorization başlığı ilə düzgün endpoint-ə gedir', () async {
+      String? path;
+      String? authHeader;
+      final mock = MockClient((req) async {
+        path = req.url.path;
+        authHeader = req.headers['Authorization'];
+        return http.Response.bytes(
+            utf8.encode(jsonEncode({'messages': []})), 200);
+      });
+      final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
+      await client.fetchHistory();
+      expect(path, '/chat/history');
+      expect(authHeader, 'Bearer tok');
+    });
+
+    test('mesajları parse edir', () async {
+      final mock = MockClient((req) async => http.Response.bytes(
+            utf8.encode(jsonEncode({
+              'messages': [
+                {'role': 'user', 'content': 'salam', 'created_at': 'x'},
+                {'role': 'assistant', 'content': 'salam!', 'created_at': 'y'},
+              ],
+            })),
+            200,
+          ));
+      final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
+      final messages = await client.fetchHistory();
+      expect(messages, hasLength(2));
+      expect(messages[0].role, ChatRole.user);
+      expect(messages[0].content, 'salam');
+      expect(messages[1].role, ChatRole.assistant);
+    });
+
+    test('server xətasında boş siyahı qaytarır (istisna atmır)', () async {
+      final mock = MockClient((req) async => http.Response('err', 401));
+      final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
+      expect(await client.fetchHistory(), isEmpty);
+    });
   });
 }

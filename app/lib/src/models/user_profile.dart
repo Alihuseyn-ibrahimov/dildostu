@@ -41,6 +41,32 @@ enum ProficiencyLevel {
       .firstWhere((e) => e.wire == s, orElse: () => ProficiencyLevel.intermediate);
 }
 
+/// Öyrənilən dil — həm onboarding seçimi, həm Ayarlardan dəyişiklik, həm də
+/// serverə gedən `profile.target_lang` dəyəri (bax spec:
+/// 2026-08-04-multilanguage-russian-design.md). Wire dəyərləri serverin
+/// `TargetLanguage` literal-ı ilə uzlaşır.
+enum TargetLanguage {
+  english('en', 'İngilis', 'en-US'),
+  russian('ru', 'Rus', 'ru-RU'),
+  spanish('es', 'İspan', 'es-ES'),
+  italian('it', 'İtalyan', 'it-IT');
+
+  const TargetLanguage(this.wire, this.labelAz, this.ttsLocale);
+
+  final String wire;
+
+  /// UI-da göstərilən Azərbaycanca ad.
+  final String labelAz;
+
+  /// `flutter_tts`-in `setLanguage` çağırışına ötürülən lokal kod.
+  final String ttsLocale;
+
+  /// Naməlum/köhnə dəyər gəlsə (sahə heç olmayan köhnə profil) İngilisə
+  /// düşür — app açılışda sınmamalıdır.
+  static TargetLanguage fromWire(String s) => TargetLanguage.values
+      .firstWhere((e) => e.wire == s, orElse: () => TargetLanguage.english);
+}
+
 /// Onboarding-də toplanan istifadəçi profili. Canlı AI mesajlarını
 /// fərdiləşdirmək üçün serverə göndərilir (`toServerJson`).
 class UserProfile {
@@ -50,6 +76,7 @@ class UserProfile {
     required this.purpose,
     required this.level,
     required this.interests,
+    this.targetLang = TargetLanguage.english,
   });
 
   final int wakeHour;
@@ -57,14 +84,17 @@ class UserProfile {
   final LearningPurpose purpose;
   final ProficiencyLevel level;
   final List<String> interests;
+  final TargetLanguage targetLang;
 
-  /// Səviyyə dəyişəndə (ana səhifədəki filtr) yeni profil qurmaq üçün.
-  UserProfile copyWith({ProficiencyLevel? level}) => UserProfile(
+  /// Səviyyə/dil dəyişəndə (ana səhifə/ayarlar filtri) yeni profil qurmaq üçün.
+  UserProfile copyWith({ProficiencyLevel? level, TargetLanguage? targetLang}) =>
+      UserProfile(
         wakeHour: wakeHour,
         sleepHour: sleepHour,
         purpose: purpose,
         level: level ?? this.level,
         interests: interests,
+        targetLang: targetLang ?? this.targetLang,
       );
 
   Map<String, dynamic> toJson() => {
@@ -73,6 +103,7 @@ class UserProfile {
         'purpose': purpose.wire,
         'level': level.wire,
         'interests': interests,
+        'target_lang': targetLang.wire,
       };
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
@@ -81,6 +112,9 @@ class UserProfile {
         purpose: LearningPurpose.fromWire(json['purpose'] as String),
         level: ProficiencyLevel.fromWire(json['level'] as String),
         interests: (json['interests'] as List<dynamic>).cast<String>(),
+        // Köhnə saxlanmış profil bloklarında bu sahə yoxdur — defolt İngilis.
+        targetLang: TargetLanguage.fromWire(
+            json['target_lang'] as String? ?? TargetLanguage.english.wire),
       );
 
   /// Serverin gözlədiyi format (toJson ilə eynidir, amma açıq niyyət üçün ayrı).

@@ -51,15 +51,24 @@ class PackRepository {
     return PackRepository._(byId);
   }
 
-  /// Cihazda `assets/packs/<id>.json` fayllarını yüklə.
+  /// Cihazda `assets/packs/<lang>/<id>.json` fayllarını yüklə.
+  ///
+  /// `lang` üçün fayl hələ yaradılmayıbsa (məs. yeni dil hələ content_gen
+  /// mərhələsini keçməyib) boş repozitoriya qaytarır — sınmır, ekranlar
+  /// mövcud "söz tapılmadı" halına düşür.
   static Future<PackRepository> loadFromAssets({
+    required String lang,
     AssetBundle? bundle,
     List<String> ids = kPackIds,
   }) async {
     final assets = bundle ?? rootBundle;
     final jsonStrings = <String>[];
     for (final id in ids) {
-      jsonStrings.add(await assets.loadString('assets/packs/$id.json'));
+      try {
+        jsonStrings.add(await assets.loadString('assets/packs/$lang/$id.json'));
+      } catch (_) {
+        // Bu dildə/paketdə hələ fayl yoxdur — atla.
+      }
     }
     return PackRepository.fromJsonStrings(jsonStrings);
   }

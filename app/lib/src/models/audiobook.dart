@@ -48,6 +48,7 @@ class Audiobook {
     required this.source,
     required this.level,
     required this.chapters,
+    this.lang = 'en',
   });
 
   final String bookId;
@@ -60,6 +61,10 @@ class Audiobook {
   final String level;
   final List<AudiobookChapter> chapters;
 
+  /// Kitabın dili (`target_lang` ilə uzlaşır). Köhnə manifestdə bu sahə
+  /// yoxdursa İngilisə düşür (bax 2026-08-04-multilanguage-russian-design.md).
+  final String lang;
+
   factory Audiobook.fromServerJson(Map<String, dynamic> json) => Audiobook(
         bookId: json['book_id'] as String,
         titleEn: json['title_en'] as String,
@@ -67,6 +72,7 @@ class Audiobook {
         author: json['author'] as String? ?? '',
         source: json['source'] as String? ?? '',
         level: json['level'] as String? ?? 'beginner',
+        lang: json['lang'] as String? ?? 'en',
         chapters: [
           for (final c in (json['chapters'] as List? ?? const []))
             AudiobookChapter.fromServerJson(c as Map<String, dynamic>),

@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+28
+version: 1.0.0+29
 
 environment:
   sdk: ^3.12.2
@@ -67,8 +67,13 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  # NOT rekursiv — hər dil qovluğu ayrıca sətir tələb edir (bax
+  # 2026-08-04-multilanguage-russian-design.md).
   assets:
-    - assets/packs/
+    - assets/packs/en/
+    - assets/packs/ru/
+    - assets/packs/es/
+    - assets/packs/it/
     - assets/essential/
 
   # To add assets to your application, add an assets section, like this:

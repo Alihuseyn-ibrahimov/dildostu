@@ -3,7 +3,8 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from dildostu_server.app import app, get_token_secret, get_user_store
+from dildostu_server.app import app, get_memory_store, get_token_secret, get_user_store
+from dildostu_server.memory_store import MemoryStore
 from dildostu_server.user_store import UserStore
 
 _SECRET = "test-secret-key-32-chars-minimum!!"
@@ -140,6 +141,21 @@ class TestDeleteAccount:
 
     def test_requires_auth(self, client):
         assert client.delete("/auth/me").status_code == 401
+
+    def test_deletes_chat_memory(self, client):
+        memory = MemoryStore(":memory:")
+        app.dependency_overrides[get_memory_store] = lambda: memory
+        token = _register(client).json()["token"]
+        user_id = client.get(
+            "/auth/me", headers={"Authorization": f"Bearer {token}"}
+        ).json()["id"]
+        memory.add_message(user_id, "user", "salam")
+        memory.add_fact(user_id, "Adı Elvin")
+
+        client.delete("/auth/me", headers={"Authorization": f"Bearer {token}"})
+
+        assert memory.recent_messages(user_id) == []
+        assert memory.recent_facts(user_id) == []
 
 
 class TestProfileEndpoints:

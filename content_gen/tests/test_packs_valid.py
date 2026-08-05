@@ -16,18 +16,22 @@ PACKS_DIR = Path(__file__).resolve().parents[2] / "app" / "assets" / "packs"
 
 
 def _pack_files():
-    return sorted(PACKS_DIR.glob("*.json"))
+    # Dil-qovluqlu struktur: assets/packs/<lang>/<pack_id>.json (bax
+    # 2026-08-04-multilanguage-russian-design.md).
+    return sorted(PACKS_DIR.glob("*/*.json"))
 
 
-def test_all_categories_have_a_pack():
-    have = {p.stem for p in _pack_files()}
+def test_all_categories_have_a_pack_for_english():
+    """İngilis — hər zaman tam olmalıdır (flaqman dil, offline paritet)."""
+    have = {p.stem for p in (PACKS_DIR / "en").glob("*.json")}
     expected = {c.pack_id for c in CATEGORIES}
-    assert expected <= have, f"Çatışmayan paketlər: {expected - have}"
+    assert expected <= have, f"Çatışmayan paketlər (en): {expected - have}"
 
 
-@pytest.mark.parametrize("path", _pack_files(), ids=lambda p: p.stem)
+@pytest.mark.parametrize("path", _pack_files(), ids=lambda p: f"{p.parent.name}/{p.stem}")
 def test_pack_file_valid(path):
     pack = json.loads(path.read_text(encoding="utf-8"))
     validate_pack(pack)
     assert pack["pack_id"] == path.stem
+    assert pack["target_lang"] == path.parent.name
     assert len(pack["words"]) >= 8

@@ -32,6 +32,16 @@ class Chapter:
 
 # Dəstəklənən kitablar — HAMISI ictimai domen (Project Gutenberg).
 # `body_marker`: gövdənin başladığı sətir (CONTENTS-dən sonrakı sonuncu keçid).
+# `lang`: kitabın DİLİ (target_lang ilə uzlaşır) — manifestə düşür, app bunu
+# `profile.targetLang`-a görə süzür (bax 2026-08-04-multilanguage-russian-design.md).
+#
+# Rus dili üçün (Krılovun təmsilləri) HƏLƏ giriş YOXDUR — araşdırma göstərdi
+# ki, Gutenberg-in mövcud Krylov girişi (#73646) əslində FİNCƏ tərcümədir,
+# rus dilində doğrulanmış ictimai domen mətn tapılmadı. Uydurma/yoxlanmamış
+# ID əlavə etmək əvəzinə bu, ayrıca izləmə tapşırığına saxlanılıb — düzgün
+# mənbə (məs. archive.org-dan başqa lisenziyalı mətn) tapılanda BOOKS-a
+# `"krylov": {..., "lang": "ru", ...}` əlavə edib eyni pipeline-ı işlətmək
+# kifayətdir (aşağıdakı `lang` sahəsi və `--lang` CLI arqumenti artıq hazırdır).
 BOOKS: dict[str, dict] = {
     "aesop": {
         "gutenberg_id": 11339,
@@ -42,6 +52,7 @@ BOOKS: dict[str, dict] = {
         "level": "beginner",
         "body_marker": "ÆSOP'S FABLES",
         "min_words": 30,
+        "lang": "en",
     },
 }
 
@@ -87,13 +98,28 @@ def is_title_line(line: str) -> bool:
     return stripped == stripped.upper()
 
 
+# NFKD ASCII-foldinq yalnız Latın mənşəli hərflər üçün işləyir (Æ→AE,
+# ə→e) — kiril hərflərinin ASCII dekompozisiyası yoxdur, `encode("ascii",
+# "ignore")` onları tamamilə SİLƏR (boş slug). Rus (və gələcək kiril-əsaslı
+# dillərin) başlıqları üçün transliterasiya cədvəli lazımdır.
+_CYRILLIC_TRANSLIT = str.maketrans({
+    "а": "a", "б": "b", "в": "v", "г": "g", "д": "d", "е": "e", "ё": "e",
+    "ж": "zh", "з": "z", "и": "i", "й": "i", "к": "k", "л": "l", "м": "m",
+    "н": "n", "о": "o", "п": "p", "р": "r", "с": "s", "т": "t", "у": "u",
+    "ф": "f", "х": "h", "ц": "ts", "ч": "ch", "ш": "sh", "щ": "sch",
+    "ъ": "", "ы": "y", "ь": "", "э": "e", "ю": "yu", "я": "ya",
+})
+
+
 def slugify(title: str) -> str:
     """Başlığı təhlükəsiz id-yə çevirir: yalnız [a-z0-9-].
 
     Server path traversal-a qarşı məhz bu simvol dəstini gözləyir.
     """
+    # Əvvəlcə kiril → Latın (aşağı hərflə, böyük/kiçik fərqi yoxdur burda).
+    translit = title.lower().translate(_CYRILLIC_TRANSLIT)
     # Æ → AE, ə → e: ASCII-yə endirmək URL/fayl adı üçün vacibdir.
-    folded = unicodedata.normalize("NFKD", title)
+    folded = unicodedata.normalize("NFKD", translit)
     ascii_only = folded.encode("ascii", "ignore").decode("ascii")
     # Apostrof SİLİNİR, tire olmur: "miser's" → "misers" (miser-s yox).
     ascii_only = re.sub(r"['’]", "", ascii_only)
@@ -176,6 +202,7 @@ def build_manifest(
     level: str,
     chapters: list[Chapter],
     measured: dict[str, tuple[float, int]],
+    lang: str = "en",
 ) -> dict:
     """App-ın `/audiobooks` cavabını qurur.
 
@@ -205,6 +232,7 @@ def build_manifest(
                 "author": author,
                 "source": source,
                 "level": level,
+                "lang": lang,
                 "chapters": chapter_entries,
             }
         ],

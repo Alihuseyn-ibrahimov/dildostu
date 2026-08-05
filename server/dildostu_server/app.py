@@ -22,6 +22,7 @@ from .essential_words import words_for_level
 from .models import (
     AppVersionInfo,
     AuthResponse,
+    ChatHistoryResponse,
     ChatRequest,
     ChatResponse,
     DayPlanRequest,
@@ -47,6 +48,7 @@ from .models import (
     WordLookupResponse,
 )
 from .audiobook_store import AudiobookStore
+from .memory_store import MemoryStore
 from .place_lookup import PlaceLookup, PlaceLookupError
 from .routine_clustering import cluster_places
 from .providers import (
@@ -80,6 +82,8 @@ app.state.user_store = UserStore(os.environ.get("USERS_DB_PATH", "users.db"))
 app.state.audiobook_store = AudiobookStore(
     os.environ.get("AUDIOBOOKS_DIR", "audiobooks")
 )
+# Çat tarixçəsi + öyrənilən faktlar — routine.db-dən ayrı fayl.
+app.state.memory_store = MemoryStore(os.environ.get("MEMORY_DB_PATH", "memory.db"))
 
 
 def get_completers() -> dict[str, Completer]:
@@ -115,6 +119,11 @@ def get_place_lookup() -> PlaceLookup:
 def get_user_store() -> UserStore:
     """İstifadəçi hesabları store-u (test-də :memory: ilə override olunur)."""
     return app.state.user_store
+
+
+def get_memory_store() -> MemoryStore:
+    """Çat yaddaşı store-u (test-də :memory: ilə override olunur)."""
+    return app.state.memory_store
 
 
 def get_token_secret() -> str:
@@ -223,13 +232,15 @@ def auth_delete_me(
     user: dict = Depends(get_current_user),
     store: UserStore = Depends(get_user_store),
     routine: RoutineStore = Depends(get_routine_store),
+    memory: MemoryStore = Depends(get_memory_store),
 ) -> Response:
     """Hesabı və ona bağlı BÜTÜN datanı silir (Google Play tələbi).
 
-    Rutin nümunələri (məkan tarixçəsi) də silinir — hesab silinəndə geridə
-    məkan datası qalmamalıdır.
+    Rutin nümunələri (məkan tarixçəsi) və çat yaddaşı (tarixçə + faktlar)
+    da silinir — hesab silinəndə geridə heç bir şəxsi data qalmamalıdır.
     """
     routine.delete_user_data(user["id"])
+    memory.delete_user_data(user["id"])
     store.delete(user["id"])
     return Response(status_code=204)
 
@@ -294,11 +305,28 @@ def essential_words(
     req: EssentialWordsRequest,
     completers: dict[str, Completer] = Depends(get_completers),
 ) -> EssentialWordsResponse:
-    """Əsas lüğət (504 sabit söz bankı) — səviyyəyə uyğun növbəti dəst.
+    """Əsas lüğət.
 
-    `offset` dövr edir (dövrə bir dəfə tam banka görə) — son sözdən sonra
-    yenidən əvvələ qayıdır ki, "növbəti dəst" düyməsi heç vaxt boş qalmasın.
+    `target_lang == "en"` — 504 sabit söz bankı (Barron's), səviyyəyə uyğun
+    növbəti dəst. `offset` dövr edir (dövrə bir dəfə tam banka görə) — son
+    sözdən sonra yenidən əvvələ qayıdır ki, "növbəti dəst" düyməsi heç vaxt
+    boş qalmasın.
+
+    Digər dillər — sabit bank yoxdur, AI hər çağırışda təzə dəst seçir.
+    `total=-1` "sonsuz axın" mənasını verir (app bunu sayğacı gizlətmək
+    üçün oxuyur), `next_offset` sadəcə artır (dövriyyə yoxdur).
     """
+    if req.profile.target_lang != "en":
+        try:
+            words = _service(completers).language_essential_words(
+                req.profile, req.count, req.exclude_words
+            )
+        except ServiceError as exc:
+            raise HTTPException(status_code=502, detail=str(exc))
+        return EssentialWordsResponse(
+            words=words, total=-1, next_offset=req.offset + req.count
+        )
+
     pool = words_for_level(req.profile.level)
     total = len(pool)
     if total == 0:
@@ -330,12 +358,25 @@ def word_lookup(
 @app.post("/chat", response_model=ChatResponse)
 def chat(
     req: ChatRequest,
+    user: dict = Depends(get_current_user),
     chat_completers: dict[str, ChatCompleter] = Depends(get_chat_completers),
+    memory: MemoryStore = Depends(get_memory_store),
 ) -> ChatResponse:
     try:
-        return ChatResponse(reply=run_chat(req, chat_completers))
+        return ChatResponse(
+            reply=run_chat(req, chat_completers, memory, user["id"])
+        )
     except ServiceError as exc:
         raise HTTPException(status_code=502, detail=str(exc))
+
+
+@app.get("/chat/history", response_model=ChatHistoryResponse)
+def chat_history(
+    user: dict = Depends(get_current_user),
+    memory: MemoryStore = Depends(get_memory_store),
+) -> ChatHistoryResponse:
+    """İstifadəçinin saxlanmış çat tarixçəsi — ekran açılanda göstərilir."""
+    return ChatHistoryResponse(messages=memory.recent_messages(user["id"]))
 
 
 @app.post("/routine/sample")

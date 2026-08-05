@@ -1,5 +1,23 @@
 import 'package:dildostu/src/data/pack_repository.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+/// `loadFromAssets`-i cihaz olmadan test etmək üçün — yalnız `loadString`-i
+/// tələb olunan yollarla cavablandırır, qalanı "asset yoxdur" kimi atır.
+class _FakeBundle extends AssetBundle {
+  _FakeBundle(this.strings);
+  final Map<String, String> strings;
+
+  @override
+  Future<String> loadString(String key, {bool cache = true}) async {
+    final s = strings[key];
+    if (s == null) throw Exception('asset tapılmadı: $key');
+    return s;
+  }
+
+  @override
+  Future<ByteData> load(String key) => throw UnimplementedError();
+}
 
 String _packJson(String id, {int nWords = 2}) {
   final words = List.generate(
@@ -55,5 +73,41 @@ void main() {
       () => PackRepository.fromJsonStrings(['{not valid']),
       throwsA(isA<FormatException>()),
     );
+  });
+
+  group('loadFromAssets', () {
+    test('dilə görə düzgün qovluqdan yükləyir', () async {
+      final bundle = _FakeBundle({
+        'assets/packs/ru/cafe.json': _packJson('cafe'),
+      });
+      final repo = await PackRepository.loadFromAssets(
+        lang: 'ru',
+        bundle: bundle,
+        ids: const ['cafe'],
+      );
+      expect(repo.byId('cafe'), isNotNull);
+    });
+
+    test('fayl hələ yoxdursa sınmır, boş qayıdır', () async {
+      final bundle = _FakeBundle(const {});
+      final repo = await PackRepository.loadFromAssets(
+        lang: 'ru',
+        bundle: bundle,
+        ids: const ['cafe', 'hotel'],
+      );
+      expect(repo.packs, isEmpty);
+    });
+
+    test('bir dilin faylları başqa dilin qovluğundan yüklənmir', () async {
+      final bundle = _FakeBundle({
+        'assets/packs/en/cafe.json': _packJson('cafe'),
+      });
+      final repo = await PackRepository.loadFromAssets(
+        lang: 'ru',
+        bundle: bundle,
+        ids: const ['cafe'],
+      );
+      expect(repo.packs, isEmpty);
+    });
   });
 }

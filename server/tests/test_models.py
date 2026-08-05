@@ -53,6 +53,25 @@ class TestUserProfile:
         p = UserProfile(wake_hour=7, sleep_hour=22, purpose="general", level="intermediate")
         assert p.interests == []
 
+    def test_target_lang_defaults_to_en(self):
+        p = valid_profile()
+        assert p.target_lang == "en"
+
+    def test_target_lang_accepts_four_languages(self):
+        for lang in ("en", "ru", "es", "it"):
+            p = UserProfile(
+                wake_hour=8, sleep_hour=23, purpose="travel", level="beginner",
+                target_lang=lang,
+            )
+            assert p.target_lang == lang
+
+    def test_unknown_target_lang_rejected(self):
+        with pytest.raises(ValidationError):
+            UserProfile(
+                wake_hour=8, sleep_hour=23, purpose="travel", level="beginner",
+                target_lang="fr",
+            )
+
 
 class TestLiveMessage:
     def test_valid(self):

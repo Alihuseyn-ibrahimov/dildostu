@@ -1,0 +1,104 @@
+{
+  "pack_id": "evening",
+  "target_lang": "ru",
+  "ui_lang": "az",
+  "title_az": "Axşam / günün sonu",
+  "words": [
+    {
+      "word": "ужин",
+      "translation_az": "şam yeməyi",
+      "ipa": "/ʊʐɨn/",
+      "example": "Сегодня я буду есть ужин дома.",
+      "example_az": "Bu gün mən evdə şam yeməyini yeyəcəyəm.",
+      "level": 1
+    },
+    {
+      "word": "отдыхать",
+      "translation_az": "istirahət etmək",
+      "ipa": "/ɐtˈdɨxətʲ/",
+      "example": "Я люблю отдыхать на природе.",
+      "example_az": "Mən təbiətdə istirahət etməyi sevirəm.",
+      "level": 2
+    },
+    {
+      "word": "сон",
+      "translation_az": "yuxu",
+      "ipa": "/son/",
+      "example": "Мне нужно ложиться спать, у меня плохой сон.",
+      "example_az": "Mən yatağa gedərək yuxu lazım olar, mənim yuxum pisdir.",
+      "level": 1
+    },
+    {
+      "word": "кино",
+      "translation_az": "kino",
+      "ipa": "/ˈkʲinə/",
+      "example": "Вечером я люблю смотреть кино.",
+      "example_az": "Axşam mən kinoya baxmağı sevirəm.",
+      "level": 1
+    },
+    {
+      "word": "книга",
+      "translation_az": "kitab",
+      "ipa": "/ˈknʲiɡə/",
+      "example": "Перед сном я люблю читать книгу.",
+      "example_az": "Yuxudan əvvəl mən kitaba oxumağı sevirəm.",
+      "level": 1
+    },
+    {
+      "word": "чай",
+      "translation_az": "çay",
+      "ipa": "/tɕaj/",
+      "example": "Я буду пить чай перед сном.",
+      "example_az": "Mən yuxudan əvvəl çay içəcəyəm.",
+      "level": 1
+    },
+    {
+      "word": "телевизор",
+      "translation_az": "televizor",
+      "ipa": "/tʲɪlʲɪvʲiˈzɔr/",
+      "example": "Вечером я смотрю телевизор.",
+      "example_az": "Axşam mən televizor baxıram.",
+      "level": 2
+    },
+    {
+      "word": "дневник",
+      "translation_az": "gündəlik",
+      "ipa": "/ˈdʲnʲɛvnʲɪk/",
+      "example": "Я пишу в дневнике перед сном.",
+      "example_az": "Mən yuxudan əvvəl gündəliyə yazaram.",
+      "level": 2
+    },
+    {
+      "word": "спокойной ночи",
+      "translation_az": "yaxşı gecələr",
+      "ipa": "/spɐˈkojnəj ˈnotɕɪ/",
+      "example": "Я говорю: спокойной ночи!",
+      "example_az": "Mən deyirəm: yaxşı gecələr!",
+      "level": 1
+    },
+    {
+      "word": "расслабиться",
+      "translation_az": "yənilmək",
+      "ipa": "/rəsˈslabʲɪtsə/",
+      "example": "Мне нужно расслабиться после работы.",
+      "example_az": "Mən işdən sonra yənilməyə ehtiyacım var.",
+      "level": 2
+    },
+    {
+      "word": "медитация",
+      "translation_az": "meditasiya",
+      "ipa": "/mʲɪdʲɪtɐˈtsɨjə/",
+      "example": "Я делаю медитацию перед сном.",
+      "example_az": "Mən yuxudan əvvəl meditasiya edirəm.",
+      "level": 3
+    },
+    {
+      "word": "закрыть глаза",
+      "translation_az": "gözləri bağlamaq",
+      "ipa": "/zɐˈkɾɨtʲ ˈɡlʲazɨ/",
+      "example": "Я закрываю глаза и засыпаю.",
+      "example_az": "Mən gözlərimi bağlayıram və yuxuya gedirəm.",
+      "level": 2
+    }
+  ]
+}

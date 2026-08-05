@@ -16,6 +16,7 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   LearningPurpose _purpose = LearningPurpose.travel;
   ProficiencyLevel _level = ProficiencyLevel.beginner;
+  TargetLanguage _targetLang = TargetLanguage.english;
   int _wakeHour = 8;
   int _sleepHour = 23;
   final _interestsController = TextEditingController();
@@ -38,6 +39,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       purpose: _purpose,
       level: _level,
       interests: interests,
+      targetLang: _targetLang,
     ));
   }
 
@@ -50,6 +52,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         children: [
           Text('AI köməkçini sənə uyğunlaşdıraq',
               style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: 20),
+          const Text('Hansı dili öyrənmək istəyirsən?'),
+          const SizedBox(height: 8),
+          SegmentedButton<TargetLanguage>(
+            segments: [
+              for (final lang in TargetLanguage.values)
+                ButtonSegment(value: lang, label: Text(lang.labelAz)),
+            ],
+            selected: {_targetLang},
+            onSelectionChanged: (s) => setState(() => _targetLang = s.first),
+          ),
           const SizedBox(height: 20),
           const Text('Niyə İngilis dili öyrənirsən?'),
           const SizedBox(height: 8),

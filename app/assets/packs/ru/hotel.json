@@ -1,0 +1,104 @@
+{
+  "pack_id": "hotel",
+  "target_lang": "ru",
+  "ui_lang": "az",
+  "title_az": "Oteldə",
+  "words": [
+    {
+      "word": "приём",
+      "translation_az": "qəbul",
+      "ipa": "/prʲiˈjom/",
+      "example": "Приём открыт с 8 утра.",
+      "example_az": "Qəbul səhər 8-dən açiqdır.",
+      "level": 2
+    },
+    {
+      "word": "номер",
+      "translation_az": "nömrə",
+      "ipa": "/ˈnomʲɪrʲ/",
+      "example": "Мне нужен номер с видом на море.",
+      "example_az": "Mənə dənizə baxan otaq lazımdır.",
+      "level": 2
+    },
+    {
+      "word": "администратор",
+      "translation_az": "idarəçi",
+      "ipa": "/ɐdmʲɪnʲɪstrɐˈtor/",
+      "example": "Администратор поможет вам с багажом.",
+      "example_az": "İdarəçi sizə bagajla kömək edəcək.",
+      "level": 3
+    },
+    {
+      "word": "регистрация",
+      "translation_az": "qeydiyyat",
+      "ipa": "/rʲɪɡʲɪstrɐˈtsɨjə/",
+      "example": "Регистрация проходит быстро.",
+      "example_az": "Qeydiyyat prosesi tez başa çatır.",
+      "level": 2
+    },
+    {
+      "word": "выход",
+      "translation_az": "çıxış",
+      "ipa": "/vɨˈxod/",
+      "example": "Выход из отеля в 12 часов.",
+      "example_az": "Oteldən çıxış saat 12-dədir.",
+      "level": 1
+    },
+    {
+      "word": "интернет",
+      "translation_az": "internet",
+      "ipa": "/ɪntɨrˈnɛt/",
+      "example": "Интернет работает во всех номерах.",
+      "example_az": "İnternet hər otaqda fəaliyyət göstərir.",
+      "level": 1
+    },
+    {
+      "word": "ресторан",
+      "translation_az": "restoran",
+      "ipa": "/rʲɪstɐˈran/",
+      "example": "Ресторан открыт до 23 часов.",
+      "example_az": "Restoran saat 23-dək açıqdır.",
+      "level": 1
+    },
+    {
+      "word": "спа",
+      "translation_az": "spa",
+      "ipa": "/spɐ/",
+      "example": "Спа центр работает с 10 утра.",
+      "example_az": "Spa mərkəzi səhər 10-dan fəaliyyət göstərir.",
+      "level": 2
+    },
+    {
+      "word": "помощь",
+      "translation_az": "kömək",
+      "ipa": "/pɐˈmoʂʲ/",
+      "example": "Мне нужна помощь с багажом.",
+      "example_az": "Mənə bagajla kömək lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "адрес",
+      "translation_az": "ünvan",
+      "ipa": "/ɐˈdrɛs/",
+      "example": "Адрес отеля указан на сайте.",
+      "example_az": "Otelin ünvanı saytda göstərilmişdir.",
+      "level": 1
+    },
+    {
+      "word": "телефон",
+      "translation_az": "telefon",
+      "ipa": "/tʲɪlʲɪˈfon/",
+      "example": "Телефон для связи с администратором.",
+      "example_az": "İdarəçi ilə əlaqə saxlamaq üçün telefon.",
+      "level": 1
+    },
+    {
+      "word": "платеж",
+      "translation_az": "ödəniş",
+      "ipa": "/plɐˈtʲeʐ/",
+      "example": "Платеж можно произвести картой.",
+      "example_az": "Ödəniş kart ilə həyata keçirilə bilər.",
+      "level": 2
+    }
+  ]
+}

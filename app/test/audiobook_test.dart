@@ -85,6 +85,20 @@ void main() {
           Audiobook.fromServerJson(json['books'][0] as Map<String, dynamic>);
       expect(book.source, contains('Gutenberg'));
     });
+
+    test('lang sahəsi yoxdursa (köhnə manifest) İngilisə düşür', () {
+      final json = jsonDecode(_libraryJson()) as Map<String, dynamic>;
+      final book =
+          Audiobook.fromServerJson(json['books'][0] as Map<String, dynamic>);
+      expect(book.lang, 'en');
+    });
+
+    test('lang sahəsi verilibsə oxunur', () {
+      final json = jsonDecode(_libraryJson())['books'][0]
+          as Map<String, dynamic>;
+      final book = Audiobook.fromServerJson({...json, 'lang': 'ru'});
+      expect(book.lang, 'ru');
+    });
   });
 
   group('AudiobookClient', () {

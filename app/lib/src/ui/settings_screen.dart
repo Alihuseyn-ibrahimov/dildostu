@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../data/settings_repository.dart';
+import '../data/tts_telemetry_repository.dart';
 import '../models/app_version_info.dart';
 import '../models/settings.dart';
+import '../models/user_profile.dart';
 import 'update_banner.dart';
 
 const _minCount = 5;
@@ -23,6 +25,9 @@ class SettingsScreen extends StatefulWidget {
     this.fetchUpdate,
     this.downloadUpdate,
     this.onInstallApk,
+    this.ttsTelemetry,
+    this.currentLanguage,
+    this.onLanguageChanged,
   });
 
   final SettingsRepository repository;
@@ -47,6 +52,15 @@ class SettingsScreen extends StatefulWidget {
 
   /// Yüklənmiş APK-nı sistem quraşdırıcısına açır.
   final Future<void> Function(String path)? onInstallApk;
+
+  /// Faza 0 (ElevenLabs planı) baseline ölçüsü — `flutter_tts`-in cihazda
+  /// nə qədər uğursuz olduğu. Null olsa bölmə göstərilmir.
+  final TtsTelemetry? ttsTelemetry;
+
+  /// Öyrənilən dil (bax spec: 2026-08-04-multilanguage-russian-design.md).
+  /// `onLanguageChanged` null olsa seçici göstərilmir.
+  final TargetLanguage? currentLanguage;
+  final ValueChanged<TargetLanguage>? onLanguageChanged;
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -183,6 +197,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
+          if (widget.onLanguageChanged != null) ...[
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Öyrənilən dil',
+                      style: theme.textTheme.labelMedium
+                          ?.copyWith(color: theme.colorScheme.outline)),
+                  const SizedBox(height: 8),
+                  SegmentedButton<TargetLanguage>(
+                    showSelectedIcon: false,
+                    segments: [
+                      for (final lang in TargetLanguage.values)
+                        ButtonSegment(value: lang, label: Text(lang.labelAz)),
+                    ],
+                    selected: {widget.currentLanguage ?? TargetLanguage.english},
+                    onSelectionChanged: (s) =>
+                        widget.onLanguageChanged!(s.first),
+                  ),
+                ],
+              ),
+            ),
+          ],
           const Divider(),
           if (widget.onOpenPrivacyPolicy != null)
             ListTile(
@@ -249,6 +288,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
           ],
+          if (widget.ttsTelemetry != null) ...[
+            const Divider(),
+            _TtsTelemetryTile(telemetry: widget.ttsTelemetry!),
+          ],
           const SizedBox(height: 8),
           Text(
             'DilDostu — kontekstli dil öyrənmə köməkçisi',
@@ -287,5 +330,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
     if (picked != null) onPicked(picked);
+  }
+}
+
+/// Faza 0 baseline rəqəmini göstərir — inkişaf/diaqnostika üçün, adi
+/// istifadəçini narahat etməyən sadə mətn.
+class _TtsTelemetryTile extends StatelessWidget {
+  const _TtsTelemetryTile({required this.telemetry});
+
+  final TtsTelemetry telemetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final days = DateTime.now().difference(telemetry.since).inDays;
+    final percent = (telemetry.failureRate * 100).toStringAsFixed(1);
+    return ListTile(
+      title: const Text('Səs statistikası (daxili)'),
+      subtitle: Text(
+        '$days gündür yığılır — ${telemetry.attempts} cəhd, '
+        '${telemetry.failures} uğursuz ($percent%), '
+        '${telemetry.noVoiceDetections} dəfə EN səs tapılmadı',
+      ),
+      subtitleTextStyle: theme.textTheme.bodySmall
+          ?.copyWith(color: theme.colorScheme.outline),
+    );
   }
 }

@@ -1,0 +1,104 @@
+{
+  "pack_id": "market",
+  "target_lang": "ru",
+  "ui_lang": "az",
+  "title_az": "Marketdə / alış-veriş",
+  "words": [
+    {
+      "word": "сколько",
+      "translation_az": "nə qədər",
+      "ipa": "/ˈskolʲkə/",
+      "example": "Сколько стоит этот хлеб?",
+      "example_az": "Bu çörəyin qiyməti nə qədərdir?",
+      "level": 2
+    },
+    {
+      "word": "цена",
+      "translation_az": "qiymət",
+      "ipa": "/ˈt͡sɛnə/",
+      "example": "Цена этого товара высокая.",
+      "example_az": "Bu məhsulun qiyməti yüksəkdir.",
+      "level": 2
+    },
+    {
+      "word": "купить",
+      "translation_az": "almaq",
+      "ipa": "/kʊˈpʲitʲ/",
+      "example": "Я хочу купить этот кофе.",
+      "example_az": "Mən bu qəhvəni almaq istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "продукты",
+      "translation_az": "məhsullar",
+      "ipa": "/prədʊˈktɨ/",
+      "example": "Мы идем за продуктами в магазин.",
+      "example_az": "Biz məhsullar almaq üçün mağazaya gedirik.",
+      "level": 2
+    },
+    {
+      "word": "магазин",
+      "translation_az": "mağaza",
+      "ipa": "/məgəˈzɨn/",
+      "example": "Этот магазин очень большой.",
+      "example_az": "Bu mağaza çox böyükdür.",
+      "level": 1
+    },
+    {
+      "word": "касса",
+      "translation_az": "kassa",
+      "ipa": "/ˈkasə/",
+      "example": "Я иду к кассе платить.",
+      "example_az": "Mən kassaya getməyə gedirəm.",
+      "level": 1
+    },
+    {
+      "word": "сдача",
+      "translation_az": "dəyişiklik",
+      "ipa": "/ˈsdat͡ɕə/",
+      "example": "Можно ли сдачу, пожалуйста?",
+      "example_az": "Dəyişiklik olar, zəhmət olmasa?",
+      "level": 2
+    },
+    {
+      "word": "корзина",
+      "translation_az": "səbət",
+      "ipa": "/kɐrˈzʲinə/",
+      "example": "Я возьму эту корзину для покупок.",
+      "example_az": "Mən bu səbəti alış-verişlər üçün götürəcəyəm.",
+      "level": 2
+    },
+    {
+      "word": "вес",
+      "translation_az": "çəki",
+      "ipa": "/vʲes/",
+      "example": "Вес этого товара один килограмм.",
+      "example_az": "Bu məhsulun çəkisi bir kq-dır.",
+      "level": 2
+    },
+    {
+      "word": "килограмм",
+      "translation_az": "kiloqram",
+      "ipa": "/kʲiləɡram/",
+      "example": "Я хочу купить один килограмм яблок.",
+      "example_az": "Mən bir kiloqram alma almaq istəyirəm.",
+      "level": 2
+    },
+    {
+      "word": "оплатить",
+      "translation_az": "ödəmək",
+      "ipa": "/ɐplɐˈtʲitʲ/",
+      "example": "Я хочу оплатить покупки картой.",
+      "example_az": "Mən alış-verişləri kartla ödəmək istəyirəm.",
+      "level": 2
+    },
+    {
+      "word": "спасибо",
+      "translation_az": "təşəkkür",
+      "ipa": "/spɐˈsʲibə/",
+      "example": "Спасибо за помощь в магазине.",
+      "example_az": "Mağazada köməyinizə görə təşəkkür.",
+      "level": 1
+    }
+  ]
+}

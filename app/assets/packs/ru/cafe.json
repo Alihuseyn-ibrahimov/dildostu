@@ -1,0 +1,104 @@
+{
+  "pack_id": "cafe",
+  "target_lang": "ru",
+  "ui_lang": "az",
+  "title_az": "Kafedə",
+  "words": [
+    {
+      "word": "кофе",
+      "translation_az": "qəhvə",
+      "ipa": "/kɐˈfʲe/",
+      "example": "Я хочу кофе.",
+      "example_az": "Mən qəhvə istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "чай",
+      "translation_az": "çay",
+      "ipa": "/t͡ɕaj/",
+      "example": "Мне нужно чай.",
+      "example_az": "Mənə çay lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "сахар",
+      "translation_az": "şəkər",
+      "ipa": "/sɐˈxar/",
+      "example": "Можно сахар?",
+      "example_az": "Şəkər olar mı?",
+      "level": 1
+    },
+    {
+      "word": "молоко",
+      "translation_az": "süd",
+      "ipa": "/mɐˈloko/",
+      "example": "Добавьте молоко.",
+      "example_az": "Süd əlavə edin.",
+      "level": 1
+    },
+    {
+      "word": "счет",
+      "translation_az": "hesab",
+      "ipa": "/ɕːot/",
+      "example": "Можно счет?",
+      "example_az": "Hesab olar mı?",
+      "level": 1
+    },
+    {
+      "word": "оплата",
+      "translation_az": "ödəniş",
+      "ipa": "/ɐpˈlatə/",
+      "example": "Где оплата?",
+      "example_az": "Ödəniş haradadır?",
+      "level": 2
+    },
+    {
+      "word": "меню",
+      "translation_az": "menyu",
+      "ipa": "/mʲɪˈnʲu/",
+      "example": "Покажите меню.",
+      "example_az": "Menyu göstərin.",
+      "level": 1
+    },
+    {
+      "word": "стол",
+      "translation_az": "stol",
+      "ipa": "/stoɫ/",
+      "example": "Мне нужно стол.",
+      "example_az": "Mənə stol lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "заказ",
+      "translation_az": "sifariş",
+      "ipa": "/zɐˈkaz/",
+      "example": "Я делаю заказ.",
+      "example_az": "Mən sifariş edirəm.",
+      "level": 1
+    },
+    {
+      "word": "подождите",
+      "translation_az": "gözləyin",
+      "ipa": "/pɐdɐʐˈdʲitʲe/",
+      "example": "Подождите минуту.",
+      "example_az": "Bir dəqiqə gözləyin.",
+      "level": 2
+    },
+    {
+      "word": "без сахара",
+      "translation_az": "şəkərsiz",
+      "ipa": "/bʲɛz sɐˈxarə/",
+      "example": "Я хочу кофе без сахара.",
+      "example_az": "Mən şəkərsiz qəhvə istəyirəm.",
+      "level": 2
+    },
+    {
+      "word": "спасибо",
+      "translation_az": "təşəkkür",
+      "ipa": "/spɐˈsʲibə/",
+      "example": "Спасибо за кофе.",
+      "example_az": "Qəhvəyə görə təşəkkür.",
+      "level": 1
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "pack_id": "greetings",
+  "target_lang": "ru",
+  "ui_lang": "az",
+  "title_az": "Salamlaşma və tanışlıq",
+  "words": [
+    {
+      "word": "здравствуйте",
+      "translation_az": "salam",
+      "ipa": "/zdrʌˈstvʊjʲtʲɪ/",
+      "example": "Здравствуйте, меня зовут Иванов.",
+      "example_az": "Salam, məni İvanov adlandırırlar.",
+      "level": 1
+    },
+    {
+      "word": "привет",
+      "translation_az": "salam",
+      "ipa": "/prʲɪˈvʲet/",
+      "example": "Привет, как дела?",
+      "example_az": "Salam, necəsən?",
+      "level": 1
+    },
+    {
+      "word": "до свидания",
+      "translation_az": "görüşərik",
+      "ipa": "/dɐ ˈsvidɐnʲɪjə/",
+      "example": "До свидания, увидимся завтра.",
+      "example_az": "Görüşərik, sabah görüşərik.",
+      "level": 1
+    },
+    {
+      "word": "извините",
+      "translation_az": "bağışlayın",
+      "ipa": "/ɪzvʲɪˈnʲitʲɪ/",
+      "example": "Извините, где находится туалет?",
+      "example_az": "Bağışlayın, tualet haradadır?",
+      "level": 1
+    },
+    {
+      "word": "спасибо",
+      "translation_az": "təşəkkür",
+      "ipa": "/spɐˈsʲibɐ/",
+      "example": "Спасибо, очень вкусно.",
+      "example_az": "Təşəkkür, çox dadlıdır.",
+      "level": 1
+    },
+    {
+      "word": "пожалуйста",
+      "translation_az": "zəhmət olmasa",
+      "ipa": "/pɐʐɐˈlujstɐ/",
+      "example": "Пожалуйста, передайте мне сахар.",
+      "example_az": "Zəhmət olmasa, mənə şəkər verin.",
+      "level": 1
+    },
+    {
+      "word": "меня зовут",
+      "translation_az": "məni adlandırırlar",
+      "ipa": "/mʲɪˈnʲæ zɐˈvut/",
+      "example": "Меня зовут Сергей, приятно познакомиться.",
+      "example_az": "Məni Sergey adlandırırlar, tanışlıqdan məmnunam.",
+      "level": 2
+    },
+    {
+      "word": "откуда вы",
+      "translation_az": "siz hardansınız",
+      "ipa": "/ɐtˈkʊdɐ ˈvɪ/",
+      "example": "Откуда вы, вы не из Москвы?",
+      "example_az": "Siz hardansınız, siz Moskvadan deyilsiz?",
+      "level": 2
+    },
+    {
+      "word": "я из",
+      "translation_az": "mən",
+      "ipa": "/ja ɪz/",
+      "example": "Я из Баку, а вы?",
+      "example_az": "Mən Bakıdanam, siz?",
+      "level": 2
+    },
+    {
+      "word": "приятно познакомиться",
+      "translation_az": "tanışlıqdan məmnunam",
+      "ipa": "/prʲɪˈjatnɐ pɐznɐˈkɐmʲɪtʲsʲɐ/",
+      "example": "Приятно познакомиться, я рад встрече.",
+      "example_az": "Tanışlıqdan məmnunam, görüşdən şadam.",
+      "level": 2
+    },
+    {
+      "word": "извините, я не понимаю",
+      "translation_az": "bağışlayın, mən anlamıram",
+      "ipa": "/ɪzvʲɪˈnʲitʲɪ ˈja nʲɪ pɐnʲɪˈmajʊ/",
+      "example": "Извините, я не понимаю, что вы говорите.",
+      "example_az": "Bağışlayın, mən anlamıram, siz nə deyirsiniz.",
+      "level": 3
+    },
+    {
+      "word": "можно ли мне помочь",
+      "translation_az": "mənə kömək etməyə olar",
+      "ipa": "/moʐˈnɐ ˈlʲi mnʲɪ pɐmɐˈɡʲitʲ/",
+      "example": "Можно ли мне помочь вам с чем-то?",
+      "example_az": "Mənə sizə nə ilə kömək etməyə olar?",
+      "level": 3
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "pack_id": "morning",
+  "target_lang": "ru",
+  "ui_lang": "az",
+  "title_az": "Səhər rutini",
+  "words": [
+    {
+      "word": "доброе утро",
+      "translation_az": "yaxşı səhər",
+      "ipa": "/dɐbˈroje ˈutro/",
+      "example": "Доброе утро, как вы спите?",
+      "example_az": "Yaxşı səhər, siz necə yatırsınız?",
+      "level": 1
+    },
+    {
+      "word": "завтрак",
+      "translation_az": "səhər yeməyi",
+      "ipa": "/zɐftˈrak/",
+      "example": "Я хочу завтрак на террасе.",
+      "example_az": "Mən terasda səhər yeməyini istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "кофе",
+      "translation_az": "qəhvə",
+      "ipa": "/kɐˈfʲe/",
+      "example": "Мне, пожалуйста, кофе.",
+      "example_az": "Mənə, zəhmət olmasa, qəhvə.",
+      "level": 1
+    },
+    {
+      "word": "чай",
+      "translation_az": "çay",
+      "ipa": "/tɕaj/",
+      "example": "Я люблю пить чай утром.",
+      "example_az": "Mən səhər çay içməyi sevirəm.",
+      "level": 1
+    },
+    {
+      "word": "туалет",
+      "translation_az": " tualet",
+      "ipa": "/tuɐˈlʲet/",
+      "example": "Туалет где?",
+      "example_az": "Tualet haradadır?",
+      "level": 1
+    },
+    {
+      "word": "душ",
+      "translation_az": "duş",
+      "ipa": "/duʂ/",
+      "example": "Мне нужно принять душ.",
+      "example_az": "Mən duş qəbul etməliyəm.",
+      "level": 1
+    },
+    {
+      "word": "зубная щетка",
+      "translation_az": "diş fırçası",
+      "ipa": "/zubnɐj ˈɕːetkə/",
+      "example": "У меня нет зубной щетки.",
+      "example_az": "Mənim diş fırçasım yoxdur.",
+      "level": 2
+    },
+    {
+      "word": "расписание",
+      "translation_az": "cədvəl",
+      "ipa": "/rɐsˈpisanʲijə/",
+      "example": "Можно ли мне посмотреть расписание?",
+      "example_az": "Mənə cədvəli baxmaq olar mı?",
+      "level": 2
+    },
+    {
+      "word": "отель",
+      "translation_az": "otel",
+      "ipa": "/ɐtʲelʲ/",
+      "example": "Где находится отель?",
+      "example_az": "Otel haradadır?",
+      "level": 1
+    },
+    {
+      "word": "номер",
+      "translation_az": "nömrə",
+      "ipa": "/ˈnomʲɪrʲ/",
+      "example": "Мой номер 314.",
+      "example_az": "Mənim nömrəm 314.",
+      "level": 1
+    },
+    {
+      "word": "коридор",
+      "translation_az": "koridor",
+      "ipa": "/kərʲidɐr/",
+      "example": "Мой номер находится в коридоре.",
+      "example_az": "Mənim nömrəm koridordda yerləşir.",
+      "level": 2
+    },
+    {
+      "word": "лифт",
+      "translation_az": "lift",
+      "ipa": "/lʲift/",
+      "example": "Лифт работает?",
+      "example_az": "Lift işləyir?",
+      "level": 1
+    }
+  ]
+}

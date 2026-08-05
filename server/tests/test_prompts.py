@@ -3,19 +3,23 @@ from pydantic import ValidationError
 
 from dildostu_server.models import Context, UserProfile
 from dildostu_server.prompts import (
+    build_chat_system,
     build_dayplan_prompt,
     build_essential_words_prompt,
     build_generate_prompt,
+    build_language_essential_words_prompt,
+    build_pack_words_prompt,
     build_word_lookup_prompt,
+    language_name,
     level_instruction,
     preferred_providers,
 )
 
 
-def profile(level="beginner"):
+def profile(level="beginner", target_lang="en"):
     return UserProfile(
         wake_hour=8, sleep_hour=23, purpose="travel", level=level,
-        interests=["yemək"],
+        interests=["yemək"], target_lang=target_lang,
     )
 
 
@@ -176,6 +180,205 @@ class TestDayPlanPrompt:
     def test_includes_pack_ids_and_count(self):
         _, user = build_dayplan_prompt(profile(), ["morning", "cafe", "evening"], "2026-07-22")
         assert "morning" in user and "cafe" in user and "evening" in user
+
+
+class TestLanguageName:
+    def test_known_languages(self):
+        assert language_name("en") == "İngilis"
+        assert language_name("ru") == "Rus"
+        assert language_name("es") == "İspan"
+        assert language_name("it") == "İtalyan"
+
+    def test_unknown_falls_back_to_english(self):
+        assert language_name("fr") == "İngilis"
+
+
+class TestGeneratePromptCarriesLanguage:
+    def test_default_english_mentions_ingilis(self):
+        _, user = build_generate_prompt(
+            profile(), Context(pack_id="cafe", hour=9), mode="normal", recent_words=[]
+        )
+        assert "İngilis dili öyrədən" in user
+
+    def test_russian_profile_mentions_rus(self):
+        _, user = build_generate_prompt(
+            profile(target_lang="ru"), Context(pack_id="cafe", hour=9),
+            mode="normal", recent_words=[],
+        )
+        assert "Rus dili öyrədən" in user
+        assert "İngilis" not in user
+
+
+class TestEssentialNudgeOnlyForEnglish:
+    def test_english_gets_barrons_nudge(self):
+        _, user = build_generate_prompt(
+            profile(target_lang="en"), Context(pack_id="cafe", hour=9),
+            mode="normal", recent_words=[],
+        )
+        assert "504" in user
+
+    def test_russian_does_not_get_barrons_nudge(self):
+        _, user = build_generate_prompt(
+            profile(target_lang="ru"), Context(pack_id="cafe", hour=9),
+            mode="normal", recent_words=[],
+        )
+        assert "504" not in user
+        assert "Barron" not in user
+
+
+class TestChatSystemCarriesLanguage:
+    def test_default_english(self):
+        system = build_chat_system(profile(), None)
+        assert "İngilis dili" in system
+
+    def test_russian(self):
+        system = build_chat_system(profile(target_lang="ru"), None)
+        assert "Rus dili" in system
+
+
+class TestChatSystemMemory:
+    """2026-08-04 — yaddaş markeri həmişə mövcuddur; faktlar verilsə prompta düşür."""
+
+    def test_marker_instruction_always_present(self):
+        system = build_chat_system(profile(), None)
+        assert "[[YADDA:" in system
+
+    def test_no_facts_no_facts_line(self):
+        system = build_chat_system(profile(), None, known_facts=None)
+        assert "Bu istifadəçi haqqında bildiklərin" not in system
+
+    def test_empty_facts_list_no_facts_line(self):
+        system = build_chat_system(profile(), None, known_facts=[])
+        assert "Bu istifadəçi haqqında bildiklərin" not in system
+
+    def test_facts_included_when_given(self):
+        system = build_chat_system(
+            profile(), None, known_facts=["Adı Elvin", "3 aydır öyrənir"]
+        )
+        assert "Adı Elvin" in system
+        assert "3 aydır öyrənir" in system
+
+    def test_marker_instruction_present_even_with_facts(self):
+        system = build_chat_system(profile(), None, known_facts=["Adı Elvin"])
+        assert "[[YADDA:" in system
+
+
+class TestChatSystemTopicExplanation:
+    """2026-08-04 — istifadəçinin verdiyi mövzu-izahı promptu inteqrasiyası:
+    yalnız mövzu izahında tam struktur, sadə aydınlaşdırmada məcbur deyil."""
+
+    def test_mentions_interests(self):
+        system = build_chat_system(profile(), None)
+        assert "yemək" in system
+
+    def test_no_interests_shows_yoxdur(self):
+        p = UserProfile(
+            wake_hour=8, sleep_hour=23, purpose="travel", level="beginner",
+            interests=[],
+        )
+        system = build_chat_system(p, None)
+        assert "maraqlar: yoxdur" in system
+
+    def test_includes_vocabulary_list_instruction(self):
+        system = build_chat_system(profile(), None)
+        assert "5 sözdən ibarət lüğət" in system
+
+    def test_includes_three_check_questions_instruction(self):
+        system = build_chat_system(profile(), None)
+        assert "3 sadə sual" in system
+
+    def test_includes_hard_word_az_gloss_instruction(self):
+        system = build_chat_system(profile(), None)
+        assert "Çətin sözlərin yanında qısa Azərbaycanca izah" in system
+
+    def test_structure_not_forced_for_simple_clarifications(self):
+        system = build_chat_system(profile(), None)
+        assert "MƏCBUR ETMƏ" in system
+
+    def test_vocabulary_list_uses_target_language_name(self):
+        system = build_chat_system(profile(target_lang="ru"), None)
+        assert "Rus–Azərbaycan" in system
+
+
+class TestLanguageEssentialWordsPrompt:
+    def test_asks_for_exact_count(self):
+        _, user = build_language_essential_words_prompt(
+            profile(target_lang="ru"), 12, []
+        )
+        assert "12" in user
+
+    def test_mentions_target_language(self):
+        _, user = build_language_essential_words_prompt(
+            profile(target_lang="ru"), 12, []
+        )
+        assert "Rus" in user
+
+    def test_exclude_words_listed(self):
+        _, user = build_language_essential_words_prompt(
+            profile(target_lang="ru"), 12, ["привет", "спасибо"]
+        )
+        assert "привет" in user
+        assert "спасибо" in user
+
+    def test_no_exclude_line_when_empty(self):
+        _, user = build_language_essential_words_prompt(
+            profile(target_lang="ru"), 12, []
+        )
+        assert "TƏKRAR ETMƏ" not in user
+
+    def test_carries_level_rules(self):
+        _, user = build_language_essential_words_prompt(
+            profile(level="advanced", target_lang="ru"), 12, []
+        )
+        assert "idiom" in user.lower()
+
+    def test_asks_json_messages_array(self):
+        _, user = build_language_essential_words_prompt(
+            profile(target_lang="ru"), 12, []
+        )
+        assert "messages" in user
+
+
+class TestScriptNote:
+    """2026-08-04-də real generasiyada tutuldu: model dil adı verilsə də
+    latın hərflərinə transliterasiya edir (məs. "kofe" — "кофе" yerinə).
+    Açıq skript təlimatı olmadan bu, prompt-a qayıdır."""
+
+    def test_russian_prompt_demands_cyrillic(self):
+        _, user = build_generate_prompt(
+            profile(target_lang="ru"), Context(pack_id="cafe", hour=9),
+            mode="normal", recent_words=[],
+        )
+        assert "KİRİL" in user
+
+    def test_english_prompt_has_no_script_note_noise(self):
+        _, user = build_generate_prompt(
+            profile(target_lang="en"), Context(pack_id="cafe", hour=9),
+            mode="normal", recent_words=[],
+        )
+        assert "KİRİL" not in user
+
+    def test_pack_words_prompt_carries_script_note(self):
+        _, user = build_pack_words_prompt(profile(target_lang="ru"), "cafe", 8)
+        assert "KİRİL" in user
+
+    def test_essential_words_prompt_carries_script_note(self):
+        _, user = build_essential_words_prompt(profile(target_lang="ru"), ["abandon"])
+        assert "KİRİL" in user
+
+    def test_language_essential_words_prompt_carries_script_note(self):
+        _, user = build_language_essential_words_prompt(
+            profile(target_lang="ru"), 12, []
+        )
+        assert "KİRİL" in user
+
+    def test_dayplan_prompt_carries_script_note(self):
+        _, user = build_dayplan_prompt(profile(target_lang="ru"), ["cafe"], "2026-08-04")
+        assert "KİRİL" in user
+
+    def test_chat_system_carries_script_note(self):
+        system = build_chat_system(profile(target_lang="ru"), None)
+        assert "KİRİL" in system
 
 
 class TestProviderRouting:

@@ -138,6 +138,18 @@ class TestSlugify:
         assert not slug.endswith("-")
         assert "--" not in slug
 
+    def test_cyrillic_title_transliterated_not_dropped(self):
+        # NFKD ASCII-foldinq kiril hərflərini SİLƏR (dekompozisiyası yoxdur) —
+        # transliterasiya olmasa slug boş qalardı (Rus kitabları üçün bug).
+        slug = slugify("ВОРОНА И ЛИСИЦА")
+        assert slug == "vorona-i-lisitsa"
+        assert slug  # boş DEYİL
+
+    def test_cyrillic_slug_only_safe_chars(self):
+        slug = slugify("ЩУКА И КОТ!")
+        assert all(c.isalnum() or c == "-" for c in slug)
+        assert slug
+
 
 class TestSplitChapters:
     BODY = """THE FOX AND THE GRAPES
@@ -246,3 +258,15 @@ class TestBuildManifest:
                 source="x", level="beginner", chapters=self._chapters(),
                 measured={},
             )
+
+    def test_lang_defaults_to_en(self):
+        assert self._manifest()["books"][0]["lang"] == "en"
+
+    def test_lang_carries_through(self):
+        m = build_manifest(
+            book_id="krylov", title_en="x", title_az="x", author="x",
+            source="x", level="beginner", chapters=self._chapters(),
+            measured={"the-fox-and-the-grapes": (1.0, 100)},
+            lang="ru",
+        )
+        assert m["books"][0]["lang"] == "ru"

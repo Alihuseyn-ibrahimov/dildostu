@@ -77,3 +77,43 @@ def test_parse_response_empty_words_raises():
     payload = json.dumps({"words": []})
     with pytest.raises(ValidationError):
         parse_response(payload, by_id("cafe"))
+
+
+def test_build_prompt_defaults_to_english():
+    prompt = build_prompt(by_id("cafe"))
+    assert "English" in prompt
+    assert "Russian" not in prompt
+
+
+def test_build_prompt_carries_russian():
+    prompt = build_prompt(by_id("cafe"), lang="ru")
+    assert "Russian" in prompt
+    assert "learning Russian" in prompt
+
+
+def test_parse_response_defaults_to_english_target_lang():
+    payload = json.dumps({"words": _words_json(2)})
+    pack = parse_response(payload, by_id("cafe"))
+    assert pack["target_lang"] == "en"
+
+
+def test_parse_response_carries_russian_target_lang():
+    payload = json.dumps({"words": _words_json(2)})
+    pack = parse_response(payload, by_id("cafe"), lang="ru")
+    assert pack["target_lang"] == "ru"
+
+
+def test_build_prompt_carries_spanish():
+    prompt = build_prompt(by_id("cafe"), lang="es")
+    assert "learning Spanish" in prompt
+
+
+def test_build_prompt_carries_italian():
+    prompt = build_prompt(by_id("cafe"), lang="it")
+    assert "learning Italian" in prompt
+
+
+def test_parse_response_carries_spanish_and_italian_target_lang():
+    payload = json.dumps({"words": _words_json(2)})
+    assert parse_response(payload, by_id("cafe"), lang="es")["target_lang"] == "es"
+    assert parse_response(payload, by_id("cafe"), lang="it")["target_lang"] == "it"

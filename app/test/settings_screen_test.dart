@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:dildostu/src/data/settings_repository.dart';
+import 'package:dildostu/src/data/tts_telemetry_repository.dart';
 import 'package:dildostu/src/models/app_version_info.dart';
 import 'package:dildostu/src/models/settings.dart';
+import 'package:dildostu/src/models/user_profile.dart';
 import 'package:dildostu/src/ui/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -90,6 +92,60 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: SettingsScreen(repository: repo)));
 
     expect(find.text('Məxfilik siyasəti'), findsNothing);
+  });
+
+  testWidgets('ttsTelemetry verilməyibsə "Səs statistikası" göstərilmir',
+      (tester) async {
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(home: SettingsScreen(repository: repo)));
+
+    expect(find.text('Səs statistikası (daxili)'), findsNothing);
+  });
+
+  testWidgets('onLanguageChanged verilməyibsə dil seçicisi göstərilmir',
+      (tester) async {
+    final repo = await SettingsRepository.load();
+    await tester.pumpWidget(MaterialApp(home: SettingsScreen(repository: repo)));
+
+    expect(find.text('Öyrənilən dil'), findsNothing);
+  });
+
+  testWidgets('onLanguageChanged verilibsə dil seçicisi görünür və çağırılır',
+      (tester) async {
+    final repo = await SettingsRepository.load();
+    TargetLanguage? picked;
+    await tester.pumpWidget(MaterialApp(
+      home: SettingsScreen(
+        repository: repo,
+        currentLanguage: TargetLanguage.english,
+        onLanguageChanged: (lang) => picked = lang,
+      ),
+    ));
+
+    expect(find.text('Öyrənilən dil'), findsOneWidget);
+    await tester.tap(find.text('Rus'));
+    await tester.pumpAndSettle();
+
+    expect(picked, TargetLanguage.russian);
+  });
+
+  testWidgets('ttsTelemetry verilibsə uğursuzluq faizini göstərir',
+      (tester) async {
+    final repo = await SettingsRepository.load();
+    final telemetry = TtsTelemetry(
+      attempts: 10,
+      failures: 3,
+      noVoiceDetections: 1,
+      since: DateTime.now().subtract(const Duration(days: 4)),
+    );
+    await tester.pumpWidget(MaterialApp(
+      home: SettingsScreen(repository: repo, ttsTelemetry: telemetry),
+    ));
+
+    expect(find.text('Səs statistikası (daxili)'), findsOneWidget);
+    expect(find.textContaining('10 cəhd'), findsOneWidget);
+    expect(find.textContaining('3 uğursuz'), findsOneWidget);
+    expect(find.textContaining('30.0%'), findsOneWidget);
   });
 }
 

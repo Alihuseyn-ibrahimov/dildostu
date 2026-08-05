@@ -1,0 +1,104 @@
+{
+  "pack_id": "restaurant",
+  "target_lang": "ru",
+  "ui_lang": "az",
+  "title_az": "Restoranda",
+  "words": [
+    {
+      "word": "заказ",
+      "translation_az": "sifariş",
+      "ipa": "/zəkɐz/",
+      "example": "Я делаю заказ.",
+      "example_az": "Mən sifariş edirəm.",
+      "level": 1
+    },
+    {
+      "word": "меню",
+      "translation_az": "menyu",
+      "ipa": "/mʲɪˈnʲu/",
+      "example": "Можно меню, пожалуйста?",
+      "example_az": "Zəhmət olmasa, menyu göstərə bilərsiniz?",
+      "level": 1
+    },
+    {
+      "word": "столик",
+      "translation_az": "stol",
+      "ipa": "/stɐˈlʲik/",
+      "example": "Мне нужен столик на двоих.",
+      "example_az": "Mənə iki nəfərlik stol lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "счет",
+      "translation_az": "hesab",
+      "ipa": "/ɕːot/",
+      "example": "Принесите счет, пожалуйста.",
+      "example_az": "Zəhmət olmasa, hesabı gətirin.",
+      "level": 1
+    },
+    {
+      "word": "вегетарианец",
+      "translation_az": "vegan",
+      "ipa": "/vʲɪgʲɪtərʲɪˈanʲɪts/",
+      "example": "Я вегетарианец, что можно заказать?",
+      "example_az": "Mən veganam, nə sifariş edə bilərəm?",
+      "level": 2
+    },
+    {
+      "word": "кофе",
+      "translation_az": "qəhvə",
+      "ipa": "/kɐˈfʲe/",
+      "example": "Мне, пожалуйста, кофе.",
+      "example_az": "Mənə, zəhmət olmasa, qəhvə.",
+      "level": 1
+    },
+    {
+      "word": "ресторан",
+      "translation_az": "restoran",
+      "ipa": "/rʲɪstɐˈran/",
+      "example": "Где ближайший ресторан?",
+      "example_az": "Yaxın restoran haradadır?",
+      "level": 1
+    },
+    {
+      "word": "бронирование",
+      "translation_az": "rezervasiya",
+      "ipa": "/brɐnʲɪrɐˈvənʲɪjə/",
+      "example": "Можно сделать бронирование на завтра?",
+      "example_az": "Sabaha rezervasiya edə bilərəm?",
+      "level": 2
+    },
+    {
+      "word": "десерт",
+      "translation_az": "deşert",
+      "ipa": "/dʲɪˈsʲɛrt/",
+      "example": "Я возьму десерт, пожалуйста.",
+      "example_az": "Mən deşert götürəcəyəm, zəhmət olmasa.",
+      "level": 1
+    },
+    {
+      "word": "платить",
+      "translation_az": "ödəmək",
+      "ipa": "/plɐˈtʲitʲ/",
+      "example": "Как я могу платить?",
+      "example_az": "Mən necə ödəyə bilərəm?",
+      "level": 1
+    },
+    {
+      "word": "сервис",
+      "translation_az": "xidmət haqqı",
+      "ipa": "/sʲɪrˈvʲis/",
+      "example": "Сервис включен в счет?",
+      "example_az": "Xidmət haqqı hesaba daxildir?",
+      "level": 2
+    },
+    {
+      "word": "аппетит",
+      "translation_az": "iştaha",
+      "ipa": "/ɐpʲpʲɪˈtʲit/",
+      "example": "Приятного аппетита!",
+      "example_az": "İştahınız açılsın!",
+      "level": 2
+    }
+  ]
+}

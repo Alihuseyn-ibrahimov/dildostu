@@ -15,6 +15,9 @@ Purpose = Literal["travel", "work", "general"]
 # köhnə cihaz profilləri ilk iki dəyəri işlətdiyi üçün geriyə uyğundur.
 Level = Literal["beginner", "intermediate", "advanced"]
 Mode = Literal["normal", "another_example", "simpler", "harder"]
+# Öyrənilən dil. `en` defoltdur — bu sahəni göndərməyən köhnə app-lar
+# (2026-08-04-ə qədər) sınmır. Bax spec: 2026-08-04-multilanguage-russian-design.md.
+TargetLanguage = Literal["en", "ru", "es", "it"]
 
 
 class RegisterRequest(BaseModel):
@@ -47,6 +50,7 @@ class UserProfile(BaseModel):
     purpose: Purpose
     level: Level
     interests: list[str] = Field(default_factory=list)
+    target_lang: TargetLanguage = "en"
 
 
 class Context(BaseModel):
@@ -102,11 +106,17 @@ class PackWordsResponse(BaseModel):
 
 
 class EssentialWordsRequest(BaseModel):
-    """Əsas lüğət paketi — 504 sabit söz bankından növbəti dəst (offset ilə)."""
+    """Əsas lüğət paketi.
+
+    `target_lang == "en"` üçün 504 sabit söz bankından növbəti dəst (offset
+    ilə). Digər dillər üçün sabit bank yoxdur — AI dinamik seçir, `offset`
+    nəzərə alınmır, `exclude_words` (son görülmüş sözlər) təkrarçılığı azaldır.
+    """
 
     profile: UserProfile
     offset: int = Field(default=0, ge=0)
     count: int = Field(default=12, ge=3, le=20)
+    exclude_words: list[str] = Field(default_factory=list)
 
 
 class EssentialWordsResponse(BaseModel):
@@ -129,6 +139,19 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     reply: str
+
+
+class StoredChatMessage(BaseModel):
+    """`MemoryStore`-dan gələn saxlanmış mesaj — `ChatMessage`-dan fərqli
+    olaraq `created_at` daşıyır (bax spec: 2026-08-04-chat-memory-design.md)."""
+
+    role: Literal["user", "assistant"]
+    content: str
+    created_at: str
+
+
+class ChatHistoryResponse(BaseModel):
+    messages: list[StoredChatMessage] = Field(default_factory=list)
 
 
 class RoutineSampleRequest(BaseModel):

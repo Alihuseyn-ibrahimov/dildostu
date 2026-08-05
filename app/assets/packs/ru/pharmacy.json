@@ -1,0 +1,104 @@
+{
+  "pack_id": "pharmacy",
+  "target_lang": "ru",
+  "ui_lang": "az",
+  "title_az": "Aptekdə",
+  "words": [
+    {
+      "word": "аптека",
+      "translation_az": "dərmanxana",
+      "ipa": "/ɐpˈtʲekə/",
+      "example": "Я иду в аптеку.",
+      "example_az": "Mən dərmanxanaya gedirəm.",
+      "level": 1
+    },
+    {
+      "word": "болит",
+      "translation_az": "ağrıyar",
+      "ipa": "/bɐˈlʲit/",
+      "example": "У меня болит голова.",
+      "example_az": "Mənim başım ağrıyır.",
+      "level": 1
+    },
+    {
+      "word": "таблетки",
+      "translation_az": "dərman tabletka",
+      "ipa": "/tɐˈblʲetkʲɪ/",
+      "example": "Мне нужно три таблетки в день.",
+      "example_az": "Mənə gündə üç ədəd tabletka lazımdır.",
+      "level": 2
+    },
+    {
+      "word": "инструкция",
+      "translation_az": "istifadə qaydaları",
+      "ipa": "/ɪnstrʊˈktsɪjə/",
+      "example": "Прочитайте инструкцию к препарату.",
+      "example_az": "Dərmanın istifadə qaydalarını oxuyun.",
+      "level": 2
+    },
+    {
+      "word": "аллергия",
+      "translation_az": "allergiya",
+      "ipa": "/ɐlʲɪrˈɡʲɪjə/",
+      "example": "У меня аллергия на пыльцу.",
+      "example_az": "Mənim ağac tozu allergiyam var.",
+      "level": 2
+    },
+    {
+      "word": "доза",
+      "translation_az": "doza",
+      "ipa": "/ˈdozə/",
+      "example": "Какова доза этого препарата?",
+      "example_az": "Bu dərmanın dozası nədir?",
+      "level": 2
+    },
+    {
+      "word": "рецепт",
+      "translation_az": "recept",
+      "ipa": "/rʲɪˈsʲɪpt/",
+      "example": "Мне нужно показать рецепт.",
+      "example_az": "Mənə recept göstərmək lazımdır.",
+      "level": 2
+    },
+    {
+      "word": "лекарство",
+      "translation_az": "dərman",
+      "ipa": "/lʲɪˈkɑrstvə/",
+      "example": "Это лекарство помогает от боли.",
+      "example_az": "Bu dərman ağrıdan xilas olur.",
+      "level": 1
+    },
+    {
+      "word": "врач",
+      "translation_az": "həkim",
+      "ipa": "/vrɐtʲ/",
+      "example": "Я хочу увидеть врача.",
+      "example_az": "Mən həkimi görmək istəyirəm.",
+      "level": 1
+    },
+    {
+      "word": "диагноз",
+      "translation_az": "diaqnoz",
+      "ipa": "/dʲɪɐɡˈnoz/",
+      "example": "Врач поставил диагноз.",
+      "example_az": "Həkim diaqnoz qoydu.",
+      "level": 2
+    },
+    {
+      "word": "симптомы",
+      "translation_az": "simptomlar",
+      "ipa": "/sʲɪmˈptɔmɨ/",
+      "example": "Какие у вас симптомы?",
+      "example_az": "Sizdə hansı simptomlar var?",
+      "level": 2
+    },
+    {
+      "word": "помощь",
+      "translation_az": "kömək",
+      "ipa": "/pɐˈmɔʂʲ/",
+      "example": "Мне нужна медицинская помощь.",
+      "example_az": "Mənə tibbi kömək lazımdır.",
+      "level": 1
+    }
+  ]
+}

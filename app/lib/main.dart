@@ -7,6 +7,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'src/config.dart';
 import 'src/data/app_update_client.dart';
 import 'src/data/audiobook_client.dart';
+import 'src/models/audiobook.dart';
 import 'src/data/word_lookup_client.dart';
 import 'src/data/auth_client.dart';
 import 'src/data/auth_repository.dart';
@@ -139,7 +140,7 @@ class _AuthGateState extends State<_AuthGate> {
 }
 
 class _AppData {
-  const _AppData(
+  _AppData(
     this.packs,
     this.reviews,
     this.settings,
@@ -148,7 +149,10 @@ class _AppData {
     this.deviceId,
     this.isPlayBuild,
   );
-  final PackRepository packs;
+  // Dil dəyişəndə (bax `_reloadForLanguage`) yeni dilin paketləri ilə əvəz
+  // olunur — `profileRepo` kimi artıq mutable referanslar bundle edən
+  // mövcud naxışın davamı (final DEYİL, qəsdən).
+  PackRepository packs;
   final ReviewRepository reviews;
   final SettingsRepository settings;
   final ManualContextRepository manualContext;
@@ -189,8 +193,8 @@ class _BootstrapState extends State<_Bootstrap> {
   final BrowserLauncherService _browserLauncher = BrowserLauncherService();
   late final Future<bool> _isPlayBuildFuture;
   late final LocationService _location;
-  late final LiveContentClient _live;
-  final ChatClient _chat = ChatClient(baseUrl: AppConfig.serverBaseUrl);
+  late LiveContentClient _live;
+  late final ChatClient _chat;
   final AudiobookClient _audiobooks =
       AudiobookClient(baseUrl: AppConfig.serverBaseUrl);
   final WordLookupClient _wordLookup =
@@ -209,6 +213,7 @@ class _BootstrapState extends State<_Bootstrap> {
   void initState() {
     super.initState();
     _isPlayBuildFuture = _buildFlavor.isPlayBuild();
+    _chat = ChatClient(baseUrl: AppConfig.serverBaseUrl, token: _token);
     _routine = RoutineClient(
       baseUrl: AppConfig.serverBaseUrl,
       token: _token,
@@ -343,23 +348,41 @@ class _BootstrapState extends State<_Bootstrap> {
     }
   }
 
-  Future<_AppData> _bootstrap() async {
-    final packs = await PackRepository.loadFromAssets();
-    // "Əsas lüğət" offline nüsxəsi — asset korlanıbsa/yoxdursa səssiz keçir,
-    // sadəcə offline halda bu paket boş qalır (server yenə işləyir).
+  /// Verilmiş dilin statik paketlərini yükləyib `_live`/`_speaker`-i bu dilə
+  /// bağlayır. Bootstrap-da VƏ Ayarlardan dil dəyişəndə (bax
+  /// `_reloadForLanguage`) eyni məntiq işlədilir — təkrarlanmasın deyə ayrıca.
+  Future<PackRepository> _loadPacksAndWireLive(TargetLanguage lang) async {
+    final packs = await PackRepository.loadFromAssets(lang: lang.wire);
+    // "Əsas lüğət" offline nüsxəsi yalnız İngilis üçün var (Barron's 504
+    // bankı) — digər dillərdə server canlı AI ilə cavab verir, offline
+    // fallback yoxdur (spec: 2026-08-04-multilanguage-russian-design.md).
     EssentialWordsRepository? essentialFallback;
-    try {
-      essentialFallback = await EssentialWordsRepository.loadFromAssets();
-    } catch (_) {}
+    if (lang == TargetLanguage.english) {
+      try {
+        essentialFallback = await EssentialWordsRepository.loadFromAssets();
+      } catch (_) {}
+    }
     _live = LiveContentClient(
       baseUrl: AppConfig.serverBaseUrl,
       fallbackRepo: packs,
       essentialFallback: essentialFallback,
     );
+    _speaker.ttsLocale = lang.ttsLocale;
+    return packs;
+  }
+
+  Future<_AppData> _bootstrap() async {
+    // Lokal keşlənmiş profil (şəbəkə tələb etmir) ƏVVƏLCƏ oxunur ki, düzgün
+    // dilin paketləri yüklənsin. Server profili aşağıda paralel gələcək —
+    // fərqli dil göstərsə (nadir: yeni cihazda giriş) paketlər növbəti
+    // restart-da düzəlir, bu, mövcud "server profili tək mənbədir" prinsipi
+    // ilə uyğundur, əlavə mürəkkəblik gətirmir.
+    final profileRepo = await UserProfileRepository.load();
+    final initialLang = profileRepo.current?.targetLang ?? TargetLanguage.english;
+    final packs = await _loadPacksAndWireLive(initialLang);
     final reviews = await ReviewRepository.load();
     final settings = await SettingsRepository.load();
     final manualContext = await ManualContextRepository.load();
-    final profileRepo = await UserProfileRepository.load();
     final deviceId = (await DeviceIdRepository.load()).deviceId;
 
     final now = DateTime.now();
@@ -569,12 +592,20 @@ class _BootstrapState extends State<_Bootstrap> {
     ));
   }
 
-  /// Səsli kitablar: kitabxana → hekayə siyahısı → plyer.
-  void _openAudiobooks() {
+  /// Səsli kitablar: kitabxana → hekayə siyahısı → plyer. Kitabxana
+  /// istifadəçinin öyrəndiyi dilə görə süzülür (bax
+  /// 2026-08-04-multilanguage-russian-design.md) — server manifesti bütün
+  /// dillərin kitablarını qaytarır, süzgəc client-dədir (kiçik kataloq).
+  void _openAudiobooks(UserProfile profile) {
     final accent = accentFor('audiobooks');
+    Future<List<Audiobook>> loadForLanguage() async {
+      final books = await _audiobooks.fetchLibrary();
+      return books.where((b) => b.lang == profile.targetLang.wire).toList();
+    }
+
     navigatorKey.currentState?.push(MaterialPageRoute(
       builder: (_) => AudiobooksScreen(
-        loader: _audiobooks.fetchLibrary,
+        loader: loadForLanguage,
         accent: accent,
         onOpenBook: (book) =>
             navigatorKey.currentState?.push(MaterialPageRoute(
@@ -637,6 +668,7 @@ class _BootstrapState extends State<_Bootstrap> {
         // Chat sabit öz rənginə malikdir (paketdən açılsa belə) — dizayn
         // sənədinin qərarı: kontekstsiz xüsusiyyətlər öz kimliyini saxlayır.
         accent: accentFor('chat'),
+        historyLoader: _chat.fetchHistory,
         sender: (history) => _chat.send(
           profile: profile,
           history: history,
@@ -671,6 +703,20 @@ class _BootstrapState extends State<_Bootstrap> {
     if (mounted) setState(() {});
   }
 
+  /// Ayarlardan öyrənilən dili canlı dəyişir (bax spec:
+  /// 2026-08-04-multilanguage-russian-design.md §6) — `_changeLevel`-in
+  /// qardaşı, fərqi: paketlər/TTS/canlı client də yeni dil üçün yenidən
+  /// qurulmalıdır (yalnız profil sahəsi kifayət etmir).
+  Future<void> _changeLanguage(_AppData data, TargetLanguage lang) async {
+    final current = data.profileRepo.current;
+    if (current == null || current.targetLang == lang) return;
+    final updated = current.copyWith(targetLang: lang);
+    await data.profileRepo.save(updated);
+    await _profileClient.save(_token, updated);
+    data.packs = await _loadPacksAndWireLive(lang);
+    if (mounted) setState(() {});
+  }
+
   void _openSettings(_AppData data) {
     navigatorKey.currentState?.push(MaterialPageRoute(
       builder: (_) => SettingsScreen(
@@ -682,6 +728,8 @@ class _BootstrapState extends State<_Bootstrap> {
         downloadUpdate: _downloadUpdate,
         onInstallApk: _installApk,
         ttsTelemetry: _speaker.telemetrySnapshot,
+        currentLanguage: data.profileRepo.current?.targetLang,
+        onLanguageChanged: (lang) => _changeLanguage(data, lang),
       ),
     ));
   }
@@ -754,7 +802,7 @@ class _BootstrapState extends State<_Bootstrap> {
             onLevelChanged: (level) => _changeLevel(data, level),
             resolveLivePlace: () => _resolveLivePlace(data),
             onOpenEssentialWords: () => _openEssentialWords(profile),
-            onOpenAudiobooks: _openAudiobooks,
+            onOpenAudiobooks: () => _openAudiobooks(profile),
           ),
           chat: ChatScreen(
             sender: (history) =>

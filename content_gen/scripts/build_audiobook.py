@@ -39,11 +39,23 @@ PIPER_ZIP_URL = (
     "https://github.com/rhasspy/piper/releases/download/2023.11.14-2/"
     "piper_windows_amd64.zip"
 )
-VOICE_BASE = (
-    "https://huggingface.co/rhasspy/piper-voices/resolve/main/"
-    "en/en_US/lessac/medium/en_US-lessac-medium.onnx"
-)
-VOICE_NAME = "en_US-lessac-medium.onnx"
+
+# Dilə görə defolt Piper səsi (hər dildən BİR, mövcud İngilis pipeline-ı ilə
+# eyni qərar strukturu). Yeni dil əlavə etmək üçün buraya bir sətir kifayətdir
+# — model adı `huggingface.co/rhasspy/piper-voices` reposunun yol quruluşuna
+# uyğun olmalıdır (bax VOICES.md).
+VOICES: dict[str, str] = {
+    "en": "en/en_US/lessac/medium/en_US-lessac-medium",
+    "ru": "ru/ru_RU/irina/medium/ru_RU-irina-medium",
+}
+
+
+def _voice_urls(lang: str) -> tuple[str, str]:
+    """(model_url, voice_filename) — lang üçün Piper model + JSON konfiqi."""
+    path = VOICES[lang]
+    name = path.rsplit("/", 1)[-1] + ".onnx"
+    base = f"https://huggingface.co/rhasspy/piper-voices/resolve/main/{path}.onnx"
+    return base, name
 
 # Dil öyrənənlər üçün bir qədər yavaş və cümlələr arası fasiləli.
 LENGTH_SCALE = "1.05"
@@ -59,8 +71,8 @@ def _download(url: str, dest: Path) -> None:
     urllib.request.urlretrieve(url, dest)
 
 
-def ensure_piper() -> tuple[Path, Path]:
-    """Piper binarını və səs modelini təmin edir → (piper.exe, model)."""
+def ensure_piper(lang: str = "en") -> tuple[Path, Path]:
+    """Piper binarını və (dilə uyğun) səs modelini təmin edir → (piper.exe, model)."""
     exe = TOOLS / "piper" / "piper.exe"
     if not exe.exists():
         zip_path = TOOLS / "piper_windows_amd64.zip"
@@ -68,9 +80,10 @@ def ensure_piper() -> tuple[Path, Path]:
         print("  açılır: piper …")
         with zipfile.ZipFile(zip_path) as z:
             z.extractall(TOOLS)
-    model = TOOLS / VOICE_NAME
-    _download(VOICE_BASE, model)
-    _download(VOICE_BASE + ".json", TOOLS / (VOICE_NAME + ".json"))
+    voice_base, voice_name = _voice_urls(lang)
+    model = TOOLS / voice_name
+    _download(voice_base, model)
+    _download(voice_base + ".json", TOOLS / (voice_name + ".json"))
     if not exe.exists():
         raise SystemExit(f"XƏTA: piper tapılmadı: {exe}")
     return exe, model
@@ -129,12 +142,13 @@ def main() -> None:
     args = ap.parse_args()
 
     meta = BOOKS[args.book]
+    lang = meta.get("lang", "en")
     out_dir = Path(args.out)
     audio_dir = out_dir / args.book
     wav_dir = TOOLS / "wav" / args.book
 
-    print(f"=== {meta['title_az']} ({args.book}) ===")
-    exe, model = ensure_piper()
+    print(f"=== {meta['title_az']} ({args.book}, {lang}) ===")
+    exe, model = ensure_piper(lang)
 
     raw = fetch_book_text(meta["gutenberg_id"])
     body = after_last_marker(strip_gutenberg_wrapper(raw), meta["body_marker"])
@@ -172,6 +186,7 @@ def main() -> None:
         level=meta["level"],
         chapters=chapters,
         measured=measured,
+        lang=lang,
     )
     manifest_path = out_dir / "manifest.json"
     manifest_path.write_text(

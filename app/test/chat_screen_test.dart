@@ -73,4 +73,50 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.textContaining('Bağlantı yoxdur'), findsOneWidget);
   });
+
+  group('historyLoader (2026-08-04 — çat yaddaşı)', () {
+    testWidgets('tarixçə mesajları əvvəlcədən görünür, greeting yoxdur',
+        (tester) async {
+      await tester.pumpWidget(MaterialApp(
+        home: ChatScreen(
+          sender: (h) async => 'cavab',
+          greeting: 'Bu greeting görünməməlidir',
+          historyLoader: () async => const [
+            ChatMessage(role: ChatRole.user, content: 'əvvəlki sualım'),
+            ChatMessage(role: ChatRole.assistant, content: 'əvvəlki cavabım'),
+          ],
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('əvvəlki sualım'), findsOneWidget);
+      expect(find.text('əvvəlki cavabım'), findsOneWidget);
+      expect(find.text('Bu greeting görünməməlidir'), findsNothing);
+    });
+
+    testWidgets('tarixçə boşdursa greeting göstərilir', (tester) async {
+      await tester.pumpWidget(MaterialApp(
+        home: ChatScreen(
+          sender: (h) async => 'cavab',
+          greeting: 'Salam! Başlayaq 🤖',
+          historyLoader: () async => const [],
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Salam! Başlayaq 🤖'), findsOneWidget);
+    });
+
+    testWidgets('historyLoader yoxdursa mövcud davranış dəyişmir',
+        (tester) async {
+      await tester.pumpWidget(MaterialApp(
+        home: ChatScreen(
+          sender: (h) async => 'cavab',
+          greeting: 'Salam! Başlayaq 🤖',
+        ),
+      ));
+
+      expect(find.text('Salam! Başlayaq 🤖'), findsOneWidget);
+    });
+  });
 }

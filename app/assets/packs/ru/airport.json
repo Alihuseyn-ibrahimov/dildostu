@@ -1,0 +1,104 @@
+{
+  "pack_id": "airport",
+  "target_lang": "ru",
+  "ui_lang": "az",
+  "title_az": "Hava limanında",
+  "words": [
+    {
+      "word": "регистрация",
+      "translation_az": "qeydiyyat",
+      "ipa": "/rʲɪɡɪstrɑˈtsɨjə/",
+      "example": "Регистрация начнется через час.",
+      "example_az": "Qeydiyyat bir saatdan sonra başlayacaq.",
+      "level": 2
+    },
+    {
+      "word": "посадка",
+      "translation_az": "enmək",
+      "ipa": "/pɐˈsatkə/",
+      "example": "Посадка на самолет началась.",
+      "example_az": "Təyyarəyə enmək başladı.",
+      "level": 2
+    },
+    {
+      "word": "багаж",
+      "translation_az": "bağaj",
+      "ipa": "/bɐˈɡaʂ/",
+      "example": "Мой багаж потерялся.",
+      "example_az": "Mənim bağajım itkin düşdü.",
+      "level": 1
+    },
+    {
+      "word": "стойка регистрации",
+      "translation_az": "qeydiyyat stendi",
+      "ipa": "/ˈstojkə rʲɪɡɪstrɑˈtsɨjə/",
+      "example": "Стойка регистрации находится слева.",
+      "example_az": "Qeydiyyat stendi solda yerləşir.",
+      "level": 3
+    },
+    {
+      "word": "вылет",
+      "translation_az": "uçuş",
+      "ipa": "/vɨˈlʲet/",
+      "example": "Вылет задерживается.",
+      "example_az": "Uçuş ləngiyir.",
+      "level": 1
+    },
+    {
+      "word": "прилет",
+      "translation_az": "gəliş",
+      "ipa": "/prʲɪˈlʲet/",
+      "example": "Прилет ожидается через два часа.",
+      "example_az": "Gəliş iki saatdan sonra gözlənilir.",
+      "level": 2
+    },
+    {
+      "word": "ворота",
+      "translation_az": "qapı",
+      "ipa": "/vɐˈrotə/",
+      "example": "Самолет прилетел к воротам.",
+      "example_az": "Təyyarə qapıya gəlib çıxdı.",
+      "level": 2
+    },
+    {
+      "word": "зал вылета",
+      "translation_az": "uçuş zalı",
+      "ipa": "/zal vɨˈlʲetə/",
+      "example": "Зал вылета находится на втором этаже.",
+      "example_az": "Uçuş zalı ikinci mərtəbədə yerləşir.",
+      "level": 3
+    },
+    {
+      "word": "билет",
+      "translation_az": "bilet",
+      "ipa": "/bʲɪˈlʲet/",
+      "example": "Мне нужно купить билет.",
+      "example_az": "Mənə bilet almaq lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "паспорт",
+      "translation_az": "pasport",
+      "ipa": "/pɐsˈport/",
+      "example": "Мне нужен паспорт для регистрации.",
+      "example_az": "Mənə qeydiyyat üçün pasport lazımdır.",
+      "level": 1
+    },
+    {
+      "word": "регистрационный стол",
+      "translation_az": "qeydiyyat stolu",
+      "ipa": "/rʲɪɡɪstrɑˈtsɨjnɨj stol/",
+      "example": "Регистрационный стол открыт.",
+      "example_az": "Qeydiyyat stolu açıqdır.",
+      "level": 3
+    },
+    {
+      "word": "отделение безопасности",
+      "translation_az": "təhlükəsizlik şöbəsi",
+      "ipa": "/ɐdʲɪlʲɪˈnʲɪjə bʲɪzɐˈpasnɐstʲɪ/",
+      "example": "Отделение безопасности проверяет багаж.",
+      "example_az": "Təhlükəsizlik şöbəsi bağajı yoxlayır.",
+      "level": 3
+    }
+  ]
+}

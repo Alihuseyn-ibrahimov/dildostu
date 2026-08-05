@@ -5,6 +5,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('formu doldurub Başla → düzgün profil qaytarır', (tester) async {
+    // Dil seçicisi əlavə olunandan sonra form standart test viewport-undan
+    // (800x600) uzundur — "Başla" ListView-in cache extent-indən kənara
+    // düşməsin deyə (yoxsa `find` onu tapmır), viewport-u böyüdürük.
+    await tester.binding.setSurfaceSize(const Size(400, 1300));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
     UserProfile? result;
     await tester.pumpWidget(MaterialApp(
       home: OnboardingScreen(onComplete: (p) => result = p),
@@ -21,5 +27,23 @@ void main() {
     expect(result!.purpose, LearningPurpose.work);
     expect(result!.level, ProficiencyLevel.intermediate);
     expect(result!.interests, ['yemək', 'idman']);
+    expect(result!.targetLang, TargetLanguage.english);
+  });
+
+  testWidgets('dil seçicisi görünür, seçim profilə düşür', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 1300));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    UserProfile? result;
+    await tester.pumpWidget(MaterialApp(
+      home: OnboardingScreen(onComplete: (p) => result = p),
+    ));
+
+    expect(find.text('Hansı dili öyrənmək istəyirsən?'), findsOneWidget);
+    await tester.tap(find.text('Rus'));
+    await tester.tap(find.text('Başla'));
+    await tester.pump();
+
+    expect(result!.targetLang, TargetLanguage.russian);
   });
 }
