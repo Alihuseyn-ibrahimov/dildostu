@@ -48,6 +48,7 @@ from .models import (
     WordLookupResponse,
 )
 from .audiobook_store import AudiobookStore
+from .music_store import MusicStore
 from .memory_store import MemoryStore
 from .place_lookup import PlaceLookup, PlaceLookupError
 from .routine_clustering import cluster_places
@@ -82,6 +83,8 @@ app.state.user_store = UserStore(os.environ.get("USERS_DB_PATH", "users.db"))
 app.state.audiobook_store = AudiobookStore(
     os.environ.get("AUDIOBOOKS_DIR", "audiobooks")
 )
+# Musiqi bölməsi — yalnız manifest, audio YouTube-dan gəlir (bizdə mp3 yoxdur).
+app.state.music_store = MusicStore(os.environ.get("MUSIC_DIR", "music"))
 # Çat tarixçəsi + öyrənilən faktlar — routine.db-dən ayrı fayl.
 app.state.memory_store = MemoryStore(os.environ.get("MEMORY_DB_PATH", "memory.db"))
 
@@ -109,6 +112,11 @@ def get_release_store() -> ReleaseStore:
 def get_audiobook_store() -> AudiobookStore:
     """Səsli kitab store (test-də tmp_path ilə override olunur)."""
     return app.state.audiobook_store
+
+
+def get_music_store() -> MusicStore:
+    """Musiqi store (test-də tmp_path ilə override olunur)."""
+    return app.state.music_store
 
 
 def get_place_lookup() -> PlaceLookup:
@@ -483,6 +491,15 @@ def audiobook_chapter(
     if path is None:
         raise HTTPException(status_code=404, detail="Fəsil tapılmadı")
     return FileResponse(path, media_type="audio/mpeg", headers=_AUDIO_CACHE)
+
+
+@app.get("/music")
+def music_manifest(store: MusicStore = Depends(get_music_store)) -> dict:
+    """Mahnı siyahısı — audio YouTube-dan gəlir, bura yalnız lyrics+meta."""
+    manifest = store.manifest()
+    if manifest is None:
+        raise HTTPException(status_code=404, detail="Mahnı yoxdur")
+    return manifest
 
 
 # Buraxılış cavabları keşlənməməlidir — Cloudflare/proxy köhnə APK/versiya

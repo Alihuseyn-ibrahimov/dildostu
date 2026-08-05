@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "songs": [
+    {
+      "song_id": "jane-taylor-twinkle-twinkle-little-star",
+      "title": "Twinkle Twinkle Little Star",
+      "artist": "Jane Taylor",
+      "youtube_id": "yCjJyiqpAuU",
+      "level": "beginner",
+      "lang": "en",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "Twinkle, twinkle, little star,",
+          "translation_az": "İşıq, işıq, kiçik ulduz,"
+        },
+        {
+          "line_id": "l2",
+          "text": "How I wonder what you are.",
+          "translation_az": "Mən nə olduğunuzu necə möcüzələndirəm."
+        },
+        {
+          "line_id": "l3",
+          "text": "Up above the world so high,",
+          "translation_az": "Yuxarıda, dünya qədər yüksək,"
+        },
+        {
+          "line_id": "l4",
+          "text": "Like a diamond in the sky.",
+          "translation_az": "Səma da bir brilyant kimi."
+        },
+        {
+          "line_id": "l5",
+          "text": "Twinkle, twinkle, little star,",
+          "translation_az": "İşıq, işıq, kiçik ulduz,"
+        },
+        {
+          "line_id": "l6",
+          "text": "How I wonder what you are.",
+          "translation_az": "Mən nə olduğunuzu necə möcüzələndirəm."
+        }
+      ]
+    },
+    {
+      "song_id": "traditional-if-youre-happy-and-you-know-it",
+      "title": "If You're Happy and You Know It",
+      "artist": "Traditional",
+      "youtube_id": "M6LoRZsHMSs",
+      "level": "beginner",
+      "lang": "en",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "If you're happy and you know it, clap your hands.",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, əl çal."
+        },
+        {
+          "line_id": "l2",
+          "text": "If you're happy and you know it, and you really want to show it,",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, və həqiqətən bunu göstərmək istəyirsənsə,"
+        },
+        {
+          "line_id": "l3",
+          "text": "If you're happy and you know it, clap your hands.",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, əl çal."
+        },
+        {
+          "line_id": "l4",
+          "text": "If you're happy and you know it, stomp your feet.",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, ayaqlarını yerə vur."
+        },
+        {
+          "line_id": "l5",
+          "text": "If you're happy and you know it, stomp your feet.",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, ayaqlarını yerə vur."
+        },
+        {
+          "line_id": "l6",
+          "text": "If you're happy and you know it, and you really want to show it,",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, və həqiqətən bunu göstərmək istəyirsənsə,"
+        },
+        {
+          "line_id": "l7",
+          "text": "If you're happy and you know it, stomp your feet.",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, ayaqlarını yerə vur."
+        },
+        {
+          "line_id": "l8",
+          "text": "If you're happy and you know it, shout \"Hooray!\"",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, \"Hooray!\" qışqır."
+        },
+        {
+          "line_id": "l9",
+          "text": "If you're happy and you know it, shout \"Hooray!\"",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, \"Hooray!\" qışqır."
+        },
+        {
+          "line_id": "l10",
+          "text": "If you're happy and you know it, and you really want to show it,",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, və həqiqətən bunu göstərmək istəyirsənsə,"
+        },
+        {
+          "line_id": "l11",
+          "text": "If you're happy and you know it, shout \"Hooray!\"",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, \"Hooray!\" qışqır."
+        },
+        {
+          "line_id": "l12",
+          "text": "If you're happy and you know it, do all three.",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, hər üçünü et."
+        },
+        {
+          "line_id": "l13",
+          "text": "If you're happy and you know it, do all three.",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, hər üçünü et."
+        },
+        {
+          "line_id": "l14",
+          "text": "If you're happy and you know it, and you really want to show it,",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, və həqiqətən bunu göstərmək istəyirsənsə,"
+        },
+        {
+          "line_id": "l15",
+          "text": "If you're happy and you know it, do all three.",
+          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, hər üçünü et."
+        }
+      ]
+    }
+  ]
+}

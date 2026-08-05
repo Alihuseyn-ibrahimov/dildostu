@@ -8,6 +8,8 @@ import 'src/config.dart';
 import 'src/data/app_update_client.dart';
 import 'src/data/audiobook_client.dart';
 import 'src/models/audiobook.dart';
+import 'src/data/music_client.dart';
+import 'src/models/song.dart';
 import 'src/data/word_lookup_client.dart';
 import 'src/data/auth_client.dart';
 import 'src/data/auth_repository.dart';
@@ -41,6 +43,7 @@ import 'src/services/speaker.dart';
 import 'src/ui/accent_colors.dart';
 import 'src/ui/audiobook_player_screen.dart';
 import 'src/ui/audiobooks_screen.dart';
+import 'src/ui/music_screen.dart';
 import 'src/ui/chat_screen.dart';
 import 'src/ui/essential_words_screen.dart';
 import 'src/ui/home_tab.dart';
@@ -197,6 +200,7 @@ class _BootstrapState extends State<_Bootstrap> {
   late final ChatClient _chat;
   final AudiobookClient _audiobooks =
       AudiobookClient(baseUrl: AppConfig.serverBaseUrl);
+  final MusicClient _music = MusicClient(baseUrl: AppConfig.serverBaseUrl);
   final WordLookupClient _wordLookup =
       WordLookupClient(baseUrl: AppConfig.serverBaseUrl);
   final AudioPlayer _audioPlayer = const NativeAudioPlayer();
@@ -631,6 +635,32 @@ class _BootstrapState extends State<_Bootstrap> {
     ));
   }
 
+  /// Musiqi: kataloq → mahnı seçimi → pleyer (video + sətir-sətir tərcümə).
+  /// Audiobook-dakı eyni prinsip: kataloq istifadəçinin öyrəndiyi dilə görə
+  /// client-də süzülür (bax `_openAudiobooks`).
+  void _openMusic(UserProfile profile) {
+    final accent = accentFor('music');
+    Future<List<Song>> loadForLanguage() async {
+      final songs = await _music.fetchLibrary();
+      return songs.where((s) => s.lang == profile.targetLang.wire).toList();
+    }
+
+    navigatorKey.currentState?.push(MaterialPageRoute(
+      builder: (_) => MusicScreen(
+        loader: loadForLanguage,
+        accent: accent,
+        onOpenSong: (song) => navigatorKey.currentState?.push(MaterialPageRoute(
+          builder: (_) => SongPlayerScreen(
+            song: song,
+            lookupWord: (word, line) =>
+                _wordLookup.lookup(word, context: line),
+            accent: accent,
+          ),
+        )),
+      ),
+    ));
+  }
+
   /// "AI nəyi öyrənib" ekranını açır (serverdəki rutin aqreqatı).
   void _openLearnedPlaces(_AppData data) {
     navigatorKey.currentState?.push(MaterialPageRoute(
@@ -803,6 +833,7 @@ class _BootstrapState extends State<_Bootstrap> {
             resolveLivePlace: () => _resolveLivePlace(data),
             onOpenEssentialWords: () => _openEssentialWords(profile),
             onOpenAudiobooks: () => _openAudiobooks(profile),
+            onOpenMusic: () => _openMusic(profile),
           ),
           chat: ChatScreen(
             sender: (history) =>

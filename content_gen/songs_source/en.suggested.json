@@ -1,0 +1,56 @@
+[
+  {
+    "title": "Twinkle Twinkle Little Star",
+    "artist": "Jane Taylor",
+    "level": "beginner",
+    "youtube_id": ""
+  },
+  {
+    "title": "If You're Happy and You Know It",
+    "artist": "Traditional",
+    "level": "beginner",
+    "youtube_id": ""
+  },
+  {
+    "title": "Old MacDonald Had a Farm",
+    "artist": "Traditional",
+    "level": "beginner",
+    "youtube_id": ""
+  },
+  {
+    "title": "Happy",
+    "artist": "Pharrell Williams",
+    "level": "intermediate",
+    "youtube_id": ""
+  },
+  {
+    "title": "I'm Yours",
+    "artist": "Jason Mraz",
+    "level": "intermediate",
+    "youtube_id": ""
+  },
+  {
+    "title": "Ho Hey",
+    "artist": "The Lumineers",
+    "level": "intermediate",
+    "youtube_id": ""
+  },
+  {
+    "title": "Stairway to Heaven",
+    "artist": "Led Zeppelin",
+    "level": "advanced",
+    "youtube_id": ""
+  },
+  {
+    "title": "Hotel California",
+    "artist": "Eagles",
+    "level": "advanced",
+    "youtube_id": ""
+  },
+  {
+    "title": "Bohemian Rhapsody",
+    "artist": "Queen",
+    "level": "advanced",
+    "youtube_id": ""
+  }
+]

@@ -26,6 +26,7 @@ class HomeTab extends StatelessWidget {
     this.resolveLivePlace,
     this.onOpenEssentialWords,
     this.onOpenAudiobooks,
+    this.onOpenMusic,
     this.now,
   });
 
@@ -41,6 +42,9 @@ class HomeTab extends StatelessWidget {
 
   /// Səsli kitablar bölməsi. Null olsa kart göstərilmir.
   final VoidCallback? onOpenAudiobooks;
+
+  /// Musiqi bölməsi. Null olsa kart göstərilmir.
+  final VoidCallback? onOpenMusic;
 
   /// Çətinlik səviyyəsi dəyişdikdə (profilə saxlanır). Null-dursa seçici
   /// göstərilmir.
@@ -114,6 +118,16 @@ class HomeTab extends StatelessWidget {
                       subtitle: 'Dinlə və eyni vaxtda mətni oxu',
                       accent: accentFor('audiobooks'),
                       onTap: onOpenAudiobooks!,
+                    ),
+                  ],
+                  if (onOpenMusic != null) ...[
+                    const SizedBox(height: AppSpacing.card),
+                    _FeatureCard(
+                      icon: Icons.music_note,
+                      title: 'Musiqi',
+                      subtitle: 'Mahnı dinlə, sözlərini öyrən',
+                      accent: accentFor('music'),
+                      onTap: onOpenMusic!,
                     ),
                   ],
                   const SizedBox(height: AppSpacing.section),

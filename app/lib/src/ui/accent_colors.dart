@@ -34,6 +34,7 @@ const _baseColors = <String, Color>{
   'transport': Color(0xFF546E7A),
   'essential': Color(0xFF0E7C66),
   'audiobooks': Color(0xFF7B1FA2),
+  'music': Color(0xFFC2185B),
   'chat': Color(0xFF3949AB),
 };
 

@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 const _knownIds = [
   'airport', 'cafe', 'evening', 'greetings', 'hotel',
   'market', 'morning', 'pharmacy', 'restaurant', 'transport',
-  'essential', 'audiobooks', 'chat',
+  'essential', 'audiobooks', 'music', 'chat',
 ];
 
 void main() {
