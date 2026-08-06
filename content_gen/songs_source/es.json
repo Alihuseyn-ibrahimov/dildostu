@@ -1,0 +1,56 @@
+[
+  {
+    "title": "La Bamba",
+    "artist": "Ritchie Valens",
+    "level": "beginner",
+    "youtube_id": "0ymdjg9v8zM"
+  },
+  {
+    "title": "Guantanamera",
+    "artist": "Celia Cruz",
+    "level": "beginner",
+    "youtube_id": "UosEcrrMo7I"
+  },
+  {
+    "title": "Oye Como Va",
+    "artist": "Santana",
+    "level": "beginner",
+    "youtube_id": "J7ATTjg7tpE"
+  },
+  {
+    "title": "Vaina Loca",
+    "artist": "Ozuna x Manuel Turizo",
+    "level": "intermediate",
+    "youtube_id": "bx-fuY7LpSU"
+  },
+  {
+    "title": "Despacito",
+    "artist": "Luis Fonsi ft. Daddy Yankee",
+    "level": "intermediate",
+    "youtube_id": "kJQP7kiw5Fk"
+  },
+  {
+    "title": "Suavemente",
+    "artist": "Elvis Crespo",
+    "level": "intermediate",
+    "youtube_id": "WPiEbYSF9kE"
+  },
+  {
+    "title": "La Tortura",
+    "artist": "Shakira ft. Alejandro Sanz",
+    "level": "advanced",
+    "youtube_id": "Dsp_8Lm1eSk"
+  },
+  {
+    "title": "La Bilirrubina",
+    "artist": "Juan Luis Guerra",
+    "level": "advanced",
+    "youtube_id": "McV4pBRb-Sg"
+  },
+  {
+    "title": "Corazón Partío",
+    "artist": "Alejandro Sanz",
+    "level": "advanced",
+    "youtube_id": "ZMUqIoDtSwc"
+  }
+]

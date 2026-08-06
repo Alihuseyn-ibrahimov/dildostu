@@ -1,0 +1,56 @@
+[
+  {
+    "title": "La Bamba",
+    "artist": "Ritchie Valens",
+    "level": "beginner",
+    "youtube_id": ""
+  },
+  {
+    "title": "Guantanamera",
+    "artist": "Celia Cruz",
+    "level": "beginner",
+    "youtube_id": ""
+  },
+  {
+    "title": "Oye Como Va",
+    "artist": "Santana",
+    "level": "beginner",
+    "youtube_id": ""
+  },
+  {
+    "title": "Vaina Loca",
+    "artist": "Ozuna",
+    "level": "intermediate",
+    "youtube_id": ""
+  },
+  {
+    "title": "Despacito",
+    "artist": "Luis Fonsi ft. Daddy Yankee",
+    "level": "intermediate",
+    "youtube_id": ""
+  },
+  {
+    "title": "Suavemente",
+    "artist": "Elvis Crespo",
+    "level": "intermediate",
+    "youtube_id": ""
+  },
+  {
+    "title": "La Tortura",
+    "artist": "Shakira ft. Alejandro Sanz",
+    "level": "advanced",
+    "youtube_id": ""
+  },
+  {
+    "title": "Hasta Que Te Conocí",
+    "artist": "Juan Luis Guerra",
+    "level": "advanced",
+    "youtube_id": ""
+  },
+  {
+    "title": "Corazón Partido",
+    "artist": "Alejandro Sanz",
+    "level": "advanced",
+    "youtube_id": ""
+  }
+]

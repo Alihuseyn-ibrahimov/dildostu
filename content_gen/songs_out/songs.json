@@ -125,6 +125,106 @@
           "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, hər üçünü et."
         }
       ]
+    },
+    {
+      "song_id": "ritchie-valens-la-bamba",
+      "title": "La Bamba",
+      "artist": "Ritchie Valens",
+      "youtube_id": "0ymdjg9v8zM",
+      "level": "beginner",
+      "lang": "es",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "Para bailar La Bamba",
+          "translation_az": "La Bamba rəqs etmək üçün"
+        },
+        {
+          "line_id": "l2",
+          "text": "Para bailar La Bamba",
+          "translation_az": "La Bamba rəqs etmək üçün"
+        },
+        {
+          "line_id": "l3",
+          "text": "Se necessita una poca de gracia",
+          "translation_az": "Bir az qrafiya lazımdır"
+        },
+        {
+          "line_id": "l4",
+          "text": "Una poca de gracia y otra cosita",
+          "translation_az": "Bir az qrafiya və başqa bir şey"
+        },
+        {
+          "line_id": "l5",
+          "text": "Ay, arriba, arriba",
+          "translation_az": "Ay, yuxarı, yuxarı"
+        },
+        {
+          "line_id": "l6",
+          "text": "Ay, arriba, arriba",
+          "translation_az": "Ay, yuxarı, yuxarı"
+        },
+        {
+          "line_id": "l7",
+          "text": "Por ti sere, por ti sere",
+          "translation_az": "Sən üçün olacam, sən üçün olacam"
+        },
+        {
+          "line_id": "l8",
+          "text": "Por ti sere, por ti sere",
+          "translation_az": "Sən üçün olacam, sən üçün olacam"
+        },
+        {
+          "line_id": "l9",
+          "text": "Una poca de gracia",
+          "translation_az": "Bir az qrafiya"
+        },
+        {
+          "line_id": "l10",
+          "text": "Para bailar La Bamba",
+          "translation_az": "La Bamba rəqs etmək üçün"
+        },
+        {
+          "line_id": "l11",
+          "text": "Se necessita una poca de gracia",
+          "translation_az": "Bir az qrafiya lazımdır"
+        },
+        {
+          "line_id": "l12",
+          "text": "Una poca de gracia y otra cosita",
+          "translation_az": "Bir az qrafiya və başqa bir şey"
+        },
+        {
+          "line_id": "l13",
+          "text": "Ay, arriba, arriba",
+          "translation_az": "Ay, yuxarı, yuxarı"
+        },
+        {
+          "line_id": "l14",
+          "text": "Ay, arriba, arriba",
+          "translation_az": "Ay, yuxarı, yuxarı"
+        },
+        {
+          "line_id": "l15",
+          "text": "Yo no fuí, yo no fuí",
+          "translation_az": "Mən getmədim, mən getmədim"
+        },
+        {
+          "line_id": "l16",
+          "text": "Yo no fuí, yo no fuí",
+          "translation_az": "Mən getmədim, mən getmədim"
+        },
+        {
+          "line_id": "l17",
+          "text": "Por ti sere, por ti sere",
+          "translation_az": "Sən üçün olacam, sən üçün olacam"
+        },
+        {
+          "line_id": "l18",
+          "text": "Por ti sere, por ti sere",
+          "translation_az": "Sən üçün olacam, sən üçün olacam"
+        }
+      ]
     }
   ]
 }
