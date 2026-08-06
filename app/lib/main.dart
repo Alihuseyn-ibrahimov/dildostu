@@ -654,6 +654,8 @@ class _BootstrapState extends State<_Bootstrap> {
             song: song,
             lookupWord: (word, line) =>
                 _wordLookup.lookup(word, context: line),
+            embedUrlFor: (videoId) =>
+                '${AppConfig.serverBaseUrl}/music/embed/$videoId',
             accent: accent,
           ),
         )),

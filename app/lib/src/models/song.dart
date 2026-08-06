@@ -1,10 +1,11 @@
 /// Mahnı modelləri — serverin `/music` manifestinə uyğundur.
 ///
-/// Audio bizdə saxlanmır — `youtubeId` ilə YouTube video proqram daxilində
-/// embed olunur (bax `docs/superpowers/specs/2026-08-05-dildostu-music-
-/// section-design.md`). Hər sətrin AZ tərcüməsi manifestə daxildir ki,
-/// dinləyərkən dərhal görünsün; sözə toxunub ayrıca mənasına baxmaq üçün
-/// mövcud `/word-lookup` işlədilir (audiobook-dakı eyni mexanizm).
+/// Audio bizdə saxlanmır — `youtubeId` bizim serverin `/music/embed/{id}`
+/// səhifəsi vasitəsilə proqram daxilində embed olunur (bax
+/// `music_screen.dart`-dakı `SongPlayerScreen` qeydi, 2026-08-05). Hər
+/// sətrin AZ tərcüməsi manifestə daxildir ki, dinləyərkən dərhal görünsün;
+/// sözə toxunub ayrıca mənasına baxmaq üçün mövcud `/word-lookup` işlədilir
+/// (audiobook-dakı eyni mexanizm).
 library;
 
 class SongLine {

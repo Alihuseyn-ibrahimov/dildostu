@@ -130,10 +130,10 @@ void main() {
     });
   });
 
-  // `SongPlayerScreen`-in özü `YoutubePlayerController` yaradır (webview
-  // platform mock tələb edir, bax music_screen.dart-dakı qeyd) — ona görə
-  // faktiki yeni məntiq (lyrics + sözə toxunma) ayrılmış `SongLyricsView`-
-  // da test olunur, videosuz.
+  // `SongPlayerScreen` özü `WebViewController` yaradır (webview platform
+  // mock tələb edir, bax music_screen.dart-dakı qeyd) — ona görə faktiki
+  // yeni məntiq (lyrics + sözə toxunma) ayrılmış `SongLyricsView`-da test
+  // olunur, videosuz.
   group('SongLyricsView', () {
     Widget wrap({
       required Future<WordLookupResult> Function(String, String) lookupWord,

@@ -67,3 +67,24 @@ class TestMusicEndpoint:
     def test_manifest_missing_404(self, tmp_path):
         r = self._client(tmp_path).get("/music")
         assert r.status_code == 404
+
+
+class TestMusicEmbed:
+    def test_valid_id_returns_iframe_html(self):
+        r = TestClient(app).get("/music/embed/yCjJyiqpAuU")
+        assert r.status_code == 200
+        assert "text/html" in r.headers["content-type"]
+        assert "https://www.youtube.com/embed/yCjJyiqpAuU" in r.text
+        assert "<iframe" in r.text
+
+    @pytest.mark.parametrize("bad_id", [
+        "../../etc/passwd",
+        "<script>alert(1)</script>",
+        "tooshort",
+        "waytoolongforavalididxx",
+        "",
+    ])
+    def test_invalid_id_rejected(self, bad_id):
+        r = TestClient(app).get(f"/music/embed/{bad_id}")
+        assert r.status_code in (400, 404)
+        assert "<script>" not in r.text

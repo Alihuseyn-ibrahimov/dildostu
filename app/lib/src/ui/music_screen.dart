@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 import '../data/word_lookup_client.dart';
 import '../models/song.dart';
@@ -150,8 +151,22 @@ class _SongCard extends StatelessWidget {
   }
 }
 
-/// Bir mahnının pleyeri — YouTube video + sətir-sətir sözlər (hər sətrin
+/// Bir mahnının pleyeri — video (embed) + sətir-sətir sözlər (hər sətrin
 /// altında AZ tərcüməsi), sözə toxunub ayrıca mənasına bax.
+///
+/// Video tarixçəsi (2026-08-05, real cihazda sınandıqca üç mərhələ):
+/// 1. `youtube_player_iframe` (`loadHtmlString` + saxta `baseUrl`) —
+///    WebView bu `baseUrl`-i FAKTİKİ tətbiq etmirdi (səhifə `data:` origin-lə
+///    açılırdı), YouTube "Video pleyer konfiqurasiya xətası" göstərirdi.
+/// 2. Statik eskiz + toxunanda xarici keçid (`url_launcher`
+///    `inAppBrowserView`, Custom Tabs) — Android-in App Links mexanizmi
+///    HƏR youtube.com keçidini (Custom Tabs daxil) YouTube tətbiqinə
+///    yönləndirirdi, istifadəçi "app-dan çıxdı" dedi.
+/// 3. **HƏLL:** `youtube.com`-a BİRBAŞA getmək əvəzinə, öz serverimizdəki
+///    `/music/embed/{id}` səhifəsini yükləyirik (`dildostu_server/app.py`,
+///    `music_embed`) — bu, HƏQİQİ https origin verir (App Links youtube.com-a
+///    aid olduğu üçün bizim domenimizi tutmur) VƏ YouTube-un iframe-i
+///    normal (səhifə→youtube.com) origin-lə işləyir, "data:" xətası olmur.
 ///
 /// Video-lyrics sinxronlaşması YOXDUR (V1) — istifadəçi özü scroll edir
 /// (bax spec: docs/superpowers/specs/2026-08-05-dildostu-music-section-design.md).
@@ -160,6 +175,7 @@ class SongPlayerScreen extends StatefulWidget {
     super.key,
     required this.song,
     required this.lookupWord,
+    required this.embedUrlFor,
     this.accent,
   });
 
@@ -169,6 +185,11 @@ class SongPlayerScreen extends StatefulWidget {
   final Future<WordLookupResult> Function(String word, String context)
       lookupWord;
 
+  /// Video ID → bizim serverdəki embed səhifəsinin tam URL-i (main.dart-da
+  /// `AppConfig.serverBaseUrl`-ə bağlanır, bax `audiobook_client.dart`-dakı
+  /// `chapterUrl` nümunəsi — ekran özü server ünvanından xəbərsiz qalır).
+  final String Function(String videoId) embedUrlFor;
+
   final AccentColor? accent;
 
   @override
@@ -176,54 +197,52 @@ class SongPlayerScreen extends StatefulWidget {
 }
 
 class _SongPlayerScreenState extends State<SongPlayerScreen> {
-  late final YoutubePlayerController _controller;
+  late final WebViewController _webView;
 
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController.fromVideoId(
-      videoId: widget.song.youtubeId,
-      autoPlay: false,
-      params: const YoutubePlayerParams(showFullscreenButton: true),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.close();
-    super.dispose();
+    _webView = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse(widget.embedUrlFor(widget.song.youtubeId)));
+    // Android WebView-də üçüncü tərəf cookie-lər defolt söndürülüb —
+    // YouTube-un pleyeri bunlarsız işləməyə bilər.
+    final platform = _webView.platform;
+    if (platform is AndroidWebViewController) {
+      AndroidWebViewCookieManager(const PlatformWebViewCookieManagerCreationParams())
+          .setAcceptThirdPartyCookies(platform, true);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayerScaffold(
-      controller: _controller,
-      aspectRatio: 16 / 9,
-      builder: (context, player) => Scaffold(
-        appBar: AppBar(
-          title: Text(widget.song.title),
-          backgroundColor: widget.accent?.tint,
-        ),
-        body: Column(
-          children: [
-            player,
-            Expanded(
-              child: SongLyricsView(
-                lines: widget.song.lines,
-                lookupWord: widget.lookupWord,
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.song.title),
+        backgroundColor: widget.accent?.tint,
+      ),
+      body: Column(
+        children: [
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: WebViewWidget(controller: _webView),
+          ),
+          Expanded(
+            child: SongLyricsView(
+              lines: widget.song.lines,
+              lookupWord: widget.lookupWord,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
-/// Sətir-sətir lyrics + sözə toxunub mənasına bax — `YoutubePlayerController`-
-/// dan (webview tələb edir) qəsdən AYRI widget ki, video olmadan da test
-/// oluna bilsin (bax dildostu/CLAUDE.md-dəki webview test məhdudiyyəti,
-/// 2026-08-05 tapıntısı).
+/// Sətir-sətir lyrics + sözə toxunub mənasına bax — `WebViewController`-dan
+/// (webview platform mock tələb edir) qəsdən AYRI widget ki, video olmadan
+/// da test oluna bilsin (bax dildostu/CLAUDE.md-dəki webview test
+/// məhdudiyyəti, 2026-08-05 tapıntısı).
 class SongLyricsView extends StatelessWidget {
   const SongLyricsView({super.key, required this.lines, required this.lookupWord});
 

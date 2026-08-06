@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -500,6 +501,42 @@ def music_manifest(store: MusicStore = Depends(get_music_store)) -> dict:
     if manifest is None:
         raise HTTPException(status_code=404, detail="Mahnı yoxdur")
     return manifest
+
+
+# Yalnız düzgün formatlı YouTube video ID (11 simvol) — path traversal/
+# HTML injection bağlanır.
+_YOUTUBE_ID_RE = re.compile(r"^[A-Za-z0-9_-]{11}$")
+
+
+@app.get("/music/embed/{video_id}", response_class=HTMLResponse)
+def music_embed(video_id: str) -> str:
+    """Mahnı videosu üçün öz domenimizdə YouTube iframe səhifəsi.
+
+    App bunu birbaşa YouTube-a (`loadRequest`) yox, BURAYA yönləndirir —
+    2026-08-05-də real cihazda tapıldı: WebView-in `loadHtmlString`
+    baseUrl-i tətbiq etmirdi (səhifə `data:` origin-lə açılırdı, YouTube
+    "konfiqurasiya xətası" göstərirdi), `https://youtube.com/...`-a
+    BİRBAŞA getmək isə Android-in App Links mexanizmi ilə YouTube
+    tətbiqinə keçirdi (Custom Tabs daxil olmaqla). Bu səhifə HƏQİQİ
+    HTTPS origin verir (bizim domen) VƏ youtube.com deyil, ona görə App
+    Links onu tutmur — iframe daxilində YouTube-un öz embed sorğusu
+    normal (bizim səhifə → youtube.com) origin-lə gedir.
+    """
+    if not _YOUTUBE_ID_RE.match(video_id):
+        raise HTTPException(status_code=400, detail="Yanlış video ID")
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>html,body{{margin:0;padding:0;background:#000;height:100%}}
+iframe{{width:100%;height:100%;border:0;display:block}}</style>
+</head>
+<body>
+<iframe src="https://www.youtube.com/embed/{video_id}?playsinline=1"
+ allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+ allowfullscreen></iframe>
+</body>
+</html>"""
 
 
 # Buraxılış cavabları keşlənməməlidir — Cloudflare/proxy köhnə APK/versiya
