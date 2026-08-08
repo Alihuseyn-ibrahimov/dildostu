@@ -12,6 +12,10 @@ from collections import Counter
 from datetime import datetime
 
 _EARTH_RADIUS_M = 6_371_000.0
+# Azərbaycan sabit UTC+4-dür (2016-dan yay vaxtı yoxdur). Nümunə vaxtları
+# serverdə UTC saxlanır, gün hissəsi isə istifadəçinin yerli saatına görə
+# hesablanmalıdır.
+_LOCAL_UTC_OFFSET_HOURS = 4
 
 
 def haversine_distance_m(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
@@ -29,11 +33,13 @@ def haversine_distance_m(lat1: float, lng1: float, lat2: float, lng2: float) -> 
 def _hour_window(ts: str) -> str:
     """Gün hissəsi (informativ metadata — bildiriş göndərmə şərti deyil).
 
-    Qeyd: `ts` serverdə UTC saxlanır; bu, AZ yerli vaxtın təxmini
-    yaxınlaşmasıdır, dəqiq sərhəd deyil.
+    `ts` serverdə UTC saxlanır, istifadəçilər isə Azərbaycandadır — ona görə
+    YERLİ vaxta çevrilir. Əvvəllər UTC saatı birbaşa işlədilirdi və yerli
+    səhər 07:00 (03:00 UTC) "night" kimi qeyd olunurdu.
+    Azərbaycan 2016-dan yay vaxtı tətbiq etmir, sabit UTC+4.
     """
     try:
-        hour = datetime.fromisoformat(ts).hour
+        hour = (datetime.fromisoformat(ts).hour + _LOCAL_UTC_OFFSET_HOURS) % 24
     except ValueError:
         return "unknown"
     if 6 <= hour < 12:

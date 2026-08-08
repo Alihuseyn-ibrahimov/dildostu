@@ -89,4 +89,29 @@ void main() {
       expect(client.deleteAccount('köhnə-token'), throwsA(isA<AuthException>()));
     });
   });
+
+  group('validateSession', () {
+    test('200 → true', () async {
+      final mock = MockClient((req) async {
+        expect(req.url.path, '/auth/me');
+        return http.Response('{"id":1,"email":"a@b.com"}', 200);
+      });
+      final client = AuthClient(baseUrl: 'https://x', httpClient: mock);
+      expect(await client.validateSession('tok'), isTrue);
+    });
+
+    test('401 → false', () async {
+      final mock = MockClient((req) async => http.Response('{}', 401));
+      final client = AuthClient(baseUrl: 'https://x', httpClient: mock);
+      expect(await client.validateSession('tok'), isFalse);
+    });
+
+    test('şəbəkə xətası → true (offline saxla)', () async {
+      final client = AuthClient(
+        baseUrl: 'https://x',
+        httpClient: MockClient((req) async => throw Exception('offline')),
+      );
+      expect(await client.validateSession('tok'), isTrue);
+    });
+  });
 }

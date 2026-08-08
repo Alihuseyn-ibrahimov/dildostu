@@ -20,8 +20,9 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(home: StatsScreen(reviewRepository: repo)));
 
-    expect(find.text('2'), findsOneWidget); // Toxunulan söz
+    expect(find.text('2'), findsNWidgets(2)); // toxunulan + öyrənilir
     expect(find.text('Toxunulan söz'), findsOneWidget);
+    expect(find.text('Öyrənilir'), findsOneWidget);
     expect(find.text('Mənimsənilmiş söz'), findsOneWidget);
     expect(find.text('Ardıcıl gün'), findsOneWidget);
   });

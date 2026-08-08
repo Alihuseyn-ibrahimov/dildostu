@@ -1,11 +1,4 @@
 /// Mahnı modelləri — serverin `/music` manifestinə uyğundur.
-///
-/// Audio bizdə saxlanmır — `youtubeId` bizim serverin `/music/embed/{id}`
-/// səhifəsi vasitəsilə proqram daxilində embed olunur (bax
-/// `music_screen.dart`-dakı `SongPlayerScreen` qeydi, 2026-08-05). Hər
-/// sətrin AZ tərcüməsi manifestə daxildir ki, dinləyərkən dərhal görünsün;
-/// sözə toxunub ayrıca mənasına baxmaq üçün mövcud `/word-lookup` işlədilir
-/// (audiobook-dakı eyni mexanizm).
 library;
 
 class SongLine {
@@ -13,16 +6,33 @@ class SongLine {
     required this.lineId,
     required this.text,
     required this.translationAz,
+    this.startMs,
+    this.endMs,
+    this.wordMs,
   });
 
   final String lineId;
   final String text;
   final String translationAz;
 
+  /// Videoda bu sətrin oxunmağa başladığı an (mütləq ms).
+  final int? startMs;
+
+  /// Növbəti sətrin başlanğıcı (mütləq ms).
+  final int? endMs;
+
+  /// Sətirdəki hər sözün öz başlanğıcı (mütləq ms) — real audio vaxtları.
+  final List<int>? wordMs;
+
   factory SongLine.fromServerJson(Map<String, dynamic> json) => SongLine(
         lineId: json['line_id'] as String,
         text: json['text'] as String,
         translationAz: json['translation_az'] as String,
+        startMs: (json['start_ms'] as num?)?.toInt(),
+        endMs: (json['end_ms'] as num?)?.toInt(),
+        wordMs: (json['word_ms'] as List?)
+            ?.map((v) => (v as num).toInt())
+            .toList(),
       );
 }
 
@@ -43,9 +53,6 @@ class Song {
   final String youtubeId;
   final String level;
   final List<SongLine> lines;
-
-  /// Mahnının dili (`target_lang` ilə uzlaşır) — audiobook-dakı `lang`
-  /// sahəsi ilə eyni məqsəd: app bunu `profile.targetLang`-a görə süzür.
   final String lang;
 
   factory Song.fromServerJson(Map<String, dynamic> json) => Song(

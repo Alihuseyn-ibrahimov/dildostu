@@ -12,32 +12,88 @@
         {
           "line_id": "l1",
           "text": "Twinkle, twinkle, little star,",
-          "translation_az": "İşıq, işıq, kiçik ulduz,"
+          "translation_az": "Parılda, parılda, kiçik ulduz,",
+          "start_ms": 19380,
+          "end_ms": 25380,
+          "word_ms": [
+            19380,
+            21440,
+            22160,
+            22510
+          ]
         },
         {
           "line_id": "l2",
           "text": "How I wonder what you are.",
-          "translation_az": "Mən nə olduğunuzu necə möcüzələndirəm."
+          "translation_az": "Görəsən sən nəsən?",
+          "start_ms": 25380,
+          "end_ms": 29980,
+          "word_ms": [
+            25380,
+            25980,
+            26800,
+            27640,
+            28500,
+            28850
+          ]
         },
         {
           "line_id": "l3",
           "text": "Up above the world so high,",
-          "translation_az": "Yuxarıda, dünya qədər yüksək,"
+          "translation_az": "Dünyanın çox-çox uzağında,",
+          "start_ms": 29980,
+          "end_ms": 35900,
+          "word_ms": [
+            29980,
+            31420,
+            32440,
+            33280,
+            34080,
+            34430
+          ]
         },
         {
           "line_id": "l4",
           "text": "Like a diamond in the sky.",
-          "translation_az": "Səma da bir brilyant kimi."
+          "translation_az": "Səmada bir almaz kimi.",
+          "start_ms": 35900,
+          "end_ms": 41260,
+          "word_ms": [
+            35900,
+            36960,
+            37780,
+            38560,
+            39680,
+            40320
+          ]
         },
         {
           "line_id": "l5",
           "text": "Twinkle, twinkle, little star,",
-          "translation_az": "İşıq, işıq, kiçik ulduz,"
+          "translation_az": "Parılda, parılda, kiçik ulduz,",
+          "start_ms": 41260,
+          "end_ms": 46980,
+          "word_ms": [
+            41260,
+            43300,
+            44000,
+            44350
+          ]
         },
         {
           "line_id": "l6",
           "text": "How I wonder what you are.",
-          "translation_az": "Mən nə olduğunuzu necə möcüzələndirəm."
+          "translation_az": "Görəsən sən nəsən?",
+          "start_ms": 46980,
+          "end_ms": 151820,
+          "word_ms": [
+            46980,
+            47780,
+            48580,
+            49500,
+            50360,
+            50710
+          ]
         }
       ]
     },
@@ -52,77 +108,300 @@
         {
           "line_id": "l1",
           "text": "If you're happy and you know it, clap your hands.",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, əl çal."
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, əl çal.",
+          "start_ms": 12160,
+          "end_ms": 16060,
+          "word_ms": [
+            12160,
+            12680,
+            12880,
+            13280,
+            13660,
+            13840,
+            14120,
+            14420,
+            14520,
+            14870
+          ]
         },
         {
           "line_id": "l2",
           "text": "If you're happy and you know it, and you really want to show it,",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, və həqiqətən bunu göstərmək istəyirsənsə,"
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, həqiqətən göstərmək istəyirsənsə,",
+          "start_ms": 16060,
+          "end_ms": 19920,
+          "word_ms": [
+            16060,
+            16580,
+            16800,
+            17120,
+            17580,
+            17780,
+            17980,
+            18330,
+            18680,
+            19030,
+            19380,
+            19730,
+            20080,
+            20430
+          ]
         },
         {
           "line_id": "l3",
           "text": "If you're happy and you know it, clap your hands.",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, əl çal."
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, əl çal.",
+          "start_ms": 19920,
+          "end_ms": 24080,
+          "word_ms": [
+            19920,
+            20440,
+            20680,
+            21060,
+            21480,
+            21640,
+            21900,
+            22140,
+            22380,
+            22730
+          ]
         },
         {
           "line_id": "l4",
           "text": "If you're happy and you know it, stomp your feet.",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, ayaqlarını yerə vur."
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, ayaqlarını yerə vur.",
+          "start_ms": 24080,
+          "end_ms": 31700,
+          "word_ms": [
+            24080,
+            24380,
+            24580,
+            24980,
+            25360,
+            25560,
+            25820,
+            26010,
+            26200,
+            26550
+          ]
         },
         {
           "line_id": "l5",
           "text": "If you're happy and you know it, stomp your feet.",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, ayaqlarını yerə vur."
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, ayaqlarını yerə vur.",
+          "start_ms": 31700,
+          "end_ms": 35860,
+          "word_ms": [
+            31700,
+            32140,
+            32360,
+            32760,
+            33160,
+            33380,
+            33580,
+            33880,
+            34230,
+            34580
+          ]
         },
         {
           "line_id": "l6",
           "text": "If you're happy and you know it, and you really want to show it,",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, və həqiqətən bunu göstərmək istəyirsənsə,"
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, həqiqətən göstərmək istəyirsənsə,",
+          "start_ms": 35860,
+          "end_ms": 39500,
+          "word_ms": [
+            35860,
+            36060,
+            36240,
+            36660,
+            37100,
+            37280,
+            37500,
+            37850,
+            38200,
+            38550,
+            38900,
+            39250,
+            39600,
+            39950
+          ]
         },
         {
           "line_id": "l7",
           "text": "If you're happy and you know it, stomp your feet.",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, ayaqlarını yerə vur."
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, ayaqlarını yerə vur.",
+          "start_ms": 39500,
+          "end_ms": 43680,
+          "word_ms": [
+            39500,
+            39940,
+            40160,
+            40540,
+            41000,
+            41160,
+            41400,
+            41650,
+            41900,
+            42250
+          ]
         },
         {
           "line_id": "l8",
           "text": "If you're happy and you know it, shout \"Hooray!\"",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, \"Hooray!\" qışqır."
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, \"Yaşasın!\" qışqır.",
+          "start_ms": 43680,
+          "end_ms": 51080,
+          "word_ms": [
+            43680,
+            43860,
+            44100,
+            44460,
+            44880,
+            45100,
+            45280,
+            45630,
+            45980
+          ]
         },
         {
           "line_id": "l9",
           "text": "If you're happy and you know it, shout \"Hooray!\"",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, \"Hooray!\" qışqır."
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, \"Yaşasın!\" qışqır.",
+          "start_ms": 51080,
+          "end_ms": 55580,
+          "word_ms": [
+            51080,
+            51600,
+            51860,
+            52300,
+            52720,
+            52880,
+            53160,
+            53460,
+            53810
+          ]
         },
         {
           "line_id": "l10",
           "text": "If you're happy and you know it, and you really want to show it,",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, və həqiqətən bunu göstərmək istəyirsənsə,"
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, həqiqətən göstərmək istəyirsənsə,",
+          "start_ms": 55580,
+          "end_ms": 59300,
+          "word_ms": [
+            55580,
+            55580,
+            55820,
+            56180,
+            56600,
+            56780,
+            57040,
+            57390,
+            57740,
+            58090,
+            58440,
+            58790,
+            59140,
+            59490
+          ]
         },
         {
           "line_id": "l11",
           "text": "If you're happy and you know it, shout \"Hooray!\"",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, \"Hooray!\" qışqır."
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, \"Yaşasın!\" qışqır.",
+          "start_ms": 59300,
+          "end_ms": 63260,
+          "word_ms": [
+            59300,
+            59380,
+            59720,
+            60120,
+            60520,
+            60700,
+            61050,
+            61400,
+            61750
+          ]
         },
         {
           "line_id": "l12",
           "text": "If you're happy and you know it, do all three.",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, hər üçünü et."
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, hər üçünü et.",
+          "start_ms": 63260,
+          "end_ms": 70680,
+          "word_ms": [
+            63260,
+            63380,
+            63620,
+            63980,
+            64400,
+            64580,
+            64800,
+            65120,
+            66000,
+            66350
+          ]
         },
         {
           "line_id": "l13",
           "text": "If you're happy and you know it, do all three.",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, hər üçünü et."
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, hər üçünü et.",
+          "start_ms": 70680,
+          "end_ms": 76900,
+          "word_ms": [
+            70680,
+            71200,
+            71420,
+            71820,
+            72220,
+            72380,
+            72660,
+            72960,
+            73310,
+            73660
+          ]
         },
         {
           "line_id": "l14",
           "text": "If you're happy and you know it, and you really want to show it,",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, və həqiqətən bunu göstərmək istəyirsənsə,"
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, həqiqətən göstərmək istəyirsənsə,",
+          "start_ms": 76900,
+          "end_ms": 86540,
+          "word_ms": [
+            76900,
+            77080,
+            77260,
+            77640,
+            78060,
+            78240,
+            78500,
+            78850,
+            79200,
+            79550,
+            79900,
+            80250,
+            80600,
+            80950
+          ]
         },
         {
           "line_id": "l15",
           "text": "If you're happy and you know it, do all three.",
-          "translation_az": "Əgər xoşbəxtsənsə və bilirsənsə, hər üçünü et."
+          "translation_az": "Əgər xoşbəxtsənsə və bunu bilirsənsə, hər üçünü et.",
+          "start_ms": 86540,
+          "end_ms": 92400,
+          "word_ms": [
+            86540,
+            86800,
+            87040,
+            87420,
+            87840,
+            88000,
+            88240,
+            88580,
+            88740,
+            89090
+          ]
         }
       ]
     },
@@ -136,93 +415,3360 @@
       "lines": [
         {
           "line_id": "l1",
-          "text": "Para bailar La Bamba",
-          "translation_az": "La Bamba rəqs etmək üçün"
+          "text": "Para bailar la bamba",
+          "translation_az": "Bamba rəqs etmək üçün",
+          "start_ms": 5520,
+          "end_ms": 8100,
+          "word_ms": [
+            5520,
+            6420,
+            7080,
+            7430
+          ]
         },
         {
           "line_id": "l2",
-          "text": "Para bailar La Bamba",
-          "translation_az": "La Bamba rəqs etmək üçün"
+          "text": "Para bailar la bamba",
+          "translation_az": "Bamba rəqs etmək üçün",
+          "start_ms": 8100,
+          "end_ms": 11200,
+          "word_ms": [
+            8100,
+            9700,
+            10280,
+            10480
+          ]
         },
         {
           "line_id": "l3",
-          "text": "Se necessita una poca de gracia",
-          "translation_az": "Bir az qrafiya lazımdır"
+          "text": "Se necesita una poca de gracia",
+          "translation_az": "Bir az məlahət lazımdır",
+          "start_ms": 11200,
+          "end_ms": 14720,
+          "word_ms": [
+            11200,
+            11580,
+            12220,
+            13160,
+            13640,
+            13990
+          ]
         },
         {
           "line_id": "l4",
-          "text": "Una poca de gracia y otra cosita",
-          "translation_az": "Bir az qrafiya və başqa bir şey"
+          "text": "Una poca de gracia, pa' mí, pa' ti",
+          "translation_az": "Bir az məlahət, mənə də, sənə də",
+          "start_ms": 14720,
+          "end_ms": 19100,
+          "word_ms": [
+            14720,
+            16260,
+            16900,
+            17280,
+            17900,
+            18080,
+            18320,
+            18670
+          ]
         },
         {
           "line_id": "l5",
-          "text": "Ay, arriba, arriba",
-          "translation_az": "Ay, yuxarı, yuxarı"
+          "text": "Y arriba, y arriba",
+          "translation_az": "Hoppa, yuxarı, yuxarı",
+          "start_ms": 19100,
+          "end_ms": 21060,
+          "word_ms": [
+            19100,
+            19400,
+            19880,
+            20260
+          ]
         },
         {
           "line_id": "l6",
-          "text": "Ay, arriba, arriba",
-          "translation_az": "Ay, yuxarı, yuxarı"
+          "text": "Y arriba, y arriba",
+          "translation_az": "Hoppa, yuxarı, yuxarı",
+          "start_ms": 21060,
+          "end_ms": 24260,
+          "word_ms": [
+            21060,
+            22540,
+            22960,
+            23310
+          ]
         },
         {
           "line_id": "l7",
-          "text": "Por ti sere, por ti sere",
-          "translation_az": "Sən üçün olacam, sən üçün olacam"
+          "text": "Por ti seré, por ti seré",
+          "translation_az": "Sənin üçün olacağam, sənin üçün olacağam",
+          "start_ms": 24260,
+          "end_ms": 28080,
+          "word_ms": [
+            24260,
+            24580,
+            24860,
+            25500,
+            26140,
+            26440
+          ]
         },
         {
           "line_id": "l8",
-          "text": "Por ti sere, por ti sere",
-          "translation_az": "Sən üçün olacam, sən üçün olacam"
+          "text": "Yo no soy marinero",
+          "translation_az": "Mən dənizçi deyiləm",
+          "start_ms": 28080,
+          "end_ms": 30800,
+          "word_ms": [
+            28080,
+            29300,
+            29500,
+            29800
+          ]
         },
         {
           "line_id": "l9",
-          "text": "Una poca de gracia",
-          "translation_az": "Bir az qrafiya"
+          "text": "Yo no soy marinero, soy capitán",
+          "translation_az": "Mən dənizçi deyiləm, kapitanam",
+          "start_ms": 30800,
+          "end_ms": 33830,
+          "word_ms": [
+            30800,
+            32440,
+            32700,
+            33000,
+            33960,
+            34310
+          ]
         },
         {
           "line_id": "l10",
-          "text": "Para bailar La Bamba",
-          "translation_az": "La Bamba rəqs etmək üçün"
+          "text": "Soy capitán, soy capitán",
+          "translation_az": "Kapitanam, kapitanam",
+          "start_ms": 33830,
+          "end_ms": 39780,
+          "word_ms": [
+            33830,
+            34180,
+            35380,
+            35840
+          ]
         },
         {
           "line_id": "l11",
-          "text": "Se necessita una poca de gracia",
-          "translation_az": "Bir az qrafiya lazımdır"
+          "text": "Bamba, bamba",
+          "translation_az": "Bamba, bamba",
+          "start_ms": 39780,
+          "end_ms": 42220,
+          "word_ms": [
+            39780,
+            41100
+          ]
         },
         {
           "line_id": "l12",
-          "text": "Una poca de gracia y otra cosita",
-          "translation_az": "Bir az qrafiya və başqa bir şey"
+          "text": "Bamba, bamba",
+          "translation_az": "Bamba, bamba",
+          "start_ms": 42220,
+          "end_ms": 45520,
+          "word_ms": [
+            42220,
+            44280
+          ]
         },
         {
           "line_id": "l13",
-          "text": "Ay, arriba, arriba",
-          "translation_az": "Ay, yuxarı, yuxarı"
+          "text": "Bamba, bamba",
+          "translation_az": "Bamba, bamba",
+          "start_ms": 45520,
+          "end_ms": 50980,
+          "word_ms": [
+            45520,
+            47500
+          ]
         },
         {
           "line_id": "l14",
-          "text": "Ay, arriba, arriba",
-          "translation_az": "Ay, yuxarı, yuxarı"
+          "text": "Para bailar la bamba",
+          "translation_az": "Bamba rəqs etmək üçün",
+          "start_ms": 50980,
+          "end_ms": 53560,
+          "word_ms": [
+            50980,
+            51920,
+            52580,
+            52930
+          ]
         },
         {
           "line_id": "l15",
-          "text": "Yo no fuí, yo no fuí",
-          "translation_az": "Mən getmədim, mən getmədim"
+          "text": "Para bailar la bamba",
+          "translation_az": "Bamba rəqs etmək üçün",
+          "start_ms": 53560,
+          "end_ms": 56660,
+          "word_ms": [
+            53560,
+            55060,
+            55700,
+            55940
+          ]
         },
         {
           "line_id": "l16",
-          "text": "Yo no fuí, yo no fuí",
-          "translation_az": "Mən getmədim, mən getmədim"
+          "text": "Se necesita una poca de gracia",
+          "translation_az": "Bir az məlahət lazımdır",
+          "start_ms": 56660,
+          "end_ms": 60120,
+          "word_ms": [
+            56660,
+            57000,
+            57440,
+            58540,
+            59060,
+            59410
+          ]
         },
         {
           "line_id": "l17",
-          "text": "Por ti sere, por ti sere",
-          "translation_az": "Sən üçün olacam, sən üçün olacam"
+          "text": "Una poca de gracia, pa' mí, pa' ti",
+          "translation_az": "Bir az məlahət, mənə də, sənə də",
+          "start_ms": 60120,
+          "end_ms": 64440,
+          "word_ms": [
+            60120,
+            61660,
+            62340,
+            62680,
+            63320,
+            63580,
+            63740,
+            64090
+          ]
         },
         {
           "line_id": "l18",
-          "text": "Por ti sere, por ti sere",
-          "translation_az": "Sən üçün olacam, sən üçün olacam"
+          "text": "Y arriba, y arriba",
+          "translation_az": "Hoppa, yuxarı, yuxarı",
+          "start_ms": 64440,
+          "end_ms": 91700,
+          "word_ms": [
+            64440,
+            64740,
+            65140,
+            65640
+          ]
+        },
+        {
+          "line_id": "l19",
+          "text": "Para bailar la bamba",
+          "translation_az": "Bamba rəqs etmək üçün",
+          "start_ms": 91700,
+          "end_ms": 94060,
+          "word_ms": [
+            91700,
+            92620,
+            93280,
+            93630
+          ]
+        },
+        {
+          "line_id": "l20",
+          "text": "Para bailar la bamba",
+          "translation_az": "Bamba rəqs etmək üçün",
+          "start_ms": 94060,
+          "end_ms": 96960,
+          "word_ms": [
+            94060,
+            95400,
+            96000,
+            96160
+          ]
+        },
+        {
+          "line_id": "l21",
+          "text": "Se necesita una poca de gracia",
+          "translation_az": "Bir az məlahət lazımdır",
+          "start_ms": 96960,
+          "end_ms": 100460,
+          "word_ms": [
+            96960,
+            97340,
+            98120,
+            98900,
+            99400,
+            99750
+          ]
+        },
+        {
+          "line_id": "l22",
+          "text": "Una poca de gracia, pa' mí, pa' ti",
+          "translation_az": "Bir az məlahət, mənə də, sənə də",
+          "start_ms": 100460,
+          "end_ms": 104800,
+          "word_ms": [
+            100460,
+            101960,
+            102660,
+            102980,
+            103680,
+            103940,
+            104140,
+            104490
+          ]
+        },
+        {
+          "line_id": "l23",
+          "text": "Y arriba, y arriba",
+          "translation_az": "Hoppa, yuxarı, yuxarı",
+          "start_ms": 104800,
+          "end_ms": 106820,
+          "word_ms": [
+            104800,
+            105120,
+            105580,
+            106020
+          ]
+        },
+        {
+          "line_id": "l24",
+          "text": "Por ti seré, por ti seré",
+          "translation_az": "Sənin üçün olacağam, sənin üçün olacağam",
+          "start_ms": 106820,
+          "end_ms": 110100,
+          "word_ms": [
+            106820,
+            107320,
+            108320,
+            108440,
+            108440,
+            108790
+          ]
+        },
+        {
+          "line_id": "l25",
+          "text": "Por ti seré, por ti seré",
+          "translation_az": "Sənin üçün olacağam, sənin üçün olacağam",
+          "start_ms": 110100,
+          "end_ms": 116400,
+          "word_ms": [
+            110100,
+            110380,
+            110540,
+            111360,
+            111940,
+            112280
+          ]
+        },
+        {
+          "line_id": "l26",
+          "text": "Bamba, bamba",
+          "translation_az": "Bamba, bamba",
+          "start_ms": 116400,
+          "end_ms": 118120,
+          "word_ms": [
+            116400,
+            117260
+          ]
+        }
+      ]
+    },
+    {
+      "song_id": "traditional-la-cucaracha",
+      "title": "La Cucaracha",
+      "artist": "Traditional",
+      "youtube_id": "w6ks40G4xbI",
+      "level": "beginner",
+      "lang": "es",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "La cucaracha, la cucaracha",
+          "translation_az": "Tarakan, tarakan",
+          "start_ms": 2100,
+          "end_ms": 5140,
+          "word_ms": [
+            2100,
+            2860,
+            3720,
+            4070
+          ]
+        },
+        {
+          "line_id": "l2",
+          "text": "ya no puede caminar",
+          "translation_az": "artıq yeriyə bilmir",
+          "start_ms": 5140,
+          "end_ms": 7560,
+          "word_ms": [
+            5140,
+            5980,
+            6240,
+            6460
+          ]
+        },
+        {
+          "line_id": "l3",
+          "text": "porque no tiene, porque le faltan",
+          "translation_az": "çünki yoxdur, çünki çatışmır",
+          "start_ms": 7560,
+          "end_ms": 11080,
+          "word_ms": [
+            7560,
+            7980,
+            8300,
+            9020,
+            9320,
+            9670
+          ]
+        },
+        {
+          "line_id": "l4",
+          "text": "las dos patitas de atrás",
+          "translation_az": "arxadakı iki ayaqcığı",
+          "start_ms": 11080,
+          "end_ms": 12840,
+          "word_ms": [
+            11080,
+            11400,
+            11620,
+            11960,
+            12260
+          ]
+        },
+        {
+          "line_id": "l5",
+          "text": "Una vez la cucaracha se metió en un hormiguero",
+          "translation_az": "Bir dəfə tarakan qarışqa yuvasına girdi",
+          "start_ms": 12840,
+          "end_ms": 18680,
+          "word_ms": [
+            12840,
+            14120,
+            14340,
+            14520,
+            16120,
+            16760,
+            17020,
+            17120,
+            17470
+          ]
+        },
+        {
+          "line_id": "l6",
+          "text": "y las pícaras hormigas las patitas se comieron",
+          "translation_az": "və dəcəl qarışqalar onun ayaqcıqlarını yedilər",
+          "start_ms": 18680,
+          "end_ms": 24240,
+          "word_ms": [
+            18680,
+            19380,
+            19700,
+            20020,
+            21460,
+            22020,
+            22500,
+            22850
+          ]
+        },
+        {
+          "line_id": "l7",
+          "text": "Pobrecita cucaracha, anda renga y afligida",
+          "translation_az": "Yazıq tarakan, axsayır və kədərlidir",
+          "start_ms": 24240,
+          "end_ms": 29460,
+          "word_ms": [
+            24240,
+            25160,
+            27400,
+            27540,
+            27800,
+            28150
+          ]
+        },
+        {
+          "line_id": "l8",
+          "text": "Caminando a paso lento, escondiéndose de día",
+          "translation_az": "Yavaş addımlarla yeriyir, gündüzlər gizlənir",
+          "start_ms": 29460,
+          "end_ms": 34300,
+          "word_ms": [
+            29460,
+            30500,
+            30580,
+            30800,
+            32660,
+            33260,
+            33610
+          ]
+        },
+        {
+          "line_id": "l9",
+          "text": "La cucaracha, la cucaracha",
+          "translation_az": "Tarakan, tarakan",
+          "start_ms": 34300,
+          "end_ms": 37440,
+          "word_ms": [
+            34300,
+            34540,
+            35720,
+            35940
+          ]
+        },
+        {
+          "line_id": "l10",
+          "text": "ya no puede caminar",
+          "translation_az": "artıq yeriyə bilmir",
+          "start_ms": 37440,
+          "end_ms": 39580,
+          "word_ms": [
+            37440,
+            37980,
+            38280,
+            38630
+          ]
+        },
+        {
+          "line_id": "l11",
+          "text": "porque no tiene, porque le faltan",
+          "translation_az": "çünki yoxdur, çünki çatışmır",
+          "start_ms": 39580,
+          "end_ms": 42900,
+          "word_ms": [
+            39580,
+            39980,
+            40320,
+            41020,
+            41340,
+            41690
+          ]
+        },
+        {
+          "line_id": "l12",
+          "text": "las dos patitas de atrás",
+          "translation_az": "arxadakı iki ayaqcığı",
+          "start_ms": 42900,
+          "end_ms": 45080,
+          "word_ms": [
+            42900,
+            43400,
+            43560,
+            43960,
+            44280
+          ]
+        },
+        {
+          "line_id": "l13",
+          "text": "La señora cucaracha se ha comprado una bombacha",
+          "translation_az": "Xanım tarakan özünə geniş şalvar aldı",
+          "start_ms": 45080,
+          "end_ms": 50800,
+          "word_ms": [
+            45080,
+            46160,
+            46460,
+            48140,
+            48580,
+            48720,
+            49100,
+            49450
+          ]
+        },
+        {
+          "line_id": "l14",
+          "text": "toda llena de botones y adornada con hilachas",
+          "translation_az": "başdan-başa düymələrlə dolu və saçaqlarla bəzədilmiş",
+          "start_ms": 50800,
+          "end_ms": 56160,
+          "word_ms": [
+            50800,
+            51500,
+            51860,
+            52180,
+            53420,
+            53980,
+            54330,
+            54680
+          ]
+        },
+        {
+          "line_id": "l15",
+          "text": "Qué bombacha mamarracha, le dijeron los ratones",
+          "translation_az": "\"Nə gülməli şalvardır\", dedi siçanlar",
+          "start_ms": 56160,
+          "end_ms": 61400,
+          "word_ms": [
+            56160,
+            56720,
+            57300,
+            58740,
+            59380,
+            59860,
+            60210
+          ]
+        },
+        {
+          "line_id": "l16",
+          "text": "pero a doña cucaracha no le importan opiniones",
+          "translation_az": "amma xanım tarakan başqalarının fikrinə əhəmiyyət vermir",
+          "start_ms": 61400,
+          "end_ms": 66340,
+          "word_ms": [
+            61400,
+            62080,
+            62240,
+            62500,
+            63940,
+            64640,
+            64990,
+            65340
+          ]
+        },
+        {
+          "line_id": "l17",
+          "text": "La cucaracha, la cucaracha",
+          "translation_az": "Tarakan, tarakan",
+          "start_ms": 66340,
+          "end_ms": 69160,
+          "word_ms": [
+            66340,
+            66560,
+            67740,
+            67920
+          ]
+        },
+        {
+          "line_id": "l18",
+          "text": "ya no puede caminar",
+          "translation_az": "artıq yeriyə bilmir",
+          "start_ms": 69160,
+          "end_ms": 71520,
+          "word_ms": [
+            69160,
+            70020,
+            70280,
+            70630
+          ]
+        },
+        {
+          "line_id": "l19",
+          "text": "porque no tiene, porque le faltan",
+          "translation_az": "çünki yoxdur, çünki çatışmır",
+          "start_ms": 71520,
+          "end_ms": 75060,
+          "word_ms": [
+            71520,
+            71960,
+            72320,
+            73020,
+            73300,
+            73650
+          ]
+        },
+        {
+          "line_id": "l20",
+          "text": "las dos patitas de atrás",
+          "translation_az": "arxadakı iki ayaqcığı",
+          "start_ms": 75060,
+          "end_ms": 76900,
+          "word_ms": [
+            75060,
+            75420,
+            75710,
+            76000,
+            76260
+          ]
+        }
+      ]
+    },
+    {
+      "song_id": "traditional-los-pollitos-dicen",
+      "title": "Los Pollitos Dicen",
+      "artist": "Traditional",
+      "youtube_id": "kA9voL0edJU",
+      "level": "beginner",
+      "lang": "es",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "Los pollitos dicen pío, pío, pío",
+          "translation_az": "Cücələr \"cib, cib, cib\" deyirlər",
+          "start_ms": 10960,
+          "end_ms": 16100,
+          "word_ms": [
+            10960,
+            12240,
+            13080,
+            13980,
+            14880,
+            15230
+          ]
+        },
+        {
+          "line_id": "l2",
+          "text": "cuando tienen hambre, cuando tienen frío",
+          "translation_az": "acanda və üşüyəndə",
+          "start_ms": 16100,
+          "end_ms": 20440,
+          "word_ms": [
+            16100,
+            16760,
+            17420,
+            18740,
+            18960,
+            19310
+          ]
+        },
+        {
+          "line_id": "l3",
+          "text": "La gallina busca el maíz y el trigo",
+          "translation_az": "Ana toyuq qarğıdalı və buğda axtarır",
+          "start_ms": 20440,
+          "end_ms": 24900,
+          "word_ms": [
+            20440,
+            21060,
+            21780,
+            22600,
+            23300,
+            23740,
+            24090,
+            24440
+          ]
+        },
+        {
+          "line_id": "l4",
+          "text": "les da la comida y les presta abrigo",
+          "translation_az": "onlara yemək verir və isti sığınacaq olur",
+          "start_ms": 24900,
+          "end_ms": 29380,
+          "word_ms": [
+            24900,
+            25320,
+            25640,
+            26020,
+            26880,
+            27480,
+            27860,
+            28210
+          ]
+        },
+        {
+          "line_id": "l5",
+          "text": "Bajo sus dos alas, acurrucaditos",
+          "translation_az": "Onun iki qanadının altında qısılıb",
+          "start_ms": 29380,
+          "end_ms": 33970,
+          "word_ms": [
+            29380,
+            29980,
+            30360,
+            30780,
+            31130
+          ]
+        },
+        {
+          "line_id": "l6",
+          "text": "duermen los pollitos hasta el otro día",
+          "translation_az": "cücələr səhərə qədər yatırlar",
+          "start_ms": 33970,
+          "end_ms": 48880,
+          "word_ms": [
+            33970,
+            34320,
+            34740,
+            35760,
+            36460,
+            36700,
+            37140
+          ]
+        },
+        {
+          "line_id": "l7",
+          "text": "Los pollitos dicen pío, pío, pío",
+          "translation_az": "Cücələr \"cib, cib, cib\" deyirlər",
+          "start_ms": 48880,
+          "end_ms": 53520,
+          "word_ms": [
+            48880,
+            49420,
+            50200,
+            51100,
+            51960,
+            52310
+          ]
+        },
+        {
+          "line_id": "l8",
+          "text": "cuando tienen hambre, cuando tienen frío",
+          "translation_az": "acanda və üşüyəndə",
+          "start_ms": 53520,
+          "end_ms": 57500,
+          "word_ms": [
+            53520,
+            53860,
+            54520,
+            55860,
+            56100,
+            56450
+          ]
+        },
+        {
+          "line_id": "l9",
+          "text": "La gallina busca el maíz y el trigo",
+          "translation_az": "Ana toyuq qarğıdalı və buğda axtarır",
+          "start_ms": 57500,
+          "end_ms": 61900,
+          "word_ms": [
+            57500,
+            58180,
+            58880,
+            59640,
+            60400,
+            60820,
+            61170,
+            61520
+          ]
+        },
+        {
+          "line_id": "l10",
+          "text": "les da la comida y les presta abrigo",
+          "translation_az": "onlara yemək verir və isti sığınacaq olur",
+          "start_ms": 61900,
+          "end_ms": 66500,
+          "word_ms": [
+            61900,
+            62400,
+            62760,
+            63100,
+            63980,
+            64600,
+            64960,
+            65310
+          ]
+        },
+        {
+          "line_id": "l11",
+          "text": "Bajo sus dos alas, acurrucaditos",
+          "translation_az": "Onun iki qanadının altında qısılıb",
+          "start_ms": 66500,
+          "end_ms": 70680,
+          "word_ms": [
+            66500,
+            67060,
+            67340,
+            67780,
+            68130
+          ]
+        },
+        {
+          "line_id": "l12",
+          "text": "duermen los pollitos hasta el otro día",
+          "translation_az": "cücələr səhərə qədər yatırlar",
+          "start_ms": 70680,
+          "end_ms": 74980,
+          "word_ms": [
+            70680,
+            71460,
+            71840,
+            72780,
+            73520,
+            73800,
+            74150
+          ]
+        },
+        {
+          "line_id": "l13",
+          "text": "Cuando se levantan dicen mamacita",
+          "translation_az": "Duranda \"anacan\" deyirlər",
+          "start_ms": 74980,
+          "end_ms": 79360,
+          "word_ms": [
+            74980,
+            75660,
+            76280,
+            77460,
+            77810
+          ]
+        },
+        {
+          "line_id": "l14",
+          "text": "tengo mucha hambre, dame lombricitas",
+          "translation_az": "çox acmışam, mənə qurdcuqlar ver",
+          "start_ms": 79360,
+          "end_ms": 88220,
+          "word_ms": [
+            79360,
+            80320,
+            81100,
+            82540,
+            82890
+          ]
+        }
+      ]
+    },
+    {
+      "song_id": "traditional-un-elefante-se-balanceaba",
+      "title": "Un Elefante se Balanceaba",
+      "artist": "Traditional",
+      "youtube_id": "AtptLuSTyAM",
+      "level": "beginner",
+      "lang": "es",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "Un elefante se balanceaba",
+          "translation_az": "Bir fil yırğalanırdı",
+          "start_ms": 0,
+          "end_ms": 20080,
+          "word_ms": [
+            0,
+            2400,
+            3820,
+            4170
+          ]
+        },
+        {
+          "line_id": "l2",
+          "text": "sobre la tela de una araña",
+          "translation_az": "hörümçək torunun üstündə",
+          "start_ms": 20080,
+          "end_ms": 24260,
+          "word_ms": [
+            20080,
+            20840,
+            21300,
+            21680,
+            21980,
+            22300
+          ]
+        },
+        {
+          "line_id": "l3",
+          "text": "Como veía que resistía",
+          "translation_az": "Torun dözdüyünü görüb",
+          "start_ms": 24260,
+          "end_ms": 28060,
+          "word_ms": [
+            24260,
+            24920,
+            26080,
+            26430
+          ]
+        },
+        {
+          "line_id": "l4",
+          "text": "fue a llamar a otro elefante",
+          "translation_az": "başqa bir fili çağırmağa getdi",
+          "start_ms": 28060,
+          "end_ms": 29980,
+          "word_ms": [
+            28060,
+            28800,
+            29040,
+            29600,
+            29680,
+            30030
+          ]
+        },
+        {
+          "line_id": "l5",
+          "text": "Dos elefantes se balanceaban",
+          "translation_az": "İki fil yırğalanırdı",
+          "start_ms": 29980,
+          "end_ms": 36100,
+          "word_ms": [
+            29980,
+            32660,
+            34080,
+            34520
+          ]
+        },
+        {
+          "line_id": "l6",
+          "text": "sobre la tela de una araña",
+          "translation_az": "hörümçək torunun üstündə",
+          "start_ms": 36100,
+          "end_ms": 40500,
+          "word_ms": [
+            36100,
+            36900,
+            37320,
+            37700,
+            37960,
+            38310
+          ]
+        },
+        {
+          "line_id": "l7",
+          "text": "Como veían que resistían",
+          "translation_az": "Torun dözdüyünü görüb",
+          "start_ms": 40500,
+          "end_ms": 44100,
+          "word_ms": [
+            40500,
+            41000,
+            42140,
+            42840
+          ]
+        },
+        {
+          "line_id": "l8",
+          "text": "fueron a llamar a otro elefante",
+          "translation_az": "başqa bir fili çağırmağa getdilər",
+          "start_ms": 44100,
+          "end_ms": 47940,
+          "word_ms": [
+            44100,
+            44660,
+            45040,
+            45560,
+            45680,
+            46030
+          ]
+        },
+        {
+          "line_id": "l9",
+          "text": "Tres elefantes se balanceaban",
+          "translation_az": "Üç fil yırğalanırdı",
+          "start_ms": 47940,
+          "end_ms": 52040,
+          "word_ms": [
+            47940,
+            48760,
+            50060,
+            50640
+          ]
+        },
+        {
+          "line_id": "l10",
+          "text": "sobre la tela de una araña",
+          "translation_az": "hörümçək torunun üstündə",
+          "start_ms": 52040,
+          "end_ms": 56480,
+          "word_ms": [
+            52040,
+            52920,
+            53280,
+            53680,
+            53940,
+            54290
+          ]
+        },
+        {
+          "line_id": "l11",
+          "text": "Como veían que resistían",
+          "translation_az": "Torun dözdüyünü görüb",
+          "start_ms": 56480,
+          "end_ms": 59550,
+          "word_ms": [
+            56480,
+            56920,
+            58140,
+            58860
+          ]
+        },
+        {
+          "line_id": "l12",
+          "text": "fueron a llamar a otro elefante",
+          "translation_az": "başqa bir fili çağırmağa getdilər",
+          "start_ms": 59550,
+          "end_ms": 63970,
+          "word_ms": [
+            59550,
+            60610,
+            61030,
+            61570,
+            61710,
+            62060
+          ]
+        },
+        {
+          "line_id": "l13",
+          "text": "Cuatro elefantes se balanceaban",
+          "translation_az": "Dörd fil yırğalanırdı",
+          "start_ms": 63970,
+          "end_ms": 68110,
+          "word_ms": [
+            63970,
+            64870,
+            66070,
+            66590
+          ]
+        },
+        {
+          "line_id": "l14",
+          "text": "sobre la tela de una araña",
+          "translation_az": "hörümçək torunun üstündə",
+          "start_ms": 68110,
+          "end_ms": 72050,
+          "word_ms": [
+            68110,
+            68910,
+            69310,
+            69630,
+            69950,
+            70300
+          ]
+        },
+        {
+          "line_id": "l15",
+          "text": "Como veían que resistían",
+          "translation_az": "Torun dözdüyünü görüb",
+          "start_ms": 72050,
+          "end_ms": 76150,
+          "word_ms": [
+            72050,
+            73030,
+            74170,
+            74830
+          ]
+        },
+        {
+          "line_id": "l16",
+          "text": "fueron a llamar a otro elefante",
+          "translation_az": "başqa bir fili çağırmağa getdilər",
+          "start_ms": 76150,
+          "end_ms": 79970,
+          "word_ms": [
+            76150,
+            76730,
+            77070,
+            77570,
+            77710,
+            78060
+          ]
+        },
+        {
+          "line_id": "l17",
+          "text": "Cinco elefantes se balanceaban",
+          "translation_az": "Beş fil yırğalanırdı",
+          "start_ms": 79970,
+          "end_ms": 84150,
+          "word_ms": [
+            79970,
+            81010,
+            82050,
+            82550
+          ]
+        },
+        {
+          "line_id": "l18",
+          "text": "sobre la tela de una araña",
+          "translation_az": "hörümçək torunun üstündə",
+          "start_ms": 84150,
+          "end_ms": 88310,
+          "word_ms": [
+            84150,
+            84930,
+            85330,
+            85670,
+            85990,
+            86340
+          ]
+        },
+        {
+          "line_id": "l19",
+          "text": "Como veían que resistían",
+          "translation_az": "Torun dözdüyünü görüb",
+          "start_ms": 88310,
+          "end_ms": 92170,
+          "word_ms": [
+            88310,
+            89030,
+            90150,
+            90890
+          ]
+        },
+        {
+          "line_id": "l20",
+          "text": "fueron a llamar a otro elefante",
+          "translation_az": "başqa bir fili çağırmağa getdilər",
+          "start_ms": 92170,
+          "end_ms": 95950,
+          "word_ms": [
+            92170,
+            92670,
+            93090,
+            93630,
+            93710,
+            94060
+          ]
+        },
+        {
+          "line_id": "l21",
+          "text": "Seis elefantes se balanceaban",
+          "translation_az": "Altı fil yırğalanırdı",
+          "start_ms": 95950,
+          "end_ms": 100130,
+          "word_ms": [
+            95950,
+            96810,
+            98070,
+            98570
+          ]
+        },
+        {
+          "line_id": "l22",
+          "text": "sobre la tela de una araña",
+          "translation_az": "hörümçək torunun üstündə",
+          "start_ms": 100130,
+          "end_ms": 104210,
+          "word_ms": [
+            100130,
+            100910,
+            101310,
+            101690,
+            101950,
+            102300
+          ]
+        },
+        {
+          "line_id": "l23",
+          "text": "Como veían que resistían",
+          "translation_az": "Torun dözdüyünü görüb",
+          "start_ms": 104210,
+          "end_ms": 108130,
+          "word_ms": [
+            104210,
+            104990,
+            106130,
+            106830
+          ]
+        },
+        {
+          "line_id": "l24",
+          "text": "fueron a llamar a otro elefante",
+          "translation_az": "başqa bir fili çağırmağa getdilər",
+          "start_ms": 108130,
+          "end_ms": 111950,
+          "word_ms": [
+            108130,
+            108610,
+            109070,
+            109610,
+            109710,
+            110060
+          ]
+        },
+        {
+          "line_id": "l25",
+          "text": "Siete elefantes se balanceaban",
+          "translation_az": "Yeddi fil yırğalanırdı",
+          "start_ms": 111950,
+          "end_ms": 116110,
+          "word_ms": [
+            111950,
+            112890,
+            114070,
+            114550
+          ]
+        },
+        {
+          "line_id": "l26",
+          "text": "sobre la tela de una araña",
+          "translation_az": "hörümçək torunun üstündə",
+          "start_ms": 116110,
+          "end_ms": 120270,
+          "word_ms": [
+            116110,
+            116910,
+            117330,
+            117650,
+            117950,
+            118300
+          ]
+        },
+        {
+          "line_id": "l27",
+          "text": "Como veían que resistían",
+          "translation_az": "Torun dözdüyünü görüb",
+          "start_ms": 120270,
+          "end_ms": 124110,
+          "word_ms": [
+            120270,
+            121010,
+            122170,
+            122830
+          ]
+        },
+        {
+          "line_id": "l28",
+          "text": "fueron a llamar a otro elefante",
+          "translation_az": "başqa bir fili çağırmağa getdilər",
+          "start_ms": 124110,
+          "end_ms": 127950,
+          "word_ms": [
+            124110,
+            124610,
+            125070,
+            125630,
+            125710,
+            126060
+          ]
+        },
+        {
+          "line_id": "l29",
+          "text": "Ocho elefantes se balanceaban",
+          "translation_az": "Səkkiz fil yırğalanırdı",
+          "start_ms": 127950,
+          "end_ms": 132070,
+          "word_ms": [
+            127950,
+            129010,
+            130050,
+            130530
+          ]
+        },
+        {
+          "line_id": "l30",
+          "text": "sobre la tela de una araña",
+          "translation_az": "hörümçək torunun üstündə",
+          "start_ms": 132070,
+          "end_ms": 135970,
+          "word_ms": [
+            132070,
+            132910,
+            133310,
+            133630,
+            133950,
+            134300
+          ]
+        },
+        {
+          "line_id": "l31",
+          "text": "Como veían que resistían",
+          "translation_az": "Torun dözdüyünü görüb",
+          "start_ms": 135970,
+          "end_ms": 140110,
+          "word_ms": [
+            135970,
+            136970,
+            138130,
+            138850
+          ]
+        },
+        {
+          "line_id": "l32",
+          "text": "fueron a llamar a otro elefante",
+          "translation_az": "başqa bir fili çağırmağa getdilər",
+          "start_ms": 140110,
+          "end_ms": 143870,
+          "word_ms": [
+            140110,
+            140570,
+            141030,
+            141550,
+            141670,
+            142020
+          ]
+        },
+        {
+          "line_id": "l33",
+          "text": "Nueve elefantes se balanceaban",
+          "translation_az": "Doqquz fil yırğalanırdı",
+          "start_ms": 143870,
+          "end_ms": 148070,
+          "word_ms": [
+            143870,
+            144970,
+            146050,
+            146550
+          ]
+        },
+        {
+          "line_id": "l34",
+          "text": "sobre la tela de una araña",
+          "translation_az": "hörümçək torunun üstündə",
+          "start_ms": 148070,
+          "end_ms": 151970,
+          "word_ms": [
+            148070,
+            148910,
+            149290,
+            149610,
+            149930,
+            150280
+          ]
+        },
+        {
+          "line_id": "l35",
+          "text": "Como veían que resistían",
+          "translation_az": "Torun dözdüyünü görüb",
+          "start_ms": 151970,
+          "end_ms": 156110,
+          "word_ms": [
+            151970,
+            152990,
+            154130,
+            154790
+          ]
+        },
+        {
+          "line_id": "l36",
+          "text": "fueron a llamar a otro elefante",
+          "translation_az": "başqa bir fili çağırmağa getdilər",
+          "start_ms": 156110,
+          "end_ms": 159970,
+          "word_ms": [
+            156110,
+            156610,
+            157030,
+            157550,
+            157650,
+            158000
+          ]
+        },
+        {
+          "line_id": "l37",
+          "text": "Diez elefantes se balanceaban",
+          "translation_az": "On fil yırğalanırdı",
+          "start_ms": 159970,
+          "end_ms": 164050,
+          "word_ms": [
+            159970,
+            160750,
+            162050,
+            162530
+          ]
+        },
+        {
+          "line_id": "l38",
+          "text": "sobre la tela de una araña",
+          "translation_az": "hörümçək torunun üstündə",
+          "start_ms": 164050,
+          "end_ms": 168750,
+          "word_ms": [
+            164050,
+            164890,
+            165290,
+            165610,
+            165930,
+            166280
+          ]
+        },
+        {
+          "line_id": "l39",
+          "text": "Como veían que resistían",
+          "translation_az": "Torun dözdüyünü görüb",
+          "start_ms": 168750,
+          "end_ms": 172110,
+          "word_ms": [
+            168750,
+            168950,
+            170110,
+            170850
+          ]
+        },
+        {
+          "line_id": "l40",
+          "text": "fueron a llamar a otro elefante",
+          "translation_az": "başqa bir fili çağırmağa getdilər",
+          "start_ms": 172110,
+          "end_ms": 175550,
+          "word_ms": [
+            172110,
+            172610,
+            173030,
+            173550,
+            173670,
+            174020
+          ]
+        }
+      ]
+    },
+    {
+      "song_id": "traditional-cielito-lindo",
+      "title": "Cielito Lindo",
+      "artist": "Traditional",
+      "youtube_id": "PWABwgjMRlI",
+      "level": "beginner",
+      "lang": "es",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "De la Sierra Morena, cielito lindo, vienen bajando",
+          "translation_az": "Sierra Morena dağlarından, gözəlim, aşağı enirlər",
+          "start_ms": 17350,
+          "end_ms": 24780,
+          "word_ms": [
+            17350,
+            17700,
+            18160,
+            18980,
+            20540,
+            21160,
+            21960,
+            22310
+          ]
+        },
+        {
+          "line_id": "l2",
+          "text": "un par de ojitos negros, cielito lindo, de contrabando",
+          "translation_az": "bir cüt qara göz, gözəlim, gizlicə gəlir",
+          "start_ms": 24780,
+          "end_ms": 37080,
+          "word_ms": [
+            24780,
+            27420,
+            27800,
+            28200,
+            29020,
+            29980,
+            30880,
+            31230,
+            31580
+          ]
+        },
+        {
+          "line_id": "l3",
+          "text": "De la Sierra Morena, cielito lindo, vienen bajando",
+          "translation_az": "Sierra Morena dağlarından, gözəlim, aşağı enirlər",
+          "start_ms": 37080,
+          "end_ms": 46700,
+          "word_ms": [
+            37080,
+            37220,
+            37640,
+            38500,
+            39920,
+            40620,
+            41560,
+            41910
+          ]
+        },
+        {
+          "line_id": "l4",
+          "text": "un par de ojitos negros, cielito lindo, de contrabando",
+          "translation_az": "bir cüt qara göz, gözəlim, gizlicə gəlir",
+          "start_ms": 46700,
+          "end_ms": 55580,
+          "word_ms": [
+            46700,
+            46960,
+            47300,
+            47780,
+            48540,
+            49860,
+            50420,
+            50770,
+            51120
+          ]
+        },
+        {
+          "line_id": "l5",
+          "text": "Ay, ay, ay, ay",
+          "translation_az": "Ay, ay, ay, ay",
+          "start_ms": 55580,
+          "end_ms": 59640,
+          "word_ms": [
+            55580,
+            56980,
+            58120,
+            58470
+          ]
+        },
+        {
+          "line_id": "l6",
+          "text": "canta y no llores",
+          "translation_az": "oxu, ağlama",
+          "start_ms": 59640,
+          "end_ms": 64620,
+          "word_ms": [
+            59640,
+            61740,
+            61960,
+            62310
+          ]
+        },
+        {
+          "line_id": "l7",
+          "text": "porque cantando se alegran, cielito lindo, los corazones",
+          "translation_az": "çünki oxuyanda, gözəlim, ürəklər şənlənir",
+          "start_ms": 64620,
+          "end_ms": 89020,
+          "word_ms": [
+            64620,
+            64720,
+            65720,
+            66020,
+            66880,
+            67900,
+            68620,
+            68970
+          ]
+        },
+        {
+          "line_id": "l8",
+          "text": "Ese lunar que tienes, cielito lindo, junto a la boca",
+          "translation_az": "Dodağının yanındakı o xal, gözəlim,",
+          "start_ms": 89020,
+          "end_ms": 99540,
+          "word_ms": [
+            89020,
+            90060,
+            91060,
+            91480,
+            92800,
+            93260,
+            94080,
+            94800,
+            95150,
+            95500
+          ]
+        },
+        {
+          "line_id": "l9",
+          "text": "no se lo des a nadie, cielito lindo, que a mí me toca",
+          "translation_az": "onu heç kimə vermə, gözəlim, o mənim payımdır",
+          "start_ms": 99540,
+          "end_ms": 108720,
+          "word_ms": [
+            99540,
+            99800,
+            100120,
+            100740,
+            101040,
+            101560,
+            102320,
+            103160,
+            104140,
+            104680,
+            104840,
+            105190,
+            105540
+          ]
+        },
+        {
+          "line_id": "l10",
+          "text": "Ese lunar que tienes, cielito lindo, junto a la boca",
+          "translation_az": "Dodağının yanındakı o xal, gözəlim,",
+          "start_ms": 108720,
+          "end_ms": 119440,
+          "word_ms": [
+            108720,
+            109820,
+            110820,
+            111320,
+            112480,
+            113040,
+            113880,
+            114620,
+            114960,
+            115310
+          ]
+        },
+        {
+          "line_id": "l11",
+          "text": "no se lo des a nadie, cielito lindo, que a mí me toca",
+          "translation_az": "onu heç kimə vermə, gözəlim, o mənim payımdır",
+          "start_ms": 119440,
+          "end_ms": 128260,
+          "word_ms": [
+            119440,
+            119620,
+            119880,
+            120500,
+            120860,
+            121340,
+            122420,
+            122980,
+            123980,
+            124520,
+            124680,
+            125030,
+            125380
+          ]
+        },
+        {
+          "line_id": "l12",
+          "text": "Ay, ay, ay, ay",
+          "translation_az": "Ay, ay, ay, ay",
+          "start_ms": 128260,
+          "end_ms": 131660,
+          "word_ms": [
+            128260,
+            130040,
+            130880,
+            131230
+          ]
+        },
+        {
+          "line_id": "l13",
+          "text": "canta y no llores",
+          "translation_az": "oxu, ağlama",
+          "start_ms": 131660,
+          "end_ms": 137100,
+          "word_ms": [
+            131660,
+            134600,
+            134840,
+            135190
+          ]
+        },
+        {
+          "line_id": "l14",
+          "text": "porque cantando se alegran, cielito lindo, los corazones",
+          "translation_az": "çünki oxuyanda, gözəlim, ürəklər şənlənir",
+          "start_ms": 137100,
+          "end_ms": 161920,
+          "word_ms": [
+            137100,
+            137660,
+            138640,
+            138980,
+            139820,
+            140920,
+            141680,
+            142030
+          ]
+        },
+        {
+          "line_id": "l15",
+          "text": "De domingo a domingo, cielito lindo, te vengo a ver",
+          "translation_az": "Hər bazar günü, gözəlim, səni görməyə gəlirəm",
+          "start_ms": 161920,
+          "end_ms": 173480,
+          "word_ms": [
+            161920,
+            163320,
+            164500,
+            164740,
+            165840,
+            166780,
+            167540,
+            168240,
+            168590,
+            168940
+          ]
+        },
+        {
+          "line_id": "l16",
+          "text": "cuándo será domingo, cielito lindo, para volver",
+          "translation_az": "görəsən nə vaxt bazar olacaq, gözəlim, ki yenə qayıdım",
+          "start_ms": 173480,
+          "end_ms": 181960,
+          "word_ms": [
+            173480,
+            173520,
+            174480,
+            175820,
+            176780,
+            177740,
+            178090
+          ]
+        },
+        {
+          "line_id": "l17",
+          "text": "De domingo a domingo, cielito lindo, te vengo a ver",
+          "translation_az": "Hər bazar günü, gözəlim, səni görməyə gəlirəm",
+          "start_ms": 181960,
+          "end_ms": 190460,
+          "word_ms": [
+            181960,
+            183360,
+            184500,
+            184760,
+            186320,
+            186780,
+            187560,
+            188280,
+            188630,
+            188980
+          ]
+        },
+        {
+          "line_id": "l18",
+          "text": "cuándo será domingo, cielito lindo, para volver",
+          "translation_az": "görəsən nə vaxt bazar olacaq, gözəlim, ki yenə qayıdım",
+          "start_ms": 190460,
+          "end_ms": 200040,
+          "word_ms": [
+            190460,
+            193520,
+            194500,
+            196240,
+            196800,
+            197740,
+            198090
+          ]
+        },
+        {
+          "line_id": "l19",
+          "text": "Ay, ay, ay, ay",
+          "translation_az": "Ay, ay, ay, ay",
+          "start_ms": 200040,
+          "end_ms": 205020,
+          "word_ms": [
+            200040,
+            200400,
+            204640,
+            204990
+          ]
+        },
+        {
+          "line_id": "l20",
+          "text": "canta y no llores",
+          "translation_az": "oxu, ağlama",
+          "start_ms": 205020,
+          "end_ms": 211340,
+          "word_ms": [
+            205020,
+            208440,
+            208660,
+            209010
+          ]
+        },
+        {
+          "line_id": "l21",
+          "text": "porque cantando se alegran, cielito lindo, los corazones",
+          "translation_az": "çünki oxuyanda, gözəlim, ürəklər şənlənir",
+          "start_ms": 211340,
+          "end_ms": 217700,
+          "word_ms": [
+            211340,
+            211440,
+            212420,
+            212760,
+            213560,
+            214640,
+            215380,
+            215730
+          ]
+        },
+        {
+          "line_id": "l22",
+          "text": "Ay, ay, ay, ay",
+          "translation_az": "Ay, ay, ay, ay",
+          "start_ms": 217700,
+          "end_ms": 222600,
+          "word_ms": [
+            217700,
+            219380,
+            220480,
+            221080
+          ]
+        },
+        {
+          "line_id": "l23",
+          "text": "canta y no llores",
+          "translation_az": "oxu, ağlama",
+          "start_ms": 222600,
+          "end_ms": 226800,
+          "word_ms": [
+            222600,
+            224360,
+            224520,
+            224870
+          ]
+        },
+        {
+          "line_id": "l24",
+          "text": "porque cantando se alegran, cielito lindo, los corazones",
+          "translation_az": "çünki oxuyanda, gözəlim, ürəklər şənlənir",
+          "start_ms": 226800,
+          "end_ms": 235980,
+          "word_ms": [
+            226800,
+            227360,
+            228340,
+            228740,
+            229500,
+            230700,
+            231380,
+            231730
+          ]
+        }
+      ]
+    },
+    {
+      "song_id": "bebe-gente",
+      "title": "Gente",
+      "artist": "Bebe",
+      "youtube_id": "kZWVsnMfOZ4",
+      "level": "advanced",
+      "lang": "es",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "Gente, gente que se despierta cuando andas de noche,",
+          "translation_az": "İnsanlar, gecə gəzəndə oyanan insanlar,",
+          "start_ms": 24000,
+          "end_ms": 27180,
+          "word_ms": [
+            24000,
+            24480,
+            24560,
+            25380,
+            25540,
+            26200,
+            26440,
+            26740,
+            27090
+          ]
+        },
+        {
+          "line_id": "l2",
+          "text": "Y cocina cuando cae el sol.",
+          "translation_az": "Gün batanda yemək bişirən.",
+          "start_ms": 27180,
+          "end_ms": 29440,
+          "word_ms": [
+            27180,
+            27660,
+            28420,
+            28640,
+            29120,
+            29220
+          ]
+        },
+        {
+          "line_id": "l3",
+          "text": "Gente que acompaña gente en hospitales, parques,",
+          "translation_az": "Xestəxanalarda, parklarda insana yoldaşlıq edən,",
+          "start_ms": 29440,
+          "end_ms": 34160,
+          "word_ms": [
+            29440,
+            30560,
+            31540,
+            32160,
+            32360,
+            32640,
+            32990
+          ]
+        },
+        {
+          "line_id": "l4",
+          "text": "Gente que despide o que recibe a gente en los andenes.",
+          "translation_az": "Platformada insanı yola salan və ya qarşılayan.",
+          "start_ms": 34160,
+          "end_ms": 38080,
+          "word_ms": [
+            34160,
+            34920,
+            35360,
+            35860,
+            36020,
+            36080,
+            36620,
+            36740,
+            37020,
+            37370,
+            37720
+          ]
+        },
+        {
+          "line_id": "l5",
+          "text": "Gente que va de frente, que no esquiva tu mirada,",
+          "translation_az": "Üz-üzə gedən, baxışından qaçmayan,",
+          "start_ms": 38080,
+          "end_ms": 41700,
+          "word_ms": [
+            38080,
+            38900,
+            39300,
+            39440,
+            39620,
+            40220,
+            40580,
+            40700,
+            41220,
+            41570
+          ]
+        },
+        {
+          "line_id": "l6",
+          "text": "Y que percibe en el viento cómo será el verano, cómo será el invierno.",
+          "translation_az": "Küləkdən yayın, qışın necə olacağını hiss edən.",
+          "start_ms": 41700,
+          "end_ms": 48300,
+          "word_ms": [
+            41700,
+            42640,
+            42800,
+            43380,
+            43500,
+            43640,
+            44100,
+            45040,
+            45440,
+            45680,
+            46180,
+            46530,
+            46880,
+            47230
+          ]
+        },
+        {
+          "line_id": "l7",
+          "text": "Dos, tres horas para disfrutarte,",
+          "translation_az": "Sənə həzz almaq üçün iki-üç saat,",
+          "start_ms": 48300,
+          "end_ms": 51640,
+          "word_ms": [
+            48300,
+            48800,
+            49280,
+            50120,
+            50500
+          ]
+        },
+        {
+          "line_id": "l8",
+          "text": "Y dos de cada siete días para darte,",
+          "translation_az": "Sənə vermək üçün həftənin iki günü,",
+          "start_ms": 51640,
+          "end_ms": 54680,
+          "word_ms": [
+            51640,
+            51800,
+            52020,
+            52480,
+            52660,
+            53120,
+            53560,
+            53910
+          ]
+        },
+        {
+          "line_id": "l9",
+          "text": "Un pasaje en la más bella historia de amor.",
+          "translation_az": "Ən gözəl sevgi hekayəsində bir yer.",
+          "start_ms": 54680,
+          "end_ms": 60240,
+          "word_ms": [
+            54680,
+            55540,
+            56240,
+            56300,
+            56360,
+            56620,
+            57000,
+            57350,
+            57700
+          ]
+        },
+        {
+          "line_id": "l10",
+          "text": "Dos, tres horas para contemplarte,",
+          "translation_az": "Sənə baxmaq üçün iki-üç saat,",
+          "start_ms": 60240,
+          "end_ms": 66700,
+          "word_ms": [
+            60240,
+            60780,
+            61320,
+            62140,
+            62480
+          ]
+        },
+        {
+          "line_id": "l11",
+          "text": "Me acomodo en un rincón de tu corazón.",
+          "translation_az": "Ürəyinin bir küncünə yerləşirəm.",
+          "start_ms": 66700,
+          "end_ms": 72020,
+          "word_ms": [
+            66700,
+            67620,
+            68220,
+            68380,
+            68500,
+            68940,
+            69180,
+            69530
+          ]
+        },
+        {
+          "line_id": "l12",
+          "text": "Gente que pide por la gente en los altares, en las romerías,",
+          "translation_az": "Məbədlərdə, ziyarətlərdə insan üçün dua edən,",
+          "start_ms": 72020,
+          "end_ms": 76580,
+          "word_ms": [
+            72020,
+            72560,
+            73100,
+            73480,
+            73640,
+            73840,
+            74080,
+            74300,
+            74440,
+            75020,
+            75370,
+            75720
+          ]
+        },
+        {
+          "line_id": "l13",
+          "text": "Gente que da la vida, que infunde fe,",
+          "translation_az": "Həyat verən, inam aşılayan,",
+          "start_ms": 76580,
+          "end_ms": 80760,
+          "word_ms": [
+            76580,
+            77120,
+            77660,
+            77740,
+            77960,
+            78380,
+            79160,
+            79510
+          ]
+        },
+        {
+          "line_id": "l14",
+          "text": "Que crece y que merece paz.",
+          "translation_az": "Böyüyən və sülhə layiq olan.",
+          "start_ms": 80760,
+          "end_ms": 155400,
+          "word_ms": [
+            80760,
+            81300,
+            81840,
+            81920,
+            82080,
+            82430
+          ]
+        },
+        {
+          "line_id": "l15",
+          "text": "Qué fresca es la sombra que ofrecen,",
+          "translation_az": "Verdikləri kölgə nə dincdir,",
+          "start_ms": 155400,
+          "end_ms": 158420,
+          "word_ms": [
+            155400,
+            156260,
+            157120,
+            157160,
+            157260,
+            157760,
+            158110
+          ]
+        },
+        {
+          "line_id": "l16",
+          "text": "Qué limpia el agua dulce de sus miradas.",
+          "translation_az": "Baxışlarının şirin suyu nə təmizdir.",
+          "start_ms": 158420,
+          "end_ms": 161820,
+          "word_ms": [
+            158420,
+            159180,
+            160000,
+            160100,
+            160300,
+            160880,
+            161230,
+            161580
+          ]
+        },
+        {
+          "line_id": "l17",
+          "text": "Es por ti que empiezo un nuevo día,",
+          "translation_az": "Yeni günə sənə görə başlayıram,",
+          "start_ms": 161820,
+          "end_ms": 165040,
+          "word_ms": [
+            161820,
+            162760,
+            162940,
+            163220,
+            163620,
+            164080,
+            164320,
+            164670
+          ]
+        },
+        {
+          "line_id": "l18",
+          "text": "Hay ángeles entre nosotros.",
+          "translation_az": "Aramızda mələklər var.",
+          "start_ms": 165040,
+          "end_ms": 230710,
+          "word_ms": [
+            165040,
+            165660,
+            166160,
+            166480
+          ]
+        }
+      ]
+    },
+    {
+      "song_id": "bebe-siempre-me-quedara",
+      "title": "Siempre Me Quedará",
+      "artist": "Bebe",
+      "youtube_id": "C4cmJ7QqBMI",
+      "level": "advanced",
+      "lang": "es",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "Cómo decir que me parte en mil las esquinitas de mi hueso,",
+          "translation_az": "Sümüyümün küncələrini min parçaya bölən sözü necə deməli,",
+          "start_ms": 0,
+          "end_ms": 5740,
+          "word_ms": [
+            0,
+            560,
+            960,
+            1400,
+            1600,
+            2200,
+            2420,
+            2680,
+            3620,
+            4360,
+            5140,
+            5490
+          ]
+        },
+        {
+          "line_id": "l2",
+          "text": "Que han caído los esquemas de mi vida,",
+          "translation_az": "Həyatımın planları dağıldı,",
+          "start_ms": 5740,
+          "end_ms": 8940,
+          "word_ms": [
+            5740,
+            6800,
+            6940,
+            7480,
+            7660,
+            8260,
+            8400,
+            8750
+          ]
+        },
+        {
+          "line_id": "l3",
+          "text": "Ahora que todo era perfecto y algo más que eso.",
+          "translation_az": "Hər şey mükəmməl olanda.",
+          "start_ms": 8940,
+          "end_ms": 33940,
+          "word_ms": [
+            8940,
+            9960,
+            10180,
+            10460,
+            11100,
+            12220,
+            12940,
+            13220,
+            13480,
+            13830
+          ]
+        },
+        {
+          "line_id": "l4",
+          "text": "Me cuesta abrir los ojos y lo hago poco a poco,",
+          "translation_az": "Gözlərimi açmaq çətindir, yavaş-yavaş edirəm,",
+          "start_ms": 33940,
+          "end_ms": 37380,
+          "word_ms": [
+            33940,
+            34700,
+            35060,
+            35300,
+            35580,
+            35920,
+            36360,
+            36440,
+            36680,
+            36980,
+            37330
+          ]
+        },
+        {
+          "line_id": "l5",
+          "text": "No sé si aún te encuentres cerca.",
+          "translation_az": "Hələ yaxınlıqdasanmı, bilmirəm.",
+          "start_ms": 37380,
+          "end_ms": 39880,
+          "word_ms": [
+            37380,
+            37640,
+            37900,
+            38160,
+            38540,
+            38800,
+            39150
+          ]
+        },
+        {
+          "line_id": "l6",
+          "text": "Me guardo tus recuerdos como el mejor secreto,",
+          "translation_az": "Xatirələrini ən yaxşı sirr kimi saxlayıram,",
+          "start_ms": 39880,
+          "end_ms": 43680,
+          "word_ms": [
+            39880,
+            40960,
+            41400,
+            41520,
+            42220,
+            42660,
+            43010,
+            43360
+          ]
+        },
+        {
+          "line_id": "l7",
+          "text": "Qué dulce fue tenerte dentro.",
+          "translation_az": "Sənə sahib olmaq nə şirin idi.",
+          "start_ms": 43680,
+          "end_ms": 67660,
+          "word_ms": [
+            43680,
+            43880,
+            44440,
+            44680,
+            45460
+          ]
+        },
+        {
+          "line_id": "l8",
+          "text": "Siempre me quedará la voz suave del mar, volver a respirar,",
+          "translation_az": "Həmişə qalacaq dənizin yumşaq səsi, yenidən nəfəs almaq,",
+          "start_ms": 67660,
+          "end_ms": 75720,
+          "word_ms": [
+            67660,
+            68720,
+            69040,
+            69560,
+            70780,
+            71180,
+            71720,
+            72220,
+            72570,
+            72920,
+            73270
+          ]
+        },
+        {
+          "line_id": "l9",
+          "text": "La lluvia que caerá sobre este cuerpo y mojará,",
+          "translation_az": "Bu bədənə düşüb isladacaq yağmur,",
+          "start_ms": 75720,
+          "end_ms": 81960,
+          "word_ms": [
+            75720,
+            77200,
+            77720,
+            77940,
+            78660,
+            79660,
+            80020,
+            80600,
+            80950
+          ]
+        },
+        {
+          "line_id": "l10",
+          "text": "La flor que crece en mí y volverá a reír,",
+          "translation_az": "Məndə böyüyən və yenidən güləcək çiçək,",
+          "start_ms": 81960,
+          "end_ms": 88120,
+          "word_ms": [
+            81960,
+            83260,
+            83720,
+            84040,
+            84640,
+            84780,
+            85120,
+            86560,
+            86910,
+            87260
+          ]
+        },
+        {
+          "line_id": "l11",
+          "text": "Y cada día un instante volveré a pensar en ti.",
+          "translation_az": "Hər gün bir an sənə düşəcəyəm.",
+          "start_ms": 88120,
+          "end_ms": 256380,
+          "word_ms": [
+            88120,
+            89540,
+            89920,
+            90400,
+            90580,
+            91760,
+            92940,
+            92980,
+            93330,
+            93680
+          ]
+        },
+        {
+          "line_id": "l12",
+          "text": "El tiempo todo calma, la tempestad y la calma.",
+          "translation_az": "Zaman hər şeyi sakitləşdirir, fırtına və sakitlik."
+        }
+      ]
+    },
+    {
+      "song_id": "bebe-tu-silencio",
+      "title": "Tu Silencio",
+      "artist": "Bebe",
+      "youtube_id": "fAuQtoy_HJs",
+      "level": "advanced",
+      "lang": "es",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "Como quien tira de una cuerda que se romperá,",
+          "translation_az": "Qopacaq ipi dartan kimi,",
+          "start_ms": 0,
+          "end_ms": 5640,
+          "word_ms": [
+            0,
+            440,
+            740,
+            1400,
+            1480,
+            1640,
+            2280,
+            3060,
+            3410
+          ]
+        },
+        {
+          "line_id": "l2",
+          "text": "Tirar, tirar, tirar, tirar, tirar.",
+          "translation_az": "Dart, dart, dart, dart, dart.",
+          "start_ms": 5640,
+          "end_ms": 10240,
+          "word_ms": [
+            5640,
+            6440,
+            6940,
+            7460,
+            8400
+          ]
+        },
+        {
+          "line_id": "l3",
+          "text": "Como sin darse cuenta, rozar un poco más,",
+          "translation_az": "Fərqinə varmadan bir az daha toxunmaq,",
+          "start_ms": 10240,
+          "end_ms": 15860,
+          "word_ms": [
+            10240,
+            11040,
+            11380,
+            11900,
+            12540,
+            13600,
+            13780,
+            14130
+          ]
+        },
+        {
+          "line_id": "l4",
+          "text": "Los ojos han cerrado para no afrontar,",
+          "translation_az": "Gözlər üzləşməmək üçün bağlanıb,",
+          "start_ms": 15860,
+          "end_ms": 21120,
+          "word_ms": [
+            15860,
+            16660,
+            17160,
+            17440,
+            18060,
+            19120,
+            19470
+          ]
+        },
+        {
+          "line_id": "l5",
+          "text": "Que el aire es de cristal, que puede estallar,",
+          "translation_az": "Havanın şüşə kimi, partlaya biləcəyini,",
+          "start_ms": 21120,
+          "end_ms": 25600,
+          "word_ms": [
+            21120,
+            21740,
+            21800,
+            22020,
+            22180,
+            22340,
+            23220,
+            24340,
+            24690
+          ]
+        },
+        {
+          "line_id": "l6",
+          "text": "Que aunque parezca extraño te quiero devorar.",
+          "translation_az": "Qəribə görünsə də, səni yemək istəyirəm.",
+          "start_ms": 25600,
+          "end_ms": 81140,
+          "word_ms": [
+            25600,
+            27020,
+            27160,
+            27740,
+            28360,
+            28640,
+            28990
+          ]
+        },
+        {
+          "line_id": "l7",
+          "text": "Tu silencio es la más elocuente forma de mentir,",
+          "translation_az": "Sənin suskunluğun yalan deməyin ən aydın yoludur,",
+          "start_ms": 81140,
+          "end_ms": 84960,
+          "word_ms": [
+            81140,
+            81260,
+            81260,
+            81260,
+            81380,
+            81640,
+            82440,
+            82960,
+            83310
+          ]
+        },
+        {
+          "line_id": "l8",
+          "text": "En tu silencio habita el mío,",
+          "translation_az": "Sənin suskunluğunda mənimki yaşayır,",
+          "start_ms": 84960,
+          "end_ms": 87520,
+          "word_ms": [
+            84960,
+            85620,
+            85780,
+            86460,
+            86820,
+            86960
+          ]
+        },
+        {
+          "line_id": "l9",
+          "text": "Y en alguna parte de mi cuerpo habitó un trozo de tu olor,",
+          "translation_az": "Bədənimin bir yerində qoxunun parçası qaldı,",
+          "start_ms": 87520,
+          "end_ms": 98200,
+          "word_ms": [
+            87520,
+            88260,
+            88600,
+            88900,
+            89420,
+            89780,
+            89940,
+            90700,
+            92160,
+            92680,
+            93960,
+            94200,
+            94550
+          ]
+        },
+        {
+          "line_id": "l10",
+          "text": "Y en alguna parte de mis ojos habitó un trozo de dolor.",
+          "translation_az": "Gözlərimin bir yerində acının parçası qaldı.",
+          "start_ms": 98200,
+          "end_ms": 106220,
+          "word_ms": [
+            98200,
+            99000,
+            99220,
+            99520,
+            100000,
+            100340,
+            100640,
+            101040,
+            102840,
+            103320,
+            103670,
+            104020
+          ]
+        },
+        {
+          "line_id": "l11",
+          "text": "Ahora estás aquí, ahora estoy aquí,",
+          "translation_az": "İndi buradasan, indi mən buradayam,",
+          "start_ms": 106220,
+          "end_ms": 111100,
+          "word_ms": [
+            106220,
+            107180,
+            107820,
+            108320,
+            109940,
+            110360
+          ]
+        },
+        {
+          "line_id": "l12",
+          "text": "Abrázame para que piense alguna vez en ti.",
+          "translation_az": "Bir gün sənə düşüm deyə, qucaqla məni.",
+          "start_ms": 111100,
+          "end_ms": 229240,
+          "word_ms": [
+            111100,
+            112840,
+            113320,
+            113720,
+            114440,
+            114780,
+            115260,
+            115610
+          ]
+        }
+      ]
+    },
+    {
+      "song_id": "ed-sheeran-shape-of-you",
+      "title": "Shape of You",
+      "artist": "Ed Sheeran",
+      "youtube_id": "_dK2tDK9grQ",
+      "level": "advanced",
+      "lang": "en",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "The club isn't the best place to find a lover,",
+          "translation_az": "Sevgili tapmaq üçün klub ən yaxşı yer deyil,",
+          "start_ms": 9520,
+          "end_ms": 12190,
+          "word_ms": [
+            9520,
+            9960,
+            10400,
+            10840,
+            10920,
+            11180,
+            11520,
+            11720,
+            12070,
+            12420
+          ]
+        },
+        {
+          "line_id": "l2",
+          "text": "So the bar is where I go.",
+          "translation_az": "Ona görə bura gedirəm.",
+          "start_ms": 12190,
+          "end_ms": 14840,
+          "word_ms": [
+            12190,
+            12540,
+            12660,
+            12920,
+            13240,
+            13480,
+            13680
+          ]
+        },
+        {
+          "line_id": "l3",
+          "text": "Me and my friends at the table doing shots,",
+          "translation_az": "Masa arxasında dostlarımla şot edirik,",
+          "start_ms": 14840,
+          "end_ms": 17380,
+          "word_ms": [
+            14840,
+            15280,
+            15460,
+            15600,
+            15920,
+            16140,
+            16360,
+            16740,
+            17090
+          ]
+        },
+        {
+          "line_id": "l4",
+          "text": "Drinking fast and then we talk slow.",
+          "translation_az": "Tez içirik, sonra yavaş danışırıq.",
+          "start_ms": 17380,
+          "end_ms": 19580,
+          "word_ms": [
+            17380,
+            17580,
+            17940,
+            18140,
+            18280,
+            18400,
+            18750
+          ]
+        },
+        {
+          "line_id": "l5",
+          "text": "Come over and start up a conversation with just me,",
+          "translation_az": "Yaxınlaş, yalnız mənimlə söhbət başlat,",
+          "start_ms": 19580,
+          "end_ms": 22460,
+          "word_ms": [
+            19580,
+            20020,
+            20460,
+            20680,
+            20840,
+            21040,
+            21100,
+            21600,
+            21950,
+            22300
+          ]
+        },
+        {
+          "line_id": "l6",
+          "text": "And trust me I'll give it a chance now.",
+          "translation_az": "Etibar et, indi şans verəcəyəm.",
+          "start_ms": 22460,
+          "end_ms": 24780,
+          "word_ms": [
+            22460,
+            22680,
+            22880,
+            23140,
+            23380,
+            23500,
+            23700,
+            23740,
+            24090
+          ]
+        },
+        {
+          "line_id": "l7",
+          "text": "Take my hand, stop, put Van the Man on the jukebox,",
+          "translation_az": "Əlimi tut, dayan, jukebox-da Van Morrison qoy,",
+          "start_ms": 24780,
+          "end_ms": 27420,
+          "word_ms": [
+            24780,
+            24980,
+            25180,
+            25560,
+            25827,
+            26093,
+            26360,
+            26460,
+            26620,
+            26970,
+            27320
+          ]
+        },
+        {
+          "line_id": "l8",
+          "text": "And then we start to dance.",
+          "translation_az": "Sonra rəqsə başlayırıq.",
+          "start_ms": 27420,
+          "end_ms": 62880,
+          "word_ms": [
+            27420,
+            27700,
+            27900,
+            28100,
+            28480,
+            28760
+          ]
+        },
+        {
+          "line_id": "l9",
+          "text": "And now my bedsheets smell like you,",
+          "translation_az": "İndi yataq dəstlərim sənin qoxunla doludur,",
+          "start_ms": 62880,
+          "end_ms": 65420,
+          "word_ms": [
+            62880,
+            63620,
+            63780,
+            63920,
+            64460,
+            64720,
+            65070
+          ]
+        },
+        {
+          "line_id": "l10",
+          "text": "Every day discovering something brand new.",
+          "translation_az": "Hər gün tamamilə yeni bir şey kəşf edirik.",
+          "start_ms": 65420,
+          "end_ms": 83400,
+          "word_ms": [
+            65420,
+            65760,
+            65940,
+            66420,
+            66920,
+            67270
+          ]
+        },
+        {
+          "line_id": "l11",
+          "text": "I'm in love with the shape of you.",
+          "translation_az": "Sənin formasına aşiqəm.",
+          "start_ms": 83400,
+          "end_ms": 132900,
+          "word_ms": [
+            83400,
+            83900,
+            83900,
+            84200,
+            84420,
+            84600,
+            89720,
+            90070
+          ]
+        },
+        {
+          "line_id": "l12",
+          "text": "We push and pull like a magnet do,",
+          "translation_az": "Maqnit kimi bir-birimizə çəkirik,",
+          "start_ms": 132900,
+          "end_ms": 135380,
+          "word_ms": [
+            132900,
+            133560,
+            133780,
+            133940,
+            134140,
+            134440,
+            134580,
+            134930
+          ]
+        },
+        {
+          "line_id": "l13",
+          "text": "Although my heart is falling too,",
+          "translation_az": "Ürəyim də düşsə belə,",
+          "start_ms": 135380,
+          "end_ms": 137840,
+          "word_ms": [
+            135380,
+            136180,
+            136400,
+            136740,
+            136980,
+            137330
+          ]
+        },
+        {
+          "line_id": "l14",
+          "text": "I'm in love with your body.",
+          "translation_az": "Bədəninə aşiqəm.",
+          "start_ms": 137840,
+          "end_ms": 220080,
+          "word_ms": [
+            137840,
+            138840,
+            138920,
+            139220,
+            139420,
+            139770
+          ]
+        }
+      ]
+    },
+    {
+      "song_id": "louis-armstrong-what-a-wonderful-world",
+      "title": "What a Wonderful World",
+      "artist": "Louis Armstrong",
+      "youtube_id": "A3yCcXgbKrE",
+      "level": "intermediate",
+      "lang": "en",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "I see trees of green, red roses too,",
+          "translation_az": "Yaşıl ağaclar, qırmızı qızılgüllər görürəm,",
+          "start_ms": 6760,
+          "end_ms": 15220,
+          "word_ms": [
+            6760,
+            8120,
+            8580,
+            9380,
+            9780,
+            10760,
+            12860,
+            13210
+          ]
+        },
+        {
+          "line_id": "l2",
+          "text": "I see them bloom for me and you,",
+          "translation_az": "Onların mənim və sənin üçün açdığını görürəm,",
+          "start_ms": 15220,
+          "end_ms": 20300,
+          "word_ms": [
+            15220,
+            15960,
+            16280,
+            16540,
+            17340,
+            19380,
+            19730,
+            20080
+          ]
+        },
+        {
+          "line_id": "l3",
+          "text": "And I think to myself what a wonderful world.",
+          "translation_az": "Öz-özümə düşünürəm: nə gözəl dünyadır.",
+          "start_ms": 20300,
+          "end_ms": 33240,
+          "word_ms": [
+            20300,
+            21600,
+            21860,
+            22280,
+            22500,
+            23400,
+            26760,
+            26960,
+            27310
+          ]
+        },
+        {
+          "line_id": "l4",
+          "text": "I see skies of blue and clouds of white,",
+          "translation_az": "Mavi göy, ağ buludlar görürəm,",
+          "start_ms": 33240,
+          "end_ms": 40840,
+          "word_ms": [
+            33240,
+            34560,
+            35000,
+            35560,
+            36380,
+            37100,
+            39000,
+            39350,
+            39700
+          ]
+        },
+        {
+          "line_id": "l5",
+          "text": "The bright blessed day, the dark sacred night,",
+          "translation_az": "Parlaq mübarək gün, qaranlıq müqəddəs gecə,",
+          "start_ms": 40840,
+          "end_ms": 46860,
+          "word_ms": [
+            40840,
+            42380,
+            42920,
+            43520,
+            44620,
+            45480,
+            45920,
+            46270
+          ]
+        },
+        {
+          "line_id": "l6",
+          "text": "And I think to myself what a wonderful world.",
+          "translation_az": "Öz-özümə düşünürəm: nə gözəl dünyadır.",
+          "start_ms": 46860,
+          "end_ms": 60580,
+          "word_ms": [
+            46860,
+            48660,
+            48800,
+            49120,
+            49380,
+            50320,
+            53540,
+            53890,
+            54240
+          ]
+        },
+        {
+          "line_id": "l7",
+          "text": "The colors of the rainbow so pretty in the sky,",
+          "translation_az": "Göydə göy qurşağının rəngləri nə gözəldir,",
+          "start_ms": 60580,
+          "end_ms": 66700,
+          "word_ms": [
+            60580,
+            61580,
+            62080,
+            62460,
+            62720,
+            63280,
+            64940,
+            65460,
+            66100,
+            66450
+          ]
+        },
+        {
+          "line_id": "l8",
+          "text": "Are also on the faces of people going by.",
+          "translation_az": "Keçən insanların üzündə də var.",
+          "start_ms": 66700,
+          "end_ms": 72980,
+          "word_ms": [
+            66700,
+            68300,
+            68940,
+            69280,
+            69400,
+            69880,
+            71560,
+            71910,
+            72260
+          ]
+        },
+        {
+          "line_id": "l9",
+          "text": "I see friends shaking hands saying how do you do,",
+          "translation_az": "Əl sıxan dostlar görürəm, salam verirlər,",
+          "start_ms": 72980,
+          "end_ms": 82020,
+          "word_ms": [
+            72980,
+            74460,
+            74840,
+            75480,
+            76420,
+            77400,
+            78500,
+            79100,
+            79450,
+            79800
+          ]
+        },
+        {
+          "line_id": "l10",
+          "text": "They're really saying I love you.",
+          "translation_az": "Əslində deyirlər: səni sevirəm.",
+          "start_ms": 82020,
+          "end_ms": 86920,
+          "word_ms": [
+            82020,
+            82880,
+            83300,
+            83920,
+            85400,
+            86240
+          ]
+        },
+        {
+          "line_id": "l11",
+          "text": "I hear babies cry, I watch them grow,",
+          "translation_az": "Körpələrin ağlamasını eşidirəm, böyüməsini izləyirəm,",
+          "start_ms": 86920,
+          "end_ms": 95580,
+          "word_ms": [
+            86920,
+            88140,
+            88690,
+            89240,
+            90980,
+            92240,
+            92840,
+            93190
+          ]
+        },
+        {
+          "line_id": "l12",
+          "text": "They'll learn much more than I'll ever know,",
+          "translation_az": "Mənim heç vaxt bilməyəcəyimdən çox şey öyrənəcəklər,",
+          "start_ms": 95580,
+          "end_ms": 100720,
+          "word_ms": [
+            95580,
+            95930,
+            96280,
+            96720,
+            97540,
+            98900,
+            99500,
+            99850
+          ]
+        },
+        {
+          "line_id": "l13",
+          "text": "And I think to myself what a wonderful world.",
+          "translation_az": "Öz-özümə düşünürəm: nə gözəl dünyadır.",
+          "start_ms": 100720,
+          "end_ms": 132400,
+          "word_ms": [
+            100720,
+            101820,
+            102080,
+            102420,
+            102720,
+            104680,
+            106760,
+            107110,
+            107460
+          ]
+        }
+      ]
+    },
+    {
+      "song_id": "luis-fonsi-despacito",
+      "title": "Despacito",
+      "artist": "Luis Fonsi ft. Daddy Yankee",
+      "youtube_id": "gm3-m2CFVWM",
+      "level": "intermediate",
+      "lang": "es",
+      "lines": [
+        {
+          "line_id": "l1",
+          "text": "Sí, sabes que ya llevo un rato mirándote,",
+          "translation_az": "Bəli, bir müddətdir sənə baxdığımı bilirsən,",
+          "start_ms": 17000,
+          "end_ms": 23460,
+          "word_ms": [
+            17000,
+            18460,
+            20760,
+            21060,
+            21260,
+            21660,
+            21800,
+            22150
+          ]
+        },
+        {
+          "line_id": "l2",
+          "text": "Tengo que bailar contigo hoy.",
+          "translation_az": "Bu gün səninlə rəqs etməliyəm.",
+          "start_ms": 23460,
+          "end_ms": 29620,
+          "word_ms": [
+            23460,
+            25500,
+            25880,
+            26740,
+            27090
+          ]
+        },
+        {
+          "line_id": "l3",
+          "text": "Vi que tu mirada ya estaba llamándome,",
+          "translation_az": "Baxışının artıq məni çağırdığını gördüm,",
+          "start_ms": 29620,
+          "end_ms": 35900,
+          "word_ms": [
+            29620,
+            30600,
+            31420,
+            31640,
+            32220,
+            32440,
+            32790
+          ]
+        },
+        {
+          "line_id": "l4",
+          "text": "Muéstrame el camino que yo voy.",
+          "translation_az": "Getdiyim yolu mənə göstər.",
+          "start_ms": 35900,
+          "end_ms": 40020,
+          "word_ms": [
+            35900,
+            36580,
+            36840,
+            37440,
+            38060,
+            38410
+          ]
+        },
+        {
+          "line_id": "l5",
+          "text": "Oh, tú, tú eres el imán y yo soy el metal,",
+          "translation_az": "Sən maqnitsən, mən metalam,",
+          "start_ms": 40020,
+          "end_ms": 44100,
+          "word_ms": [
+            40020,
+            40700,
+            41680,
+            42020,
+            42240,
+            42480,
+            42800,
+            42960,
+            43100,
+            43450,
+            43800
+          ]
+        },
+        {
+          "line_id": "l6",
+          "text": "Me voy acercando y voy armando el plan.",
+          "translation_az": "Yaxınlaşıram və plan qururam.",
+          "start_ms": 44100,
+          "end_ms": 46880,
+          "word_ms": [
+            44100,
+            44740,
+            45000,
+            45600,
+            45720,
+            45900,
+            46440,
+            46790
+          ]
+        },
+        {
+          "line_id": "l7",
+          "text": "Solo con pensarlo se acelera el pulso.",
+          "translation_az": "Düşünmək belə nəbzimi sürətləndirir.",
+          "start_ms": 46880,
+          "end_ms": 50620,
+          "word_ms": [
+            46880,
+            47560,
+            47800,
+            48400,
+            48540,
+            49080,
+            49430
+          ]
+        },
+        {
+          "line_id": "l8",
+          "text": "Oh, yeah, ya, ya me está gustando más de lo normal.",
+          "translation_az": "Bəli, adi haldan daha çox xoşuma gəlir.",
+          "start_ms": 50620,
+          "end_ms": 54800,
+          "word_ms": [
+            50620,
+            51300,
+            51600,
+            52360,
+            52860,
+            53000,
+            53200,
+            53660,
+            53920,
+            54270,
+            54620
+          ]
+        },
+        {
+          "line_id": "l9",
+          "text": "Todos mis sentidos van pidiendo más,",
+          "translation_az": "Bütün duyğularım daha çox istəyir,",
+          "start_ms": 54800,
+          "end_ms": 150600,
+          "word_ms": [
+            54800,
+            55640,
+            55920,
+            56380,
+            56580,
+            57120
+          ]
+        },
+        {
+          "line_id": "l10",
+          "text": "Esto hay que tomarlo sin ningún apuro.",
+          "translation_az": "Bunu heç tələsmədən etmək lazımdır."
+        },
+        {
+          "line_id": "l11",
+          "text": "Despacito, quiero respirar tu cuello despacito,",
+          "translation_az": "Yavaş-yavaş, boynundan yavaş nəfəs almaq istəyirəm,",
+          "start_ms": 150600,
+          "end_ms": 153940,
+          "word_ms": [
+            150600,
+            151360,
+            151920,
+            152540,
+            152660,
+            153020
+          ]
+        },
+        {
+          "line_id": "l12",
+          "text": "Deja que te diga cosas al oído,",
+          "translation_az": "Qulağına bir şeylər deməyə icazə ver,",
+          "start_ms": 153940,
+          "end_ms": 156700,
+          "word_ms": [
+            153940,
+            154620,
+            154800,
+            154960,
+            155340,
+            155600,
+            155950
+          ]
+        },
+        {
+          "line_id": "l13",
+          "text": "Para que te acuerdes si no estás conmigo.",
+          "translation_az": "Mənimlə olmadıqda xatırlasan deyə.",
+          "start_ms": 156700,
+          "end_ms": 161300,
+          "word_ms": [
+            156700,
+            157280,
+            157480,
+            157680,
+            158060,
+            158240,
+            158360,
+            158710
+          ]
+        },
+        {
+          "line_id": "l14",
+          "text": "Despacito, quiero desnudarte a besos despacito,",
+          "translation_az": "Yavaş-yavaş, öpücüklərlə soyundurmaq istəyirəm,",
+          "start_ms": 161300,
+          "end_ms": 165170,
+          "word_ms": [
+            161300,
+            162060,
+            162760,
+            163380,
+            163520,
+            163870
+          ]
+        },
+        {
+          "line_id": "l15",
+          "text": "Firmo las paredes de tu laberinto,",
+          "translation_az": "Labirintinin divarlarını imzalayıram,",
+          "start_ms": 165170,
+          "end_ms": 167460,
+          "word_ms": [
+            165170,
+            165520,
+            165660,
+            166180,
+            166280,
+            166420
+          ]
+        },
+        {
+          "line_id": "l16",
+          "text": "Y hacer de tu cuerpo todo un manuscrito.",
+          "translation_az": "Bədənini tam bir əlyazmasına çevirirəm.",
+          "start_ms": 167460,
+          "end_ms": 240020,
+          "word_ms": [
+            167460,
+            167900,
+            168120,
+            168300,
+            168440,
+            168760,
+            169080,
+            169430
+          ]
         }
       ]
     }

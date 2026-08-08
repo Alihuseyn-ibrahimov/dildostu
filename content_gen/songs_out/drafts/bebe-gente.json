@@ -1,0 +1,100 @@
+{
+  "song_id": "bebe-gente",
+  "title": "Gente",
+  "artist": "Bebe",
+  "youtube_id": "kZWVsnMfOZ4",
+  "level": "advanced",
+  "lang": "es",
+  "lines": [
+    {
+      "line_id": "l1",
+      "text": "Gente, gente que se despierta cuando andas de noche,",
+      "translation_az": "İnsanlar, gecə gəzəndə oyanan insanlar,"
+    },
+    {
+      "line_id": "l2",
+      "text": "Y cocina cuando cae el sol.",
+      "translation_az": "Gün batanda yemək bişirən."
+    },
+    {
+      "line_id": "l3",
+      "text": "Gente que acompaña gente en hospitales, parques,",
+      "translation_az": "Xestəxanalarda, parklarda insana yoldaşlıq edən,"
+    },
+    {
+      "line_id": "l4",
+      "text": "Gente que despide o que recibe a gente en los andenes.",
+      "translation_az": "Platformada insanı yola salan və ya qarşılayan."
+    },
+    {
+      "line_id": "l5",
+      "text": "Gente que va de frente, que no esquiva tu mirada,",
+      "translation_az": "Üz-üzə gedən, baxışından qaçmayan,"
+    },
+    {
+      "line_id": "l6",
+      "text": "Y que percibe en el viento cómo será el verano, cómo será el invierno.",
+      "translation_az": "Küləkdən yayın, qışın necə olacağını hiss edən."
+    },
+    {
+      "line_id": "l7",
+      "text": "Dos, tres horas para disfrutarte,",
+      "translation_az": "Sənə həzz almaq üçün iki-üç saat,"
+    },
+    {
+      "line_id": "l8",
+      "text": "Y dos de cada siete días para darte,",
+      "translation_az": "Sənə vermək üçün həftənin iki günü,"
+    },
+    {
+      "line_id": "l9",
+      "text": "Un pasaje en la más bella historia de amor.",
+      "translation_az": "Ən gözəl sevgi hekayəsində bir yer."
+    },
+    {
+      "line_id": "l10",
+      "text": "Dos, tres horas para contemplarte,",
+      "translation_az": "Sənə baxmaq üçün iki-üç saat,"
+    },
+    {
+      "line_id": "l11",
+      "text": "Me acomodo en un rincón de tu corazón.",
+      "translation_az": "Ürəyinin bir küncünə yerləşirəm."
+    },
+    {
+      "line_id": "l12",
+      "text": "Gente que pide por la gente en los altares, en las romerías,",
+      "translation_az": "Məbədlərdə, ziyarətlərdə insan üçün dua edən,"
+    },
+    {
+      "line_id": "l13",
+      "text": "Gente que da la vida, que infunde fe,",
+      "translation_az": "Həyat verən, inam aşılayan,"
+    },
+    {
+      "line_id": "l14",
+      "text": "Que crece y que merece paz.",
+      "translation_az": "Böyüyən və sülhə layiq olan."
+    },
+    {
+      "line_id": "l15",
+      "text": "Qué fresca es la sombra que ofrecen,",
+      "translation_az": "Verdikləri kölgə nə dincdir,"
+    },
+    {
+      "line_id": "l16",
+      "text": "Qué limpia el agua dulce de sus miradas.",
+      "translation_az": "Baxışlarının şirin suyu nə təmizdir."
+    },
+    {
+      "line_id": "l17",
+      "text": "Es por ti que empiezo un nuevo día,",
+      "translation_az": "Yeni günə sənə görə başlayıram,"
+    },
+    {
+      "line_id": "l18",
+      "text": "Hay ángeles entre nosotros.",
+      "translation_az": "Aramızda mələklər var."
+    }
+  ]
+}

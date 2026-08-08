@@ -1,0 +1,480 @@
+{
+  "duration_ms": 88259,
+  "words": [
+    {
+      "word": "Los",
+      "start": 10.960000000000003,
+      "end": 12.24
+    },
+    {
+      "word": "pollitos",
+      "start": 12.24,
+      "end": 13.08
+    },
+    {
+      "word": "dicen",
+      "start": 13.08,
+      "end": 13.98
+    },
+    {
+      "word": "pío,",
+      "start": 13.98,
+      "end": 14.72
+    },
+    {
+      "word": "pío,",
+      "start": 14.88,
+      "end": 15.18
+    },
+    {
+      "word": "pío",
+      "start": 15.18,
+      "end": 16.1
+    },
+    {
+      "word": "Cuando",
+      "start": 16.1,
+      "end": 16.76
+    },
+    {
+      "word": "tienen",
+      "start": 16.76,
+      "end": 17.42
+    },
+    {
+      "word": "hambre,",
+      "start": 17.42,
+      "end": 18.32
+    },
+    {
+      "word": "cuando",
+      "start": 18.74,
+      "end": 18.96
+    },
+    {
+      "word": "tienen",
+      "start": 18.96,
+      "end": 19.56
+    },
+    {
+      "word": "frío",
+      "start": 19.56,
+      "end": 20.44
+    },
+    {
+      "word": "La",
+      "start": 20.44,
+      "end": 21.06
+    },
+    {
+      "word": "gallina",
+      "start": 21.06,
+      "end": 21.78
+    },
+    {
+      "word": "busca",
+      "start": 21.78,
+      "end": 22.6
+    },
+    {
+      "word": "el",
+      "start": 22.6,
+      "end": 23.3
+    },
+    {
+      "word": "maíz",
+      "start": 23.3,
+      "end": 23.74
+    },
+    {
+      "word": "y",
+      "start": 23.74,
+      "end": 23.9
+    },
+    {
+      "word": "el",
+      "start": 23.9,
+      "end": 24.16
+    },
+    {
+      "word": "trigo",
+      "start": 24.16,
+      "end": 24.9
+    },
+    {
+      "word": "Les",
+      "start": 24.9,
+      "end": 25.32
+    },
+    {
+      "word": "da",
+      "start": 25.32,
+      "end": 25.64
+    },
+    {
+      "word": "la",
+      "start": 25.64,
+      "end": 26.02
+    },
+    {
+      "word": "comida",
+      "start": 26.02,
+      "end": 26.88
+    },
+    {
+      "word": "y",
+      "start": 26.88,
+      "end": 27.48
+    },
+    {
+      "word": "les",
+      "start": 27.48,
+      "end": 27.86
+    },
+    {
+      "word": "presta",
+      "start": 27.86,
+      "end": 28.32
+    },
+    {
+      "word": "abrigo",
+      "start": 28.32,
+      "end": 29.38
+    },
+    {
+      "word": "Bajo",
+      "start": 29.38,
+      "end": 29.98
+    },
+    {
+      "word": "sus",
+      "start": 29.98,
+      "end": 30.36
+    },
+    {
+      "word": "dos",
+      "start": 30.36,
+      "end": 30.78
+    },
+    {
+      "word": "alas,",
+      "start": 30.78,
+      "end": 31.7
+    },
+    {
+      "word": "acurrucaditos,",
+      "start": 31.86,
+      "end": 33.6
+    },
+    {
+      "word": "termen",
+      "start": 34.12,
+      "end": 34.32
+    },
+    {
+      "word": "los",
+      "start": 34.32,
+      "end": 34.74
+    },
+    {
+      "word": "pollitos",
+      "start": 34.74,
+      "end": 35.76
+    },
+    {
+      "word": "hasta",
+      "start": 35.76,
+      "end": 36.46
+    },
+    {
+      "word": "el",
+      "start": 36.46,
+      "end": 36.7
+    },
+    {
+      "word": "otro",
+      "start": 36.7,
+      "end": 37.14
+    },
+    {
+      "word": "día.",
+      "start": 37.14,
+      "end": 38.08
+    },
+    {
+      "word": "Los",
+      "start": 48.879999999999995,
+      "end": 49.42
+    },
+    {
+      "word": "pollitos",
+      "start": 49.42,
+      "end": 50.2
+    },
+    {
+      "word": "dicen",
+      "start": 50.2,
+      "end": 51.1
+    },
+    {
+      "word": "pío,",
+      "start": 51.1,
+      "end": 51.8
+    },
+    {
+      "word": "pío,",
+      "start": 51.96,
+      "end": 52.34
+    },
+    {
+      "word": "pío,",
+      "start": 52.36,
+      "end": 53.22
+    },
+    {
+      "word": "cuando",
+      "start": 53.52,
+      "end": 53.86
+    },
+    {
+      "word": "tienen",
+      "start": 53.86,
+      "end": 54.52
+    },
+    {
+      "word": "hambre,",
+      "start": 54.52,
+      "end": 55.4
+    },
+    {
+      "word": "cuando",
+      "start": 55.86,
+      "end": 56.1
+    },
+    {
+      "word": "tienen",
+      "start": 56.1,
+      "end": 56.66
+    },
+    {
+      "word": "frío.",
+      "start": 56.66,
+      "end": 57.5
+    },
+    {
+      "word": "La",
+      "start": 57.5,
+      "end": 58.18
+    },
+    {
+      "word": "gallina",
+      "start": 58.18,
+      "end": 58.88
+    },
+    {
+      "word": "busca",
+      "start": 58.88,
+      "end": 59.64
+    },
+    {
+      "word": "el",
+      "start": 59.64,
+      "end": 60.4
+    },
+    {
+      "word": "maíz",
+      "start": 60.4,
+      "end": 60.82
+    },
+    {
+      "word": "y",
+      "start": 60.82,
+      "end": 60.96
+    },
+    {
+      "word": "el",
+      "start": 60.96,
+      "end": 61.22
+    },
+    {
+      "word": "trigo",
+      "start": 61.22,
+      "end": 61.9
+    },
+    {
+      "word": "Les",
+      "start": 61.9,
+      "end": 62.4
+    },
+    {
+      "word": "da",
+      "start": 62.4,
+      "end": 62.76
+    },
+    {
+      "word": "la",
+      "start": 62.76,
+      "end": 63.1
+    },
+    {
+      "word": "comida",
+      "start": 63.1,
+      "end": 63.98
+    },
+    {
+      "word": "y",
+      "start": 63.98,
+      "end": 64.6
+    },
+    {
+      "word": "les",
+      "start": 64.6,
+      "end": 64.96
+    },
+    {
+      "word": "presta",
+      "start": 64.96,
+      "end": 65.42
+    },
+    {
+      "word": "abrigo",
+      "start": 65.42,
+      "end": 66.5
+    },
+    {
+      "word": "Bajo",
+      "start": 66.5,
+      "end": 67.06
+    },
+    {
+      "word": "sus",
+      "start": 67.06,
+      "end": 67.34
+    },
+    {
+      "word": "dos",
+      "start": 67.34,
+      "end": 67.78
+    },
+    {
+      "word": "alas",
+      "start": 67.78,
+      "end": 68.76
+    },
+    {
+      "word": "acurrucaditos",
+      "start": 68.76,
+      "end": 70.68
+    },
+    {
+      "word": "Duermen",
+      "start": 70.68,
+      "end": 71.46
+    },
+    {
+      "word": "los",
+      "start": 71.46,
+      "end": 71.84
+    },
+    {
+      "word": "pollitos",
+      "start": 71.84,
+      "end": 72.78
+    },
+    {
+      "word": "hasta",
+      "start": 72.78,
+      "end": 73.52
+    },
+    {
+      "word": "el",
+      "start": 73.52,
+      "end": 73.8
+    },
+    {
+      "word": "otro",
+      "start": 73.8,
+      "end": 74.22
+    },
+    {
+      "word": "día",
+      "start": 74.22,
+      "end": 74.98
+    },
+    {
+      "word": "Cuando",
+      "start": 74.98,
+      "end": 75.66
+    },
+    {
+      "word": "se",
+      "start": 75.66,
+      "end": 76.28
+    },
+    {
+      "word": "levantan",
+      "start": 76.28,
+      "end": 77.46
+    },
+    {
+      "word": "dicen",
+      "start": 77.46,
+      "end": 77.96
+    },
+    {
+      "word": "mamacita",
+      "start": 77.96,
+      "end": 79.36
+    },
+    {
+      "word": "Tengo",
+      "start": 79.36,
+      "end": 80.32
+    },
+    {
+      "word": "mucha",
+      "start": 80.32,
+      "end": 81.1
+    },
+    {
+      "word": "hambre,",
+      "start": 81.1,
+      "end": 82.26
+    },
+    {
+      "word": "dame",
+      "start": 82.54,
+      "end": 83.06
+    },
+    {
+      "word": "lombricitas",
+      "start": 83.06,
+      "end": 85.14
+    },
+    {
+      "word": "¡Suscribete",
+      "start": 87.5,
+      "end": 87.88
+    },
+    {
+      "word": "y",
+      "start": 87.88,
+      "end": 88.02
+    },
+    {
+      "word": "dale",
+      "start": 88.02,
+      "end": 88.22
+    },
+    {
+      "word": "a",
+      "start": 88.22,
+      "end": 88.22
+    },
+    {
+      "word": "like!",
+      "start": 88.22,
+      "end": 88.22
+    }
+  ]
+}

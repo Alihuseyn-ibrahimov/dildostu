@@ -40,8 +40,18 @@ class TestChatSystem:
     def test_mentions_level_and_persona(self):
         s = build_chat_system(profile(), None)
         assert "beginner" in s.lower() or "başlanğıc" in s.lower()
-        # Azərbaycanca müəllim personası
-        assert "azərbaycan" in s.lower() or "azerbaijani" in s.lower()
+        assert "lachingo" in s.lower()
+        assert "bələdçi" in s.lower()
+
+    def test_persona_includes_travel_and_humor(self):
+        s = build_chat_system(profile(), None)
+        assert "səyahət" in s.lower()
+        assert "zarafat" in s.lower()
+
+    def test_purpose_translated_to_azerbaijani(self):
+        s = build_chat_system(profile(), None)
+        assert "səyahət üçün" in s
+        assert "məqsəd: travel" not in s
 
     def test_includes_context_when_given(self):
         s = build_chat_system(profile(), Context(pack_id="cafe", hour=9))
@@ -154,3 +164,58 @@ class TestRunChat:
         with pytest.raises(ServiceError):
             run_chat(self._req(), {"claude": fail}, memory, user_id=1)
         assert memory.recent_messages(1) == []
+
+    def test_db_history_used_when_client_sends_only_new_message(self):
+        """Server DB-dən yükləyir — client tarixçə göndərməsə belə kontekst itmir."""
+        memory = MemoryStore(":memory:")
+        memory.add_message(1, "user", "Adım Elvindir")
+        memory.add_message(1, "assistant", "Salam Elvin!")
+        captured = {}
+
+        def cap(system, messages):
+            captured["messages"] = messages
+            return "Xatırlayıram, Elvin!"
+
+        req = ChatRequest(
+            profile=profile(),
+            messages=[ChatMessage(role="user", content="Adımı xatırlayırsan?")],
+        )
+        reply = run_chat(req, {"claude": cap}, memory, user_id=1)
+        assert reply == "Xatırlayıram, Elvin!"
+        assert captured["messages"] == [
+            {"role": "user", "content": "Adım Elvindir"},
+            {"role": "assistant", "content": "Salam Elvin!"},
+            {"role": "user", "content": "Adımı xatırlayırsan?"},
+        ]
+        msgs = memory.recent_messages(1)
+        assert msgs[-2]["content"] == "Adımı xatırlayırsan?"
+        assert msgs[-1]["content"] == "Xatırlayıram, Elvin!"
+
+    def test_multi_turn_persistence_across_calls(self):
+        """Ardıcıl çağırışlarda bütün mesajlar DB-də qalır."""
+        memory = MemoryStore(":memory:")
+        completers = {"claude": lambda s, m: "cavab1"}
+
+        req1 = ChatRequest(
+            profile=profile(),
+            messages=[ChatMessage(role="user", content="salam")],
+        )
+        run_chat(req1, completers, memory, user_id=1)
+
+        completers = {"claude": lambda s, m: "cavab2"}
+        req2 = ChatRequest(
+            profile=profile(),
+            messages=[
+                ChatMessage(role="user", content="salam"),
+                ChatMessage(role="assistant", content="cavab1"),
+                ChatMessage(role="user", content="necəsən?"),
+            ],
+        )
+        run_chat(req2, completers, memory, user_id=1)
+
+        assert [m["content"] for m in memory.recent_messages(1)] == [
+            "salam",
+            "cavab1",
+            "necəsən?",
+            "cavab2",
+        ]

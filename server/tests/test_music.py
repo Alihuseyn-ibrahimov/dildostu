@@ -74,8 +74,10 @@ class TestMusicEmbed:
         r = TestClient(app).get("/music/embed/yCjJyiqpAuU")
         assert r.status_code == 200
         assert "text/html" in r.headers["content-type"]
-        assert "https://www.youtube.com/embed/yCjJyiqpAuU" in r.text
-        assert "<iframe" in r.text
+        assert "https://www.youtube.com/iframe_api" in r.text
+        assert "getPlaybackMs" in r.text
+        assert "getDurationMs" in r.text
+        assert "LyricsSync.postMessage" in r.text
 
     @pytest.mark.parametrize("bad_id", [
         "../../etc/passwd",

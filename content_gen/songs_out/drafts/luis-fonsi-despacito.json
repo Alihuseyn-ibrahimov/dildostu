@@ -1,0 +1,90 @@
+{
+  "song_id": "luis-fonsi-despacito",
+  "title": "Despacito",
+  "artist": "Luis Fonsi ft. Daddy Yankee",
+  "youtube_id": "gm3-m2CFVWM",
+  "level": "intermediate",
+  "lang": "es",
+  "lines": [
+    {
+      "line_id": "l1",
+      "text": "Sí, sabes que ya llevo un rato mirándote,",
+      "translation_az": "Bəli, bir müddətdir sənə baxdığımı bilirsən,"
+    },
+    {
+      "line_id": "l2",
+      "text": "Tengo que bailar contigo hoy.",
+      "translation_az": "Bu gün səninlə rəqs etməliyəm."
+    },
+    {
+      "line_id": "l3",
+      "text": "Vi que tu mirada ya estaba llamándome,",
+      "translation_az": "Baxışının artıq məni çağırdığını gördüm,"
+    },
+    {
+      "line_id": "l4",
+      "text": "Muéstrame el camino que yo voy.",
+      "translation_az": "Getdiyim yolu mənə göstər."
+    },
+    {
+      "line_id": "l5",
+      "text": "Oh, tú, tú eres el imán y yo soy el metal,",
+      "translation_az": "Sən maqnitsən, mən metalam,"
+    },
+    {
+      "line_id": "l6",
+      "text": "Me voy acercando y voy armando el plan.",
+      "translation_az": "Yaxınlaşıram və plan qururam."
+    },
+    {
+      "line_id": "l7",
+      "text": "Solo con pensarlo se acelera el pulso.",
+      "translation_az": "Düşünmək belə nəbzimi sürətləndirir."
+    },
+    {
+      "line_id": "l8",
+      "text": "Oh, yeah, ya, ya me está gustando más de lo normal.",
+      "translation_az": "Bəli, adi haldan daha çox xoşuma gəlir."
+    },
+    {
+      "line_id": "l9",
+      "text": "Todos mis sentidos van pidiendo más,",
+      "translation_az": "Bütün duyğularım daha çox istəyir,"
+    },
+    {
+      "line_id": "l10",
+      "text": "Esto hay que tomarlo sin ningún apuro.",
+      "translation_az": "Bunu heç tələsmədən etmək lazımdır."
+    },
+    {
+      "line_id": "l11",
+      "text": "Despacito, quiero respirar tu cuello despacito,",
+      "translation_az": "Yavaş-yavaş, boynundan yavaş nəfəs almaq istəyirəm,"
+    },
+    {
+      "line_id": "l12",
+      "text": "Deja que te diga cosas al oído,",
+      "translation_az": "Qulağına bir şeylər deməyə icazə ver,"
+    },
+    {
+      "line_id": "l13",
+      "text": "Para que te acuerdes si no estás conmigo.",
+      "translation_az": "Mənimlə olmadıqda xatırlasan deyə."
+    },
+    {
+      "line_id": "l14",
+      "text": "Despacito, quiero desnudarte a besos despacito,",
+      "translation_az": "Yavaş-yavaş, öpücüklərlə soyundurmaq istəyirəm,"
+    },
+    {
+      "line_id": "l15",
+      "text": "Firmo las paredes de tu laberinto,",
+      "translation_az": "Labirintinin divarlarını imzalayıram,"
+    },
+    {
+      "line_id": "l16",
+      "text": "Y hacer de tu cuerpo todo un manuscrito.",
+      "translation_az": "Bədənini tam bir əlyazmasına çevirirəm."
+    }
+  ]
+}

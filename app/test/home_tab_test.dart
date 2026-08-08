@@ -1,4 +1,9 @@
+import 'package:dildostu/src/l10n/app_locale_scope.dart';
+import 'package:dildostu/src/l10n/app_strings.dart';
+import 'package:dildostu/src/l10n/material_app_l10n.dart';
+import 'package:dildostu/src/models/ui_language.dart';
 import 'package:dildostu/src/data/pack_repository.dart';
+import 'package:dildostu/src/models/live_message.dart';
 import 'package:dildostu/src/models/user_profile.dart';
 import 'package:dildostu/src/ui/accent_colors.dart';
 import 'package:dildostu/src/ui/home_tab.dart';
@@ -30,27 +35,62 @@ void main() {
     VoidCallback? onManualPlace,
     ValueChanged<ProficiencyLevel>? onLevelChanged,
     ProficiencyLevel level = ProficiencyLevel.beginner,
+    TargetLanguage? currentLanguage,
+    ValueChanged<TargetLanguage>? onLanguageChanged,
     DateTime? now,
+    ResolveLivePlace? resolveLivePlace,
+    LoadDayPlan? loadDayPlan,
+    OpenDayPlanWord? onOpenDayPlanWord,
   }) {
-    return MaterialApp(
-      home: HomeTab(
+    return AppLocaleScope(
+      language: UiLanguage.az,
+      strings: AppStrings(UiLanguage.az),
+      child: MaterialApp(
+        localizationsDelegates: MaterialAppL10n.localizationsDelegates,
+        supportedLocales: MaterialAppL10n.supportedLocales,
+        locale: MaterialAppL10n.locale,
+        home: HomeTab(
         repository: PackRepository.fromJsonStrings([_cafePackJson]),
         profile: _profile(level: level),
         openLive: openLive ?? (_, _, _) {},
         onManualPlace: onManualPlace ?? () {},
         onLevelChanged: onLevelChanged,
+        currentLanguage: currentLanguage,
+        onLanguageChanged: onLanguageChanged,
         now: now,
+        resolveLivePlace: resolveLivePlace,
+        loadDayPlan: loadDayPlan,
+        onOpenDayPlanWord: onOpenDayPlanWord,
+        ),
       ),
     );
   }
 
-  group('greetingFor', () {
-    test('gecə / səhər / günorta / axşam', () {
-      expect(greetingFor(DateTime(2026, 8, 3, 3)), 'Gecən xeyrə');
-      expect(greetingFor(DateTime(2026, 8, 3, 9)), 'Sabahın xeyir');
-      expect(greetingFor(DateTime(2026, 8, 3, 14)), 'Günortan xeyir');
-      expect(greetingFor(DateTime(2026, 8, 3, 21)), 'Axşamın xeyir');
-    });
+  testWidgets('gündəlik missiya kartı sözləri göstərir', (tester) async {
+    await tester.pumpWidget(wrap(
+      loadDayPlan: ({forceRefresh = false}) async => (
+        messages: [
+          LiveMessage(
+            packId: 'cafe',
+            word: 'latte',
+            translationAz: 'latte',
+            ipa: '/l/',
+            example: 'A latte.',
+            exampleAz: 'Bir latte.',
+            aiLine: 'Kafedəsən!',
+            level: 1,
+            isLive: true,
+          ),
+        ],
+        isLive: true,
+      ),
+      onOpenDayPlanWord: (_, __) {},
+    ));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Bu günün missiyası'), findsOneWidget);
+    expect(find.text('latte'), findsOneWidget);
+    expect(find.text('1 söz · AI ilə seçildi'), findsOneWidget);
   });
 
   testWidgets('salamlama, kontekst kartı və paket görünür', (tester) async {
@@ -71,7 +111,7 @@ void main() {
   testWidgets('paket kartına toxunma openLive çağırır', (tester) async {
     String? openedPack;
     await tester.pumpWidget(wrap(openLive: (packId, _, _) => openedPack = packId));
-    await tester.tap(find.text('Kafedə'));
+    await tester.tap(find.byIcon(Icons.local_cafe));
     expect(openedPack, 'cafe');
   });
 
@@ -118,6 +158,150 @@ void main() {
       await tester.pumpWidget(
           wrap(onLevelChanged: (_) {}, level: ProficiencyLevel.intermediate));
       expect(find.text('1 söz · orta'), findsOneWidget);
+    });
+  });
+
+  group('dil seçicisi (sağ yuxarı künc)', () {
+    testWidgets('cari dil düymədə görünür', (tester) async {
+      await tester.pumpWidget(wrap(
+        currentLanguage: TargetLanguage.spanish,
+        onLanguageChanged: (_) {},
+      ));
+      expect(find.text('Español'), findsOneWidget);
+    });
+
+    testWidgets('toxunanda bütün dillər siyahı kimi açılır', (tester) async {
+      await tester.pumpWidget(wrap(
+        currentLanguage: TargetLanguage.english,
+        onLanguageChanged: (_) {},
+      ));
+
+      await tester.tap(find.byKey(const Key('home-language-picker')));
+      await tester.pumpAndSettle();
+
+      for (final lang in TargetLanguage.values) {
+        expect(find.text(lang.nativeLabel), findsWidgets);
+      }
+    });
+
+    testWidgets('dil seçiləndə callback çağırılır', (tester) async {
+      TargetLanguage? picked;
+      await tester.pumpWidget(wrap(
+        currentLanguage: TargetLanguage.english,
+        onLanguageChanged: (lang) => picked = lang,
+      ));
+
+      await tester.tap(find.byKey(const Key('home-language-picker')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Español').last);
+      await tester.pumpAndSettle();
+
+      expect(picked, TargetLanguage.spanish);
+    });
+
+    testWidgets('onLanguageChanged verilməyibsə göstərilmir', (tester) async {
+      await tester.pumpWidget(wrap());
+      expect(find.byKey(const Key('home-language-picker')), findsNothing);
+    });
+  });
+
+  group('canlı məkan kartı (2026-08-07 dəqiqlik işi)', () {
+    testWidgets('tapılan yer adı, paket, məsafə göstərilir', (tester) async {
+      await tester.pumpWidget(wrap(
+        resolveLivePlace: ({bool forceRefresh = false}) async =>
+            LivePlaceState.resolved(
+          packId: 'cafe',
+          title: 'Kafedə',
+          placeName: 'Kofe Evi',
+          distanceM: 27,
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Kofe Evi'), findsOneWidget);
+      expect(find.textContaining('27 m'), findsOneWidget);
+      expect(find.byIcon(Icons.my_location), findsOneWidget);
+    });
+
+    testWidgets('uğursuzluqda SƏBƏB göstərilir, səssiz keçilmir',
+        (tester) async {
+      await tester.pumpWidget(wrap(
+        resolveLivePlace: ({bool forceRefresh = false}) async =>
+            LivePlaceState.failed(
+                'Cihazda məkan xidməti söndürülüb — onu açıb yenidən yoxla.'),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Yerini tapa bilmədim'), findsOneWidget);
+      expect(find.textContaining('məkan xidməti söndürülüb'), findsOneWidget);
+      expect(find.byIcon(Icons.location_disabled), findsOneWidget);
+    });
+
+    testWidgets('təxmini fix ayrı ikon və etiketlə göstərilir', (tester) async {
+      await tester.pumpWidget(wrap(
+        resolveLivePlace: ({bool forceRefresh = false}) async =>
+            LivePlaceState.resolved(
+          packId: 'cafe',
+          title: 'Kafedə',
+          placeName: 'Kofe Evi',
+          approximate: true,
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('təxmini'), findsOneWidget);
+      expect(find.byIcon(Icons.location_searching), findsOneWidget);
+    });
+
+    testWidgets('paketi olmayan yer göstərilir, amma paket açmır',
+        (tester) async {
+      String? opened;
+      var manualTapped = false;
+      await tester.pumpWidget(wrap(
+        openLive: (packId, _, _) => opened = packId,
+        onManualPlace: () => manualTapped = true,
+        resolveLivePlace: ({bool forceRefresh = false}) async =>
+            LivePlaceState.resolved(placeName: 'Dənizkənarı Park'),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Dənizkənarı Park'), findsOneWidget);
+      expect(find.textContaining('söz paketi yoxdur'), findsOneWidget);
+
+      await tester.tap(find.text('Dənizkənarı Park'));
+      expect(opened, isNull);
+      expect(manualTapped, isTrue);
+    });
+
+    testWidgets('yenilə düyməsi keşi keçir (forceRefresh)', (tester) async {
+      final refreshFlags = <bool>[];
+      await tester.pumpWidget(wrap(
+        resolveLivePlace: ({bool forceRefresh = false}) async {
+          refreshFlags.add(forceRefresh);
+          return LivePlaceState.resolved(
+              packId: 'cafe', title: 'Kafedə', placeName: 'Kofe Evi');
+        },
+      ));
+      await tester.pumpAndSettle();
+      expect(refreshFlags, [false], reason: 'ilk yükləmə keşdən ola bilər');
+
+      await tester.tap(find.byIcon(Icons.refresh));
+      await tester.pumpAndSettle();
+      expect(refreshFlags, [false, true]);
+    });
+
+    testWidgets('tapılan paketə toxunma onu açır', (tester) async {
+      String? opened;
+      await tester.pumpWidget(wrap(
+        openLive: (packId, _, _) => opened = packId,
+        resolveLivePlace: ({bool forceRefresh = false}) async =>
+            LivePlaceState.resolved(
+                packId: 'cafe', title: 'Kafedə', placeName: 'Kofe Evi'),
+      ));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Kofe Evi'));
+      expect(opened, 'cafe');
     });
   });
 }

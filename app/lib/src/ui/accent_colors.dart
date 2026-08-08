@@ -14,7 +14,8 @@ class AccentColor {
   final Color onAccent;
 
   factory AccentColor.fromBase(Color base) {
-    final tint = Color.lerp(base, Colors.white, 0.88)!;
+    // Duolingo tipli daha canlı fon — əvvəl 0.88 ağ idi, indi 0.80.
+    final tint = Color.lerp(base, Colors.white, 0.80)!;
     final onAccent =
         base.computeLuminance() > 0.5 ? Colors.black87 : Colors.white;
     return AccentColor._(base, tint, onAccent);
@@ -32,7 +33,7 @@ const _baseColors = <String, Color>{
   'pharmacy': Color(0xFF00ACC1),
   'restaurant': Color(0xFFE53935),
   'transport': Color(0xFF546E7A),
-  'essential': Color(0xFF0E7C66),
+  'essential': Color(0xFF1B4F8A),
   'audiobooks': Color(0xFF7B1FA2),
   'music': Color(0xFFC2185B),
   'chat': Color(0xFF3949AB),

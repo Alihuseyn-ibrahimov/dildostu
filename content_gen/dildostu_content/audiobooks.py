@@ -57,7 +57,7 @@ BOOKS: dict[str, dict] = {
     },
     # Samaniego — Ezop-un tərcüməsi DEYİL, əsl İSPAN dilində yazılmış
     # klassik təmsillər (1781) — ispan məktəblərində Ezop qədər tanınır,
-    # dil öyrənənlər üçün pedaqoji cəhətdən ideal paralel.
+    # amma 18-ci əsr şeir dili orta səviyyədir (A1/A2 üçün çətindir).
     "samaniego": {
         "gutenberg_id": 55206,
         "title_en": "Fables (Samaniego)",
@@ -73,7 +73,34 @@ BOOKS: dict[str, dict] = {
         # bizə BİRİNCİ (əsl başlanğıc) keçid lazımdır, sonuncu yox.
         "marker_occurrence": "first",
     },
+    # Harrison (1912) — məhz başlanğıclar üçün sadələşdirilmiş qısa hekayələr
+    # (Gutenberg #22065). Ezop/Samaniego-dan fərqli olaraq müasir nəsr,
+    # təkrarlanan gündəlik sözlər, qısa cümlələr — A1/A2 üçün ideal.
+    "harrison": {
+        "gutenberg_id": 22065,
+        "title_en": "Elementary Spanish Reader",
+        "title_az": "Asan İspan oxuşu",
+        "author": "E. S. Harrison (1912)",
+        "source": "Project Gutenberg #22065 — ictimai domen",
+        "level": "beginner",
+        "body_marker": "ELEMENTARY SPANISH READER",
+        "min_words": 100,
+        "lang": "es",
+        "splitter": "generic",
+        "body_end_marker": "\nVOCABULARY\n",
+    },
 }
+
+
+def truncate_at_marker(text: str, marker: str) -> str:
+    """Gövdəni marker-dən ƏVVƏL kəsir (məs. VOCABULARY, NOTAS:).
+
+    Oxuşu kitablarında (Harrison #22065) hekayələrdən sonra söz lüğəti
+    gəlir — bölücü onu =A=, =B= ... kimi fəsil sayırdı və 90 MB audio
+    yaranırdı (2026-08-07).
+    """
+    idx = text.find(marker)
+    return text if idx == -1 else text[:idx]
 
 
 def strip_gutenberg_wrapper(raw: str) -> str:
@@ -194,6 +221,9 @@ def clean_text(text: str) -> str:
     cleaned = re.sub(r"\[Illustration:.*?\]", "", text, flags=re.DOTALL)
     cleaned = re.sub(r"\[imagen\]", "", cleaned, flags=re.IGNORECASE)
     cleaned = re.sub(r"\[\d+\]", "", cleaned)
+    # Oxuşu kitablarında (Harrison #22065) sətir sonu səhifə nömrələri var —
+    # TTS "cinco" kimi oxuyur, ona görə silinir.
+    cleaned = re.sub(r"[ \t]+\d+\s*$", "", cleaned, flags=re.MULTILINE)
     # 3+ sətir sonu → abzas ayrıcı (2 sətir sonu qorunur).
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
     # Sətir sonundakı boşluqlar.

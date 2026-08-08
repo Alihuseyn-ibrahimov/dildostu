@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../models/user_profile.dart';
+import 'brand.dart';
+import 'playful_ui.dart';
 
 /// İlk açılışda istifadəçi profilini toplayır (canlı AI-ni fərdiləşdirmək üçün).
 /// Tamamlananda `onComplete` düzgün UserProfile ilə çağırılır.
@@ -55,13 +57,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           const SizedBox(height: 20),
           const Text('Hansı dili öyrənmək istəyirsən?'),
           const SizedBox(height: 8),
-          SegmentedButton<TargetLanguage>(
-            segments: [
-              for (final lang in TargetLanguage.values)
-                ButtonSegment(value: lang, label: Text(lang.labelAz)),
-            ],
-            selected: {_targetLang},
-            onSelectionChanged: (s) => setState(() => _targetLang = s.first),
+          PlayfulPillSelector<TargetLanguage>(
+            values: TargetLanguage.values,
+            selected: _targetLang,
+            onChanged: (lang) => setState(() => _targetLang = lang),
+            labelFor: (lang) => '${lang.flagEmoji} ${lang.nativeLabel}',
+            accent: BrandColors.navy,
           ),
           const SizedBox(height: 20),
           const Text('Niyə İngilis dili öyrənirsən?'),

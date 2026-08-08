@@ -235,6 +235,24 @@ class TestChatSystemCarriesLanguage:
         system = build_chat_system(profile(target_lang="ru"), None)
         assert "Rus dili" in system
 
+    def test_includes_expert_tone_instruction(self):
+        system = build_chat_system(profile(), None)
+        assert "Ekspert kimi danış" in system
+        assert "LachinGo brendi" in system
+
+
+class TestChatSystemPersona:
+    """2026-08-06 — ekspert + zarafatlı səyahət bələdçisi personası."""
+
+    def test_travel_purpose_in_azerbaijani(self):
+        system = build_chat_system(profile(), None)
+        assert "məqsəd: səyahət üçün" in system
+
+    def test_topic_explanation_includes_travel_hook(self):
+        system = build_chat_system(profile(), None)
+        assert "səyahət analogiyası" in system
+        assert "yüngül zarafatla başla" in system
+
 
 class TestChatSystemMemory:
     """2026-08-04 — yaddaş markeri həmişə mövcuddur; faktlar verilsə prompta düşür."""
@@ -243,24 +261,35 @@ class TestChatSystemMemory:
         system = build_chat_system(profile(), None)
         assert "[[YADDA:" in system
 
-    def test_no_facts_no_facts_line(self):
+    def test_no_facts_shows_empty_portrait(self):
         system = build_chat_system(profile(), None, known_facts=None)
-        assert "Bu istifadəçi haqqında bildiklərin" not in system
+        assert "İSTİFADƏÇİ PORTRETİ hələ boşdur" in system
 
-    def test_empty_facts_list_no_facts_line(self):
+    def test_empty_facts_list_shows_empty_portrait(self):
         system = build_chat_system(profile(), None, known_facts=[])
-        assert "Bu istifadəçi haqqında bildiklərin" not in system
+        assert "İSTİFADƏÇİ PORTRETİ hələ boşdur" in system
 
     def test_facts_included_when_given(self):
         system = build_chat_system(
-            profile(), None, known_facts=["Adı Elvin", "3 aydır öyrənir"]
+            profile(), None, known_facts=["Ad: Elvin", "Hobbi: foto"]
         )
-        assert "Adı Elvin" in system
-        assert "3 aydır öyrənir" in system
+        assert "Ad: Elvin" in system
+        assert "Hobbi: foto" in system
+        assert "İSTİFADƏÇİ PORTRETİ" in system
 
     def test_marker_instruction_present_even_with_facts(self):
         system = build_chat_system(profile(), None, known_facts=["Adı Elvin"])
         assert "[[YADDA:" in system
+
+    def test_portrait_speech_instruction_present(self):
+        system = build_chat_system(profile(), None)
+        assert "ÖZÜM HAQQINDA ÇIXIŞ" in system
+        assert "hekayə kimi" in system
+
+    def test_memory_categories_listed(self):
+        system = build_chat_system(profile(), None)
+        assert "Hobbi" in system and "Xarakter" in system
+        assert "PORTRET TOPLAMA" in system
 
 
 class TestChatSystemTopicExplanation:

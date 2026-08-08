@@ -20,20 +20,34 @@ class AudiobookClient {
   /// Kitabxana siyahısı. Xəta halında istisna atır (`null` qaytarmır) —
   /// çağıran ekran istifadəçiyə səbəbi göstərməlidir, səssiz boş siyahı yox.
   Future<List<Audiobook>> fetchLibrary() async {
+    final raw = await fetchLibraryRaw();
+    return parseLibrary(raw);
+  }
+
+  /// Kitabxananın xam JSON mətni (offline keş üçün — bax `AudiobookDownloader.
+  /// cacheLibraryRaw`). Xəta halında istisna atır.
+  Future<String> fetchLibraryRaw() async {
     final resp = await _http
         .get(Uri.parse('$baseUrl/audiobooks'))
         .timeout(_timeout);
     if (resp.statusCode != 200) {
       throw StateError('Kitabxana yüklənmədi (${resp.statusCode})');
     }
-    final body = jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
+    return utf8.decode(resp.bodyBytes);
+  }
+
+  /// Xam JSON mətnini kitab siyahısına çevirir — server cavabı ilə keşlənmiş
+  /// yerli mətn üçün eyni parsing (bax `main.dart`-dakı offline fallback).
+  static List<Audiobook> parseLibrary(String raw) {
+    final body = jsonDecode(raw) as Map<String, dynamic>;
     return [
       for (final b in (body['books'] as List? ?? const []))
         Audiobook.fromServerJson(b as Map<String, dynamic>),
     ];
   }
 
-  /// Fəslin axın URL-i (native plyer birbaşa bunu oxuyur).
+  /// Fəslin axın URL-i (native plyer birbaşa bunu oxuyur; endirmə də bu
+  /// URL-dən istifadə edir, bax `AudiobookDownloader.downloadAll`).
   String chapterUrl(String bookId, String chapterId) =>
       '$baseUrl/audiobooks/$bookId/$chapterId.mp3';
 }

@@ -48,6 +48,26 @@ Song _song() => const Song(
       ],
     );
 
+/// Real manifestdəki kimi vaxtlı sətirlər (sinxron testləri üçün).
+const _timedLines = [
+  SongLine(
+    lineId: 'l1',
+    text: 'Twinkle, twinkle, little star',
+    translationAz: 'Bərq vur, bərq vur, kiçik ulduz',
+    startMs: 1000,
+    endMs: 5000,
+    wordMs: [1000, 2000, 3000, 4000],
+  ),
+  SongLine(
+    lineId: 'l2',
+    text: 'How I wonder what you are',
+    translationAz: 'Mərak edirəm sən nəsən',
+    startMs: 5000,
+    endMs: 9000,
+    wordMs: [5000, 5600, 6200, 6800, 7400, 8000],
+  ),
+];
+
 void main() {
   group('MusicScreen', () {
     testWidgets('yüklənərkən göstərici, sonra mahnı siyahısı', (tester) async {
@@ -79,7 +99,7 @@ void main() {
         ),
       ));
       await tester.pumpAndSettle();
-      expect(find.textContaining('yüklənmədi'), findsOneWidget);
+      expect(find.textContaining('internet lazımdır'), findsOneWidget);
       expect(find.text('Yenidən cəhd et'), findsOneWidget);
     });
 
@@ -182,6 +202,53 @@ void main() {
 
       expect(capturedWord, 'star');
       expect(capturedLine, 'Twinkle, twinkle, little star');
+    });
+
+    TextSpan? highlightedSpan(WidgetTester tester) {
+      TextSpan? active;
+      void walk(InlineSpan span) {
+        if (span is TextSpan) {
+          if (span.style?.fontWeight == FontWeight.w800) active = span;
+          span.children?.forEach(walk);
+        }
+      }
+      for (final rt in tester.widgetList<RichText>(find.byType(RichText))) {
+        walk(rt.text);
+      }
+      return active;
+    }
+
+    Widget synced(int positionMs) => MaterialApp(
+          home: Scaffold(
+            body: SongLyricsView(
+              lines: _timedLines,
+              lookupWord: (w, c) async =>
+                  WordLookupResult(word: w, translationAz: 'x', ipa: '/x/'),
+              positionMs: positionMs,
+              accent: accentFor('music'),
+              syncLeadMs: 0,
+            ),
+          ),
+        );
+
+    testWidgets('oxunan söz öz real anında vurğulanır', (tester) async {
+      await tester.pumpWidget(synced(2000));
+      expect(highlightedSpan(tester)?.text, 'twinkle');
+    });
+
+    testWidgets('sözlər başlamamış heç nə vurğulanmır', (tester) async {
+      await tester.pumpWidget(synced(500));
+      expect(highlightedSpan(tester), isNull);
+    });
+
+    testWidgets('sinxron vaxtda AZ tərcümə də vurğulanır', (tester) async {
+      await tester.pumpWidget(synced(2000));
+
+      final translation = tester.widget<Text>(
+        find.text('Bərq vur, bərq vur, kiçik ulduz'),
+      );
+      expect(translation.style?.fontWeight, FontWeight.w600);
+      expect(translation.style?.color, accentFor('music').accent);
     });
 
     testWidgets('axtarış uğursuz olsa xəta + yenidən cəhd göstərilir', (tester) async {

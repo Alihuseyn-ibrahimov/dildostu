@@ -2,22 +2,22 @@ import 'package:dildostu/src/ui/profile_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'locale_test_harness.dart';
+
 Widget _wrap({
   VoidCallback? onLogout,
   Future<void> Function()? onDeleteAccount,
   VoidCallback? onOpenRoutine,
 }) =>
-    MaterialApp(
-      home: ProfileTab(
-        onOpenSettings: () {},
-        onOpenLearned: () {},
-        onOpenRoutine: onOpenRoutine ?? () {},
-        onTestNotification: () {},
-        email: 'ali@example.com',
-        onLogout: onLogout ?? () {},
-        onDeleteAccount: onDeleteAccount ?? () async {},
-      ),
-    );
+    wrapWithLocale(ProfileTab(
+      onOpenSettings: () {},
+      onOpenLearned: () {},
+      onOpenRoutine: onOpenRoutine ?? () {},
+      onTestNotification: () {},
+      email: 'ali@example.com',
+      onLogout: onLogout ?? () {},
+      onDeleteAccount: onDeleteAccount ?? () async {},
+    ));
 
 void main() {
   testWidgets('e-poçt göstərilir', (tester) async {
@@ -60,17 +60,15 @@ void main() {
 
   testWidgets('onOpenRoutine null olanda "Rutin öyrənmə" gizlədilir',
       (tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: ProfileTab(
-        onOpenSettings: () {},
-        onOpenLearned: () {},
-        onOpenRoutine: null,
-        onTestNotification: () {},
-        email: 'ali@example.com',
-        onLogout: () {},
-        onDeleteAccount: () async {},
-      ),
-    ));
+    await tester.pumpWidget(wrapWithLocale(ProfileTab(
+      onOpenSettings: () {},
+      onOpenLearned: () {},
+      onOpenRoutine: null,
+      onTestNotification: () {},
+      email: 'ali@example.com',
+      onLogout: () {},
+      onDeleteAccount: () async {},
+    )));
 
     expect(find.text('Rutin öyrənmə'), findsNothing);
   });

@@ -1,5 +1,7 @@
 import 'package:dildostu/src/engine/level_content.dart';
+import 'package:dildostu/src/models/audiobook.dart';
 import 'package:dildostu/src/models/pack.dart';
+import 'package:dildostu/src/models/song.dart';
 import 'package:dildostu/src/models/user_profile.dart';
 import 'package:dildostu/src/models/word.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -77,6 +79,85 @@ void main() {
     test('naməlum söz səviyyəsi (0, 9) sınmır', () {
       final pack = _pack([_word('x', 0), _word('y', 9)]);
       expect(wordsForLevel(pack, ProficiencyLevel.intermediate), isNotEmpty);
+    });
+  });
+
+  group('songsForLevel — musiqi kataloqu (spec §3 eyni qayda)', () {
+    const s1 = Song(
+      songId: 'a',
+      title: 'A',
+      artist: 'X',
+      youtubeId: 'id1',
+      level: 'beginner',
+      lines: [],
+    );
+    const s2 = Song(
+      songId: 'b',
+      title: 'B',
+      artist: 'X',
+      youtubeId: 'id2',
+      level: 'intermediate',
+      lines: [],
+    );
+    const s3 = Song(
+      songId: 'c',
+      title: 'C',
+      artist: 'X',
+      youtubeId: 'id3',
+      level: 'advanced',
+      lines: [],
+    );
+
+    test('tam uyğun səviyyənin mahnılarını qaytarır', () {
+      final result =
+          songsForLevel([s1, s2, s3], ProficiencyLevel.intermediate);
+      expect(result.map((s) => s.songId), ['b']);
+    });
+
+    test('səviyyədə mahnı yoxdursa aşağı pilləyə düşür', () {
+      final result = songsForLevel([s1, s3], ProficiencyLevel.intermediate);
+      expect(result.map((s) => s.songId), ['a']);
+    });
+
+    test('aşağıda heç nə yoxdursa yuxarı baxır', () {
+      final result = songsForLevel([s3], ProficiencyLevel.beginner);
+      expect(result.map((s) => s.songId), ['c']);
+    });
+
+    test('boş siyahı boş qaytarır', () {
+      expect(songsForLevel([], ProficiencyLevel.beginner), isEmpty);
+    });
+  });
+
+  group('audiobooksForLevel — səsli kitab (ciddi süzgəc, fallback yoxdur)', () {
+    Audiobook _ab(String id, String level) => Audiobook(
+          bookId: id,
+          titleEn: id,
+          titleAz: id,
+          author: 'X',
+          source: 'test',
+          level: level,
+          chapters: const [],
+        );
+
+    test('yalnız tam uyğun səviyyəni qaytarır', () {
+      final result = audiobooksForLevel(
+        [_ab('easy', 'beginner'), _ab('hard', 'intermediate')],
+        ProficiencyLevel.beginner,
+      );
+      expect(result.map((b) => b.bookId), ['easy']);
+    });
+
+    test('başqa səviyyə kitabları gizlədir — fallback yoxdur', () {
+      final result = audiobooksForLevel(
+        [_ab('hard', 'intermediate')],
+        ProficiencyLevel.beginner,
+      );
+      expect(result, isEmpty);
+    });
+
+    test('boş siyahı boş qaytarır', () {
+      expect(audiobooksForLevel([], ProficiencyLevel.beginner), isEmpty);
     });
   });
 }

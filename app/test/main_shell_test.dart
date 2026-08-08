@@ -2,15 +2,15 @@ import 'package:dildostu/src/ui/main_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'locale_test_harness.dart';
+
 void main() {
-  Widget shell() => const MaterialApp(
-        home: MainShell(
-          home: Center(child: Text('HOME-BODY')),
-          chat: Center(child: Text('CHAT-BODY')),
-          progress: Center(child: Text('PROGRESS-BODY')),
-          profile: Center(child: Text('PROFILE-BODY')),
-        ),
-      );
+  Widget shell() => wrapWithLocale(const MainShell(
+        home: Center(child: Text('HOME-BODY')),
+        chat: Center(child: Text('CHAT-BODY')),
+        progress: Center(child: Text('PROGRESS-BODY')),
+        profile: Center(child: Text('PROFILE-BODY')),
+      ));
 
   testWidgets('ilkin tab Ana səhifədir', (tester) async {
     await tester.pumpWidget(shell());

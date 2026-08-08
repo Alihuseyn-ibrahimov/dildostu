@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_locale_scope.dart';
 import '../models/app_version_info.dart';
 
 /// "Yenilə" zolağının vəziyyəti — yükləmə uzun sürdüyü üçün (150+ MB)
@@ -42,16 +43,17 @@ class UpdateBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final s = context.s;
     final downloading = stage == UpdateStage.downloading;
 
     final String text;
     if (downloading) {
       final percent = progress == null ? null : (progress! * 100).round();
-      text = percent == null ? 'Yüklənir…' : 'Yüklənir… $percent%';
+      text = percent == null ? s.downloading : s.downloadingPercent(percent);
     } else if (stage == UpdateStage.failed) {
-      text = 'Yüklənmədi — internetini yoxla';
+      text = s.downloadFailed;
     } else {
-      text = 'Yeni versiya var (${info.versionName})';
+      text = '${s.updateAvailable} (${info.versionName})';
     }
 
     return Material(
@@ -78,8 +80,8 @@ class UpdateBanner extends StatelessWidget {
                   FilledButton(
                     onPressed: onInstall,
                     child: Text(stage == UpdateStage.failed
-                        ? 'Yenidən cəhd et'
-                        : 'Yenilə'),
+                        ? s.retry
+                        : s.updateAction),
                   ),
               ],
             ),

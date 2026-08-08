@@ -5,8 +5,7 @@ Endpoint-dən ayrıdır ki, completer və keş inject oluna (test üçün mock).
 
 from __future__ import annotations
 
-import re
-
+from .chat_pipeline import ChatPipelineError, run_chat_pipeline
 from .generator import (
     parse_dayplan_response,
     parse_generate_response,
@@ -23,21 +22,18 @@ from .models import (
     WordLookupResponse,
 )
 from .prompts import (
-    build_chat_system,
     build_dayplan_prompt,
     build_essential_words_prompt,
     build_generate_prompt,
     build_language_essential_words_prompt,
     build_pack_words_prompt,
     build_word_lookup_prompt,
-    chat_preferred_providers,
     preferred_providers,
 )
 from .providers import (
     AllProvidersFailed,
     ChatCompleter,
     Completer,
-    chat_with_fallback,
     complete_with_fallback,
 )
 
@@ -172,42 +168,18 @@ class LiveService:
         return DayPlanResponse(messages=messages, source="ai")
 
 
-# Görünməz yaddaş markeri — bax `prompts.py` `_MEMORY_MARKER_INSTRUCTION`.
-# AI cavabının sonuna əlavə edir, biz burada ayırıb istifadəçidən gizlədirik.
-_MEMORY_MARKER = re.compile(r"\n?\[\[YADDA:\s*(.+?)\s*\]\]\s*$", re.DOTALL)
-
-
 def run_chat(
     req: ChatRequest,
     chat_completers: dict[str, ChatCompleter],
     memory: MemoryStore,
     user_id: int,
 ) -> str:
-    """Söhbət cavabı yaradır (çoxnövbəli). AI uğursuzsa ServiceError.
+    """Söhbət cavabı yaradır — `chat_pipeline.run_chat_pipeline` üzərindən.
 
-    Uğurlu cavab tarixçəyə yazılır (`memory.add_message`), cavabın sonunda
-    gizli yaddaş markeri varsa ayrılıb `user_facts`-a yazılır və istifadəçiyə
-    göstərilən mətndən silinir. Marker yoxdursa/formatı pozulubsa — heç nə
-    dəyişmir, xəta atılmır (prompt qurma heç vaxt sınmamalıdır).
+    RunnablePassthrough tipli zəncir: validate → DB-dən yüklə → AI → saxla.
+    AI uğursuzsa heç nə yazılmır (ServiceError).
     """
-    facts = memory.recent_facts(user_id)
-    system = build_chat_system(req.profile, req.context, facts)
-    messages = [{"role": m.role, "content": m.content} for m in req.messages]
     try:
-        reply = chat_with_fallback(
-            system, messages, chat_preferred_providers(), chat_completers
-        )
-    except AllProvidersFailed as exc:
+        return run_chat_pipeline(req, chat_completers, memory, user_id)
+    except ChatPipelineError as exc:
         raise ServiceError(str(exc)) from exc
-
-    match = _MEMORY_MARKER.search(reply)
-    if match:
-        reply = reply[: match.start()].rstrip()
-        for fact in match.group(1).split("|"):
-            fact = fact.strip()
-            if fact:
-                memory.add_fact(user_id, fact)
-
-    memory.add_message(user_id, "user", req.messages[-1].content)
-    memory.add_message(user_id, "assistant", reply)
-    return reply

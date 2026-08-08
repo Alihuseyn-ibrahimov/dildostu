@@ -1,0 +1,70 @@
+{
+  "song_id": "bebe-siempre-me-quedara",
+  "title": "Siempre Me Quedará",
+  "artist": "Bebe",
+  "youtube_id": "C4cmJ7QqBMI",
+  "level": "advanced",
+  "lang": "es",
+  "lines": [
+    {
+      "line_id": "l1",
+      "text": "Cómo decir que me parte en mil las esquinitas de mi hueso,",
+      "translation_az": "Sümüyümün küncələrini min parçaya bölən sözü necə deməli,"
+    },
+    {
+      "line_id": "l2",
+      "text": "Que han caído los esquemas de mi vida,",
+      "translation_az": "Həyatımın planları dağıldı,"
+    },
+    {
+      "line_id": "l3",
+      "text": "Ahora que todo era perfecto y algo más que eso.",
+      "translation_az": "Hər şey mükəmməl olanda."
+    },
+    {
+      "line_id": "l4",
+      "text": "Me cuesta abrir los ojos y lo hago poco a poco,",
+      "translation_az": "Gözlərimi açmaq çətindir, yavaş-yavaş edirəm,"
+    },
+    {
+      "line_id": "l5",
+      "text": "No sé si aún te encuentres cerca.",
+      "translation_az": "Hələ yaxınlıqdasanmı, bilmirəm."
+    },
+    {
+      "line_id": "l6",
+      "text": "Me guardo tus recuerdos como el mejor secreto,",
+      "translation_az": "Xatirələrini ən yaxşı sirr kimi saxlayıram,"
+    },
+    {
+      "line_id": "l7",
+      "text": "Qué dulce fue tenerte dentro.",
+      "translation_az": "Sənə sahib olmaq nə şirin idi."
+    },
+    {
+      "line_id": "l8",
+      "text": "Siempre me quedará la voz suave del mar, volver a respirar,",
+      "translation_az": "Həmişə qalacaq dənizin yumşaq səsi, yenidən nəfəs almaq,"
+    },
+    {
+      "line_id": "l9",
+      "text": "La lluvia que caerá sobre este cuerpo y mojará,",
+      "translation_az": "Bu bədənə düşüb isladacaq yağmur,"
+    },
+    {
+      "line_id": "l10",
+      "text": "La flor que crece en mí y volverá a reír,",
+      "translation_az": "Məndə böyüyən və yenidən güləcək çiçək,"
+    },
+    {
+      "line_id": "l11",
+      "text": "Y cada día un instante volveré a pensar en ti.",
+      "translation_az": "Hər gün bir an sənə düşəcəyəm."
+    },
+    {
+      "line_id": "l12",
+      "text": "El tiempo todo calma, la tempestad y la calma.",
+      "translation_az": "Zaman hər şeyi sakitləşdirir, fırtına və sakitlik."
+    }
+  ]
+}

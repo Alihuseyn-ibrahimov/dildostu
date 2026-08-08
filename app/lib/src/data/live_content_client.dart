@@ -11,6 +11,8 @@ import 'essential_words_repository.dart';
 import 'pack_repository.dart';
 
 const _timeout = Duration(seconds: 5);
+const _generateTimeout = Duration(seconds: 20);
+const _dayPlanTimeout = Duration(seconds: 30);
 
 /// Canlı AI məzmununu serverdən alır; server/internet əlçatmaz olduqda
 /// mövcud statik paketlərə (PackRepository) düşür (spec §4/§6).
@@ -53,7 +55,7 @@ class LiveContentClient {
               'mode': mode,
             }),
           )
-          .timeout(_timeout);
+          .timeout(_generateTimeout);
       if (resp.statusCode == 200) {
         return LiveMessage.fromServerJson(
           jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>,
@@ -63,6 +65,65 @@ class LiveContentClient {
     } catch (_) {
       return _fallback(packId, recentWords, profile.level);
     }
+  }
+
+  /// Günün missiyası — hər paket üçün bir söz (batch AI generasiya).
+  Future<({List<LiveMessage> messages, bool isLive})> dayPlan({
+    required UserProfile profile,
+    required String date,
+    required List<String> packIds,
+  }) async {
+    if (packIds.isEmpty) {
+      return (messages: const <LiveMessage>[], isLive: false);
+    }
+    try {
+      final resp = await _http
+          .post(
+            Uri.parse('$baseUrl/day-plan'),
+            headers: const {'Content-Type': 'application/json'},
+            body: jsonEncode({
+              'profile': profile.toServerJson(),
+              'date': date,
+              'pack_ids': packIds,
+            }),
+          )
+          .timeout(_dayPlanTimeout);
+      if (resp.statusCode == 200) {
+        final body =
+            jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
+        final raw = (body['messages'] as List).cast<Map<String, dynamic>>();
+        if (raw.isNotEmpty) {
+          return (
+            messages: [for (final w in raw) LiveMessage.fromServerJson(w)],
+            isLive: true,
+          );
+        }
+      }
+      return (
+        messages: _fallbackDayPlan(packIds, profile.level),
+        isLive: false,
+      );
+    } catch (_) {
+      return (
+        messages: _fallbackDayPlan(packIds, profile.level),
+        isLive: false,
+      );
+    }
+  }
+
+  List<LiveMessage> _fallbackDayPlan(
+    List<String> packIds,
+    ProficiencyLevel level,
+  ) {
+    final messages = <LiveMessage>[];
+    for (final id in packIds) {
+      final pack = fallbackRepo.byId(id);
+      if (pack == null) continue;
+      final words = wordsForLevel(pack, level);
+      if (words.isEmpty) continue;
+      messages.add(LiveMessage.fromWord(words.first, id));
+    }
+    return messages;
   }
 
   /// Paketin söz SİYAHISI (söz siyahısı ekranı üçün). Server əlçatmazsa statik

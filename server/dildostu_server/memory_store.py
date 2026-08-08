@@ -53,6 +53,16 @@ class MemoryStore:
         )
         self._conn.commit()
 
+    def last_user_message_at(self, user_id: int) -> str | None:
+        """Son istifadəçi mesajının UTC ISO vaxtı (nudge fərdiləşdirməsi üçün)."""
+        cur = self._conn.execute(
+            "SELECT created_at FROM chat_messages "
+            "WHERE user_id = ? AND role = 'user' ORDER BY id DESC LIMIT 1",
+            (user_id,),
+        )
+        row = cur.fetchone()
+        return row["created_at"] if row else None
+
     def recent_messages(self, user_id: int, *, limit: int = 50) -> list[dict]:
         """Son `limit` mesajı XRONOLOJİ sırada (ən köhnədən ən yeniyə) qaytarır."""
         cur = self._conn.execute(
@@ -64,14 +74,51 @@ class MemoryStore:
         rows.reverse()
         return rows
 
-    def add_fact(self, user_id: int, fact: str) -> None:
-        self._conn.execute(
-            "INSERT INTO user_facts (user_id, fact, created_at) VALUES (?, ?, ?)",
-            (user_id, fact, _utc_now_iso()),
+    def count_messages_since(
+        self, user_id: int, since_iso: str, *, role: str = "user"
+    ) -> int:
+        """`since_iso`-dan sonra həmin roldan neçə mesaj var (kvota sayğacı).
+
+        `created_at` ISO-8601 UTC olduğu üçün sətir müqayisəsi xronolojidir.
+        """
+        cur = self._conn.execute(
+            "SELECT COUNT(*) AS n FROM chat_messages "
+            "WHERE user_id = ? AND role = ? AND created_at >= ?",
+            (user_id, role, since_iso),
         )
+        return int(cur.fetchone()["n"])
+
+    def delete_messages(self, user_id: int) -> None:
+        """Yalnız söhbət tarixçəsini silir — portret (faktlar) qalır."""
+        self._conn.execute("DELETE FROM chat_messages WHERE user_id = ?", (user_id,))
         self._conn.commit()
 
-    def recent_facts(self, user_id: int, *, limit: int = 20) -> list[str]:
+    def delete_facts(self, user_id: int) -> None:
+        """Yalnız portreti (faktları) silir — tarixçə qalır."""
+        self._conn.execute("DELETE FROM user_facts WHERE user_id = ?", (user_id,))
+        self._conn.commit()
+
+    def add_fact(self, user_id: int, fact: str) -> bool:
+        """Yeni fakt əlavə edir. Eyni mətn (kiçik/böyük hərfsiz) artıq
+        varsa təkrar yazmır — `True` yalnız yeni əlavə olunanda."""
+        cleaned = fact.strip()
+        if not cleaned:
+            return False
+        cur = self._conn.execute(
+            "SELECT 1 FROM user_facts WHERE user_id = ? "
+            "AND lower(fact) = lower(?) LIMIT 1",
+            (user_id, cleaned),
+        )
+        if cur.fetchone() is not None:
+            return False
+        self._conn.execute(
+            "INSERT INTO user_facts (user_id, fact, created_at) VALUES (?, ?, ?)",
+            (user_id, cleaned, _utc_now_iso()),
+        )
+        self._conn.commit()
+        return True
+
+    def recent_facts(self, user_id: int, *, limit: int = 40) -> list[str]:
         """Son `limit` faktı XRONOLOJİ sırada qaytarır (prompt-a bu sıra ilə düşür)."""
         cur = self._conn.execute(
             "SELECT fact FROM user_facts WHERE user_id = ? "

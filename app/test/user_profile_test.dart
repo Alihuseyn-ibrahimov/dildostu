@@ -111,6 +111,23 @@ void main() {
       expect(TargetLanguage.spanish.ttsLocale, 'es-ES');
       expect(TargetLanguage.italian.ttsLocale, 'it-IT');
     });
+
+    test('nativeLabel hər dilin öz yazılışıdır', () {
+      expect(TargetLanguage.english.nativeLabel, 'English');
+      expect(TargetLanguage.russian.nativeLabel, 'Русский');
+      expect(TargetLanguage.spanish.nativeLabel, 'Español');
+      expect(TargetLanguage.italian.nativeLabel, 'Italiano');
+    });
+
+    test('hər dilin bayraq emojisi var', () {
+      for (final lang in TargetLanguage.values) {
+        expect(lang.flagEmoji, isNotEmpty);
+      }
+      expect(TargetLanguage.english.flagEmoji, '🇬🇧');
+      expect(TargetLanguage.russian.flagEmoji, '🇷🇺');
+      expect(TargetLanguage.spanish.flagEmoji, '🇪🇸');
+      expect(TargetLanguage.italian.flagEmoji, '🇮🇹');
+    });
   });
 
   group('UserProfileRepository', () {

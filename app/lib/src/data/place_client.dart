@@ -9,11 +9,27 @@ const _timeout = Duration(seconds: 8);
 
 /// Serverin tapdığı yer və ona uyğun söz paketi.
 class PlaceResult {
-  const PlaceResult({required this.packId, this.name = '', this.category = ''});
+  const PlaceResult({
+    this.packId,
+    this.name = '',
+    this.category = '',
+    this.distanceM,
+  });
 
-  final String packId;
+  /// Null ola bilər — server yer tapdı, amma tipi (məs. "Park") bizim
+  /// paketlərə uyğun gəlmir. Bu halda `name`/`category` yenə doludur ki, UI
+  /// istifadəçiyə nəyin tapıldığını göstərə bilsin.
+  final String? packId;
   final String name;
   final String category;
+
+  /// Yerin GPS mövqeyindən metr məsafəsi (server verirsə).
+  final int? distanceM;
+
+  bool get hasPack => packId != null && packId!.isNotEmpty;
+
+  /// İstifadəçiyə göstərilən ad — ad yoxdursa kateqoriya.
+  String get label => name.isNotEmpty ? name : category;
 }
 
 /// Koordinatı serverə göndərir; server Foursquare ilə yaxın yeri tapıb paket
@@ -53,11 +69,20 @@ class PlaceClient {
       final body =
           jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
       final packId = body['pack_id'] as String?;
-      if (packId == null || packId.isEmpty) return null;
+      final name = (body['name'] as String?) ?? '';
+      final category = (body['category'] as String?) ?? '';
+      // Paket yoxdursa da nəticə qaytarılır (yalnız hamısı boşdursa null) —
+      // "Park tapıldı, amma paketi yoxdur" halı UI-da görünməlidir.
+      if ((packId == null || packId.isEmpty) &&
+          name.isEmpty &&
+          category.isEmpty) {
+        return null;
+      }
       return PlaceResult(
-        packId: packId,
-        name: (body['name'] as String?) ?? '',
-        category: (body['category'] as String?) ?? '',
+        packId: (packId != null && packId.isNotEmpty) ? packId : null,
+        name: name,
+        category: category,
+        distanceM: (body['distance_m'] as num?)?.toInt(),
       );
     } catch (_) {
       return null;

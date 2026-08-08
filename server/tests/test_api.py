@@ -14,7 +14,11 @@ from dildostu_server.app import (
     get_routine_store,
 )
 from dildostu_server.memory_store import MemoryStore
-from dildostu_server.place_lookup import PlaceLookup, PlaceLookupError
+from dildostu_server.place_lookup import (
+    PlaceLookup,
+    PlaceLookupError,
+    PlaceQuotaExceeded,
+)
 from dildostu_server.release_store import ReleaseStore
 from dildostu_server.routine_store import RoutineStore
 
@@ -133,9 +137,10 @@ class TestDayPlanEndpoint:
 
 
 def override_chat(chat_completers, *, memory=None, user=None):
+    mem = memory or MemoryStore(":memory:")
     app.dependency_overrides[get_chat_completers] = lambda: chat_completers
     app.dependency_overrides[get_current_user] = lambda: user or _TEST_USER
-    app.dependency_overrides[get_memory_store] = lambda: memory or MemoryStore(":memory:")
+    app.dependency_overrides[get_memory_store] = lambda: mem
     return TestClient(app)
 
 
@@ -236,6 +241,89 @@ class TestChatHistoryEndpoint:
         assert r.status_code == 401
 
 
+class TestChatQuota:
+    """2026-08-06 — gündəlik limit AI çağırışından əvvəl yoxlanır."""
+
+    def test_over_limit_returns_429_without_calling_ai(self, monkeypatch):
+        monkeypatch.setenv("CHAT_DAILY_LIMIT", "1")
+        memory = MemoryStore(":memory:")
+        memory.add_message(1, "user", "əvvəlki")
+        calls = []
+        client = override_chat(
+            {"claude": lambda s, m: calls.append(1) or "cavab"}, memory=memory
+        )
+        r = client.post("/chat", json={
+            "profile": PROFILE,
+            "messages": [{"role": "user", "content": "salam"}],
+        })
+        assert r.status_code == 429
+        assert calls == []
+
+    def test_under_limit_passes(self, monkeypatch):
+        monkeypatch.setenv("CHAT_DAILY_LIMIT", "5")
+        client = override_chat(
+            {"claude": lambda s, m: "cavab"}, memory=MemoryStore(":memory:")
+        )
+        r = client.post("/chat", json={
+            "profile": PROFILE,
+            "messages": [{"role": "user", "content": "salam"}],
+        })
+        assert r.status_code == 200
+
+    def test_quota_endpoint_reports_remaining(self, monkeypatch):
+        monkeypatch.setenv("CHAT_DAILY_LIMIT", "10")
+        memory = MemoryStore(":memory:")
+        memory.add_message(1, "user", "bir")
+        client = override_chat({}, memory=memory)
+        body = client.get("/chat/quota").json()
+        assert body == {"used": 1, "limit": 10, "remaining": 9}
+
+
+class TestChatDataManagement:
+    """2026-08-06 — istifadəçi öz datasını idarə edir (şəffaflıq)."""
+
+    def test_delete_history_keeps_portrait(self):
+        memory = MemoryStore(":memory:")
+        memory.add_message(1, "user", "salam")
+        memory.add_fact(1, "Ad: Elvin")
+        client = override_chat({}, memory=memory)
+
+        assert client.delete("/chat/history").status_code == 200
+        assert memory.recent_messages(1) == []
+        assert memory.recent_facts(1) == ["Ad: Elvin"]
+
+    def test_portrait_returns_facts(self):
+        memory = MemoryStore(":memory:")
+        memory.add_fact(1, "Hobbi: foto")
+        client = override_chat({}, memory=memory)
+        assert client.get("/chat/portrait").json()["facts"] == ["Hobbi: foto"]
+
+    def test_delete_portrait_keeps_history(self):
+        memory = MemoryStore(":memory:")
+        memory.add_message(1, "user", "salam")
+        memory.add_fact(1, "Hobbi: foto")
+        client = override_chat({}, memory=memory)
+
+        assert client.delete("/chat/portrait").status_code == 200
+        assert memory.recent_facts(1) == []
+        assert len(memory.recent_messages(1)) == 1
+
+    def test_portrait_scoped_per_user(self):
+        memory = MemoryStore(":memory:")
+        memory.add_fact(2, "başqasının faktı")
+        client = override_chat({}, memory=memory)  # user id=1
+        assert client.get("/chat/portrait").json()["facts"] == []
+
+    def test_endpoints_require_auth(self):
+        app.dependency_overrides[get_memory_store] = lambda: MemoryStore(":memory:")
+        anon = TestClient(app)
+        assert anon.get("/chat/portrait").status_code == 401
+        assert anon.delete("/chat/portrait").status_code == 401
+        assert anon.delete("/chat/history").status_code == 401
+        assert anon.get("/chat/quota").status_code == 401
+        assert anon.get("/chat/nudges").status_code == 401
+
+
 def override_routine(store, user=None):
     app.dependency_overrides[get_routine_store] = lambda: store
     app.dependency_overrides[get_current_user] = lambda: user or _TEST_USER
@@ -334,6 +422,9 @@ class _StubLookup:
     def __init__(self, result=None, error=None):
         self._result = result
         self._error = error
+        # `/health` bu iki sahəni oxuyur (provayder vəziyyəti).
+        self.configured = True
+        self.quota_exhausted = False
 
     def resolve(self, lat, lng, radius=200):
         if self._error is not None:
@@ -361,11 +452,27 @@ class TestPlaceResolveEndpoint:
         r = client.post("/place/resolve", json={"lat": 40.0, "lng": 49.0})
         assert r.status_code == 404
 
-    def test_unmapped_category_404(self):
+    def test_unmapped_category_returns_place_without_pack(self):
+        """2026-08-07 — əvvəllər 404 idi, yer məlumatı tamamilə itirdi.
+
+        İndi 200 qaytarılır: `pack_id=None`, amma ad/kateqoriya gəlir ki, UI
+        "Bura tanınmadı — City Hall" göstərə bilsin. Köhnə app-lar boş
+        `pack_id`-ni artıq "tapılmadı" kimi oxuduğu üçün geriyə uyğundur.
+        """
         client = override_place(_StubLookup(
             {"name": "City Hall", "category": "Government", "pack_id": None}))
         r = client.post("/place/resolve", json={"lat": 40.0, "lng": 49.0})
-        assert r.status_code == 404
+        assert r.status_code == 200
+        assert r.json()["pack_id"] is None
+        assert r.json()["name"] == "City Hall"
+
+    def test_distance_passed_through(self):
+        client = override_place(_StubLookup({
+            "name": "Kofe Evi", "category": "Café", "pack_id": "cafe",
+            "distance_m": 27,
+        }))
+        r = client.post("/place/resolve", json={"lat": 40.0, "lng": 49.0})
+        assert r.json()["distance_m"] == 27
 
     def test_missing_key_503(self):
         client = override_place(_StubLookup(error=PlaceLookupError("açar yoxdur")))
@@ -455,3 +562,34 @@ class TestAppLatestApkEndpoint:
 def test_health():
     client = override({})
     assert client.get("/health").status_code == 200
+
+
+class TestHealthPlaceProvider:
+    """2026-08-07 — Foursquare krediti bitmiş vəziyyəti görünən etmək.
+
+    Əvvəllər bu hal yalnız istifadəçinin "yer tapılmır" şikayətindən bilinirdi.
+    """
+
+    def test_reports_ok_when_provider_healthy(self):
+        client = override_place(_StubLookup(
+            {"name": "Kafe", "category": "Café", "pack_id": "cafe"}))
+        assert client.get("/health").json()["place_provider"] == "ok"
+
+    def test_reports_quota_exhausted(self):
+        lookup = _StubLookup(None)
+        lookup.quota_exhausted = True
+        client = override_place(lookup)
+        assert client.get("/health").json()["place_provider"] == "quota_exhausted"
+
+    def test_reports_unconfigured_when_no_key(self):
+        lookup = _StubLookup(None)
+        lookup.configured = False
+        client = override_place(lookup)
+        assert client.get("/health").json()["place_provider"] == "unconfigured"
+
+    def test_place_resolve_quota_error_sends_retry_after(self):
+        client = override_place(
+            _StubLookup(error=PlaceQuotaExceeded("kredit bitib")))
+        r = client.post("/place/resolve", json={"lat": 40.0, "lng": 49.0})
+        assert r.status_code == 503
+        assert r.headers["Retry-After"] == "900"

@@ -75,6 +75,21 @@ class TestFacts:
     def test_no_facts_returns_empty(self):
         assert _store().recent_facts(1) == []
 
+    def test_duplicate_fact_not_inserted(self):
+        s = _store()
+        assert s.add_fact(1, "Hobbi: foto") is True
+        assert s.add_fact(1, "hobbi: foto") is False
+        assert s.recent_facts(1) == ["Hobbi: foto"]
+
+    def test_default_limit_is_forty(self):
+        s = _store()
+        for i in range(45):
+            s.add_fact(1, f"fakt{i}")
+        facts = s.recent_facts(1)
+        assert len(facts) == 40
+        assert facts[0] == "fakt5"
+        assert facts[-1] == "fakt44"
+
 
 class TestDeleteUserData:
     def test_deletes_messages_and_facts(self):

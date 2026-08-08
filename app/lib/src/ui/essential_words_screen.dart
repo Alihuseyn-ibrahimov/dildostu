@@ -22,6 +22,7 @@ class EssentialWordsScreen extends StatefulWidget {
     super.key,
     required this.loader,
     required this.onOpenWord,
+    this.levelLabel,
     this.accent,
   });
 
@@ -29,6 +30,9 @@ class EssentialWordsScreen extends StatefulWidget {
 
   /// Siyahıdan sözə keçid: bütün siyahı + seçilən indeks.
   final void Function(List<LiveMessage> words, int index) onOpenWord;
+
+  /// Cari çətinlik səviyyəsi (məs. "Asan") — AppBar alt başlığı.
+  final String? levelLabel;
 
   /// Xüsusiyyətin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
   /// mövcud neytral tema rəngləri işlədilir.
@@ -83,7 +87,18 @@ class _EssentialWordsScreenState extends State<EssentialWordsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Əsas lüğət'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Əsas lüğət'),
+            if (widget.levelLabel != null)
+              Text(
+                '${widget.levelLabel!} səviyyə · 168 söz',
+                style: theme.textTheme.labelSmall
+                    ?.copyWith(color: theme.colorScheme.outline),
+              ),
+          ],
+        ),
         backgroundColor: widget.accent?.tint,
       ),
       body: _loading

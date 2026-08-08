@@ -1,0 +1,310 @@
+{
+  "duration_ms": 153855,
+  "words": [
+    {
+      "word": "Twinkle,",
+      "start": 19.380000000000003,
+      "end": 20.78
+    },
+    {
+      "word": "twinkle",
+      "start": 21.44,
+      "end": 22.16
+    },
+    {
+      "word": "little",
+      "start": 22.16,
+      "end": 23.72
+    },
+    {
+      "word": "star,",
+      "start": 23.72,
+      "end": 24.74
+    },
+    {
+      "word": "how",
+      "start": 25.38,
+      "end": 25.98
+    },
+    {
+      "word": "I",
+      "start": 25.98,
+      "end": 26.8
+    },
+    {
+      "word": "wonder",
+      "start": 26.8,
+      "end": 27.64
+    },
+    {
+      "word": "what",
+      "start": 27.64,
+      "end": 28.5
+    },
+    {
+      "word": "you",
+      "start": 28.5,
+      "end": 29.38
+    },
+    {
+      "word": "are.",
+      "start": 29.38,
+      "end": 29.98
+    },
+    {
+      "word": "Up",
+      "start": 29.98,
+      "end": 31.42
+    },
+    {
+      "word": "above",
+      "start": 31.42,
+      "end": 32.44
+    },
+    {
+      "word": "the",
+      "start": 32.44,
+      "end": 33.28
+    },
+    {
+      "word": "world",
+      "start": 33.28,
+      "end": 34.08
+    },
+    {
+      "word": "so",
+      "start": 34.08,
+      "end": 34.82
+    },
+    {
+      "word": "high",
+      "start": 34.82,
+      "end": 35.9
+    },
+    {
+      "word": "Like",
+      "start": 35.9,
+      "end": 36.96
+    },
+    {
+      "word": "a",
+      "start": 36.96,
+      "end": 37.78
+    },
+    {
+      "word": "diamond",
+      "start": 37.78,
+      "end": 38.56
+    },
+    {
+      "word": "in",
+      "start": 38.56,
+      "end": 39.68
+    },
+    {
+      "word": "the",
+      "start": 39.68,
+      "end": 40.32
+    },
+    {
+      "word": "sky",
+      "start": 40.32,
+      "end": 41.26
+    },
+    {
+      "word": "Twinkle,",
+      "start": 41.26,
+      "end": 42.62
+    },
+    {
+      "word": "twinkle,",
+      "start": 43.3,
+      "end": 44.0
+    },
+    {
+      "word": "little",
+      "start": 44.0,
+      "end": 45.6
+    },
+    {
+      "word": "star",
+      "start": 45.6,
+      "end": 46.48
+    },
+    {
+      "word": "How",
+      "start": 46.980000000000004,
+      "end": 47.78
+    },
+    {
+      "word": "I",
+      "start": 47.78,
+      "end": 48.58
+    },
+    {
+      "word": "wonder",
+      "start": 48.58,
+      "end": 49.5
+    },
+    {
+      "word": "what",
+      "start": 49.5,
+      "end": 50.36
+    },
+    {
+      "word": "you",
+      "start": 50.36,
+      "end": 51.2
+    },
+    {
+      "word": "are",
+      "start": 51.2,
+      "end": 52.3
+    },
+    {
+      "word": "How",
+      "start": 89.98,
+      "end": 91.32
+    },
+    {
+      "word": "I",
+      "start": 91.32,
+      "end": 92.18
+    },
+    {
+      "word": "wonder",
+      "start": 92.18,
+      "end": 93.08
+    },
+    {
+      "word": "what",
+      "start": 93.08,
+      "end": 93.98
+    },
+    {
+      "word": "you",
+      "start": 93.98,
+      "end": 94.82
+    },
+    {
+      "word": "are",
+      "start": 94.82,
+      "end": 95.88
+    },
+    {
+      "word": "Up",
+      "start": 95.88,
+      "end": 96.88
+    },
+    {
+      "word": "above",
+      "start": 96.88,
+      "end": 97.92
+    },
+    {
+      "word": "the",
+      "start": 97.92,
+      "end": 98.72
+    },
+    {
+      "word": "world",
+      "start": 98.72,
+      "end": 99.52
+    },
+    {
+      "word": "so",
+      "start": 99.52,
+      "end": 100.3
+    },
+    {
+      "word": "high",
+      "start": 100.3,
+      "end": 101.36
+    },
+    {
+      "word": "Like",
+      "start": 101.36,
+      "end": 102.34
+    },
+    {
+      "word": "a",
+      "start": 102.34,
+      "end": 103.24
+    },
+    {
+      "word": "diamond",
+      "start": 103.24,
+      "end": 104.04
+    },
+    {
+      "word": "in",
+      "start": 104.04,
+      "end": 105.06
+    },
+    {
+      "word": "the",
+      "start": 105.06,
+      "end": 105.72
+    },
+    {
+      "word": "sky",
+      "start": 105.72,
+      "end": 106.74
+    },
+    {
+      "word": "Twinkle",
+      "start": 106.74,
+      "end": 107.92
+    },
+    {
+      "word": "twinkle",
+      "start": 107.92,
+      "end": 109.46
+    },
+    {
+      "word": "little",
+      "start": 109.46,
+      "end": 111.1
+    },
+    {
+      "word": "star",
+      "start": 111.1,
+      "end": 111.9
+    },
+    {
+      "word": "How",
+      "start": 111.9,
+      "end": 113.34
+    },
+    {
+      "word": "I",
+      "start": 113.34,
+      "end": 114.1
+    },
+    {
+      "word": "wonder",
+      "start": 114.1,
+      "end": 114.96
+    },
+    {
+      "word": "what",
+      "start": 114.96,
+      "end": 115.8
+    },
+    {
+      "word": "you",
+      "start": 115.8,
+      "end": 116.58
+    },
+    {
+      "word": "are",
+      "start": 116.58,
+      "end": 117.8
+    },
+    {
+      "word": "You",
+      "start": 150.42,
+      "end": 151.82
+    }
+  ]
+}

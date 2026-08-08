@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../data/review_repository.dart';
+import '../engine/review_engine.dart';
 import '../models/live_message.dart';
 import '../models/user_profile.dart';
 import '../services/speaker.dart';
 import 'accent_colors.dart';
 import 'theme.dart';
+
+/// `/generate` endpoint-i ilə eyni kontekstdə yeni söz yaradır.
+///
+/// `mode`: `another_example`, `simpler`, `harder`.
+typedef AiWordGenerator = Future<LiveMessage> Function({
+  required String packId,
+  required String mode,
+  required List<String> recentWords,
+});
 
 /// Bir sözün ətraflı ekranı — söz, IPA, tərcümə, nümunə cümlə, səsləndirmə.
 /// Aşağıda "Əvvəlki / Növbəti" keçidləri: istifadəçi siyahıya qayıtmadan
@@ -17,7 +28,9 @@ class WordDetailScreen extends StatefulWidget {
     required this.speaker,
     this.initialIndex = 0,
     this.onAskQuestion,
+    this.onAiWord,
     this.accent,
+    this.reviewRepository,
   });
 
   final String title;
@@ -28,9 +41,16 @@ class WordDetailScreen extends StatefulWidget {
   /// "Sual ver" — AI söhbətini bu kontekstlə açır (main.dart bağlayır).
   final VoidCallback? onAskQuestion;
 
+  /// Canlı AI ilə eyni paket kontekstində başqa/sadə/çətin söz yaradır.
+  /// Null olsa düymələr göstərilmir (məs. test).
+  final AiWordGenerator? onAiWord;
+
   /// Paketin sabit aksent rəngi (bax `accent_colors.dart`). Null olsa
   /// mövcud neytral tema rəngləri işlədilir.
   final AccentColor? accent;
+
+  /// Verilsə, söz açılanda və "Bilirəm/Təkrar" cavabında irəliləyiş yazılır.
+  final ReviewRepository? reviewRepository;
 
   @override
   State<WordDetailScreen> createState() => _WordDetailScreenState();
@@ -38,16 +58,25 @@ class WordDetailScreen extends StatefulWidget {
 
 class _WordDetailScreenState extends State<WordDetailScreen> {
   late final PageController _controller;
+  late List<LiveMessage> _words;
   late int _index;
+  final Set<String> _recordedExposure = {};
+  bool _aiLoading = false;
 
   @override
   void initState() {
     super.initState();
+    _words = List<LiveMessage>.from(widget.words);
     _index = widget.initialIndex.clamp(0, _lastIndex);
     _controller = PageController(initialPage: _index);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _trackCurrentWord();
+    });
   }
 
-  int get _lastIndex => widget.words.isEmpty ? 0 : widget.words.length - 1;
+  int get _lastIndex => _words.isEmpty ? 0 : _words.length - 1;
+
+  LiveMessage get _current => _words[_index];
 
   @override
   void dispose() {
@@ -66,17 +95,83 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
     );
   }
 
+  Future<void> _trackCurrentWord() async {
+    final repo = widget.reviewRepository;
+    if (repo == null || _words.isEmpty) return;
+    final key = reviewWordKey(_current);
+    if (_recordedExposure.contains(key)) return;
+    _recordedExposure.add(key);
+    await repo.recordExposure(key, now: DateTime.now(), hint: _current);
+  }
+
+  Future<void> _handleReview(ReviewOutcome outcome) async {
+    final repo = widget.reviewRepository;
+    if (repo == null) return;
+    final key = reviewWordKey(_current);
+    await repo.recordReview(key, outcome, now: DateTime.now(), hint: _current);
+    if (!mounted) return;
+    final step = repo.stateFor(key).step;
+    final msg = outcome == ReviewOutcome.known
+        ? 'Yaxşı! Mənimsəmə: $step/$masteredStepThreshold'
+        : 'Tezliklə yenidən göstəriləcək';
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(msg), duration: const Duration(seconds: 2)));
+    setState(() {});
+  }
+
+  List<String> get _recentWords =>
+      _words.map((m) => m.word).where((w) => w.isNotEmpty).toList();
+
+  Future<void> _runAiMode(String mode) async {
+    final generate = widget.onAiWord;
+    if (generate == null || _aiLoading || _words.isEmpty) return;
+
+    setState(() => _aiLoading = true);
+    try {
+      final msg = await generate(
+        packId: _current.packId,
+        mode: mode,
+        recentWords: _recentWords,
+      );
+      if (!mounted) return;
+      final oldKey = reviewWordKey(_current);
+      setState(() {
+        _words[_index] = msg;
+        _recordedExposure.remove(oldKey);
+      });
+      await _trackCurrentWord();
+      if (!mounted) return;
+      final text = msg.isLive
+          ? 'Yeni söz hazırdır ✨'
+          : 'Server əlçatmaz — statik söz göstərildi';
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(text), duration: const Duration(seconds: 2)),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Alınmadı: $e'),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _aiLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    if (widget.words.isEmpty) {
+    if (_words.isEmpty) {
       return Scaffold(
         appBar: AppBar(title: Text(widget.title)),
         body: const Center(child: Text('Söz yoxdur.')),
       );
     }
 
-    final current = widget.words[_index];
+    final current = _current;
+    final step = widget.reviewRepository?.stateFor(reviewWordKey(current)).step ?? 0;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -106,15 +201,68 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
               onPageChanged: (i) {
                 widget.speaker.stop();
                 setState(() => _index = i);
+                _trackCurrentWord();
               },
-              itemCount: widget.words.length,
+              itemCount: _words.length,
               itemBuilder: (context, i) => _WordDetailBody(
-                message: widget.words[i],
-                onSpeak: () => widget.speaker.speak(widget.words[i].word),
+                message: _words[i],
+                onSpeak: () => widget.speaker.speak(_words[i].word),
                 accent: widget.accent,
+                showAiActions: widget.onAiWord != null,
+                aiLoading: _aiLoading,
+                onAiMode: _runAiMode,
               ),
             ),
           ),
+          if (widget.reviewRepository != null) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpacing.screen, 0, AppSpacing.screen, 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(masteredStepThreshold, (i) {
+                  return Container(
+                    width: 10,
+                    height: 10,
+                    margin: const EdgeInsets.symmetric(horizontal: 3),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: step > i
+                          ? (widget.accent?.accent ?? theme.colorScheme.primary)
+                          : theme.colorScheme.outline.withValues(alpha: 0.25),
+                    ),
+                  );
+                }),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpacing.screen, 0, AppSpacing.screen, 4),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () => _handleReview(ReviewOutcome.later),
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('Təkrar lazım'),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: FilledButton.icon(
+                      onPressed: () => _handleReview(ReviewOutcome.known),
+                      style: widget.accent == null
+                          ? null
+                          : FilledButton.styleFrom(
+                              backgroundColor: widget.accent!.accent,
+                              foregroundColor: widget.accent!.onAccent,
+                            ),
+                      icon: const Icon(Icons.check),
+                      label: const Text('Bilirəm'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
           SafeArea(
             top: false,
             child: Padding(
@@ -131,7 +279,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 14),
-                    child: Text('${_index + 1}/${widget.words.length}',
+                    child: Text('${_index + 1}/${_words.length}',
                         style: theme.textTheme.bodySmall
                             ?.copyWith(color: theme.colorScheme.outline)),
                   ),
@@ -166,11 +314,17 @@ class _WordDetailBody extends StatelessWidget {
     required this.message,
     required this.onSpeak,
     this.accent,
+    this.showAiActions = false,
+    this.aiLoading = false,
+    this.onAiMode,
   });
 
   final LiveMessage message;
   final VoidCallback onSpeak;
   final AccentColor? accent;
+  final bool showAiActions;
+  final bool aiLoading;
+  final void Function(String mode)? onAiMode;
 
   @override
   Widget build(BuildContext context) {
@@ -254,6 +408,44 @@ class _WordDetailBody extends StatelessWidget {
               ),
             ),
           ),
+          if (showAiActions) ...[
+            const SizedBox(height: AppSpacing.section),
+            Text(
+              'AI ilə başqa variant',
+              style: theme.textTheme.labelMedium
+                  ?.copyWith(color: theme.colorScheme.outline),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              alignment: WrapAlignment.center,
+              children: [
+                _AiModeChip(
+                  label: 'Başqa söz',
+                  icon: Icons.autorenew,
+                  loading: aiLoading,
+                  onPressed:
+                      aiLoading ? null : () => onAiMode?.call('another_example'),
+                  accent: accent,
+                ),
+                _AiModeChip(
+                  label: 'Daha sadə',
+                  icon: Icons.trending_down,
+                  loading: aiLoading,
+                  onPressed: aiLoading ? null : () => onAiMode?.call('simpler'),
+                  accent: accent,
+                ),
+                _AiModeChip(
+                  label: 'Daha çətin',
+                  icon: Icons.trending_up,
+                  loading: aiLoading,
+                  onPressed: aiLoading ? null : () => onAiMode?.call('harder'),
+                  accent: accent,
+                ),
+              ],
+            ),
+          ],
           const SizedBox(height: AppSpacing.section),
           FilledButton.tonalIcon(
             onPressed: onSpeak,
@@ -270,4 +462,43 @@ class _WordDetailBody extends StatelessWidget {
       ),
     );
   }
+}
+
+class _AiModeChip extends StatelessWidget {
+  const _AiModeChip({
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+    required this.loading,
+    this.accent,
+  });
+
+  final String label;
+  final IconData icon;
+  final VoidCallback? onPressed;
+  final bool loading;
+  final AccentColor? accent;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final color = accent?.accent ?? theme.colorScheme.primary;
+    return ActionChip(
+      avatar: loading
+          ? SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(strokeWidth: 2, color: color),
+            )
+          : Icon(icon, size: 18, color: color),
+      label: Text(label),
+      onPressed: onPressed,
+      side: BorderSide(color: color.withValues(alpha: 0.35)),
+      backgroundColor: accent?.tint ?? theme.colorScheme.surfaceContainerHighest,
+    );
+  }
+}
+
+extension _FirstOrNull<E> on Iterable<E> {
+  E? get firstOrNull => isEmpty ? null : first;
 }

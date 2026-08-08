@@ -6,6 +6,20 @@ import '../models/user_profile.dart';
 
 const _timeout = Duration(seconds: 8);
 
+/// `/profile` cavabının nəticəsi — şəbəkə xətası ilə boş profili ayırır.
+class ProfileFetchOutcome {
+  const ProfileFetchOutcome({
+    required this.reachedServer,
+    this.profile,
+  });
+
+  /// Server HTTP cavab veribsə true; timeout/şəbəkə xətasında false.
+  final bool reachedServer;
+
+  /// Server profil qaytardıqda dolu; `profile: null` cavabında null.
+  final UserProfile? profile;
+}
+
 /// Serverdə saxlanan istifadəçi profili (Faza 2 — "hər istifadəçi üçün ayrıca
 /// AI yanaşması"). Fərqli fiziki cihazlarda eyni hesab, yaxud eyni cihazda
 /// fərqli hesablar girsə də profil düzgün istifadəçiyə bağlı qalır.
@@ -19,7 +33,7 @@ class ProfileClient {
   final String baseUrl;
   final http.Client _http;
 
-  Future<UserProfile?> fetch(String token) async {
+  Future<ProfileFetchOutcome> fetchOutcome(String token) async {
     try {
       final resp = await _http
           .get(
@@ -27,14 +41,24 @@ class ProfileClient {
             headers: {'Authorization': 'Bearer $token'},
           )
           .timeout(_timeout);
-      if (resp.statusCode != 200) return null;
+      if (resp.statusCode != 200) {
+        return const ProfileFetchOutcome(reachedServer: false);
+      }
       final body =
           jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
-      final profile = body['profile'] as Map<String, dynamic>?;
-      return profile == null ? null : UserProfile.fromJson(profile);
+      final raw = body['profile'] as Map<String, dynamic>?;
+      return ProfileFetchOutcome(
+        reachedServer: true,
+        profile: raw == null ? null : UserProfile.fromJson(raw),
+      );
     } catch (_) {
-      return null;
+      return const ProfileFetchOutcome(reachedServer: false);
     }
+  }
+
+  Future<UserProfile?> fetch(String token) async {
+    final outcome = await fetchOutcome(token);
+    return outcome.profile;
   }
 
   Future<bool> save(String token, UserProfile profile) async {

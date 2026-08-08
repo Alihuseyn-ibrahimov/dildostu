@@ -36,7 +36,7 @@ void main() {
       expect(await client.resolve(0, 0), isNull);
     });
 
-    test('boş pack_id → null', () async {
+    test('tamamilə boş cavab → null', () async {
       final mock = MockClient(
           (req) async => http.Response(jsonEncode({'pack_id': ''}), 200));
       final client = PlaceClient(baseUrl: 'https://x', token: 'tok1', httpClient: mock);
@@ -69,6 +69,58 @@ void main() {
       );
       await client.resolve(0, 0);
       expect(called, isTrue);
+    });
+  });
+
+  group('paketsiz yer və məsafə (2026-08-07)', () {
+    PlaceClient clientFor(Map<String, dynamic> body) => PlaceClient(
+          baseUrl: 'https://x',
+          token: 'tok1',
+          httpClient: MockClient((req) => Future.value(http.Response(
+                jsonEncode(body),
+                200,
+                headers: {'content-type': 'application/json; charset=utf-8'},
+              ))),
+        );
+
+    test('məsafə parse edilir', () async {
+      final result = await clientFor({
+        'pack_id': 'cafe',
+        'name': 'Kofe Evi',
+        'category': 'Café',
+        'distance_m': 27,
+      }).resolve(0, 0);
+      expect(result!.distanceM, 27);
+      expect(result.hasPack, isTrue);
+    });
+
+    test('pack_id null olsa da yer qaytarılır (əvvəllər itirdi)', () async {
+      final result = await clientFor({
+        'pack_id': null,
+        'name': 'Dənizkənarı Park',
+        'category': 'Park',
+        'distance_m': 15,
+      }).resolve(0, 0);
+
+      expect(result, isNotNull);
+      expect(result!.hasPack, isFalse);
+      expect(result.label, 'Dənizkənarı Park');
+      expect(result.distanceM, 15);
+    });
+
+    test('ad yoxdursa label kateqoriyaya düşür', () async {
+      final result = await clientFor({
+        'pack_id': 'cafe',
+        'name': '',
+        'category': 'Coffee Shop',
+      }).resolve(0, 0);
+      expect(result!.label, 'Coffee Shop');
+    });
+
+    test('distance_m yoxdursa null (sınmır)', () async {
+      final result =
+          await clientFor({'pack_id': 'cafe', 'name': 'Kafe'}).resolve(0, 0);
+      expect(result!.distanceM, isNull);
     });
   });
 }

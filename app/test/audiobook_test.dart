@@ -135,6 +135,21 @@ void main() {
         'https://s.az/audiobooks/aesop/the-fox-and-the-grapes.mp3',
       );
     });
+
+    test('fetchLibraryRaw xam JSON mətnini qaytarır (offline keş üçün)',
+        () async {
+      final mock = MockClient(
+          (req) async => http.Response.bytes(utf8.encode(_libraryJson()), 200));
+      final raw = await AudiobookClient(baseUrl: 'http://x', httpClient: mock)
+          .fetchLibraryRaw();
+      expect(raw, _libraryJson());
+    });
+
+    test('parseLibrary keşlənmiş xam mətni eyni şəkildə parse edir', () {
+      final books = AudiobookClient.parseLibrary(_libraryJson());
+      expect(books, hasLength(1));
+      expect(books.first.chapters, hasLength(2));
+    });
   });
 
   group('AudioPlaybackState', () {

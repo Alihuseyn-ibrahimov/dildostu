@@ -34,6 +34,7 @@ Widget _screen(
   int initialIndex = 0,
   Speaker? speaker,
   AccentColor? accent,
+  AiWordGenerator? onAiWord,
 }) =>
     MaterialApp(
       home: WordDetailScreen(
@@ -42,6 +43,7 @@ Widget _screen(
         initialIndex: initialIndex,
         speaker: speaker ?? FakeSpeaker(),
         accent: accent,
+        onAiWord: onAiWord,
       ),
     );
 
@@ -63,13 +65,57 @@ void main() {
     expect(find.byIcon(Icons.cloud_off), findsOneWidget);
   });
 
-  testWidgets('köhnə rejim düymələri artıq yoxdur', (tester) async {
+  testWidgets('onAiWord verilməyibsə AI düymələri göstərilmir', (tester) async {
     await tester.pumpWidget(_screen([_msg('coffee')]));
     await tester.pumpAndSettle();
 
-    expect(find.text('Sadələşdir'), findsNothing);
-    expect(find.text('Çətinləşdir'), findsNothing);
-    expect(find.text('Başqa nümunə'), findsNothing);
+    expect(find.text('Başqa söz'), findsNothing);
+    expect(find.text('Daha sadə'), findsNothing);
+    expect(find.text('Daha çətin'), findsNothing);
+  });
+
+  testWidgets('AI düymələri göstərilir və generate çağırır', (tester) async {
+    String? capturedMode;
+    await tester.pumpWidget(_screen(
+      [_msg('coffee')],
+      onAiWord: ({
+        required String packId,
+        required String mode,
+        required List<String> recentWords,
+      }) async {
+        capturedMode = mode;
+        expect(packId, 'cafe');
+        expect(recentWords, contains('coffee'));
+        return _msg('latte');
+      },
+    ));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Başqa söz'), findsOneWidget);
+    await tester.tap(find.text('Daha sadə'));
+    await tester.pumpAndSettle();
+
+    expect(capturedMode, 'simpler');
+    expect(find.text('latte'), findsOneWidget);
+    expect(find.text('Yeni söz hazırdır ✨'), findsOneWidget);
+  });
+
+  testWidgets('offline fallback snackbar göstərir', (tester) async {
+    await tester.pumpWidget(_screen(
+      [_msg('coffee')],
+      onAiWord: ({
+        required String packId,
+        required String mode,
+        required List<String> recentWords,
+      }) async =>
+          _msg('tea', isLive: false),
+    ));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Başqa söz'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Server əlçatmaz — statik söz göstərildi'), findsOneWidget);
   });
 
   testWidgets('mövqe göstəricisi düzgündür', (tester) async {

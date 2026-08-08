@@ -1,0 +1,595 @@
+{
+  "duration_ms": 80062,
+  "words": [
+    {
+      "word": "La",
+      "start": 2.1000000000000005,
+      "end": 2.8600000000000003
+    },
+    {
+      "word": "cucaracha,",
+      "start": 2.8600000000000003,
+      "end": 3.62
+    },
+    {
+      "word": "la",
+      "start": 3.72,
+      "end": 3.9
+    },
+    {
+      "word": "cucaracha",
+      "start": 3.9,
+      "end": 5.14
+    },
+    {
+      "word": "ya",
+      "start": 5.14,
+      "end": 5.98
+    },
+    {
+      "word": "no",
+      "start": 5.98,
+      "end": 6.24
+    },
+    {
+      "word": "puede",
+      "start": 6.24,
+      "end": 6.46
+    },
+    {
+      "word": "caminar",
+      "start": 6.46,
+      "end": 7.56
+    },
+    {
+      "word": "porque",
+      "start": 7.56,
+      "end": 7.98
+    },
+    {
+      "word": "no",
+      "start": 7.98,
+      "end": 8.3
+    },
+    {
+      "word": "tiene,",
+      "start": 8.3,
+      "end": 8.96
+    },
+    {
+      "word": "porque",
+      "start": 9.02,
+      "end": 9.32
+    },
+    {
+      "word": "le",
+      "start": 9.32,
+      "end": 9.62
+    },
+    {
+      "word": "faltan",
+      "start": 9.62,
+      "end": 11.08
+    },
+    {
+      "word": "las",
+      "start": 11.08,
+      "end": 11.4
+    },
+    {
+      "word": "dos",
+      "start": 11.4,
+      "end": 11.62
+    },
+    {
+      "word": "patitas",
+      "start": 11.62,
+      "end": 11.96
+    },
+    {
+      "word": "de",
+      "start": 11.96,
+      "end": 12.26
+    },
+    {
+      "word": "atrás",
+      "start": 12.26,
+      "end": 12.84
+    },
+    {
+      "word": "Una",
+      "start": 12.84,
+      "end": 14.12
+    },
+    {
+      "word": "vez",
+      "start": 14.12,
+      "end": 14.34
+    },
+    {
+      "word": "la",
+      "start": 14.34,
+      "end": 14.52
+    },
+    {
+      "word": "cucaracha",
+      "start": 14.52,
+      "end": 16.12
+    },
+    {
+      "word": "se",
+      "start": 16.12,
+      "end": 16.76
+    },
+    {
+      "word": "metió",
+      "start": 16.76,
+      "end": 17.02
+    },
+    {
+      "word": "en",
+      "start": 17.02,
+      "end": 17.12
+    },
+    {
+      "word": "un",
+      "start": 17.12,
+      "end": 17.3
+    },
+    {
+      "word": "hormiguero",
+      "start": 17.3,
+      "end": 18.68
+    },
+    {
+      "word": "y",
+      "start": 18.68,
+      "end": 19.38
+    },
+    {
+      "word": "las",
+      "start": 19.38,
+      "end": 19.6
+    },
+    {
+      "word": "picadas",
+      "start": 19.6,
+      "end": 20.02
+    },
+    {
+      "word": "hormigas",
+      "start": 20.02,
+      "end": 21.46
+    },
+    {
+      "word": "las",
+      "start": 21.46,
+      "end": 22.02
+    },
+    {
+      "word": "patitas",
+      "start": 22.02,
+      "end": 22.5
+    },
+    {
+      "word": "se",
+      "start": 22.5,
+      "end": 22.8
+    },
+    {
+      "word": "comieron",
+      "start": 22.8,
+      "end": 24.24
+    },
+    {
+      "word": "Pobrecita",
+      "start": 24.24,
+      "end": 25.16
+    },
+    {
+      "word": "cucaracha,",
+      "start": 25.16,
+      "end": 26.78
+    },
+    {
+      "word": "anda",
+      "start": 27.4,
+      "end": 27.54
+    },
+    {
+      "word": "renga",
+      "start": 27.54,
+      "end": 27.8
+    },
+    {
+      "word": "y",
+      "start": 27.8,
+      "end": 27.94
+    },
+    {
+      "word": "afrigida",
+      "start": 27.94,
+      "end": 29.46
+    },
+    {
+      "word": "Caminando",
+      "start": 29.46,
+      "end": 30.5
+    },
+    {
+      "word": "a",
+      "start": 30.5,
+      "end": 30.58
+    },
+    {
+      "word": "paso",
+      "start": 30.58,
+      "end": 30.8
+    },
+    {
+      "word": "lento,",
+      "start": 30.8,
+      "end": 32.16
+    },
+    {
+      "word": "escondiéndose",
+      "start": 32.66,
+      "end": 33.26
+    },
+    {
+      "word": "de",
+      "start": 33.26,
+      "end": 33.68
+    },
+    {
+      "word": "día",
+      "start": 33.68,
+      "end": 34.3
+    },
+    {
+      "word": "La",
+      "start": 34.3,
+      "end": 34.54
+    },
+    {
+      "word": "cucaracha,",
+      "start": 34.54,
+      "end": 35.66
+    },
+    {
+      "word": "la",
+      "start": 35.72,
+      "end": 35.94
+    },
+    {
+      "word": "cucaracha",
+      "start": 35.94,
+      "end": 37.44
+    },
+    {
+      "word": "ya",
+      "start": 37.44,
+      "end": 37.98
+    },
+    {
+      "word": "no",
+      "start": 37.98,
+      "end": 38.28
+    },
+    {
+      "word": "puede",
+      "start": 38.28,
+      "end": 38.5
+    },
+    {
+      "word": "caminar",
+      "start": 38.5,
+      "end": 39.58
+    },
+    {
+      "word": "Porque",
+      "start": 39.58,
+      "end": 39.98
+    },
+    {
+      "word": "no",
+      "start": 39.98,
+      "end": 40.32
+    },
+    {
+      "word": "tiene,",
+      "start": 40.32,
+      "end": 40.94
+    },
+    {
+      "word": "porque",
+      "start": 41.02,
+      "end": 41.34
+    },
+    {
+      "word": "le",
+      "start": 41.34,
+      "end": 41.64
+    },
+    {
+      "word": "faltan",
+      "start": 41.64,
+      "end": 42.9
+    },
+    {
+      "word": "las",
+      "start": 42.9,
+      "end": 43.4
+    },
+    {
+      "word": "dos",
+      "start": 43.4,
+      "end": 43.56
+    },
+    {
+      "word": "patitas",
+      "start": 43.56,
+      "end": 43.96
+    },
+    {
+      "word": "de",
+      "start": 43.96,
+      "end": 44.28
+    },
+    {
+      "word": "atrás",
+      "start": 44.28,
+      "end": 45.08
+    },
+    {
+      "word": "La",
+      "start": 45.08,
+      "end": 46.16
+    },
+    {
+      "word": "señora",
+      "start": 46.16,
+      "end": 46.46
+    },
+    {
+      "word": "cucaracha",
+      "start": 46.46,
+      "end": 48.14
+    },
+    {
+      "word": "se",
+      "start": 48.14,
+      "end": 48.58
+    },
+    {
+      "word": "ha",
+      "start": 48.58,
+      "end": 48.72
+    },
+    {
+      "word": "comprado",
+      "start": 48.72,
+      "end": 49.1
+    },
+    {
+      "word": "una",
+      "start": 49.1,
+      "end": 49.36
+    },
+    {
+      "word": "bombacha",
+      "start": 49.36,
+      "end": 50.8
+    },
+    {
+      "word": "Toda",
+      "start": 50.8,
+      "end": 51.5
+    },
+    {
+      "word": "llena",
+      "start": 51.5,
+      "end": 51.86
+    },
+    {
+      "word": "de",
+      "start": 51.86,
+      "end": 52.18
+    },
+    {
+      "word": "botones",
+      "start": 52.18,
+      "end": 53.42
+    },
+    {
+      "word": "Y",
+      "start": 53.42,
+      "end": 53.98
+    },
+    {
+      "word": "adornada",
+      "start": 53.98,
+      "end": 54.48
+    },
+    {
+      "word": "con",
+      "start": 54.48,
+      "end": 54.8
+    },
+    {
+      "word": "hilachas",
+      "start": 54.8,
+      "end": 56.16
+    },
+    {
+      "word": "Que",
+      "start": 56.16,
+      "end": 56.72
+    },
+    {
+      "word": "bombacha",
+      "start": 56.72,
+      "end": 57.3
+    },
+    {
+      "word": "mamarracha",
+      "start": 57.3,
+      "end": 58.74
+    },
+    {
+      "word": "Le",
+      "start": 58.74,
+      "end": 59.38
+    },
+    {
+      "word": "dijeron",
+      "start": 59.38,
+      "end": 59.86
+    },
+    {
+      "word": "los",
+      "start": 59.86,
+      "end": 60.06
+    },
+    {
+      "word": "ratones",
+      "start": 60.06,
+      "end": 61.4
+    },
+    {
+      "word": "Pero",
+      "start": 61.4,
+      "end": 62.08
+    },
+    {
+      "word": "a",
+      "start": 62.08,
+      "end": 62.24
+    },
+    {
+      "word": "doña",
+      "start": 62.24,
+      "end": 62.5
+    },
+    {
+      "word": "cucaracha",
+      "start": 62.5,
+      "end": 63.94
+    },
+    {
+      "word": "No",
+      "start": 63.94,
+      "end": 64.64
+    },
+    {
+      "word": "le",
+      "start": 64.64,
+      "end": 64.86
+    },
+    {
+      "word": "importan",
+      "start": 64.86,
+      "end": 65.3
+    },
+    {
+      "word": "opiniones",
+      "start": 65.3,
+      "end": 66.34
+    },
+    {
+      "word": "La",
+      "start": 66.34,
+      "end": 66.56
+    },
+    {
+      "word": "cucaracha,",
+      "start": 66.56,
+      "end": 67.6
+    },
+    {
+      "word": "la",
+      "start": 67.74,
+      "end": 67.92
+    },
+    {
+      "word": "cucaracha",
+      "start": 67.92,
+      "end": 69.16
+    },
+    {
+      "word": "Ya",
+      "start": 69.16,
+      "end": 70.02
+    },
+    {
+      "word": "no",
+      "start": 70.02,
+      "end": 70.28
+    },
+    {
+      "word": "puede",
+      "start": 70.28,
+      "end": 70.52
+    },
+    {
+      "word": "caminar",
+      "start": 70.52,
+      "end": 71.52
+    },
+    {
+      "word": "Porque",
+      "start": 71.52,
+      "end": 71.96
+    },
+    {
+      "word": "no",
+      "start": 71.96,
+      "end": 72.32
+    },
+    {
+      "word": "tiene,",
+      "start": 72.32,
+      "end": 72.96
+    },
+    {
+      "word": "porque",
+      "start": 73.02,
+      "end": 73.3
+    },
+    {
+      "word": "le",
+      "start": 73.3,
+      "end": 73.62
+    },
+    {
+      "word": "faltan",
+      "start": 73.62,
+      "end": 75.06
+    },
+    {
+      "word": "Las",
+      "start": 75.06,
+      "end": 75.42
+    },
+    {
+      "word": "dos",
+      "start": 75.42,
+      "end": 75.54
+    },
+    {
+      "word": "panditas",
+      "start": 75.54,
+      "end": 76.0
+    },
+    {
+      "word": "de",
+      "start": 76.0,
+      "end": 76.26
+    },
+    {
+      "word": "atrás",
+      "start": 76.26,
+      "end": 76.9
+    }
+  ]
+}

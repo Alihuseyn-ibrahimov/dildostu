@@ -1,0 +1,1005 @@
+{
+  "duration_ms": 178143,
+  "words": [
+    {
+      "word": "Un",
+      "start": 0.0,
+      "end": 2.4
+    },
+    {
+      "word": "elefante",
+      "start": 2.4,
+      "end": 3.82
+    },
+    {
+      "word": "se",
+      "start": 3.82,
+      "end": 18.46
+    },
+    {
+      "word": "balanceaba",
+      "start": 18.46,
+      "end": 20.08
+    },
+    {
+      "word": "sobre",
+      "start": 20.08,
+      "end": 20.84
+    },
+    {
+      "word": "la",
+      "start": 20.84,
+      "end": 21.3
+    },
+    {
+      "word": "tela",
+      "start": 21.3,
+      "end": 21.68
+    },
+    {
+      "word": "de",
+      "start": 21.68,
+      "end": 21.98
+    },
+    {
+      "word": "una",
+      "start": 21.98,
+      "end": 22.3
+    },
+    {
+      "word": "arana,",
+      "start": 22.3,
+      "end": 23.62
+    },
+    {
+      "word": "como",
+      "start": 24.26,
+      "end": 24.92
+    },
+    {
+      "word": "veia",
+      "start": 24.92,
+      "end": 26.08
+    },
+    {
+      "word": "que",
+      "start": 26.08,
+      "end": 26.72
+    },
+    {
+      "word": "resistia",
+      "start": 26.72,
+      "end": 28.06
+    },
+    {
+      "word": "fue",
+      "start": 28.06,
+      "end": 28.8
+    },
+    {
+      "word": "a",
+      "start": 28.8,
+      "end": 29.04
+    },
+    {
+      "word": "llamar",
+      "start": 29.04,
+      "end": 29.6
+    },
+    {
+      "word": "a",
+      "start": 29.6,
+      "end": 29.68
+    },
+    {
+      "word": "otro",
+      "start": 29.68,
+      "end": 29.88
+    },
+    {
+      "word": "elefante.",
+      "start": 29.88,
+      "end": 29.98
+    },
+    {
+      "word": "dos",
+      "start": 29.98,
+      "end": 32.66
+    },
+    {
+      "word": "elefantes",
+      "start": 32.66,
+      "end": 34.08
+    },
+    {
+      "word": "se",
+      "start": 34.08,
+      "end": 34.52
+    },
+    {
+      "word": "balanceaban",
+      "start": 34.52,
+      "end": 36.1
+    },
+    {
+      "word": "sobre",
+      "start": 36.1,
+      "end": 36.9
+    },
+    {
+      "word": "la",
+      "start": 36.9,
+      "end": 37.32
+    },
+    {
+      "word": "tela",
+      "start": 37.32,
+      "end": 37.7
+    },
+    {
+      "word": "de",
+      "start": 37.7,
+      "end": 37.96
+    },
+    {
+      "word": "una",
+      "start": 37.96,
+      "end": 38.3
+    },
+    {
+      "word": "arana,",
+      "start": 38.3,
+      "end": 39.82
+    },
+    {
+      "word": "como",
+      "start": 40.5,
+      "end": 41.0
+    },
+    {
+      "word": "veian",
+      "start": 41.0,
+      "end": 42.14
+    },
+    {
+      "word": "que",
+      "start": 42.14,
+      "end": 42.84
+    },
+    {
+      "word": "resistian",
+      "start": 42.84,
+      "end": 44.1
+    },
+    {
+      "word": "fueron",
+      "start": 44.1,
+      "end": 44.66
+    },
+    {
+      "word": "a",
+      "start": 44.66,
+      "end": 45.04
+    },
+    {
+      "word": "llamar",
+      "start": 45.04,
+      "end": 45.56
+    },
+    {
+      "word": "a",
+      "start": 45.56,
+      "end": 45.68
+    },
+    {
+      "word": "otro",
+      "start": 45.68,
+      "end": 45.94
+    },
+    {
+      "word": "elefante",
+      "start": 45.94,
+      "end": 46.629999999999995
+    },
+    {
+      "word": "tres",
+      "start": 47.94,
+      "end": 48.76
+    },
+    {
+      "word": "elefantes",
+      "start": 48.76,
+      "end": 50.06
+    },
+    {
+      "word": "se",
+      "start": 50.06,
+      "end": 50.64
+    },
+    {
+      "word": "balanceaban",
+      "start": 50.64,
+      "end": 52.04
+    },
+    {
+      "word": "sobre",
+      "start": 52.04,
+      "end": 52.92
+    },
+    {
+      "word": "la",
+      "start": 52.92,
+      "end": 53.28
+    },
+    {
+      "word": "tela",
+      "start": 53.28,
+      "end": 53.68
+    },
+    {
+      "word": "de",
+      "start": 53.68,
+      "end": 53.94
+    },
+    {
+      "word": "una",
+      "start": 53.94,
+      "end": 54.28
+    },
+    {
+      "word": "arana,",
+      "start": 54.28,
+      "end": 55.78
+    },
+    {
+      "word": "como",
+      "start": 56.48,
+      "end": 56.92
+    },
+    {
+      "word": "veian",
+      "start": 56.92,
+      "end": 58.14
+    },
+    {
+      "word": "que",
+      "start": 58.14,
+      "end": 58.86
+    },
+    {
+      "word": "resistian",
+      "start": 58.86,
+      "end": 59.55
+    },
+    {
+      "word": "fueron",
+      "start": 59.55,
+      "end": 60.61
+    },
+    {
+      "word": "a",
+      "start": 60.61,
+      "end": 61.03
+    },
+    {
+      "word": "llamar",
+      "start": 61.03,
+      "end": 61.57
+    },
+    {
+      "word": "a",
+      "start": 61.57,
+      "end": 61.71
+    },
+    {
+      "word": "otro",
+      "start": 61.71,
+      "end": 61.93
+    },
+    {
+      "word": "elefante",
+      "start": 61.93,
+      "end": 63.97
+    },
+    {
+      "word": "cuatro",
+      "start": 63.97,
+      "end": 64.87
+    },
+    {
+      "word": "elefantes",
+      "start": 64.87,
+      "end": 66.07
+    },
+    {
+      "word": "se",
+      "start": 66.07,
+      "end": 66.59
+    },
+    {
+      "word": "balanceaban",
+      "start": 66.59,
+      "end": 68.11
+    },
+    {
+      "word": "sobre",
+      "start": 68.11,
+      "end": 68.91
+    },
+    {
+      "word": "la",
+      "start": 68.91,
+      "end": 69.31
+    },
+    {
+      "word": "tela",
+      "start": 69.31,
+      "end": 69.63
+    },
+    {
+      "word": "de",
+      "start": 69.63,
+      "end": 69.95
+    },
+    {
+      "word": "una",
+      "start": 69.95,
+      "end": 70.37
+    },
+    {
+      "word": "araña",
+      "start": 70.37,
+      "end": 72.05
+    },
+    {
+      "word": "como",
+      "start": 72.05,
+      "end": 73.03
+    },
+    {
+      "word": "veian",
+      "start": 73.03,
+      "end": 74.17
+    },
+    {
+      "word": "que",
+      "start": 74.17,
+      "end": 74.83
+    },
+    {
+      "word": "resistian",
+      "start": 74.83,
+      "end": 76.15
+    },
+    {
+      "word": "fueron",
+      "start": 76.15,
+      "end": 76.73
+    },
+    {
+      "word": "a",
+      "start": 76.73,
+      "end": 77.07
+    },
+    {
+      "word": "llamar",
+      "start": 77.07,
+      "end": 77.57
+    },
+    {
+      "word": "a",
+      "start": 77.57,
+      "end": 77.71
+    },
+    {
+      "word": "otro",
+      "start": 77.71,
+      "end": 77.91
+    },
+    {
+      "word": "elefante",
+      "start": 77.91,
+      "end": 79.97
+    },
+    {
+      "word": "Cinco",
+      "start": 79.97,
+      "end": 81.01
+    },
+    {
+      "word": "elefantes",
+      "start": 81.01,
+      "end": 82.05
+    },
+    {
+      "word": "se",
+      "start": 82.05,
+      "end": 82.55
+    },
+    {
+      "word": "balanceaban",
+      "start": 82.55,
+      "end": 84.15
+    },
+    {
+      "word": "sobre",
+      "start": 84.15,
+      "end": 84.93
+    },
+    {
+      "word": "la",
+      "start": 84.93,
+      "end": 85.33
+    },
+    {
+      "word": "tela",
+      "start": 85.33,
+      "end": 85.67
+    },
+    {
+      "word": "de",
+      "start": 85.67,
+      "end": 85.99
+    },
+    {
+      "word": "una",
+      "start": 85.99,
+      "end": 86.33
+    },
+    {
+      "word": "araña,",
+      "start": 86.33,
+      "end": 88.05
+    },
+    {
+      "word": "como",
+      "start": 88.31,
+      "end": 89.03
+    },
+    {
+      "word": "veian",
+      "start": 89.03,
+      "end": 90.15
+    },
+    {
+      "word": "que",
+      "start": 90.15,
+      "end": 90.89
+    },
+    {
+      "word": "resistian",
+      "start": 90.89,
+      "end": 92.17
+    },
+    {
+      "word": "fueron",
+      "start": 92.17,
+      "end": 92.67
+    },
+    {
+      "word": "a",
+      "start": 92.67,
+      "end": 93.09
+    },
+    {
+      "word": "llamar",
+      "start": 93.09,
+      "end": 93.63
+    },
+    {
+      "word": "a",
+      "start": 93.63,
+      "end": 93.71
+    },
+    {
+      "word": "otro",
+      "start": 93.71,
+      "end": 93.93
+    },
+    {
+      "word": "elefante",
+      "start": 93.93,
+      "end": 95.95
+    },
+    {
+      "word": "seis",
+      "start": 95.95,
+      "end": 96.81
+    },
+    {
+      "word": "elefantes",
+      "start": 96.81,
+      "end": 98.07
+    },
+    {
+      "word": "se",
+      "start": 98.07,
+      "end": 98.57
+    },
+    {
+      "word": "balanceaban",
+      "start": 98.57,
+      "end": 100.13
+    },
+    {
+      "word": "sobre",
+      "start": 100.13,
+      "end": 100.91
+    },
+    {
+      "word": "la",
+      "start": 100.91,
+      "end": 101.31
+    },
+    {
+      "word": "tela",
+      "start": 101.31,
+      "end": 101.69
+    },
+    {
+      "word": "de",
+      "start": 101.69,
+      "end": 101.95
+    },
+    {
+      "word": "una",
+      "start": 101.95,
+      "end": 102.37
+    },
+    {
+      "word": "arana,",
+      "start": 102.37,
+      "end": 103.61
+    },
+    {
+      "word": "como",
+      "start": 104.21,
+      "end": 104.99
+    },
+    {
+      "word": "veian",
+      "start": 104.99,
+      "end": 106.13
+    },
+    {
+      "word": "que",
+      "start": 106.13,
+      "end": 106.83
+    },
+    {
+      "word": "resistian",
+      "start": 106.83,
+      "end": 108.13
+    },
+    {
+      "word": "fueron",
+      "start": 108.13,
+      "end": 108.61
+    },
+    {
+      "word": "a",
+      "start": 108.61,
+      "end": 109.07
+    },
+    {
+      "word": "llamar",
+      "start": 109.07,
+      "end": 109.61
+    },
+    {
+      "word": "a",
+      "start": 109.61,
+      "end": 109.71
+    },
+    {
+      "word": "otro",
+      "start": 109.71,
+      "end": 109.93
+    },
+    {
+      "word": "elefante.",
+      "start": 109.93,
+      "end": 111.95
+    },
+    {
+      "word": "Siete",
+      "start": 111.95,
+      "end": 112.89
+    },
+    {
+      "word": "elefantes",
+      "start": 112.89,
+      "end": 114.07
+    },
+    {
+      "word": "se",
+      "start": 114.07,
+      "end": 114.55
+    },
+    {
+      "word": "balanceaban",
+      "start": 114.55,
+      "end": 116.11
+    },
+    {
+      "word": "sobre",
+      "start": 116.11,
+      "end": 116.91
+    },
+    {
+      "word": "la",
+      "start": 116.91,
+      "end": 117.33
+    },
+    {
+      "word": "tela",
+      "start": 117.33,
+      "end": 117.65
+    },
+    {
+      "word": "de",
+      "start": 117.65,
+      "end": 117.95
+    },
+    {
+      "word": "una",
+      "start": 117.95,
+      "end": 118.35
+    },
+    {
+      "word": "araña,",
+      "start": 118.35,
+      "end": 119.97
+    },
+    {
+      "word": "como",
+      "start": 120.27,
+      "end": 121.01
+    },
+    {
+      "word": "veian",
+      "start": 121.01,
+      "end": 122.17
+    },
+    {
+      "word": "que",
+      "start": 122.17,
+      "end": 122.83
+    },
+    {
+      "word": "resistian",
+      "start": 122.83,
+      "end": 124.11
+    },
+    {
+      "word": "fueron",
+      "start": 124.11,
+      "end": 124.61
+    },
+    {
+      "word": "a",
+      "start": 124.61,
+      "end": 125.07
+    },
+    {
+      "word": "llamar",
+      "start": 125.07,
+      "end": 125.63
+    },
+    {
+      "word": "a",
+      "start": 125.63,
+      "end": 125.71
+    },
+    {
+      "word": "otro",
+      "start": 125.71,
+      "end": 125.93
+    },
+    {
+      "word": "elefante.",
+      "start": 125.93,
+      "end": 127.95
+    },
+    {
+      "word": "ocho",
+      "start": 127.95,
+      "end": 129.01
+    },
+    {
+      "word": "elefantes",
+      "start": 129.01,
+      "end": 130.05
+    },
+    {
+      "word": "se",
+      "start": 130.05,
+      "end": 130.53
+    },
+    {
+      "word": "balanceaban",
+      "start": 130.53,
+      "end": 132.07
+    },
+    {
+      "word": "sobre",
+      "start": 132.07,
+      "end": 132.91
+    },
+    {
+      "word": "la",
+      "start": 132.91,
+      "end": 133.31
+    },
+    {
+      "word": "tela",
+      "start": 133.31,
+      "end": 133.63
+    },
+    {
+      "word": "de",
+      "start": 133.63,
+      "end": 133.95
+    },
+    {
+      "word": "una",
+      "start": 133.95,
+      "end": 134.33
+    },
+    {
+      "word": "araña,",
+      "start": 134.33,
+      "end": 135.93
+    },
+    {
+      "word": "como",
+      "start": 135.97,
+      "end": 136.97
+    },
+    {
+      "word": "veian",
+      "start": 136.97,
+      "end": 138.13
+    },
+    {
+      "word": "que",
+      "start": 138.13,
+      "end": 138.85
+    },
+    {
+      "word": "resistian",
+      "start": 138.85,
+      "end": 140.11
+    },
+    {
+      "word": "fueron",
+      "start": 140.11,
+      "end": 140.57
+    },
+    {
+      "word": "a",
+      "start": 140.57,
+      "end": 141.03
+    },
+    {
+      "word": "llamar",
+      "start": 141.03,
+      "end": 141.55
+    },
+    {
+      "word": "a",
+      "start": 141.55,
+      "end": 141.67
+    },
+    {
+      "word": "otro",
+      "start": 141.67,
+      "end": 141.87
+    },
+    {
+      "word": "elefante",
+      "start": 141.87,
+      "end": 143.87
+    },
+    {
+      "word": "nueve",
+      "start": 143.87,
+      "end": 144.97
+    },
+    {
+      "word": "elefantes",
+      "start": 144.97,
+      "end": 146.05
+    },
+    {
+      "word": "se",
+      "start": 146.05,
+      "end": 146.55
+    },
+    {
+      "word": "balanceaban",
+      "start": 146.55,
+      "end": 148.07
+    },
+    {
+      "word": "sobre",
+      "start": 148.07,
+      "end": 148.91
+    },
+    {
+      "word": "la",
+      "start": 148.91,
+      "end": 149.29
+    },
+    {
+      "word": "tela",
+      "start": 149.29,
+      "end": 149.61
+    },
+    {
+      "word": "de",
+      "start": 149.61,
+      "end": 149.93
+    },
+    {
+      "word": "una",
+      "start": 149.93,
+      "end": 150.31
+    },
+    {
+      "word": "araña,",
+      "start": 150.31,
+      "end": 151.97
+    },
+    {
+      "word": "como",
+      "start": 151.97,
+      "end": 152.99
+    },
+    {
+      "word": "veian",
+      "start": 152.99,
+      "end": 154.13
+    },
+    {
+      "word": "que",
+      "start": 154.13,
+      "end": 154.79
+    },
+    {
+      "word": "resistian",
+      "start": 154.79,
+      "end": 156.11
+    },
+    {
+      "word": "fueron",
+      "start": 156.11,
+      "end": 156.61
+    },
+    {
+      "word": "a",
+      "start": 156.61,
+      "end": 157.03
+    },
+    {
+      "word": "llamar",
+      "start": 157.03,
+      "end": 157.55
+    },
+    {
+      "word": "a",
+      "start": 157.55,
+      "end": 157.65
+    },
+    {
+      "word": "otro",
+      "start": 157.65,
+      "end": 157.85
+    },
+    {
+      "word": "elefante",
+      "start": 157.85,
+      "end": 159.97
+    },
+    {
+      "word": "diez",
+      "start": 159.97,
+      "end": 160.75
+    },
+    {
+      "word": "elefantes",
+      "start": 160.75,
+      "end": 162.05
+    },
+    {
+      "word": "se",
+      "start": 162.05,
+      "end": 162.53
+    },
+    {
+      "word": "balanceaban",
+      "start": 162.53,
+      "end": 164.05
+    },
+    {
+      "word": "sobre",
+      "start": 164.05,
+      "end": 164.89
+    },
+    {
+      "word": "la",
+      "start": 164.89,
+      "end": 165.29
+    },
+    {
+      "word": "tela",
+      "start": 165.29,
+      "end": 165.61
+    },
+    {
+      "word": "de",
+      "start": 165.61,
+      "end": 165.93
+    },
+    {
+      "word": "una",
+      "start": 165.93,
+      "end": 166.29
+    },
+    {
+      "word": "araña,",
+      "start": 166.29,
+      "end": 167.95
+    },
+    {
+      "word": "como",
+      "start": 168.75,
+      "end": 168.95
+    },
+    {
+      "word": "veian",
+      "start": 168.95,
+      "end": 170.11
+    },
+    {
+      "word": "que",
+      "start": 170.11,
+      "end": 170.85
+    },
+    {
+      "word": "resistian",
+      "start": 170.85,
+      "end": 172.11
+    },
+    {
+      "word": "fueron",
+      "start": 172.11,
+      "end": 172.61
+    },
+    {
+      "word": "a",
+      "start": 172.61,
+      "end": 173.03
+    },
+    {
+      "word": "llamar",
+      "start": 173.03,
+      "end": 173.55
+    },
+    {
+      "word": "a",
+      "start": 173.55,
+      "end": 173.67
+    },
+    {
+      "word": "otro",
+      "start": 173.67,
+      "end": 173.85
+    },
+    {
+      "word": "elefante",
+      "start": 173.85,
+      "end": 175.55
+    }
+  ]
+}

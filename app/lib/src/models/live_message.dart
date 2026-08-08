@@ -53,6 +53,31 @@ class LiveMessage {
         isLive: false,
       );
 
+  /// Cihaz keşindən oxuma (`DayPlanCacheRepository`).
+  factory LiveMessage.fromCacheJson(Map<String, dynamic> json) => LiveMessage(
+        packId: json['pack_id'] as String,
+        word: json['word'] as String,
+        translationAz: json['translation_az'] as String,
+        ipa: json['ipa'] as String,
+        example: json['example'] as String,
+        exampleAz: json['example_az'] as String,
+        aiLine: json['ai_line'] as String,
+        level: json['level'] as int,
+        isLive: json['is_live'] as bool? ?? true,
+      );
+
+  Map<String, dynamic> toCacheJson() => {
+        'pack_id': packId,
+        'word': word,
+        'translation_az': translationAz,
+        'ipa': ipa,
+        'example': example,
+        'example_az': exampleAz,
+        'ai_line': aiLine,
+        'level': level,
+        'is_live': isLive,
+      };
+
   Word toWord() => Word(
         word: word,
         translationAz: translationAz,

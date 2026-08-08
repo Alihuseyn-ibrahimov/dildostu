@@ -110,6 +110,64 @@ void main() {
     });
   });
 
+  group('dayPlan (gündəlik missiya)', () {
+    String dayPlanResponse() => jsonEncode({
+          'messages': [
+            {
+              'pack_id': 'morning',
+              'word': 'wake up',
+              'translation_az': 'oyan',
+              'ipa': '/weɪk/',
+              'example': 'Wake up early.',
+              'example_az': 'Tez oyan.',
+              'ai_line': 'Sabahın xeyir!',
+              'level': 1,
+            },
+            {
+              'pack_id': 'cafe',
+              'word': 'latte',
+              'translation_az': 'latte',
+              'ipa': '/l/',
+              'example': 'A latte.',
+              'example_az': 'Bir latte.',
+              'ai_line': 'Kafedəsən!',
+              'level': 1,
+            },
+          ],
+          'source': 'ai',
+        });
+
+    test('serverdən missiya qaytarır', () async {
+      final mock = MockClient((req) async =>
+          http.Response.bytes(utf8.encode(dayPlanResponse()), 200));
+      final client = LiveContentClient(
+        baseUrl: 'http://x', httpClient: mock, fallbackRepo: _repo(),
+      );
+      final result = await client.dayPlan(
+        profile: _profile,
+        date: '2026-08-07',
+        packIds: const ['morning', 'cafe'],
+      );
+      expect(result.messages.length, 2);
+      expect(result.isLive, isTrue);
+      expect(result.messages.first.word, 'wake up');
+    });
+
+    test('server xətası → statik fallback', () async {
+      final mock = MockClient((req) async => http.Response('err', 502));
+      final client = LiveContentClient(
+        baseUrl: 'http://x', httpClient: mock, fallbackRepo: _repo(),
+      );
+      final result = await client.dayPlan(
+        profile: _profile,
+        date: '2026-08-07',
+        packIds: const ['cafe'],
+      );
+      expect(result.messages, isNotEmpty);
+      expect(result.isLive, isFalse);
+    });
+  });
+
   group('packWords (söz siyahısı)', () {
     String wordsResponse() => jsonEncode({
           'words': [

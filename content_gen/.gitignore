@@ -3,3 +3,7 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+# Transkripsiya üçün müvəqqəti yüklənən mahnı audiosu (onlarla MB, repoya girmir).
+songs_out/_audio_cache/
+.tools/
+audiobooks_out/

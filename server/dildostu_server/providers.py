@@ -49,6 +49,30 @@ def complete_with_fallback(
     raise AllProvidersFailed("; ".join(errors) or "provayder yoxdur")
 
 
+def chat_with_fallback_detail(
+    system: str,
+    messages: list,
+    order: list[str],
+    completers: dict[str, ChatCompleter],
+) -> tuple[str, str, list[str]]:
+    """`chat_with_fallback`-ın izlənə bilən variantı.
+
+    Qaytarır: (cavab, uğurlu provayderin adı, uğursuz provayderlərin xətaları).
+    Loq/metrik üçün lazımdır — hansı provayderin işlədiyini bilmədən
+    fallback zəncirinin sağlamlığını ölçmək mümkün deyil.
+    """
+    errors: list[str] = []
+    for name in order:
+        completer = completers.get(name)
+        if completer is None:
+            continue
+        try:
+            return completer(system, messages), name, errors
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"{name}: {exc}")
+    raise AllProvidersFailed("; ".join(errors) or "provayder yoxdur")
+
+
 def chat_with_fallback(
     system: str,
     messages: list,
@@ -56,16 +80,10 @@ def chat_with_fallback(
     completers: dict[str, ChatCompleter],
 ) -> str:
     """Çoxnövbəli söhbət üçün fallback — `order` sırası ilə provayderləri sına."""
-    errors: list[str] = []
-    for name in order:
-        completer = completers.get(name)
-        if completer is None:
-            continue
-        try:
-            return completer(system, messages)
-        except Exception as exc:  # noqa: BLE001
-            errors.append(f"{name}: {exc}")
-    raise AllProvidersFailed("; ".join(errors) or "provayder yoxdur")
+    reply, _provider, _errors = chat_with_fallback_detail(
+        system, messages, order, completers
+    )
+    return reply
 
 
 def build_chat_completers() -> dict[str, ChatCompleter]:
@@ -81,6 +99,10 @@ def build_chat_completers() -> dict[str, ChatCompleter]:
     return completers
 
 
+# Bütün AI çağırışları — aşağı temperatur = daha az uydurma, daha sabit fakt.
+AI_TEMPERATURE = float(os.environ.get("AI_TEMPERATURE", "0.5"))
+
+
 def _groq_chat_completer(model: str) -> ChatCompleter:
     import groq
 
@@ -89,7 +111,7 @@ def _groq_chat_completer(model: str) -> ChatCompleter:
     def complete(system: str, messages: list) -> str:
         resp = client.chat.completions.create(
             model=model,
-            temperature=0.6,
+            temperature=AI_TEMPERATURE,
             messages=[{"role": "system", "content": system}, *messages],
         )
         return resp.choices[0].message.content
@@ -106,7 +128,7 @@ def _claude_chat_completer(model: str) -> ChatCompleter:
         resp = client.messages.create(
             model=model,
             max_tokens=1024,
-            temperature=0.6,
+            temperature=AI_TEMPERATURE,
             system=system,
             messages=messages,
         )
@@ -135,7 +157,7 @@ def _gemini_chat_completer(model: str) -> ChatCompleter:
             model=model,
             contents=contents,
             config=types.GenerateContentConfig(
-                system_instruction=system, temperature=0.6
+                system_instruction=system, temperature=AI_TEMPERATURE
             ),
         )
         return resp.text
@@ -155,7 +177,7 @@ def _gemini_completer(model: str) -> Completer:
             contents=user,
             config=types.GenerateContentConfig(
                 system_instruction=system,
-                temperature=0.5,
+                temperature=AI_TEMPERATURE,
                 response_mime_type="application/json",
             ),
         )
@@ -185,7 +207,7 @@ def _groq_completer(model: str) -> Completer:
     def complete(system: str, user: str) -> str:
         resp = client.chat.completions.create(
             model=model,
-            temperature=0.5,
+            temperature=AI_TEMPERATURE,
             response_format={"type": "json_object"},
             messages=[
                 {"role": "system", "content": system},
@@ -206,7 +228,7 @@ def _claude_completer(model: str) -> Completer:
         resp = client.messages.create(
             model=model,
             max_tokens=2048,
-            temperature=0.5,
+            temperature=AI_TEMPERATURE,
             system=system,
             messages=[{"role": "user", "content": user}],
         )

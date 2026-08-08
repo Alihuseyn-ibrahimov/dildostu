@@ -14,8 +14,9 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <!-- Fon rutin toplamasının Doze/istehsalçı öldürməsindən qorunması üçün -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
     <application
-        android:label="dildostu"
+        android:label="LachinGo"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">

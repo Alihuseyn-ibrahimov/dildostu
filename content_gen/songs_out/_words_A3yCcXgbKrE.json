@@ -1,0 +1,625 @@
+{
+  "duration_ms": 137601,
+  "words": [
+    {
+      "word": "I",
+      "start": 6.76,
+      "end": 8.12
+    },
+    {
+      "word": "see",
+      "start": 8.12,
+      "end": 8.58
+    },
+    {
+      "word": "trees",
+      "start": 8.58,
+      "end": 9.38
+    },
+    {
+      "word": "of",
+      "start": 9.38,
+      "end": 9.78
+    },
+    {
+      "word": "green,",
+      "start": 9.78,
+      "end": 10.34
+    },
+    {
+      "word": "red",
+      "start": 10.76,
+      "end": 12.86
+    },
+    {
+      "word": "roses",
+      "start": 12.86,
+      "end": 13.6
+    },
+    {
+      "word": "too.",
+      "start": 13.6,
+      "end": 14.28
+    },
+    {
+      "word": "I",
+      "start": 15.22,
+      "end": 15.96
+    },
+    {
+      "word": "see",
+      "start": 15.96,
+      "end": 16.28
+    },
+    {
+      "word": "them",
+      "start": 16.28,
+      "end": 16.54
+    },
+    {
+      "word": "bloom",
+      "start": 16.54,
+      "end": 17.34
+    },
+    {
+      "word": "for",
+      "start": 17.34,
+      "end": 19.38
+    },
+    {
+      "word": "me",
+      "start": 19.38,
+      "end": 19.74
+    },
+    {
+      "word": "and",
+      "start": 19.74,
+      "end": 19.92
+    },
+    {
+      "word": "you.",
+      "start": 19.92,
+      "end": 20.3
+    },
+    {
+      "word": "And",
+      "start": 20.3,
+      "end": 21.6
+    },
+    {
+      "word": "I",
+      "start": 21.6,
+      "end": 21.86
+    },
+    {
+      "word": "think",
+      "start": 21.86,
+      "end": 22.28
+    },
+    {
+      "word": "to",
+      "start": 22.28,
+      "end": 22.5
+    },
+    {
+      "word": "myself",
+      "start": 22.5,
+      "end": 23.4
+    },
+    {
+      "word": "what",
+      "start": 23.4,
+      "end": 26.76
+    },
+    {
+      "word": "a",
+      "start": 26.76,
+      "end": 26.96
+    },
+    {
+      "word": "wonderful",
+      "start": 26.96,
+      "end": 27.68
+    },
+    {
+      "word": "world",
+      "start": 27.68,
+      "end": 29.0
+    },
+    {
+      "word": "I",
+      "start": 33.24000000000001,
+      "end": 34.56
+    },
+    {
+      "word": "see",
+      "start": 34.56,
+      "end": 35.0
+    },
+    {
+      "word": "skies",
+      "start": 35.0,
+      "end": 35.56
+    },
+    {
+      "word": "of",
+      "start": 35.56,
+      "end": 36.38
+    },
+    {
+      "word": "blue",
+      "start": 36.38,
+      "end": 37.1
+    },
+    {
+      "word": "and",
+      "start": 37.1,
+      "end": 39.0
+    },
+    {
+      "word": "clouds",
+      "start": 39.0,
+      "end": 39.72
+    },
+    {
+      "word": "of",
+      "start": 39.72,
+      "end": 40.38
+    },
+    {
+      "word": "white",
+      "start": 40.38,
+      "end": 40.84
+    },
+    {
+      "word": "The",
+      "start": 40.84,
+      "end": 42.38
+    },
+    {
+      "word": "bright",
+      "start": 42.38,
+      "end": 42.92
+    },
+    {
+      "word": "blessed",
+      "start": 42.92,
+      "end": 43.52
+    },
+    {
+      "word": "day,",
+      "start": 43.52,
+      "end": 44.34
+    },
+    {
+      "word": "the",
+      "start": 44.62,
+      "end": 45.48
+    },
+    {
+      "word": "dark",
+      "start": 45.48,
+      "end": 45.92
+    },
+    {
+      "word": "sacred",
+      "start": 45.92,
+      "end": 46.34
+    },
+    {
+      "word": "night",
+      "start": 46.34,
+      "end": 46.86
+    },
+    {
+      "word": "and",
+      "start": 46.86,
+      "end": 48.66
+    },
+    {
+      "word": "I",
+      "start": 48.66,
+      "end": 48.8
+    },
+    {
+      "word": "think",
+      "start": 48.8,
+      "end": 49.12
+    },
+    {
+      "word": "to",
+      "start": 49.12,
+      "end": 49.38
+    },
+    {
+      "word": "myself",
+      "start": 49.38,
+      "end": 50.32
+    },
+    {
+      "word": "what",
+      "start": 50.32,
+      "end": 53.54
+    },
+    {
+      "word": "a",
+      "start": 53.54,
+      "end": 53.7
+    },
+    {
+      "word": "wonderful",
+      "start": 53.7,
+      "end": 54.36
+    },
+    {
+      "word": "world",
+      "start": 54.36,
+      "end": 55.86
+    },
+    {
+      "word": "The",
+      "start": 60.58,
+      "end": 61.58
+    },
+    {
+      "word": "colors",
+      "start": 61.58,
+      "end": 62.08
+    },
+    {
+      "word": "of",
+      "start": 62.08,
+      "end": 62.46
+    },
+    {
+      "word": "the",
+      "start": 62.46,
+      "end": 62.72
+    },
+    {
+      "word": "rainbow",
+      "start": 62.72,
+      "end": 63.28
+    },
+    {
+      "word": "so",
+      "start": 63.28,
+      "end": 64.94
+    },
+    {
+      "word": "pretty",
+      "start": 64.94,
+      "end": 65.46
+    },
+    {
+      "word": "in",
+      "start": 65.46,
+      "end": 66.1
+    },
+    {
+      "word": "the",
+      "start": 66.1,
+      "end": 66.3
+    },
+    {
+      "word": "sky",
+      "start": 66.3,
+      "end": 66.7
+    },
+    {
+      "word": "are",
+      "start": 66.7,
+      "end": 68.3
+    },
+    {
+      "word": "also",
+      "start": 68.3,
+      "end": 68.94
+    },
+    {
+      "word": "on",
+      "start": 68.94,
+      "end": 69.28
+    },
+    {
+      "word": "the",
+      "start": 69.28,
+      "end": 69.4
+    },
+    {
+      "word": "faces",
+      "start": 69.4,
+      "end": 69.88
+    },
+    {
+      "word": "of",
+      "start": 69.88,
+      "end": 71.56
+    },
+    {
+      "word": "people",
+      "start": 71.56,
+      "end": 72.06
+    },
+    {
+      "word": "going",
+      "start": 72.06,
+      "end": 72.52
+    },
+    {
+      "word": "by",
+      "start": 72.52,
+      "end": 72.98
+    },
+    {
+      "word": "I",
+      "start": 72.98,
+      "end": 74.46
+    },
+    {
+      "word": "see",
+      "start": 74.46,
+      "end": 74.84
+    },
+    {
+      "word": "friends",
+      "start": 74.84,
+      "end": 75.48
+    },
+    {
+      "word": "shaking",
+      "start": 75.48,
+      "end": 76.42
+    },
+    {
+      "word": "hands",
+      "start": 76.42,
+      "end": 77.4
+    },
+    {
+      "word": "saying",
+      "start": 77.4,
+      "end": 78.5
+    },
+    {
+      "word": "how",
+      "start": 78.5,
+      "end": 79.1
+    },
+    {
+      "word": "do",
+      "start": 79.1,
+      "end": 79.56
+    },
+    {
+      "word": "you",
+      "start": 79.56,
+      "end": 79.86
+    },
+    {
+      "word": "do?",
+      "start": 79.86,
+      "end": 80.68
+    },
+    {
+      "word": "They're",
+      "start": 82.02,
+      "end": 82.88
+    },
+    {
+      "word": "really",
+      "start": 82.88,
+      "end": 83.3
+    },
+    {
+      "word": "saying",
+      "start": 83.3,
+      "end": 83.92
+    },
+    {
+      "word": "I",
+      "start": 83.92,
+      "end": 85.4
+    },
+    {
+      "word": "love",
+      "start": 85.4,
+      "end": 86.24
+    },
+    {
+      "word": "you",
+      "start": 86.24,
+      "end": 86.92
+    },
+    {
+      "word": "I",
+      "start": 86.92,
+      "end": 88.14
+    },
+    {
+      "word": "hear",
+      "start": 88.14,
+      "end": 88.6
+    },
+    {
+      "word": "beggars",
+      "start": 88.6,
+      "end": 89.24
+    },
+    {
+      "word": "cry",
+      "start": 89.24,
+      "end": 89.78
+    },
+    {
+      "word": "I",
+      "start": 90.98,
+      "end": 92.24
+    },
+    {
+      "word": "watch",
+      "start": 92.24,
+      "end": 92.84
+    },
+    {
+      "word": "them",
+      "start": 92.84,
+      "end": 93.18
+    },
+    {
+      "word": "grow",
+      "start": 93.18,
+      "end": 93.98
+    },
+    {
+      "word": "They're",
+      "start": 94.98,
+      "end": 96.02
+    },
+    {
+      "word": "like",
+      "start": 96.02,
+      "end": 96.28
+    },
+    {
+      "word": "much",
+      "start": 96.28,
+      "end": 96.72
+    },
+    {
+      "word": "more",
+      "start": 96.72,
+      "end": 97.54
+    },
+    {
+      "word": "than",
+      "start": 97.54,
+      "end": 98.9
+    },
+    {
+      "word": "I'll",
+      "start": 98.9,
+      "end": 99.5
+    },
+    {
+      "word": "ever",
+      "start": 99.5,
+      "end": 99.92
+    },
+    {
+      "word": "know",
+      "start": 99.92,
+      "end": 100.72
+    },
+    {
+      "word": "And",
+      "start": 100.72,
+      "end": 101.82
+    },
+    {
+      "word": "I",
+      "start": 101.82,
+      "end": 102.08
+    },
+    {
+      "word": "think",
+      "start": 102.08,
+      "end": 102.42
+    },
+    {
+      "word": "to",
+      "start": 102.42,
+      "end": 102.72
+    },
+    {
+      "word": "myself,",
+      "start": 102.72,
+      "end": 103.38
+    },
+    {
+      "word": "what",
+      "start": 104.68,
+      "end": 106.76
+    },
+    {
+      "word": "a",
+      "start": 106.76,
+      "end": 106.96
+    },
+    {
+      "word": "wonderful",
+      "start": 106.96,
+      "end": 107.66
+    },
+    {
+      "word": "world",
+      "start": 107.66,
+      "end": 108.78
+    },
+    {
+      "word": "Yes,",
+      "start": 112.0,
+      "end": 113.4
+    },
+    {
+      "word": "I",
+      "start": 114.1,
+      "end": 115.14
+    },
+    {
+      "word": "think",
+      "start": 115.14,
+      "end": 115.54
+    },
+    {
+      "word": "to",
+      "start": 115.54,
+      "end": 115.96
+    },
+    {
+      "word": "myself,",
+      "start": 115.96,
+      "end": 117.0
+    },
+    {
+      "word": "what",
+      "start": 118.82,
+      "end": 120.66
+    },
+    {
+      "word": "a",
+      "start": 120.66,
+      "end": 120.92
+    },
+    {
+      "word": "wonderful",
+      "start": 120.92,
+      "end": 121.7
+    },
+    {
+      "word": "world",
+      "start": 121.7,
+      "end": 123.62
+    },
+    {
+      "word": "Oh,",
+      "start": 123.62,
+      "end": 125.16
+    },
+    {
+      "word": "oh,",
+      "start": 128.84,
+      "end": 128.84
+    },
+    {
+      "word": "oh,",
+      "start": 128.84,
+      "end": 129.5
+    },
+    {
+      "word": "yeah",
+      "start": 129.5,
+      "end": 132.4
+    }
+  ]
+}

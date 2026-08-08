@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dildostu/src/data/chat_client.dart';
 import 'package:dildostu/src/models/chat_message.dart';
@@ -129,6 +130,130 @@ void main() {
       final mock = MockClient((req) async => http.Response('err', 401));
       final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
       expect(await client.fetchHistory(), isEmpty);
+    });
+  });
+
+  group('xəta növləri', () {
+    Future<ChatException> errorFor(http.Response response) async {
+      final client = ChatClient(
+        baseUrl: 'http://x',
+        token: 'tok',
+        httpClient: MockClient((req) async => response),
+      );
+      try {
+        await client.send(
+          profile: _profile,
+          history: [const ChatMessage(role: ChatRole.user, content: 'salam')],
+        );
+      } on ChatException catch (e) {
+        return e;
+      }
+      fail('ChatException gözlənilirdi');
+    }
+
+    test('429 limit xətası — serverin mətni göstərilir, təkrar edilmir',
+        () async {
+      final e = await errorFor(http.Response.bytes(
+        utf8.encode(jsonEncode({'detail': 'Limitin doldu (80 mesaj).'})),
+        429,
+      ));
+      expect(e.kind, ChatErrorKind.quota);
+      expect(e.message, contains('80'));
+      expect(e.isRetryable, isFalse);
+    });
+
+    test('502 AI xətası təkrar edilə bilər', () async {
+      final e = await errorFor(http.Response('err', 502));
+      expect(e.kind, ChatErrorKind.aiUnavailable);
+      expect(e.isRetryable, isTrue);
+    });
+
+    test('401 sessiya xətası təkrar edilmir', () async {
+      final e = await errorFor(http.Response('err', 401));
+      expect(e.kind, ChatErrorKind.unauthorized);
+      expect(e.isRetryable, isFalse);
+    });
+
+    test('şəbəkə qopması təkrar edilə bilər', () async {
+      final client = ChatClient(
+        baseUrl: 'http://x',
+        token: 'tok',
+        httpClient: MockClient((req) async => throw const SocketException('x')),
+      );
+      try {
+        await client.send(
+          profile: _profile,
+          history: [const ChatMessage(role: ChatRole.user, content: 'salam')],
+        );
+        fail('ChatException gözlənilirdi');
+      } on ChatException catch (e) {
+        expect(e.kind, ChatErrorKind.network);
+        expect(e.isRetryable, isTrue);
+      }
+    });
+  });
+
+  group('yaddaş idarəsi', () {
+    test('clearHistory DELETE /chat/history göndərir', () async {
+      String? method;
+      String? path;
+      final mock = MockClient((req) async {
+        method = req.method;
+        path = req.url.path;
+        return http.Response('{"ok":true}', 200);
+      });
+      final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
+      expect(await client.clearHistory(), isTrue);
+      expect(method, 'DELETE');
+      expect(path, '/chat/history');
+    });
+
+    test('clearPortrait uğursuzluqda false qaytarır (istisna atmır)', () async {
+      final mock = MockClient((req) async => http.Response('err', 500));
+      final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
+      expect(await client.clearPortrait(), isFalse);
+    });
+
+    test('fetchPortrait faktları parse edir', () async {
+      final mock = MockClient((req) async => http.Response.bytes(
+            utf8.encode(jsonEncode({
+              'facts': ['Ad: Elvin', 'Hobbi: foto'],
+            })),
+            200,
+          ));
+      final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
+      expect(await client.fetchPortrait(), ['Ad: Elvin', 'Hobbi: foto']);
+    });
+
+    test('fetchPortrait xətada boş siyahı qaytarır', () async {
+      final mock = MockClient((req) async => http.Response('err', 500));
+      final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
+      expect(await client.fetchPortrait(), isEmpty);
+    });
+  });
+
+  group('fetchQuota', () {
+    test('GET /chat/quota parse edir', () async {
+      String? path;
+      final mock = MockClient((req) async {
+        path = req.url.path;
+        return http.Response.bytes(
+          utf8.encode(jsonEncode({'used': 5, 'limit': 80, 'remaining': 75})),
+          200,
+        );
+      });
+      final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
+      final quota = await client.fetchQuota();
+      expect(path, '/chat/quota');
+      expect(quota?.used, 5);
+      expect(quota?.limit, 80);
+      expect(quota?.remaining, 75);
+    });
+
+    test('server xətasında null qaytarır (istisna atmır)', () async {
+      final mock = MockClient((req) async => http.Response('err', 401));
+      final client = ChatClient(baseUrl: 'http://x', token: 'tok', httpClient: mock);
+      expect(await client.fetchQuota(), isNull);
     });
   });
 }

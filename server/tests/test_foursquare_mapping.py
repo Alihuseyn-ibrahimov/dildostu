@@ -46,3 +46,48 @@ class TestFoursquareMapping:
     def test_first_matching_rule_wins_across_categories(self):
         # Bir yer "Park" + "Café" — cafe qaydası tapılır (park paketimizdə yoxdur).
         assert pack_id_for_foursquare(_cats("Park", "Café")) == "cafe"
+
+
+class TestWordBoundaryMatching:
+    """2026-08-07 — açar sözlər söz SƏRHƏDİ ilə uyğunlaşır.
+
+    Əvvəl sadə `in` yoxlaması idi: "Barbershop" içindəki "bar" yeri
+    restorana, "Sports Club" içindəki "port" nəqliyyata yazırdı.
+    """
+
+    def test_barbershop_is_not_a_bar(self):
+        assert pack_id_for_foursquare(_cats("Barbershop")) is None
+
+    def test_sports_club_is_not_transport(self):
+        assert pack_id_for_foursquare(_cats("Sports Club")) is None
+
+    def test_real_bar_still_matches(self):
+        assert pack_id_for_foursquare(_cats("Cocktail Bar")) == "restaurant"
+
+    def test_plural_category_name_matches(self):
+        # Foursquare `plural_name` göndərir ("Cafés", "Hotels").
+        assert pack_id_for_foursquare([{"plural_name": "Cafés"}]) == "cafe"
+        assert pack_id_for_foursquare([{"plural_name": "Hotels"}]) == "hotel"
+
+
+class TestWiderCoverage:
+    """2026-08-07 — xəritə genişləndirildi (əvvəl bu yerlər 404 verirdi)."""
+
+    def test_dessert_shop_to_cafe(self):
+        assert pack_id_for_foursquare(_cats("Dessert Shop")) == "cafe"
+
+    def test_ice_cream_to_cafe(self):
+        assert pack_id_for_foursquare(_cats("Ice Cream Parlor")) == "cafe"
+
+    def test_juice_bar_is_cafe_not_restaurant(self):
+        # cafe qaydası restaurant-dan əvvəl gəlir, ona görə "bar" qalib gəlmir.
+        assert pack_id_for_foursquare(_cats("Juice Bar")) == "cafe"
+
+    def test_sushi_to_restaurant(self):
+        assert pack_id_for_foursquare(_cats("Sushi Restaurant")) == "restaurant"
+
+    def test_butcher_to_market(self):
+        assert pack_id_for_foursquare(_cats("Butcher")) == "market"
+
+    def test_taxi_stand_to_transport(self):
+        assert pack_id_for_foursquare(_cats("Taxi Stand")) == "transport"

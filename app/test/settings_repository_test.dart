@@ -1,5 +1,6 @@
 import 'package:dildostu/src/data/settings_repository.dart';
 import 'package:dildostu/src/models/settings.dart';
+import 'package:dildostu/src/models/ui_language.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,5 +32,12 @@ void main() {
     expect(reloaded.current.wakeHour, 7);
     expect(reloaded.current.wakeMinute, 15);
     expect(reloaded.current.dailyNotificationCount, 9);
+  });
+
+  test('uiLanguage saxlanır və geri oxunur', () async {
+    final repo = await SettingsRepository.load();
+    await repo.save(Settings.defaults.copyWith(uiLanguage: UiLanguage.en));
+    final reloaded = await SettingsRepository.load();
+    expect(reloaded.current.uiLanguage, UiLanguage.en);
   });
 }

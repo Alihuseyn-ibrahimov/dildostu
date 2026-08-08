@@ -12,7 +12,7 @@ _STYLE = """
          max-width: 720px; margin: 0 auto; padding: 32px 20px; line-height: 1.6;
          color: #1a1a1a; }
   h1 { font-size: 1.6rem; } h2 { font-size: 1.2rem; margin-top: 2rem; }
-  a { color: #0e7c66; } code { background: #f2f2f2; padding: 2px 6px; border-radius: 4px; }
+  a { color: #1B4F8A; } code { background: #f2f2f2; padding: 2px 6px; border-radius: 4px; }
 </style>
 """
 
@@ -20,10 +20,10 @@ _STYLE = """
 def privacy_policy_html() -> str:
     return f"""<!doctype html>
 <html lang="az"><head><meta charset="utf-8">
-<title>DilDostu — Məxfilik Siyasəti</title>{_STYLE}</head>
+<title>LachinGo — Məxfilik Siyasəti</title>{_STYLE}</head>
 <body>
-<h1>DilDostu — Məxfilik Siyasəti</h1>
-<p><em>Privacy Policy for the DilDostu language-learning app.</em></p>
+<h1>LachinGo — Məxfilik Siyasəti</h1>
+<p><em>Privacy Policy for the LachinGo language-learning app.</em></p>
 <p>Son yenilənmə: 2026-08-03</p>
 
 <h2>Hansı məlumatları toplayırıq</h2>
@@ -45,7 +45,7 @@ Foursquare Places API-yə göndərilir (adın və ya hesab məlumatın ora
 ötürülmür).</p>
 
 <h2>Məlumatların saxlanması</h2>
-<p>Bütün data DilDostu-nun öz serverində saxlanılır. Üçüncü tərəflərə
+<p>Bütün data LachinGo-nun öz serverində saxlanılır. Üçüncü tərəflərə
 satılmır və reklam məqsədilə paylaşılmır.</p>
 
 <h2>Hesabını sil</h2>
@@ -61,14 +61,14 @@ məlumat silmə səhifəsi</a>.</p>
 def delete_account_html() -> str:
     return f"""<!doctype html>
 <html lang="az"><head><meta charset="utf-8">
-<title>DilDostu — Hesabı və Datanı Sil</title>{_STYLE}</head>
+<title>LachinGo — Hesabı və Datanı Sil</title>{_STYLE}</head>
 <body>
 <h1>Hesabını və datanı sil</h1>
-<p><em>How to delete your DilDostu account and data.</em></p>
+<p><em>How to delete your LachinGo account and data.</em></p>
 
 <h2>Tətbiq daxilində (tövsiyə olunan yol)</h2>
 <ol>
-  <li>DilDostu-nu aç</li>
+  <li>LachinGo-nu aç</li>
   <li><strong>Profil</strong> tabına keç</li>
   <li><strong>Hesabı sil</strong> düyməsinə bas, təsdiqlə</li>
 </ol>

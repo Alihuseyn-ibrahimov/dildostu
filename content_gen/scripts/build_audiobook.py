@@ -33,6 +33,7 @@ from dildostu_content.audiobooks import (  # noqa: E402
     split_chapters,
     split_fabulas,
     strip_gutenberg_wrapper,
+    truncate_at_marker,
 )
 
 MARKER_FINDERS = {"first": after_first_marker, "last": after_last_marker}
@@ -167,6 +168,9 @@ def main() -> None:
     raw = fetch_book_text(meta["gutenberg_id"])
     find_marker = MARKER_FINDERS[meta.get("marker_occurrence", "last")]
     body = find_marker(strip_gutenberg_wrapper(raw), meta["body_marker"])
+    end_marker = meta.get("body_end_marker")
+    if end_marker:
+        body = truncate_at_marker(body, end_marker)
     splitter = SPLITTERS[meta.get("splitter", "generic")]
     chapters = drop_non_narrative(splitter(body), min_words=meta["min_words"])
     if args.limit:

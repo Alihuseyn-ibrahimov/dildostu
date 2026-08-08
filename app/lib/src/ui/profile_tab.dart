@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_locale_scope.dart';
+import 'brand.dart';
+import 'playful_ui.dart';
 import 'theme.dart';
 
 /// Profil tabı — ayarlar, "AI nəyi öyrənib", rutin öyrənmə naviqasiyası, hesab
@@ -38,25 +41,23 @@ class ProfileTab extends StatelessWidget {
   final Future<void> Function() onDeleteAccount;
 
   Future<void> _confirmDelete(BuildContext context) async {
+    final s = context.s;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Hesabı silmək istəyirsən?'),
-        content: const Text(
-          'Bu əməliyyat geri qaytarıla bilməz — hesabın və bütün rutin/məkan '
-          'datan həmişəlik silinəcək.',
-        ),
+        title: Text(s.deleteAccountTitle),
+        content: Text(s.deleteAccountBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Ləğv et'),
+            child: Text(s.cancel),
           ),
           FilledButton(
             style: FilledButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Sil'),
+            child: Text(s.delete),
           ),
         ],
       ),
@@ -67,69 +68,74 @@ class ProfileTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profil')),
-      body: ListView(
-        children: [
+    final s = context.s;
+    return PlayfulScreenBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(title: Text(s.profileTitle)),
+        body: ListView(
+          padding: const EdgeInsets.only(bottom: 24),
+          children: [
           _Item(
             icon: Icons.settings_outlined,
-            title: 'Ayarlar',
-            subtitle: 'Oyanma/yatma vaxtı, bildiriş sayı',
+            title: s.settingsMenu,
+            subtitle: s.settingsMenuSubtitle,
             onTap: onOpenSettings,
           ),
           _Item(
             icon: Icons.insights_outlined,
-            title: 'AI nəyi öyrənib',
-            subtitle: 'Tez-tez getdiyin yerlər',
+            title: s.aiLearnedTitle,
+            subtitle: s.aiLearnedSubtitle,
             onTap: onOpenLearned,
           ),
           if (onOpenRoutine != null)
             _Item(
               icon: Icons.explore_outlined,
-              title: 'Rutin öyrənmə',
-              subtitle: 'Arxa fon məkan icazəsi',
+              title: s.routineLearning,
+              subtitle: s.routineSubtitle,
               onTap: onOpenRoutine,
             ),
           const Divider(height: 32),
           Padding(
             padding: const EdgeInsets.fromLTRB(AppSpacing.screen, 0, 16, 8),
-            child: Text('Hesab',
+            child: Text(s.accountSection,
                 style: theme.textTheme.labelMedium
                     ?.copyWith(color: theme.colorScheme.outline)),
           ),
           _Item(
             icon: Icons.person_outline,
             title: email,
-            subtitle: 'Kabinetin',
+            subtitle: s.accountCabinet,
             onTap: null,
           ),
           _Item(
             icon: Icons.logout,
-            title: 'Çıxış',
-            subtitle: 'Yenidən giriş edə bilərsən',
+            title: s.logout,
+            subtitle: s.logoutSubtitle,
             onTap: onLogout,
           ),
           _Item(
             icon: Icons.delete_outline,
-            title: 'Hesabı sil',
-            subtitle: 'Bütün datanı həmişəlik sil',
+            title: s.deleteAccount,
+            subtitle: s.deleteAccountSubtitle,
             titleColor: theme.colorScheme.error,
             onTap: () => _confirmDelete(context),
           ),
           const Divider(height: 32),
           Padding(
             padding: const EdgeInsets.fromLTRB(AppSpacing.screen, 0, 16, 8),
-            child: Text('Developer',
+            child: Text(s.developerSection,
                 style: theme.textTheme.labelMedium
                     ?.copyWith(color: theme.colorScheme.outline)),
           ),
           _Item(
             icon: Icons.notifications_active_outlined,
-            title: 'Test bildirişi',
-            subtitle: 'Bildiriş→kart axınını yoxla',
+            title: s.testNotifTitle,
+            subtitle: s.testNotifSubtitle,
             onTap: onTestNotification,
           ),
         ],
+        ),
       ),
     );
   }
@@ -153,29 +159,54 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.screen, vertical: 4),
-      // Ana səhifədəki paket kartları ilə eyni ikon plitəsi (vahid görünüş).
-      leading: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: theme.colorScheme.secondaryContainer,
-          borderRadius: BorderRadius.circular(AppSpacing.radiusControl),
-        ),
-        child: Icon(icon,
-            color: titleColor ?? theme.colorScheme.onSecondaryContainer,
-            size: 20),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.screen,
+        vertical: 4,
       ),
-      title: Text(title,
-          style: theme.textTheme.titleSmall
-              ?.copyWith(fontWeight: FontWeight.w600, color: titleColor)),
-      subtitle: Text(subtitle, style: theme.textTheme.bodySmall),
-      trailing: onTap == null
-          ? null
-          : Icon(Icons.chevron_right, color: theme.colorScheme.outlineVariant),
-      onTap: onTap,
+      child: PlayfulCard(
+        color: Colors.white,
+        shadowColor: theme.colorScheme.outlineVariant,
+        onTap: onTap,
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        borderRadius: AppSpacing.radiusControl,
+        child: Row(
+          children: [
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: BrandColors.navy.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                icon,
+                color: titleColor ?? BrandColors.navy,
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: titleColor,
+                    ),
+                  ),
+                  Text(subtitle, style: theme.textTheme.bodySmall),
+                ],
+              ),
+            ),
+            if (onTap != null)
+              Icon(Icons.chevron_right_rounded,
+                  color: theme.colorScheme.outlineVariant),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -97,4 +97,21 @@ class AuthClient {
       throw AuthException(_messageFor(resp.statusCode));
     }
   }
+
+  /// Token hələ etibarlıdırmı — app açılışında yoxlanır.
+  /// 401 → false (logout). Şəbəkə/500 → true (offline saxla).
+  Future<bool> validateSession(String token) async {
+    try {
+      final resp = await _http
+          .get(
+            Uri.parse('$baseUrl/auth/me'),
+            headers: {'Authorization': 'Bearer $token'},
+          )
+          .timeout(_timeout);
+      if (resp.statusCode == 401) return false;
+      return true;
+    } catch (_) {
+      return true;
+    }
+  }
 }

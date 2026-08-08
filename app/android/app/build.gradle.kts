@@ -20,7 +20,7 @@ val pubspecVersion: Pair<Int, String> by lazy {
 
 android {
     namespace = "com.dildostu.dildostu"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

@@ -1,10 +1,16 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/config.dart';
+import 'src/l10n/app_locale_scope.dart';
+import 'src/l10n/app_strings.dart';
+import 'src/l10n/material_app_l10n.dart';
+import 'src/models/ui_language.dart';
 import 'src/data/app_update_client.dart';
 import 'src/data/audiobook_client.dart';
 import 'src/models/audiobook.dart';
@@ -13,7 +19,9 @@ import 'src/models/song.dart';
 import 'src/data/word_lookup_client.dart';
 import 'src/data/auth_client.dart';
 import 'src/data/auth_repository.dart';
+import 'src/data/device_lock_repository.dart';
 import 'src/data/chat_client.dart';
+import 'src/data/day_plan_cache_repository.dart';
 import 'src/data/device_id_repository.dart';
 import 'src/data/essential_words_repository.dart';
 import 'src/data/geofence_cooldown_repository.dart';
@@ -27,12 +35,19 @@ import 'src/data/routine_client.dart';
 import 'src/data/settings_repository.dart';
 import 'src/data/tts_telemetry_repository.dart';
 import 'src/data/user_profile_repository.dart';
+import 'src/engine/chat_nudge_fallback.dart';
+import 'src/engine/chat_nudge_payload.dart';
 import 'src/engine/context_engine.dart';
+import 'src/engine/day_plan_picker.dart';
 import 'src/engine/geofence_logic.dart';
+import 'src/engine/level_content.dart';
+import 'src/engine/location_quality.dart';
 import 'src/engine/pack_titles.dart';
 import 'src/models/app_version_info.dart';
+import 'src/models/live_message.dart';
 import 'src/models/user_profile.dart';
 import 'src/services/audio_player_service.dart';
+import 'src/services/audiobook_downloader.dart';
 import 'src/services/battery_optimization_service.dart';
 import 'src/services/browser_launcher_service.dart';
 import 'src/services/build_flavor_service.dart';
@@ -41,6 +56,7 @@ import 'src/services/notification_service.dart';
 import 'src/services/routine_sampler.dart';
 import 'src/services/speaker.dart';
 import 'src/ui/accent_colors.dart';
+import 'src/ui/bootstrap_loading_screen.dart';
 import 'src/ui/audiobook_player_screen.dart';
 import 'src/ui/audiobooks_screen.dart';
 import 'src/ui/music_screen.dart';
@@ -57,6 +73,7 @@ import 'src/ui/progress_tab.dart';
 import 'src/ui/routine_permission_screen.dart';
 import 'src/ui/settings_screen.dart';
 import 'src/ui/theme.dart';
+import 'src/ui/unlock_screen.dart';
 import 'src/ui/word_detail_screen.dart';
 import 'src/ui/word_list_screen.dart';
 
@@ -68,20 +85,78 @@ Future<void> main() async {
   try {
     await RoutineSampler.initialize();
   } catch (_) {}
-  runApp(const DilDostuApp());
+  runApp(const LachinGoApp());
 }
 
-class DilDostuApp extends StatelessWidget {
-  const DilDostuApp({super.key});
+class LachinGoApp extends StatefulWidget {
+  const LachinGoApp({super.key});
+
+  @override
+  State<LachinGoApp> createState() => _LachinGoAppState();
+}
+
+class _LachinGoAppState extends State<LachinGoApp> {
+  UiLanguage _uiLanguage = UiLanguage.az;
+  bool _localeReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUiLanguage();
+  }
+
+  Future<void> _loadUiLanguage() async {
+    try {
+      final repo = await SettingsRepository.load();
+      if (mounted) {
+        setState(() {
+          _uiLanguage = repo.current.uiLanguage;
+          _localeReady = true;
+        });
+      }
+    } catch (_) {
+      // Korrupt prefs — defolt AZ ilə davam et, app çökməsin.
+      if (mounted) {
+        setState(() {
+          _uiLanguage = UiLanguage.az;
+          _localeReady = true;
+        });
+      }
+    }
+  }
+
+  void _onUiLanguageChanged(UiLanguage lang) {
+    setState(() => _uiLanguage = lang);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      title: 'DilDostu',
-      debugShowCheckedModeBanner: false,
-      theme: buildAppTheme(),
-      home: const _AuthGate(),
+    if (!_localeReady) {
+      return MaterialApp(
+        localizationsDelegates: MaterialAppL10n.localizationsDelegates,
+        supportedLocales: MaterialAppL10n.supportedLocales,
+        locale: MaterialAppL10n.locale,
+        home: const Scaffold(body: Center(child: CircularProgressIndicator())),
+      );
+    }
+    final strings = AppStrings(_uiLanguage);
+    // AppLocaleScope MaterialApp-in XARİCİNDƏ olmalıdır — bütün route/overlay
+    // onun altında qalsın. `locale: Locale('az')` MaterialApp-ə vermək OLMAZ:
+    // Flutter `az` üçün MaterialLocalizations dəstəkləmir → qırmızı ekran.
+    // Bizim interfeys dili yalnız AppStrings (`context.s`) ilə idarə olunur.
+    return AppLocaleScope(
+      language: _uiLanguage,
+      strings: strings,
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        title: 'LachinGo',
+        debugShowCheckedModeBanner: false,
+        theme: buildAppTheme(),
+        localizationsDelegates: MaterialAppL10n.localizationsDelegates,
+        supportedLocales: MaterialAppL10n.supportedLocales,
+        locale: MaterialAppL10n.locale,
+        home: _AuthGate(onUiLanguageChanged: _onUiLanguageChanged),
+      ),
     );
   }
 }
@@ -91,53 +166,98 @@ class DilDostuApp extends StatelessWidget {
 /// `LoginScreen`-ə qayıdır (spec: Faza 3, "hər kəs öz kabinetini yaradıb
 /// daxil olsun").
 class _AuthGate extends StatefulWidget {
-  const _AuthGate();
+  const _AuthGate({this.onUiLanguageChanged});
+
+  final ValueChanged<UiLanguage>? onUiLanguageChanged;
 
   @override
   State<_AuthGate> createState() => _AuthGateState();
 }
 
 class _AuthGateState extends State<_AuthGate> {
-  late final Future<AuthRepository> _future;
   final AuthClient _authClient = AuthClient(baseUrl: AppConfig.serverBaseUrl);
+
+  AuthRepository? _auth;
+  DeviceLockRepository? _lockRepo;
+  bool _initializing = true;
+  bool _unlocked = false;
 
   @override
   void initState() {
     super.initState();
-    _future = AuthRepository.load();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    final auth = await AuthRepository.load();
+    final lockRepo = await DeviceLockRepository.load();
+
+    if (auth.isLoggedIn) {
+      final valid = await _authClient.validateSession(auth.token!);
+      if (!valid) await auth.logout();
+    }
+
+    final lockEnabled = await lockRepo.isEnabled();
+    if (!mounted) return;
+    setState(() {
+      _auth = auth;
+      _lockRepo = lockRepo;
+      _initializing = false;
+      _unlocked = !lockEnabled || !auth.isLoggedIn;
+    });
+  }
+
+  Future<void> _onAuthenticated(String token, String email) async {
+    await _auth!.setSession(token: token, email: email);
+    final lockEnabled = await _lockRepo!.isEnabled();
+    if (!mounted) return;
+    setState(() => _unlocked = !lockEnabled);
+  }
+
+  Future<void> _requireFullLogin() async {
+    await _auth?.logout();
+    await _lockRepo?.clear();
+    if (!mounted) return;
+    setState(() => _unlocked = false);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<AuthRepository>(
-      future: _future,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
-        }
-        final auth = snapshot.data!;
-        if (!auth.isLoggedIn) {
-          return LoginScreen(
-            register: _authClient.register,
-            login: _authClient.login,
-            onAuthenticated: (token, email) {
-              auth.setSession(token: token, email: email).then((_) {
-                if (mounted) setState(() {});
-              });
-            },
-          );
-        }
-        // `key` — istifadəçi dəyişəndə (çıxış→başqa hesaba giriş) _Bootstrap
-        // tam təzədən qurulsun, köhnə sessiyanın state-i sızmasın.
-        return _Bootstrap(
-          key: ValueKey(auth.token),
-          auth: auth,
-          authClient: _authClient,
-          onLoggedOut: () {
-            if (mounted) setState(() {});
-          },
-        );
+    if (_initializing || _auth == null || _lockRepo == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    final auth = _auth!;
+    final lockRepo = _lockRepo!;
+
+    if (!auth.isLoggedIn) {
+      return LoginScreen(
+        register: _authClient.register,
+        login: _authClient.login,
+        onAuthenticated: _onAuthenticated,
+      );
+    }
+
+    if (!_unlocked) {
+      return UnlockScreen(
+        lockRepo: lockRepo,
+        onUnlocked: () => setState(() => _unlocked = true),
+        onRequireFullLogin: _requireFullLogin,
+      );
+    }
+
+    return _Bootstrap(
+      key: ValueKey(auth.token),
+      auth: auth,
+      authClient: _authClient,
+      lockRepo: lockRepo,
+      onLoggedOut: () {
+        setState(() {
+          _unlocked = false;
+        });
+        _initialize();
       },
+      onUiLanguageChanged: widget.onUiLanguageChanged,
     );
   }
 }
@@ -174,23 +294,31 @@ class _Bootstrap extends StatefulWidget {
     super.key,
     required this.auth,
     required this.authClient,
+    required this.lockRepo,
     required this.onLoggedOut,
+    this.onUiLanguageChanged,
   });
 
   final AuthRepository auth;
   final AuthClient authClient;
+  final DeviceLockRepository lockRepo;
 
   /// Çıxış/hesab silmə/401 sonrası çağırılır — `_AuthGate`-i yenidən qurur.
   final VoidCallback onLoggedOut;
+
+  /// Ayarlardan proqram dili dəyişəndə `MaterialApp`-ı yeniləyir.
+  final ValueChanged<UiLanguage>? onUiLanguageChanged;
 
   @override
   State<_Bootstrap> createState() => _BootstrapState();
 }
 
-class _BootstrapState extends State<_Bootstrap> {
+class _BootstrapState extends State<_Bootstrap> with WidgetsBindingObserver {
   late final Future<_AppData> _future;
   final TtsSpeaker _speaker = TtsSpeaker();
   final NotificationService _notifications = NotificationService();
+  final GlobalKey<MainShellState> _shellKey = GlobalKey<MainShellState>();
+  final GlobalKey<ChatScreenState> _chatKey = GlobalKey<ChatScreenState>();
   final BatteryOptimizationService _battery = BatteryOptimizationService();
   final BuildFlavorService _buildFlavor = BuildFlavorService();
   final BrowserLauncherService _browserLauncher = BrowserLauncherService();
@@ -200,6 +328,8 @@ class _BootstrapState extends State<_Bootstrap> {
   late final ChatClient _chat;
   final AudiobookClient _audiobooks =
       AudiobookClient(baseUrl: AppConfig.serverBaseUrl);
+  final AudiobookDownloader _audiobookDownloader = AudiobookDownloader();
+  bool _offlinePromptScheduled = false;
   final MusicClient _music = MusicClient(baseUrl: AppConfig.serverBaseUrl);
   final WordLookupClient _wordLookup =
       WordLookupClient(baseUrl: AppConfig.serverBaseUrl);
@@ -210,12 +340,14 @@ class _BootstrapState extends State<_Bootstrap> {
       AppUpdateClient(baseUrl: AppConfig.serverBaseUrl);
   String? _buildLabel;
   bool _loggingOut = false;
+  _AppData? _cachedData;
 
   String get _token => widget.auth.token!;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _isPlayBuildFuture = _buildFlavor.isPlayBuild();
     _chat = ChatClient(baseUrl: AppConfig.serverBaseUrl, token: _token);
     _routine = RoutineClient(
@@ -384,6 +516,10 @@ class _BootstrapState extends State<_Bootstrap> {
     final profileRepo = await UserProfileRepository.load();
     final initialLang = profileRepo.current?.targetLang ?? TargetLanguage.english;
     final packs = await _loadPacksAndWireLive(initialLang);
+    // Yerli fayl skani sürətlidir (millisaniyələr) — açılışı bloklamağa
+    // dəyər ki, `sourceFor` ilk render-dən artıq yerli fayllara düzgün
+    // yönləndirsin (bax `_openAudiobooks`).
+    await _audiobookDownloader.init();
     final reviews = await ReviewRepository.load();
     final settings = await SettingsRepository.load();
     final manualContext = await ManualContextRepository.load();
@@ -397,22 +533,25 @@ class _BootstrapState extends State<_Bootstrap> {
     // +OSM ~25s = ən pis halda ~48s) — istifadəçi bunu "ağ ekran" kimi qəbul
     // edirdi, halbuki proqram donmurdu, sadəcə növbə ilə gözləyirdi.
     // Fütürlər burada BAŞLADILIR (await olmadan) ki, hamısı eyni anda getsin.
-    final profileFuture = _profileClient.fetch(_token);
+    final profileFuture = _profileClient.fetchOutcome(_token);
     final claimFuture = _routine.claimDevice(deviceId);
     final locationFuture = manualSignal == null
         ? _location.resolveNearbyPackId()
         : Future<String?>.value(null);
-    final notifInitFuture = _notifications.init(onTap: _openLive);
+    final notifInitFuture = _notifications.init(onTap: _onNotificationTap);
 
     // Server profili tək mənbədir (spec: hər istifadəçi üçün ayrıca AI
     // yanaşması) — hər girişdə yenidən çəkilir ki, eyni cihazda fərqli
     // istifadəçi daxil olanda əvvəlki istifadəçinin profili sızmasın.
-    final serverProfile = await profileFuture;
-    if (serverProfile != null) {
-      await profileRepo.save(serverProfile);
-    } else {
-      await profileRepo.clear();
+    final profileOutcome = await profileFuture;
+    if (profileOutcome.reachedServer) {
+      if (profileOutcome.profile != null) {
+        await profileRepo.save(profileOutcome.profile!);
+      } else {
+        await profileRepo.clear();
+      }
     }
+    // Şəbəkə xətasında lokal profil saxlanır — chat/söz bildirişləri itmir.
 
     // Bu cihazda giriş edilmədən (köhnə buraxılışda) toplanmış anonim
     // nümunələr varsa hesaba bağla.
@@ -435,16 +574,19 @@ class _BootstrapState extends State<_Bootstrap> {
       );
     }
 
-    await _notifications.scheduleToday(
-      settings.current,
-      packs.packIds,
-      (packId) => packs.byId(packId)?.titleAz ?? packId,
-      firstSlotOverride: contextOverride,
+    final appData = _AppData(packs, reviews, settings, manualContext, profileRepo,
+        deviceId, isPlayBuild);
+
+    await _scheduleAllNotifications(
+      appData,
+      contextOverride: contextOverride,
     );
 
-    final launchPackId = await _notifications.initialLaunchPayload();
-    if (launchPackId != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => _openLive(launchPackId));
+    final launchPayload = await _notifications.initialLaunchPayload();
+    if (launchPayload != null) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _handleNotificationPayload(launchPayload),
+      );
     }
 
     // İcazə varsa: periodik tapşırığı yenidən qeyd et (app yeniləməsindən sonra
@@ -453,8 +595,29 @@ class _BootstrapState extends State<_Bootstrap> {
     // heç cəhd etmə (Play siyasəti, V1.1-də ayrıca müraciətlə əlavə olunacaq).
     if (!isPlayBuild) _startRoutineSampling(deviceId, packs);
 
-    return _AppData(packs, reviews, settings, manualContext, profileRepo,
-        deviceId, isPlayBuild);
+    return appData;
+  }
+
+  /// Söz + chat bildirişlərini planlaşdırır (açılış, resume, ayar dəyişikliyi).
+  Future<void> _scheduleAllNotifications(
+    _AppData data, {
+    String? contextOverride,
+  }) async {
+    await _notifications.scheduleToday(
+      data.settings.current,
+      data.packs.packIds,
+      (packId) => data.packs.byId(packId)?.titleAz ?? packId,
+      firstSlotOverride: contextOverride,
+    );
+
+    final profile = data.profileRepo.current;
+    if (profile == null) return;
+
+    final serverNudges = await _chat.fetchNudges();
+    final nudges = serverNudges.isNotEmpty
+        ? serverNudges
+        : buildLocalChatNudges(profile);
+    await _notifications.scheduleChatNudges(nudges);
   }
 
   /// App açılışda rutin toplamanı təmin edir: icazə varsa periodik tapşırığı
@@ -509,23 +672,62 @@ class _BootstrapState extends State<_Bootstrap> {
     return 'Tapıldı: $where$label — serverə göndərildi ✅';
   }
 
-  /// Ana səhifədəki canlı məkan kartı üçün: GPS→server ilə cari yeri tapır,
-  /// paket başlığı ilə birlikdə qaytarır və ön-plan nümunəsini serverə göndərir.
-  /// Tapılmasa `null` (kart manual rejimə keçir).
-  Future<({String packId, String title, String placeName})?> _resolveLivePlace(
-      _AppData data) async {
-    final sample = await _location.resolveNearbySample();
-    if (sample == null) return null;
-    final title = data.packs.byId(sample.packId)?.titleAz ?? sample.packId;
-    // Ön-plan nümunəsini rutin datasına da yaz (fon icazəsi olmasa belə).
-    _routine.postSample(
-      deviceId: data.deviceId,
-      lat: sample.lat,
-      lng: sample.lng,
-      placeType: sample.packId,
-      packId: sample.packId,
+  /// Ana səhifədəki canlı məkan kartı üçün: GPS→server ilə cari yeri tapır və
+  /// ön-plan nümunəsini serverə göndərir. Nəticə uğursuzluq halında da qaytarılır
+  /// (səbəb daşıyır) — kart istifadəçiyə niyə alınmadığını göstərir.
+  Future<LivePlaceState> _resolveLivePlace(_AppData data,
+      {bool forceRefresh = false}) async {
+    if (forceRefresh) _location.invalidateCache();
+    final outcome = await _location.resolve();
+
+    if (!outcome.isSuccess) {
+      return LivePlaceState.failed(describeFailure(outcome.failure!));
+    }
+
+    // Paketi olmayan yer (məs. "Park") — yeri göstəririk, amma açılmır.
+    final pack = outcome.hasPack ? data.packs.byId(outcome.packId!) : null;
+    if (outcome.hasPack && pack != null && !outcome.fromCache) {
+      // Ön-plan nümunəsini rutin datasına da yaz (fon icazəsi olmasa belə).
+      _routine.postSample(
+        deviceId: data.deviceId,
+        lat: outcome.lat!,
+        lng: outcome.lng!,
+        placeType: outcome.packId!,
+        packId: outcome.packId!,
+      );
+    }
+
+    return LivePlaceState.resolved(
+      packId: pack != null ? outcome.packId : null,
+      title: pack?.titleAz ?? '',
+      placeName: outcome.label,
+      distanceM: outcome.distanceM,
+      approximate: outcome.quality == FixQuality.approximate,
     );
-    return (packId: sample.packId, title: title, placeName: sample.place);
+  }
+
+  /// Bildiriş/geofence tıklamasında paket və ya chat tab açır.
+  void _onNotificationTap(String? payload) {
+    if (payload == null) return;
+    _handleNotificationPayload(payload);
+  }
+
+  void _handleNotificationPayload(String payload) {
+    if (isChatNudgePayload(payload)) {
+      _openChatFromNotification(decodeChatNudgePrompt(payload));
+      return;
+    }
+    _openLive(payload);
+  }
+
+  /// Chat bildirişindən — Söhbət tabına keçir, sualı input-a yazır.
+  void _openChatFromNotification(String? quickPrompt) {
+    _future.then((_) {
+      _shellKey.currentState?.openChatTab();
+      if (quickPrompt != null && quickPrompt.isNotEmpty) {
+        _chatKey.currentState?.applyDraftPrompt(quickPrompt);
+      }
+    });
   }
 
   /// Bildiriş/geofence tıklamasında həmin paketin söz siyahısını açır.
@@ -535,15 +737,79 @@ class _BootstrapState extends State<_Bootstrap> {
       final profile = data.profileRepo.current;
       final pack = data.packs.byId(packId);
       if (profile == null || pack == null) return;
-      navigatorKey.currentState
-          ?.push(_wordListRoute(pack.packId, pack.titleAz, profile));
+      navigatorKey.currentState?.push(
+          _wordListRoute(pack.packId, pack.titleAz, profile, data.reviews));
     });
+  }
+
+  /// Gündəlik AI missiya (`/day-plan`) — gündə bir dəfə şəbəkə, sonra keş.
+  Future<({List<LiveMessage> messages, bool isLive})> _loadDayPlan(
+    _AppData data, {
+    bool forceRefresh = false,
+  }) async {
+    final profile = data.profileRepo.current!;
+    final today = dayPlanDateKey(DateTime.now());
+    final cacheRepo = await DayPlanCacheRepository.load();
+    if (!forceRefresh) {
+      final cached = cacheRepo.read(today);
+      if (cached != null && cached.messages.isNotEmpty) {
+        final allLive = cached.messages.every((m) => m.isLive);
+        return (messages: cached.messages, isLive: allLive);
+      }
+    }
+    final packIds = pickDayPlanPackIds(data.packs.packIds, DateTime.now());
+    final result = await _live.dayPlan(
+      profile: profile,
+      date: today,
+      packIds: packIds,
+    );
+    if (result.messages.isNotEmpty) {
+      await cacheRepo.save(today, result.messages);
+    }
+    return result;
+  }
+
+  void _openDayPlanWords(
+    List<LiveMessage> words,
+    int index,
+    UserProfile profile,
+    ReviewRepository reviews,
+  ) {
+    if (words.isEmpty) return;
+    final safeIndex = index.clamp(0, words.length - 1);
+    final accent = accentFor(words[safeIndex].packId);
+    navigatorKey.currentState?.push(MaterialPageRoute(
+      builder: (_) => WordDetailScreen(
+        title: 'Bu günün missiyası',
+        words: words,
+        initialIndex: safeIndex,
+        speaker: _speaker,
+        accent: accent,
+        reviewRepository: reviews,
+        onAiWord: ({
+          required String packId,
+          required String mode,
+          required List<String> recentWords,
+        }) =>
+            _live.generate(
+          packId: packId,
+          hour: DateTime.now().hour,
+          profile: profile,
+          mode: mode,
+          recentWords: recentWords,
+        ),
+        onAskQuestion: () => _openChat(
+          profile,
+          greeting: 'Bu günün missiyası haqda nə soruşmaq istəyirsən? 🤖',
+        ),
+      ),
+    ));
   }
 
   /// Paket → söz siyahısı ekranı. Siyahıdan sözə toxunanda ətraflı ekran açılır
   /// (indeks ötürülür ki, orada "Əvvəlki/Növbəti" işləsin).
-  MaterialPageRoute _wordListRoute(
-      String packId, String title, UserProfile profile) {
+  MaterialPageRoute _wordListRoute(String packId, String title,
+      UserProfile profile, ReviewRepository reviews) {
     final accent = accentFor(packId);
     return MaterialPageRoute(
       builder: (_) => WordListScreen(
@@ -558,6 +824,19 @@ class _BootstrapState extends State<_Bootstrap> {
             initialIndex: index,
             speaker: _speaker,
             accent: accent,
+            reviewRepository: reviews,
+            onAiWord: ({
+              required String packId,
+              required String mode,
+              required List<String> recentWords,
+            }) =>
+                _live.generate(
+              packId: packId,
+              hour: DateTime.now().hour,
+              profile: profile,
+              mode: mode,
+              recentWords: recentWords,
+            ),
             onAskQuestion: () => _openChat(
               profile,
               packId: packId,
@@ -571,10 +850,13 @@ class _BootstrapState extends State<_Bootstrap> {
 
   /// "Əsas lüğət" (504 sabit söz bankı) ekranını açır — kontekstdən
   /// (məkan/paket) asılı deyil, birbaşa istifadəçinin cari səviyyəsindən.
-  void _openEssentialWords(UserProfile profile) {
+  void _openEssentialWords(
+      UserProfile profile, ReviewRepository reviews) {
     final accent = accentFor('essential');
+    final levelLabel = profile.level.labelAz;
     navigatorKey.currentState?.push(MaterialPageRoute(
       builder: (_) => EssentialWordsScreen(
+        levelLabel: levelLabel,
         loader: (offset) =>
             _live.essentialWords(profile: profile, offset: offset),
         accent: accent,
@@ -586,6 +868,19 @@ class _BootstrapState extends State<_Bootstrap> {
             initialIndex: index,
             speaker: _speaker,
             accent: accent,
+            reviewRepository: reviews,
+            onAiWord: ({
+              required String packId,
+              required String mode,
+              required List<String> recentWords,
+            }) =>
+                _live.generate(
+              packId: packId,
+              hour: DateTime.now().hour,
+              profile: profile,
+              mode: mode,
+              recentWords: recentWords,
+            ),
             onAskQuestion: () => _openChat(
               profile,
               greeting: 'Bu sözlər haqda nə soruşmaq istəyirsən? 🤖',
@@ -596,20 +891,41 @@ class _BootstrapState extends State<_Bootstrap> {
     ));
   }
 
+  /// Kitabxana manifestini serverdən alır, uğurlu olsa yerli keşi yeniləyir
+  /// (bax `AudiobookDownloader.cacheLibraryRaw`); server/internet əlçatmaz
+  /// olsa əvvəlki uğurlu cavabın keşinə düşür — kitab siyahısı offline da
+  /// görünür (yalnız endirilmiş fəsillər ÇALINA bilər, amma siyahı özü
+  /// heç vaxt "internet yoxdur" səbəbindən boş qalmır, əgər bir dəfə
+  /// uğurla yüklənibsə).
+  Future<List<Audiobook>> _fetchAudiobookLibrary() async {
+    try {
+      final raw = await _audiobooks.fetchLibraryRaw();
+      unawaited(_audiobookDownloader.cacheLibraryRaw(raw));
+      return AudiobookClient.parseLibrary(raw);
+    } catch (_) {
+      final cached = await _audiobookDownloader.cachedLibraryRaw();
+      if (cached != null) return AudiobookClient.parseLibrary(cached);
+      rethrow;
+    }
+  }
+
+  Future<List<Audiobook>> _audiobooksForProfile(UserProfile profile) async {
+    final books = await _fetchAudiobookLibrary();
+    final byLang =
+        books.where((b) => b.lang == profile.targetLang.wire).toList();
+    return audiobooksForLevel(byLang, profile.level);
+  }
+
   /// Səsli kitablar: kitabxana → hekayə siyahısı → plyer. Kitabxana
   /// istifadəçinin öyrəndiyi dilə görə süzülür (bax
   /// 2026-08-04-multilanguage-russian-design.md) — server manifesti bütün
   /// dillərin kitablarını qaytarır, süzgəc client-dədir (kiçik kataloq).
   void _openAudiobooks(UserProfile profile) {
     final accent = accentFor('audiobooks');
-    Future<List<Audiobook>> loadForLanguage() async {
-      final books = await _audiobooks.fetchLibrary();
-      return books.where((b) => b.lang == profile.targetLang.wire).toList();
-    }
 
     navigatorKey.currentState?.push(MaterialPageRoute(
       builder: (_) => AudiobooksScreen(
-        loader: loadForLanguage,
+        loader: () => _audiobooksForProfile(profile),
         accent: accent,
         onOpenBook: (book) =>
             navigatorKey.currentState?.push(MaterialPageRoute(
@@ -622,7 +938,10 @@ class _BootstrapState extends State<_Bootstrap> {
                 book: book,
                 initialIndex: index,
                 player: _audioPlayer,
+                // Yerli faylı üstün tutur (endirilibsə) — offline dinləmə
+                // buna görə işləyir; endirilməyibsə axın URL-inə düşür.
                 sourceFor: (b, c) =>
+                    _audiobookDownloader.localPath(b.bookId, c.chapterId) ??
                     _audiobooks.chapterUrl(b.bookId, c.chapterId),
                 lookupWord: (word, sentence) =>
                     _wordLookup.lookup(word, context: sentence),
@@ -635,19 +954,76 @@ class _BootstrapState extends State<_Bootstrap> {
     ));
   }
 
+  /// Bir dəfə (hər istifadəçi üçün) — açılışda offline endirmə təklif edir.
+  /// Ana səhifənin widget ağacına TOXUNMUR (dialog overlay-dir, Column-a
+  /// dinamik widget əlavə edilmir) — `home_tab.dart`/`SettingsScreen`-dəki
+  /// "dinamik UI = layout donması" dərsinə görə qəsdən bu formada.
+  Future<void> _maybePromptOfflineDownload(UserProfile profile) async {
+    if (_offlinePromptScheduled) return;
+    _offlinePromptScheduled = true;
+    final prefs = await SharedPreferences.getInstance();
+    const flagKey = 'offline_audiobooks_prompted_v1';
+    if (prefs.getBool(flagKey) == true) return;
+    List<Audiobook> books;
+    try {
+      books = await _audiobooksForProfile(profile);
+    } catch (_) {
+      // İlk girişdə internet yoxdursa soruşmağa dəyməz — sonra Ayarlardan
+      // əl ilə cəhd edə bilər. Bayrağı BURADA qeyd etmirik ki, internet
+      // gələndə növbəti açılışda yenə soruşulsun.
+      return;
+    }
+    await prefs.setBool(flagKey, true);
+    final pendingMb = _audiobookDownloader.pendingBytes(books) / (1024 * 1024);
+    if (pendingMb < 1) return; // artıq yüklənib və ya heç kitab yoxdur
+    final ctx = navigatorKey.currentContext;
+    if (ctx == null || !ctx.mounted) return;
+    final accepted = await showDialog<bool>(
+      context: ctx,
+      builder: (dialogCtx) => AlertDialog(
+        title: const Text('Offline üçün endirilsin?'),
+        content: Text(
+          'Səyahət zamanı internet olmasa belə dinləyə bilmək üçün səsli '
+          'kitablar (~${pendingMb.toStringAsFixed(0)} MB) telefona '
+          'yüklənsin? Wi-Fi ilə etmək tövsiyə olunur.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogCtx).pop(false),
+            child: const Text('Sonra'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogCtx).pop(true),
+            child: const Text('Bəli, yüklə'),
+          ),
+        ],
+      ),
+    );
+    if (accepted == true) {
+      unawaited(_audiobookDownloader.downloadAll(
+        books,
+        urlFor: (b, c) => _audiobooks.chapterUrl(b, c),
+      ));
+    }
+  }
+
   /// Musiqi: kataloq → mahnı seçimi → pleyer (video + sətir-sətir tərcümə).
   /// Audiobook-dakı eyni prinsip: kataloq istifadəçinin öyrəndiyi dilə görə
   /// client-də süzülür (bax `_openAudiobooks`).
   void _openMusic(UserProfile profile) {
     final accent = accentFor('music');
-    Future<List<Song>> loadForLanguage() async {
+    final levelLabel = profile.level.labelAz;
+    Future<List<Song>> loadForLanguageAndLevel() async {
       final songs = await _music.fetchLibrary();
-      return songs.where((s) => s.lang == profile.targetLang.wire).toList();
+      final byLang =
+          songs.where((s) => s.lang == profile.targetLang.wire).toList();
+      return songsForLevel(byLang, profile.level);
     }
 
     navigatorKey.currentState?.push(MaterialPageRoute(
       builder: (_) => MusicScreen(
-        loader: loadForLanguage,
+        loader: loadForLanguageAndLevel,
+        levelLabel: levelLabel,
         accent: accent,
         onOpenSong: (song) => navigatorKey.currentState?.push(MaterialPageRoute(
           builder: (_) => SongPlayerScreen(
@@ -701,6 +1077,8 @@ class _BootstrapState extends State<_Bootstrap> {
         // sənədinin qərarı: kontekstsiz xüsusiyyətlər öz kimliyini saxlayır.
         accent: accentFor('chat'),
         historyLoader: _chat.fetchHistory,
+        quotaLoader: _chat.fetchQuota,
+        speaker: _speaker,
         sender: (history) => _chat.send(
           profile: profile,
           history: history,
@@ -750,6 +1128,7 @@ class _BootstrapState extends State<_Bootstrap> {
   }
 
   void _openSettings(_AppData data) {
+    final profile = data.profileRepo.current!;
     navigatorKey.currentState?.push(MaterialPageRoute(
       builder: (_) => SettingsScreen(
         repository: data.settings,
@@ -760,8 +1139,24 @@ class _BootstrapState extends State<_Bootstrap> {
         downloadUpdate: _downloadUpdate,
         onInstallApk: _installApk,
         ttsTelemetry: _speaker.telemetrySnapshot,
-        currentLanguage: data.profileRepo.current?.targetLang,
-        onLanguageChanged: (lang) => _changeLanguage(data, lang),
+        audiobookDownloader: _audiobookDownloader,
+        loadAudiobookLibrary: () => _audiobooksForProfile(profile),
+        onDownloadAudiobooks: (books) => _audiobookDownloader.downloadAll(
+          books,
+          urlFor: (b, c) => _audiobooks.chapterUrl(b, c),
+        ),
+        loadChatPortrait: _chat.fetchPortrait,
+        loadChatQuota: _chat.fetchQuota,
+        lockRepo: widget.lockRepo,
+        onRescheduleNotifications: () => _scheduleAllNotifications(data),
+        onClearChatHistory: _chat.clearHistory,
+        onClearChatPortrait: _chat.clearPortrait,
+        onUiLanguageChanged: (lang) async {
+          await data.settings.save(
+            data.settings.current.copyWith(uiLanguage: lang),
+          );
+          widget.onUiLanguageChanged?.call(lang);
+        },
       ),
     ));
   }
@@ -775,8 +1170,16 @@ class _BootstrapState extends State<_Bootstrap> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _speaker.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && _cachedData != null) {
+      _scheduleAllNotifications(_cachedData!);
+    }
   }
 
   @override
@@ -795,22 +1198,10 @@ class _BootstrapState extends State<_Bootstrap> {
           );
         }
         if (!snapshot.hasData) {
-          // Sadə boş spinner istifadəçiyə "ağ ekran" kimi görünürdü (xüsusən
-          // yükləmə bir neçə saniyə çəkəndə) — mətnlə aydınlaşdırılır.
-          return const Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16),
-                  Text('DilDostu yüklənir…'),
-                ],
-              ),
-            ),
-          );
+          return const BootstrapLoadingScreen();
         }
         final data = snapshot.data!;
+        _cachedData = data;
 
         // Profil yoxdursa onboarding göstər.
         if (!data.profileRepo.isOnboarded) {
@@ -824,20 +1215,46 @@ class _BootstrapState extends State<_Bootstrap> {
         }
 
         final profile = data.profileRepo.current!;
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => _maybePromptOfflineDownload(profile),
+        );
         return MainShell(
+          key: _shellKey,
           home: HomeTab(
             repository: data.packs,
             profile: profile,
-            openLive: (packId, title, p) =>
-                navigatorKey.currentState?.push(_wordListRoute(packId, title, p)),
+            openLive: (packId, title, p) => navigatorKey.currentState?.push(
+                _wordListRoute(packId, title, p, data.reviews)),
             onManualPlace: () => _openManualPlace(data),
             onLevelChanged: (level) => _changeLevel(data, level),
-            resolveLivePlace: () => _resolveLivePlace(data),
-            onOpenEssentialWords: () => _openEssentialWords(profile),
+            currentLanguage: profile.targetLang,
+            onLanguageChanged: (lang) => _changeLanguage(data, lang),
+            resolveLivePlace: ({bool forceRefresh = false}) =>
+                _resolveLivePlace(data, forceRefresh: forceRefresh),
+            onOpenEssentialWords: () =>
+                _openEssentialWords(profile, data.reviews),
             onOpenAudiobooks: () => _openAudiobooks(profile),
             onOpenMusic: () => _openMusic(profile),
+            loadDayPlan: ({forceRefresh = false}) =>
+                _loadDayPlan(data, forceRefresh: forceRefresh),
+            onOpenDayPlanWord: (words, index) =>
+                _openDayPlanWords(words, index, profile, data.reviews),
           ),
           chat: ChatScreen(
+            key: _chatKey,
+            greeting:
+                'Salam! Mən LachinGo-yam — səyahət yoldaşın və dil bələdçin. ✈️\n'
+                'Səni tanıdıqca hobbi və xarakterini yadda saxlayıram — '
+                'istəsən sənin haqqında gözəl çıxış da yazaram! 😄',
+            accent: accentFor('chat'),
+            historyLoader: _chat.fetchHistory,
+            quotaLoader: _chat.fetchQuota,
+            speaker: _speaker,
+            quickPrompts: const [
+              'Mənim haqqımda maraqlı çıxış yaz',
+              'Aeroportda check-in necə deyilir?',
+              'Bu gün üçün 3 faydalı söz',
+            ],
             sender: (history) =>
                 _chat.send(profile: profile, history: history),
           ),

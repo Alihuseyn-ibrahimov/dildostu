@@ -11,6 +11,7 @@ class StatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wordCount = reviewRepository.wordCount;
+    final learningCount = reviewRepository.learningCount;
     final masteredCount = reviewRepository.masteredCount;
     final streak = reviewRepository.currentStreak(today: DateTime.now());
 
@@ -31,6 +32,12 @@ class StatsScreen extends StatelessWidget {
               icon: Icons.translate,
               label: 'Toxunulan söz',
               value: '$wordCount',
+            ),
+            const SizedBox(height: 12),
+            _StatCard(
+              icon: Icons.auto_stories_outlined,
+              label: 'Öyrənilir',
+              value: '$learningCount',
             ),
             const SizedBox(height: 12),
             _StatCard(

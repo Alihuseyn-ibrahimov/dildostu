@@ -154,6 +154,31 @@ class ChatHistoryResponse(BaseModel):
     messages: list[StoredChatMessage] = Field(default_factory=list)
 
 
+class ChatPortraitResponse(BaseModel):
+    """AI-nin istifadəçi haqqında yığdığı faktlar — şəffaflıq üçün göstərilir."""
+
+    facts: list[str] = Field(default_factory=list)
+
+
+class ChatQuotaResponse(BaseModel):
+    """Gündəlik söhbət limiti vəziyyəti (bax `chat_limits.py`)."""
+
+    used: int
+    limit: int
+    remaining: int
+
+
+class ChatNudgeItem(BaseModel):
+    """Proaktiv chat bildirişi — AI çağırışı olmadan şablon + fərdiləşdirmə."""
+
+    body: str = Field(min_length=1, max_length=280)
+    quick_prompt: str = Field(min_length=1, max_length=200)
+
+
+class ChatNudgesResponse(BaseModel):
+    nudges: list[ChatNudgeItem] = Field(default_factory=list)
+
+
 class RoutineSampleRequest(BaseModel):
     """Cihazın göndərdiyi bir məkan nümunəsi (vaxt serverdə qoyulur)."""
 
@@ -178,11 +203,19 @@ class PlaceResolveRequest(BaseModel):
 
 
 class PlaceResolveResponse(BaseModel):
-    """Tapılan yer və ona uyğun söz paketi."""
+    """Tapılan yer və ona uyğun söz paketi.
 
-    pack_id: str = Field(min_length=1)
+    `pack_id` `None` ola bilər — yer tapıldı, amma tipi (məs. "Park")
+    paketlərimizə uyğun gəlmir. Köhnə app-lar boş `pack_id`-ni artıq
+    "tapılmadı" kimi oxuduğu üçün bu dəyişiklik geriyə uyğundur.
+    `distance_m` yerin nə qədər yaxın olduğunu göstərir — UI "yaxınlıqda"
+    iddiasını buna görə yumşalda bilir.
+    """
+
+    pack_id: str | None = None
     name: str = ""
     category: str = ""
+    distance_m: int | None = None
 
 
 class PlaceSummary(BaseModel):

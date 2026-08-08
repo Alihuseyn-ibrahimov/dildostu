@@ -44,6 +44,22 @@ void main() {
       final client = ProfileClient(baseUrl: 'https://x', httpClient: mock);
       expect(await client.fetch('tok123'), isNull);
     });
+
+    test('fetchOutcome şəbəkə xətasında reachedServer false', () async {
+      final mock = MockClient((req) async => throw Exception('offline'));
+      final client = ProfileClient(baseUrl: 'https://x', httpClient: mock);
+      final outcome = await client.fetchOutcome('tok123');
+      expect(outcome.reachedServer, isFalse);
+    });
+
+    test('fetchOutcome boş profildə reachedServer true', () async {
+      final mock = MockClient(
+          (req) async => http.Response(jsonEncode({'profile': null}), 200));
+      final client = ProfileClient(baseUrl: 'https://x', httpClient: mock);
+      final outcome = await client.fetchOutcome('tok123');
+      expect(outcome.reachedServer, isTrue);
+      expect(outcome.profile, isNull);
+    });
   });
 
   group('save', () {

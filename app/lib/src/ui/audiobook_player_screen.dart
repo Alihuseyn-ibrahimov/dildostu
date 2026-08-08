@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../data/word_lookup_client.dart';
+import '../engine/audiobook_sync.dart';
+import '../engine/lyrics_sync.dart';
 import '../models/audiobook.dart';
+import '../models/song.dart';
 import '../services/audio_player_service.dart';
 import 'accent_colors.dart';
 import 'tappable_text.dart';
@@ -44,7 +47,8 @@ class AudiobookPlayerScreen extends StatefulWidget {
   State<AudiobookPlayerScreen> createState() => _AudiobookPlayerScreenState();
 }
 
-const _pollInterval = Duration(milliseconds: 400);
+const _pollInterval = Duration(milliseconds: 100);
+const _audiobookSyncLeadMs = 80;
 const _skip = Duration(seconds: 10);
 
 class _AudiobookPlayerScreenState extends State<AudiobookPlayerScreen> {
@@ -53,8 +57,16 @@ class _AudiobookPlayerScreenState extends State<AudiobookPlayerScreen> {
   AudioPlaybackState _state = const AudioPlaybackState();
   bool _starting = true;
   String? _error;
+  List<SongLine> _lines = const [];
 
   AudiobookChapter get _chapter => widget.book.chapters[_index];
+
+  List<SongLine> _linesForChapter(AudiobookChapter chapter) {
+    final duration = chapter.duration.inMilliseconds > 0
+        ? chapter.duration
+        : _state.duration;
+    return buildAudiobookLines(chapter.text, duration);
+  }
 
   @override
   void initState() {
@@ -76,6 +88,7 @@ class _AudiobookPlayerScreenState extends State<AudiobookPlayerScreen> {
       _starting = true;
       _error = null;
       _state = const AudioPlaybackState();
+      _lines = _linesForChapter(_chapter);
     });
     try {
       await widget.player.play(widget.sourceFor(widget.book, _chapter));
@@ -98,6 +111,10 @@ class _AudiobookPlayerScreenState extends State<AudiobookPlayerScreen> {
         if (s.prepared) _starting = false;
         // Native xəta da göstərilir — səssiz uğursuzluq olmasın.
         if (s.error != null) _error = 'Səs xətası: ${s.error}';
+        if (s.duration.inMilliseconds > 0 && _lines.isNotEmpty) {
+          final rebuilt = _linesForChapter(_chapter);
+          if (rebuilt.isNotEmpty) _lines = rebuilt;
+        }
       });
       if (s.completed) _onCompleted();
     } catch (_) {
@@ -201,32 +218,39 @@ class _AudiobookPlayerScreenState extends State<AudiobookPlayerScreen> {
               ),
             ),
           Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppSpacing.screen),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('${_index + 1} / ${widget.book.chapters.length}',
-                      style: theme.textTheme.bodySmall
-                          ?.copyWith(color: theme.colorScheme.outline)),
-                  const SizedBox(height: 4),
-                  Text(_chapter.titleEn,
-                      style: theme.textTheme.headlineSmall
-                          ?.copyWith(fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 16),
-                  RichText(
-                    key: const Key('chapter-text'),
-                    text: TextSpan(
-                      children: buildTappableWordSpans(
-                        text: _chapter.text,
-                        style: theme.textTheme.bodyLarge
-                            ?.copyWith(height: 1.6, color: theme.colorScheme.onSurface),
-                        onTapWord: _onTapWord,
-                      ),
-                    ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.screen,
+                    AppSpacing.screen,
+                    AppSpacing.screen,
+                    0,
                   ),
-                ],
-              ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${_index + 1} / ${widget.book.chapters.length}',
+                          style: theme.textTheme.bodySmall
+                              ?.copyWith(color: theme.colorScheme.outline)),
+                      const SizedBox(height: 4),
+                      Text(_chapter.titleEn,
+                          style: theme.textTheme.headlineSmall
+                              ?.copyWith(fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: _SyncedChapterText(
+                    lines: _lines,
+                    positionMs: _state.position.inMilliseconds,
+                    syncLeadMs: _audiobookSyncLeadMs,
+                    accent: widget.accent,
+                    onTapWord: _onTapWord,
+                  ),
+                ),
+              ],
             ),
           ),
           _Controls(
@@ -249,6 +273,166 @@ class _AudiobookPlayerScreenState extends State<AudiobookPlayerScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Musiqi karaoke view-i ilə eyni UX — oxunmuş/aktiv/gələcək sözlər rənglənir.
+class _SyncedChapterText extends StatefulWidget {
+  const _SyncedChapterText({
+    required this.lines,
+    required this.positionMs,
+    required this.syncLeadMs,
+    required this.onTapWord,
+    this.accent,
+  });
+
+  final List<SongLine> lines;
+  final int positionMs;
+  final int syncLeadMs;
+  final void Function(String word) onTapWord;
+  final AccentColor? accent;
+
+  @override
+  State<_SyncedChapterText> createState() => _SyncedChapterTextState();
+}
+
+class _SyncedChapterTextState extends State<_SyncedChapterText> {
+  final _scroll = ScrollController();
+  final _lineKeys = <GlobalKey>[];
+  int _lastScrolledLine = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    _syncLineKeys();
+  }
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  void _syncLineKeys() {
+    while (_lineKeys.length < widget.lines.length) {
+      _lineKeys.add(GlobalKey());
+    }
+    if (_lineKeys.length > widget.lines.length) {
+      _lineKeys.removeRange(widget.lines.length, _lineKeys.length);
+    }
+  }
+
+  void _scrollToLine(int index) {
+    if (index < 0 || index >= _lineKeys.length) return;
+    final ctx = _lineKeys[index].currentContext;
+    if (ctx == null) return;
+    Scrollable.ensureVisible(
+      ctx,
+      duration: const Duration(milliseconds: 350),
+      curve: Curves.easeOutCubic,
+      alignment: 0.4,
+      alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant _SyncedChapterText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.lines.length != widget.lines.length) {
+      _syncLineKeys();
+      _lastScrolledLine = -1;
+    }
+    final active = activeLineIndex(
+      widget.lines,
+      widget.positionMs,
+      syncLeadMs: widget.syncLeadMs,
+    );
+    if (active >= 0 && active != _lastScrolledLine) {
+      _lastScrolledLine = active;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _scrollToLine(active);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final accent = widget.accent?.accent ?? theme.colorScheme.primary;
+    final activeLine = activeLineIndex(
+      widget.lines,
+      widget.positionMs,
+      syncLeadMs: widget.syncLeadMs,
+    );
+    final muted = theme.colorScheme.onSurface.withValues(alpha: 0.35);
+    final pastColor = theme.colorScheme.onSurface.withValues(alpha: 0.65);
+    final baseStyle = theme.textTheme.bodyLarge?.copyWith(height: 1.6);
+
+    if (widget.lines.isEmpty) {
+      return Center(
+        key: const Key('chapter-text-empty'),
+        child: Text(
+          'Mətn yoxdur',
+          style: theme.textTheme.bodyMedium
+              ?.copyWith(color: theme.colorScheme.outline),
+        ),
+      );
+    }
+
+    return ListView.separated(
+      key: const Key('chapter-text'),
+      controller: _scroll,
+      padding: const EdgeInsets.all(AppSpacing.screen),
+      itemCount: widget.lines.length,
+      separatorBuilder: (_, _) => const SizedBox(height: 14),
+      itemBuilder: (context, i) {
+        final line = widget.lines[i];
+        final isPast = activeLine >= 0 && i < activeLine;
+        final isActive = i == activeLine;
+        final activeWord = isActive
+            ? activeWordIndex(
+                line,
+                widget.positionMs,
+                syncLeadMs: widget.syncLeadMs,
+              )
+            : -1;
+
+        return KeyedSubtree(
+          key: _lineKeys[i],
+          child: RichText(
+            text: TextSpan(
+              children: buildSyncedWordSpans(
+                text: line.text,
+                baseStyle: baseStyle,
+                onTapWord: widget.onTapWord,
+                styleForWord: (wordIdx) {
+                  if (isPast) {
+                    return baseStyle?.copyWith(color: pastColor);
+                  }
+                  if (!isActive) {
+                    return baseStyle?.copyWith(color: muted);
+                  }
+                  if (wordIdx < activeWord) {
+                    return baseStyle?.copyWith(
+                      color: accent,
+                      fontWeight: FontWeight.w500,
+                    );
+                  }
+                  if (wordIdx == activeWord) {
+                    return baseStyle?.copyWith(
+                      color: accent,
+                      fontWeight: FontWeight.w800,
+                      backgroundColor: accent.withValues(alpha: 0.18),
+                    );
+                  }
+                  return baseStyle?.copyWith(color: muted);
+                },
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

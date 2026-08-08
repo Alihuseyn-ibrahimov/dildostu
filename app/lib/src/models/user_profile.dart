@@ -46,20 +46,31 @@ enum ProficiencyLevel {
 /// 2026-08-04-multilanguage-russian-design.md). Wire dəyərləri serverin
 /// `TargetLanguage` literal-ı ilə uzlaşır.
 enum TargetLanguage {
-  english('en', 'İngilis', 'en-US'),
-  russian('ru', 'Rus', 'ru-RU'),
-  spanish('es', 'İspan', 'es-ES'),
-  italian('it', 'İtalyan', 'it-IT');
+  english('en', 'İngilis', 'English', 'en-US'),
+  russian('ru', 'Rus', 'Русский', 'ru-RU'),
+  spanish('es', 'İspan', 'Español', 'es-ES'),
+  italian('it', 'İtalyan', 'Italiano', 'it-IT');
 
-  const TargetLanguage(this.wire, this.labelAz, this.ttsLocale);
+  const TargetLanguage(this.wire, this.labelAz, this.nativeLabel, this.ttsLocale);
 
   final String wire;
 
-  /// UI-da göstərilən Azərbaycanca ad.
+  /// Ayarlar/izah üçün Azərbaycanca ad (UI seçicilərində işlədilmir).
   final String labelAz;
+
+  /// UI-da göstərilən ad — həmin dilin öz yazılışı (English, Español, …).
+  final String nativeLabel;
 
   /// `flutter_tts`-in `setLanguage` çağırışına ötürülən lokal kod.
   final String ttsLocale;
+
+  /// UI-da dil adının solunda göstərilən bayraq (emoji).
+  String get flagEmoji => switch (this) {
+        TargetLanguage.english => '🇬🇧',
+        TargetLanguage.russian => '🇷🇺',
+        TargetLanguage.spanish => '🇪🇸',
+        TargetLanguage.italian => '🇮🇹',
+      };
 
   /// Naməlum/köhnə dəyər gəlsə (sahə heç olmayan köhnə profil) İngilisə
   /// düşür — app açılışda sınmamalıdır.

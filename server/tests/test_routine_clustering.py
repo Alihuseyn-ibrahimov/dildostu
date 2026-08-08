@@ -72,8 +72,36 @@ class TestClusterPlaces:
             assert key in cluster
 
     def test_hour_window_morning(self):
+        # 04:00 UTC = 08:00 Bakı (UTC+4) → səhər.
         samples = [
-            _sample(40.370, 49.830, ts="2026-08-02T08:00:00+00:00")
+            _sample(40.370, 49.830, ts="2026-08-02T04:00:00+00:00")
             for _ in range(3)
         ]
         assert cluster_places(samples)[0]["hour_window"] == "morning"
+
+    def test_hour_window_uses_local_time_not_utc(self):
+        """2026-08-07 — əvvəllər UTC saatı birbaşa işlədilirdi.
+
+        Yerli səhər 07:00 (03:00 UTC) səhvən "night" sayılırdı.
+        """
+        samples = [
+            _sample(40.370, 49.830, ts="2026-08-02T03:00:00+00:00")
+            for _ in range(3)
+        ]
+        assert cluster_places(samples)[0]["hour_window"] == "morning"
+
+    def test_hour_window_wraps_past_midnight(self):
+        # 21:00 UTC = 01:00 Bakı → gecə (mod 24 keçidi sınmır).
+        samples = [
+            _sample(40.370, 49.830, ts="2026-08-02T21:00:00+00:00")
+            for _ in range(3)
+        ]
+        assert cluster_places(samples)[0]["hour_window"] == "night"
+
+    def test_hour_window_evening_local(self):
+        # 15:00 UTC = 19:00 Bakı → axşam.
+        samples = [
+            _sample(40.370, 49.830, ts="2026-08-02T15:00:00+00:00")
+            for _ in range(3)
+        ]
+        assert cluster_places(samples)[0]["hour_window"] == "evening"

@@ -1,0 +1,700 @@
+{
+  "duration_ms": 129187,
+  "words": [
+    {
+      "word": "Para",
+      "start": 5.520000000000001,
+      "end": 6.42
+    },
+    {
+      "word": "bailar",
+      "start": 6.42,
+      "end": 7.08
+    },
+    {
+      "word": "la",
+      "start": 7.08,
+      "end": 7.3
+    },
+    {
+      "word": "bamba,",
+      "start": 7.3,
+      "end": 7.94
+    },
+    {
+      "word": "para",
+      "start": 8.1,
+      "end": 9.7
+    },
+    {
+      "word": "bailar",
+      "start": 9.7,
+      "end": 10.28
+    },
+    {
+      "word": "la",
+      "start": 10.28,
+      "end": 10.48
+    },
+    {
+      "word": "bamba",
+      "start": 10.48,
+      "end": 11.2
+    },
+    {
+      "word": "se",
+      "start": 11.2,
+      "end": 11.58
+    },
+    {
+      "word": "necesita",
+      "start": 11.58,
+      "end": 12.22
+    },
+    {
+      "word": "una",
+      "start": 12.22,
+      "end": 13.16
+    },
+    {
+      "word": "poca",
+      "start": 13.16,
+      "end": 13.64
+    },
+    {
+      "word": "de",
+      "start": 13.64,
+      "end": 14.02
+    },
+    {
+      "word": "gracia,",
+      "start": 14.02,
+      "end": 14.72
+    },
+    {
+      "word": "una",
+      "start": 14.72,
+      "end": 16.26
+    },
+    {
+      "word": "poca",
+      "start": 16.26,
+      "end": 16.9
+    },
+    {
+      "word": "de",
+      "start": 16.9,
+      "end": 17.28
+    },
+    {
+      "word": "gracia",
+      "start": 17.28,
+      "end": 17.9
+    },
+    {
+      "word": "pa",
+      "start": 17.9,
+      "end": 18.08
+    },
+    {
+      "word": "mi",
+      "start": 18.08,
+      "end": 18.32
+    },
+    {
+      "word": "pa",
+      "start": 18.32,
+      "end": 18.58
+    },
+    {
+      "word": "ti,",
+      "start": 18.58,
+      "end": 18.96
+    },
+    {
+      "word": "y",
+      "start": 19.1,
+      "end": 19.4
+    },
+    {
+      "word": "arriba",
+      "start": 19.4,
+      "end": 19.88
+    },
+    {
+      "word": "y",
+      "start": 19.88,
+      "end": 20.26
+    },
+    {
+      "word": "arriba,",
+      "start": 20.26,
+      "end": 20.86
+    },
+    {
+      "word": "y",
+      "start": 21.06,
+      "end": 22.54
+    },
+    {
+      "word": "arriba",
+      "start": 22.54,
+      "end": 22.96
+    },
+    {
+      "word": "y",
+      "start": 22.96,
+      "end": 23.54
+    },
+    {
+      "word": "arriba,",
+      "start": 23.54,
+      "end": 24.24
+    },
+    {
+      "word": "por",
+      "start": 24.26,
+      "end": 24.58
+    },
+    {
+      "word": "ti",
+      "start": 24.58,
+      "end": 24.86
+    },
+    {
+      "word": "sere,",
+      "start": 24.86,
+      "end": 25.42
+    },
+    {
+      "word": "por",
+      "start": 25.5,
+      "end": 26.14
+    },
+    {
+      "word": "ti",
+      "start": 26.14,
+      "end": 26.44
+    },
+    {
+      "word": "sere,",
+      "start": 26.44,
+      "end": 27.18
+    },
+    {
+      "word": "por",
+      "start": 27.26,
+      "end": 27.74
+    },
+    {
+      "word": "ti",
+      "start": 27.74,
+      "end": 28.08
+    },
+    {
+      "word": "yo",
+      "start": 28.08,
+      "end": 29.3
+    },
+    {
+      "word": "no",
+      "start": 29.3,
+      "end": 29.5
+    },
+    {
+      "word": "soy",
+      "start": 29.5,
+      "end": 29.8
+    },
+    {
+      "word": "marinero,",
+      "start": 29.8,
+      "end": 30.72
+    },
+    {
+      "word": "yo",
+      "start": 30.8,
+      "end": 32.44
+    },
+    {
+      "word": "no",
+      "start": 32.44,
+      "end": 32.7
+    },
+    {
+      "word": "soy",
+      "start": 32.7,
+      "end": 33.0
+    },
+    {
+      "word": "marinero,",
+      "start": 33.0,
+      "end": 33.94
+    },
+    {
+      "word": "soy",
+      "start": 33.96,
+      "end": 34.18
+    },
+    {
+      "word": "capitan,",
+      "start": 34.18,
+      "end": 35.04
+    },
+    {
+      "word": "soy",
+      "start": 35.38,
+      "end": 35.84
+    },
+    {
+      "word": "capitan,",
+      "start": 35.84,
+      "end": 36.9
+    },
+    {
+      "word": "soy",
+      "start": 36.92,
+      "end": 37.38
+    },
+    {
+      "word": "capitan",
+      "start": 37.38,
+      "end": 38.4
+    },
+    {
+      "word": "bamba",
+      "start": 39.78,
+      "end": 41.1
+    },
+    {
+      "word": "bamba,",
+      "start": 41.1,
+      "end": 42.06
+    },
+    {
+      "word": "bamba",
+      "start": 42.22,
+      "end": 44.28
+    },
+    {
+      "word": "bamba,",
+      "start": 44.28,
+      "end": 45.42
+    },
+    {
+      "word": "bamba",
+      "start": 45.52,
+      "end": 47.5
+    },
+    {
+      "word": "bamba",
+      "start": 47.5,
+      "end": 48.46
+    },
+    {
+      "word": "para",
+      "start": 50.980000000000004,
+      "end": 51.92
+    },
+    {
+      "word": "bailar",
+      "start": 51.92,
+      "end": 52.58
+    },
+    {
+      "word": "la",
+      "start": 52.58,
+      "end": 52.82
+    },
+    {
+      "word": "bamba,",
+      "start": 52.82,
+      "end": 53.4
+    },
+    {
+      "word": "para",
+      "start": 53.56,
+      "end": 55.06
+    },
+    {
+      "word": "bailar",
+      "start": 55.06,
+      "end": 55.7
+    },
+    {
+      "word": "la",
+      "start": 55.7,
+      "end": 55.94
+    },
+    {
+      "word": "bamba",
+      "start": 55.94,
+      "end": 56.66
+    },
+    {
+      "word": "se",
+      "start": 56.66,
+      "end": 57.0
+    },
+    {
+      "word": "necesita",
+      "start": 57.0,
+      "end": 57.44
+    },
+    {
+      "word": "una",
+      "start": 57.44,
+      "end": 58.54
+    },
+    {
+      "word": "poca",
+      "start": 58.54,
+      "end": 59.06
+    },
+    {
+      "word": "de",
+      "start": 59.06,
+      "end": 59.34
+    },
+    {
+      "word": "gracia,",
+      "start": 59.34,
+      "end": 60.12
+    },
+    {
+      "word": "una",
+      "start": 60.12,
+      "end": 61.66
+    },
+    {
+      "word": "poca",
+      "start": 61.66,
+      "end": 62.34
+    },
+    {
+      "word": "de",
+      "start": 62.34,
+      "end": 62.68
+    },
+    {
+      "word": "gracia",
+      "start": 62.68,
+      "end": 63.32
+    },
+    {
+      "word": "pa",
+      "start": 63.32,
+      "end": 63.58
+    },
+    {
+      "word": "mi",
+      "start": 63.58,
+      "end": 63.74
+    },
+    {
+      "word": "pa",
+      "start": 63.74,
+      "end": 64.08
+    },
+    {
+      "word": "ti,",
+      "start": 64.08,
+      "end": 64.32
+    },
+    {
+      "word": "y",
+      "start": 64.44,
+      "end": 64.74
+    },
+    {
+      "word": "arriba",
+      "start": 64.74,
+      "end": 65.14
+    },
+    {
+      "word": "y",
+      "start": 65.14,
+      "end": 65.64
+    },
+    {
+      "word": "arriba",
+      "start": 65.64,
+      "end": 66.14
+    },
+    {
+      "word": "para",
+      "start": 91.7,
+      "end": 92.62
+    },
+    {
+      "word": "bailar",
+      "start": 92.62,
+      "end": 93.28
+    },
+    {
+      "word": "la",
+      "start": 93.28,
+      "end": 93.44
+    },
+    {
+      "word": "bamba,",
+      "start": 93.44,
+      "end": 93.92
+    },
+    {
+      "word": "para",
+      "start": 94.06,
+      "end": 95.4
+    },
+    {
+      "word": "bailar",
+      "start": 95.4,
+      "end": 96.0
+    },
+    {
+      "word": "la",
+      "start": 96.0,
+      "end": 96.16
+    },
+    {
+      "word": "bamba",
+      "start": 96.16,
+      "end": 96.96
+    },
+    {
+      "word": "se",
+      "start": 96.96,
+      "end": 97.34
+    },
+    {
+      "word": "necesita",
+      "start": 97.34,
+      "end": 98.12
+    },
+    {
+      "word": "una",
+      "start": 98.12,
+      "end": 98.9
+    },
+    {
+      "word": "poca",
+      "start": 98.9,
+      "end": 99.4
+    },
+    {
+      "word": "de",
+      "start": 99.4,
+      "end": 99.76
+    },
+    {
+      "word": "gracia,",
+      "start": 99.76,
+      "end": 100.44
+    },
+    {
+      "word": "una",
+      "start": 100.46,
+      "end": 101.96
+    },
+    {
+      "word": "poca",
+      "start": 101.96,
+      "end": 102.66
+    },
+    {
+      "word": "de",
+      "start": 102.66,
+      "end": 102.98
+    },
+    {
+      "word": "gracia",
+      "start": 102.98,
+      "end": 103.68
+    },
+    {
+      "word": "pa",
+      "start": 103.68,
+      "end": 103.94
+    },
+    {
+      "word": "mi",
+      "start": 103.94,
+      "end": 104.14
+    },
+    {
+      "word": "pa",
+      "start": 104.14,
+      "end": 104.4
+    },
+    {
+      "word": "ti,",
+      "start": 104.4,
+      "end": 104.72
+    },
+    {
+      "word": "y",
+      "start": 104.8,
+      "end": 105.12
+    },
+    {
+      "word": "arriba",
+      "start": 105.12,
+      "end": 105.58
+    },
+    {
+      "word": "y",
+      "start": 105.58,
+      "end": 106.02
+    },
+    {
+      "word": "arriba,",
+      "start": 106.02,
+      "end": 106.58
+    },
+    {
+      "word": "por",
+      "start": 106.82,
+      "end": 107.32
+    },
+    {
+      "word": "ti",
+      "start": 107.32,
+      "end": 108.32
+    },
+    {
+      "word": "sere,",
+      "start": 108.32,
+      "end": 108.44
+    },
+    {
+      "word": "por",
+      "start": 108.44,
+      "end": 108.44
+    },
+    {
+      "word": "ti",
+      "start": 108.44,
+      "end": 108.44
+    },
+    {
+      "word": "sere,",
+      "start": 108.44,
+      "end": 108.44
+    },
+    {
+      "word": "yo",
+      "start": 108.44,
+      "end": 108.44
+    },
+    {
+      "word": "no",
+      "start": 108.44,
+      "end": 108.44
+    },
+    {
+      "word": "soy",
+      "start": 108.44,
+      "end": 108.44
+    },
+    {
+      "word": "marinero",
+      "start": 108.44,
+      "end": 108.44
+    },
+    {
+      "word": "soy",
+      "start": 108.44,
+      "end": 108.44
+    },
+    {
+      "word": "capitan,",
+      "start": 108.44,
+      "end": 108.44
+    },
+    {
+      "word": "bamba",
+      "start": 108.44,
+      "end": 108.44
+    },
+    {
+      "word": "bamba",
+      "start": 108.44,
+      "end": 108.44
+    },
+    {
+      "word": "y",
+      "start": 108.46,
+      "end": 108.48
+    },
+    {
+      "word": "arriba",
+      "start": 108.48,
+      "end": 109.02
+    },
+    {
+      "word": "y",
+      "start": 109.02,
+      "end": 109.22
+    },
+    {
+      "word": "arriba,",
+      "start": 109.22,
+      "end": 109.94
+    },
+    {
+      "word": "por",
+      "start": 110.1,
+      "end": 110.38
+    },
+    {
+      "word": "ti",
+      "start": 110.38,
+      "end": 110.54
+    },
+    {
+      "word": "sere,",
+      "start": 110.54,
+      "end": 111.2
+    },
+    {
+      "word": "por",
+      "start": 111.36,
+      "end": 111.94
+    },
+    {
+      "word": "ti",
+      "start": 111.94,
+      "end": 112.28
+    },
+    {
+      "word": "sere,",
+      "start": 112.28,
+      "end": 112.98
+    },
+    {
+      "word": "por",
+      "start": 113.04,
+      "end": 113.5
+    },
+    {
+      "word": "ti",
+      "start": 113.5,
+      "end": 113.9
+    },
+    {
+      "word": "sere",
+      "start": 113.9,
+      "end": 114.48
+    },
+    {
+      "word": "bamba",
+      "start": 116.4,
+      "end": 117.26
+    },
+    {
+      "word": "bamba",
+      "start": 117.26,
+      "end": 118.12
+    }
+  ]
+}

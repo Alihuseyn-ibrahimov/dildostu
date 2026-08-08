@@ -3,6 +3,8 @@ import 'package:dildostu/src/ui/update_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'locale_test_harness.dart';
+
 const _info = AppVersionInfo(versionCode: 5, versionName: '1.0.0+5');
 
 Widget _banner({
@@ -10,16 +12,14 @@ Widget _banner({
   double? progress,
   VoidCallback? onInstall,
 }) =>
-    MaterialApp(
-      home: Scaffold(
-        body: UpdateBanner(
-          info: _info,
-          onInstall: onInstall ?? () {},
-          stage: stage,
-          progress: progress,
-        ),
+    wrapWithLocale(Scaffold(
+      body: UpdateBanner(
+        info: _info,
+        onInstall: onInstall ?? () {},
+        stage: stage,
+        progress: progress,
       ),
-    );
+    ));
 
 void main() {
   testWidgets('versiya adını göstərir və Yenilə düyməsi çağırır', (tester) async {

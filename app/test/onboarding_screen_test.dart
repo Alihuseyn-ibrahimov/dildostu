@@ -40,7 +40,7 @@ void main() {
     ));
 
     expect(find.text('Hansı dili öyrənmək istəyirsən?'), findsOneWidget);
-    await tester.tap(find.text('Rus'));
+    await tester.tap(find.textContaining('Русский'));
     await tester.tap(find.text('Başla'));
     await tester.pump();
 

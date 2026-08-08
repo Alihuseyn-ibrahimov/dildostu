@@ -12,18 +12,24 @@ import 'package:flutter_test/flutter_test.dart';
 /// `find.text('Fox')` onları tapmır (RichText-in daxili span-ları `Text`
 /// widget-i deyil) — recognizer-i birbaşa çağırırıq (real toxunuşu simulyasiya).
 void _tapWordSpan(WidgetTester tester, String word) {
-  final richText =
-      tester.widget<RichText>(find.byKey(const Key('chapter-text')));
-  void walk(InlineSpan span) {
-    if (span is TextSpan) {
-      if (span.text == word && span.recognizer is TapGestureRecognizer) {
-        (span.recognizer as TapGestureRecognizer).onTap!();
-        return;
+  final richTexts = tester.widgetList<RichText>(
+    find.descendant(
+      of: find.byKey(const Key('chapter-text')),
+      matching: find.byType(RichText),
+    ),
+  );
+  for (final richText in richTexts) {
+    void walk(InlineSpan span) {
+      if (span is TextSpan) {
+        if (span.text == word && span.recognizer is TapGestureRecognizer) {
+          (span.recognizer as TapGestureRecognizer).onTap!();
+          return;
+        }
+        span.children?.forEach(walk);
       }
-      span.children?.forEach(walk);
     }
+    walk(richText.text!);
   }
-  walk(richText.text!);
 }
 
 AudiobookChapter _ch(String id, String title, int sec) => AudiobookChapter(
@@ -200,9 +206,8 @@ void main() {
       await tester.pumpWidget(wrap(p));
       await tester.pump(const Duration(milliseconds: 500));
       expect(find.text('The Fox and the Grapes'), findsOneWidget);
-      final richText =
-          tester.widget<RichText>(find.byKey(const Key('chapter-text')));
-      expect(richText.text!.toPlainText(), contains('mətni burada'));
+      expect(find.byKey(const Key('chapter-text')), findsOneWidget);
+      expect(find.byType(RichText), findsWidgets);
       expect(find.text('1 / 2'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
     });

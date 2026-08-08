@@ -196,6 +196,127 @@ riskli ola bilər — bəzi cihazlarda layout/paint dövriyyəsini poza bilir.
 Bu cür dinamik məzmunu (bildiriş zolaqları və s.) ayrı, sabit marşrutlarda
 saxlamaq daha təhlükəsizdir.
 
+## Chatbot — peşəkar sistem qaydaları (2026-08-06)
+
+Söhbət `POST /chat` → `chat_pipeline.run_chat_pipeline` (RunnablePassthrough
+tipli zəncir). Üzərinə dörd qoruyucu qat əlavə edilib:
+
+1. **Kvota** (`chat_limits.py`) — hər istifadəçiyə **sürüşən 24 saatda 80
+ mesaj** (`CHAT_DAILY_LIMIT` ilə dəyişir). Yoxlama AI çağırışından ƏVVƏL,
+ `app.py`-dəki endpoint-də olur — limit aşılıbsa **heç bir token xərclənmir**,
+ `429` + Azərbaycanca izah qayıdır. Sayğac ayrıca cədvəl saxlamır,
+ `chat_messages`-i sayır (bir mənbə, sinxronlaşma problemi yoxdur).
+ Səbəb: Groq pulsuz tier 100K TPD — bir istifadəçi hamını dayandıra bilirdi.
+2. **Loq** — `logging.getLogger("dildostu.chat")`. Hər cavabda `chat_ok
+ user=… provider=… latency_ms=… turns=… reply_chars=… new_facts=…`,
+ uğursuzluqda `chat_failed`, fallback işə düşəndə `chat_warning`. Provayder
+ adını almaq üçün `chat_with_fallback_detail()` var (`chat_with_fallback`
+ onun üstündə nazik örtükdür, köhnə çağırışlar dəyişmir).
+ Canlıda: `journalctl -u dildostu-live -f | grep chat_`.
+3. **Data idarəsi** — `DELETE /chat/history`, `GET|DELETE /chat/portrait`,
+ `GET /chat/quota`. Tarixçə və portret **AYRI** silinir: istifadəçi yazışmanı
+ təmizləmək istəyəndə AI-nin onu tanımasını itirmək istəməyə bilər. Ayarlarda
+ "AI yaddaşı" bölməsi faktları çip kimi göstərir (şəffaflıq).
+4. **Xəta növləri** — `ChatErrorKind` (network / quota / aiUnavailable /
+ unauthorized / unknown). Yalnız `network` və `aiUnavailable` üçün "Yenidən
+ cəhd et" göstərilir; limit və sessiya xətasında təkrar mənasızdır. Təkrar
+ mesajı **yenidən əlavə etmir**, uğursuz mətni saxlayıb göndərir.
+
+**Streaming QƏSDƏN yoxdur** — `/chat` bir POST-dur, SSE deyil. Cavab
+gələnədək "LachinGo yazır…" göstərilir. Timeout 20s→45s qaldırılıb (uzun
+cavablar kəsilirdi).
+
+**Markdown:** `chat_markdown.dart` — öz yüngül renderimiz (`**qalın**`,
+`- ` / `1. ` siyahılar). `flutter_markdown` QƏSDƏN əlavə edilmir: əlavə
+plugin = Gradle riski (yuxarıdakı `just_audio` qeydinə bax).
+Diqqət: `Text.rich` işlədilir — `find.text()` onu `toPlainText()` ilə tapır,
+amma toxunma testləri üçün `audiobook_screens_test.dart`-dakı qaydaya bax.
+
+## Məkan dəqiqliyi — altı kök səbəb düzəldildi (2026-08-07)
+
+Bölmə "sınmırdı", səssizcə YANLIŞ cavab verirdi. Hər biri ayrı səbəb idi:
+
+1. **`limit=1` → `_RESULT_LIMIT=12`** (`place_lookup.py`). Ən yaxın POI tez-tez
+ xəritələnməyən tipdir ("Office", "Park", "Government Building") → əvvəllər
+ 404 qayıdırdı, halbuki 30 m-də kafe vardı. İndi `sort=DISTANCE` sırası ilə
+ gəzib **paketə uyğunlaşan ilk** yer seçilir. Bu, ən böyük qazancdır.
+2. **`LocationAccuracy.medium` → `high`** (`location_service.dart`). `medium`
+ Android-də ~100–500 m — kafeni yanındakı mağazadan ayırmaq mümkün deyildi.
+ Arxa fon toplaması (`background: true`) batareya üçün `medium` qalır.
+3. **`Position.accuracy` heç yoxlanmırdı.** İndi `classifyFix()`
+ (`location_quality.dart`): ≤100 m `precise`, ≤500 m `approximate`, üstü
+ `unusable` → **rədd edilir**. Səhv yer göstərməkdənsə heç nə deməmək yaxşıdır.
+4. **`distance` iqnor edilirdi.** Server `distance_m` qaytarır, UI göstərir —
+ 195 m-dəki kafe artıq 5 m-dəki ilə eyni görünmür.
+5. **Keş yoxdu** → hər açılışda təzə GPS+Foursquare, iki açılış fərqli yer
+ verirdi ("dəqiq işləmir" hissinin əsas mənbəyi). İndi 5 dəq / 60 m keşi
+ (`isCacheUsable`); "Yenilə" düyməsi `forceRefresh` ilə keşi keçir.
+6. **Uğursuzluq səssiz idi** — kart sadəcə "İndi haradayam?" göstərirdi. İndi
+ `LocationFailure` (7 səbəb) + `describeFailure()` hər səbəb üçün NƏ EDƏCƏYİ
+ də deyir; kart "Yerini tapa bilmədim" + səbəbi göstərir.
+
+Əlavə iki düzəliş:
+
+- **`_hour_window` UTC işlədirdi** (`routine_clustering.py`) — yerli səhər
+ 07:00 (03:00 UTC) "night" sayılırdı. `_LOCAL_UTC_OFFSET_HOURS = 4`
+ (Azərbaycan 2016-dan yay vaxtı tətbiq etmir).
+- **Xəritə söz sərhədi ilə uyğunlaşır** (`foursquare_mapping.py`). Sadə `in`
+ yoxlaması "Barbershop" içində "bar" görüb restorana, "Sports Club" içində
+ "port" görüb nəqliyyata yazırdı. İndi `\bkeyword s?\b` (cəm formanı da tutur,
+ çünki Foursquare `plural_name` göndərir). Xəritə həm də genişləndirildi
+ (dessert/sushi/butcher/taxi və s.).
+
+**API dəyişikliyi geriyə uyğundur:** `/place/resolve` artıq xəritələnməyən yer
+üçün 404 yerinə **200 + `pack_id: null`** qaytarır (ad/kateqoriya ilə). Köhnə
+app-lar boş `pack_id`-ni artıq "tapılmadı" kimi oxuyurdu, ona görə sınmır.
+404 YALNIZ radiusda heç nə tapılmayanda qalır.
+
+**Diqqət:** `LocationService.resolve()` yeni tam nəticədir (`LocationOutcome`);
+köhnə `resolveNearbySample()` imzası QORUNUB (rutin toplama onu işlədir) və
+uğursuzluqda yenə `null` qaytarır — çağıranları dəyişmək lazım deyil.
+
+## Foursquare krediti bitib — ƏSAS CANLI SƏBƏB (2026-08-07)
+
+Yuxarıdaki altı kod düzəlişi doğrudur, AMMA production-da "yer dəqiq
+tapılmır"ın **əsas səbəbi kod deyildi**: Foursquare hesabının krediti bitib.
+
+```
+x-ratelimit-limit: 0, x-ratelimit-remaining: 0
+"Your account has no API credits remaining ... exceeded your freePro tier limit"
+```
+
+Yəni HƏR `/place/resolve` 503 qaytarırdı, app səssizcə OSM Overpass ehtiyatına
+düşürdü — sənədlərin özü OSM-in AZ örtüyünü "zəif" adlandırır. Nəticə: yer ya
+tapılmırdı, ya səhv tapılırdı.
+
+**Ən pisi: bu vəziyyət heç yerdə görünmürdü.** Ona görə görünən edildi:
+
+- `PlaceQuotaExceeded` — 429 üçün ayrı istisna (`PlaceLookupError`-dan miras
+ alır, köhnə `except` blokları sınmır).
+- **Soyuma müddəti 15 dəq** (`_QUOTA_COOLDOWN_SECONDS`): kvota bitibsə hər GPS
+ sorğusunda API-yə çıxmaq mənasızdır və istifadəçini 6 saniyə gözlədir.
+ Bu müddətdə şəbəkəyə çıxmadan imtina edilir → app dərhal OSM-ə keçir.
+ Digər xətalar (500 və s.) soyuma yaratmır — onlar keçici ola bilər.
+- `logger.error("place_quota_exhausted ...")` — `journalctl`-də görünür.
+- **`GET /health` artıq `place_provider` qaytarır**: `ok` /
+ `quota_exhausted` / `unconfigured`. Məkanla bağlı şikayət gələndə **ƏVVƏLCƏ
+ buna bax**:
+ ```bash
+ curl -s https://dildostu.prdostu.com/health
+ # {"status":"ok","place_provider":"ok"}
+ ```
+ **DİQQƏT — `ok` yanlış təsəlli ola bilər:** bayraq yalnız həmin gunicorn
+ prosesi REAL 429 gördükdən sonra qalxır və restart-dan sonra sıfırlanır.
+ Yəni restart-dan dərhal sonra kredit bitmiş olsa da `ok` göstərir. Dəqiq
+ bilmək üçün deployed `PlaceLookup` ilə bir sorğu et (kvota vəziyyətini
+ birbaşa Foursquare-dən oxuyur) və ya `journalctl`-də
+ `place_quota_exhausted` axtar.
+- `/place/resolve` kvota xətasında `Retry-After: 900` göndərir.
+
+**Həlli koddan keçmir:** Foursquare-də kredit almaq və ya açarı yeniləmək
+lazımdır (`FOURSQUARE_API_KEY`, VPS `.env`). Ondan sonra `/health` `ok`
+göstərməlidir.
+
 ## Yoxlama qaydası
 
 Hər dəyişiklikdən sonra: server `pytest -q`, app `flutter analyze` + `flutter test`.

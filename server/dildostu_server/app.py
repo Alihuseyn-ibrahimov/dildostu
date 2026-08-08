@@ -19,11 +19,17 @@ from .auth import (
     verify_password,
     verify_token,
 )
+from .chat_limits import check_quota, quota_message
+from .chat_nudges import build_chat_nudges
 from .essential_words import words_for_level
 from .models import (
     AppVersionInfo,
     AuthResponse,
     ChatHistoryResponse,
+    ChatNudgesResponse,
+    ChatPortraitResponse,
+    ChatQuotaResponse,
+    UserProfile,
     ChatRequest,
     ChatResponse,
     DayPlanRequest,
@@ -51,7 +57,7 @@ from .models import (
 from .audiobook_store import AudiobookStore
 from .music_store import MusicStore
 from .memory_store import MemoryStore
-from .place_lookup import PlaceLookup, PlaceLookupError
+from .place_lookup import PlaceLookup, PlaceLookupError, PlaceQuotaExceeded
 from .routine_clustering import cluster_places
 from .providers import (
     ChatCompleter,
@@ -65,7 +71,7 @@ from .service import LiveService, ServiceError, run_chat
 from .static_pages import delete_account_html, privacy_policy_html
 from .user_store import DuplicateEmail, UserStore
 
-app = FastAPI(title="DilDostu Live")
+app = FastAPI(title="LachinGo Live")
 app.state.cache = {}
 # Rutin nümunələri üçün davamlı SQLite (WorkingDirectory: /opt/dildostu/server).
 app.state.routine_store = RoutineStore(
@@ -184,8 +190,20 @@ def _service(completers: dict[str, Completer]) -> LiveService:
 
 
 @app.get("/health")
-def health() -> dict:
-    return {"status": "ok"}
+def health(lookup: PlaceLookup = Depends(get_place_lookup)) -> dict:
+    """Servis vəziyyəti + məkan provayderinin sağlamlığı.
+
+    `place_provider` QƏSDƏN buradadır: 2026-08-07-də Foursquare krediti bitib
+    və bu, heç yerdə görünmədiyi üçün uzun müddət aşkarlanmamış qalıb — hər
+    `/place/resolve` 503 verirdi, app səssizcə zəif OSM ehtiyatına düşürdü.
+    """
+    if not lookup.configured:
+        place_state = "unconfigured"
+    elif lookup.quota_exhausted:
+        place_state = "quota_exhausted"
+    else:
+        place_state = "ok"
+    return {"status": "ok", "place_provider": place_state}
 
 
 @app.get("/privacy", response_class=HTMLResponse)
@@ -371,6 +389,10 @@ def chat(
     chat_completers: dict[str, ChatCompleter] = Depends(get_chat_completers),
     memory: MemoryStore = Depends(get_memory_store),
 ) -> ChatResponse:
+    # Kvota qoruması AI çağırışından ƏVVƏL — limit aşılıbsa token xərclənmir.
+    status = check_quota(memory, user["id"])
+    if status.exceeded:
+        raise HTTPException(status_code=429, detail=quota_message(status))
     try:
         return ChatResponse(
             reply=run_chat(req, chat_completers, memory, user["id"])
@@ -386,6 +408,69 @@ def chat_history(
 ) -> ChatHistoryResponse:
     """İstifadəçinin saxlanmış çat tarixçəsi — ekran açılanda göstərilir."""
     return ChatHistoryResponse(messages=memory.recent_messages(user["id"]))
+
+
+@app.delete("/chat/history")
+def delete_chat_history(
+    user: dict = Depends(get_current_user),
+    memory: MemoryStore = Depends(get_memory_store),
+) -> dict:
+    """Söhbəti sıfırlayır. Portret (faktlar) qəsdən qalır — istifadəçi
+    yalnız yazışmanı təmizləmək istəyə bilər; portret ayrıca silinir."""
+    memory.delete_messages(user["id"])
+    return {"ok": True}
+
+
+@app.get("/chat/portrait", response_model=ChatPortraitResponse)
+def chat_portrait(
+    user: dict = Depends(get_current_user),
+    memory: MemoryStore = Depends(get_memory_store),
+) -> ChatPortraitResponse:
+    """AI-nin istifadəçi haqqında bildikləri — şəffaflıq (istifadəçi görsün)."""
+    return ChatPortraitResponse(facts=memory.recent_facts(user["id"]))
+
+
+@app.delete("/chat/portrait")
+def delete_chat_portrait(
+    user: dict = Depends(get_current_user),
+    memory: MemoryStore = Depends(get_memory_store),
+) -> dict:
+    """Portreti sıfırlayır — AI istifadəçini yenidən tanımağa başlayır."""
+    memory.delete_facts(user["id"])
+    return {"ok": True}
+
+
+@app.get("/chat/quota", response_model=ChatQuotaResponse)
+def chat_quota(
+    user: dict = Depends(get_current_user),
+    memory: MemoryStore = Depends(get_memory_store),
+) -> ChatQuotaResponse:
+    """Qalan gündəlik mesaj sayı — app limitə çatmadan xəbərdarlıq göstərir."""
+    status = check_quota(memory, user["id"])
+    return ChatQuotaResponse(
+        used=status.used, limit=status.limit, remaining=status.remaining
+    )
+
+
+@app.get("/chat/nudges", response_model=ChatNudgesResponse)
+def chat_nudges(
+    user: dict = Depends(get_current_user),
+    memory: MemoryStore = Depends(get_memory_store),
+    routine: RoutineStore = Depends(get_routine_store),
+    store: UserStore = Depends(get_user_store),
+) -> ChatNudgesResponse:
+    """Gündəlik proaktiv chat bildirişləri (AI-siz şablonlar)."""
+    saved = store.get_profile(user["id"])
+    if not saved:
+        return ChatNudgesResponse(nudges=[])
+    profile = UserProfile.model_validate(saved)
+    nudges = build_chat_nudges(
+        profile=profile,
+        places=routine.place_summary(user["id"]),
+        facts=memory.recent_facts(user["id"], limit=5),
+        last_user_at=memory.last_user_message_at(user["id"]),
+    )
+    return ChatNudgesResponse(nudges=nudges)
 
 
 @app.post("/routine/sample")
@@ -425,14 +510,26 @@ def place_resolve(
     """Koordinatı yaxınlıqdakı yerə və söz paketinə çevirir (Foursquare)."""
     try:
         result = lookup.resolve(req.lat, req.lng)
+    except PlaceQuotaExceeded as exc:
+        # 503 + Retry-After: app OSM ehtiyatına keçir, vəziyyət isə
+        # `/health`-də və loqda görünür (səssiz deqradasiya yox).
+        raise HTTPException(
+            status_code=503,
+            detail=str(exc),
+            headers={"Retry-After": "900"},
+        )
     except PlaceLookupError as exc:
         raise HTTPException(status_code=503, detail=str(exc))
-    if result is None or not result.get("pack_id"):
+    # 404 YALNIZ radiusda heç nə tapılmayanda. Yer tapılıb, amma paketə
+    # uyğun gəlmirsə 200 qaytarırıq (pack_id=None) — istifadəçi heç olmasa
+    # nəyin tapıldığını görsün; əvvəllər bu hal tamamilə itirdi.
+    if result is None:
         raise HTTPException(status_code=404, detail="Yaxınlıqda tanınan yer yoxdur")
     return PlaceResolveResponse(
-        pack_id=result["pack_id"],
+        pack_id=result.get("pack_id"),
         name=result.get("name", ""),
         category=result.get("category", ""),
+        distance_m=result.get("distance_m"),
     )
 
 
@@ -529,12 +626,48 @@ def music_embed(video_id: str) -> str:
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>html,body{{margin:0;padding:0;background:#000;height:100%}}
-iframe{{width:100%;height:100%;border:0;display:block}}</style>
+#player{{width:100%;height:100%}}</style>
 </head>
 <body>
-<iframe src="https://www.youtube.com/embed/{video_id}?playsinline=1"
- allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
- allowfullscreen></iframe>
+<div id="player"></div>
+<script>
+var player, syncTimer;
+function getPlaybackMs() {{
+  if (!player || typeof player.getCurrentTime !== 'function') return 0;
+  return Math.round(player.getCurrentTime() * 1000);
+}}
+function getDurationMs() {{
+  if (!player || typeof player.getDuration !== 'function') return 0;
+  var d = player.getDuration();
+  if (!d || d <= 0) return 0;
+  return Math.round(d * 1000);
+}}
+function postSync() {{
+  if (!window.LyricsSync) return;
+  LyricsSync.postMessage(JSON.stringify({{
+    pos: getPlaybackMs(),
+    dur: getDurationMs()
+  }}));
+}}
+function startSync() {{
+  if (syncTimer) return;
+  syncTimer = setInterval(postSync, 100);
+  postSync();
+}}
+function onYouTubeIframeAPIReady() {{
+  player = new YT.Player('player', {{
+    height: '100%',
+    width: '100%',
+    videoId: '{video_id}',
+    playerVars: {{ playsinline: 1, rel: 0, enablejsapi: 1 }},
+    events: {{
+      'onReady': function() {{ startSync(); }},
+      'onStateChange': function() {{ postSync(); }}
+    }}
+  }});
+}}
+</script>
+<script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>"""
 

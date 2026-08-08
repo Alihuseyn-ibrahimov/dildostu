@@ -1,0 +1,70 @@
+{
+  "song_id": "bebe-tu-silencio",
+  "title": "Tu Silencio",
+  "artist": "Bebe",
+  "youtube_id": "fAuQtoy_HJs",
+  "level": "advanced",
+  "lang": "es",
+  "lines": [
+    {
+      "line_id": "l1",
+      "text": "Como quien tira de una cuerda que se romperá,",
+      "translation_az": "Qopacaq ipi dartan kimi,"
+    },
+    {
+      "line_id": "l2",
+      "text": "Tirar, tirar, tirar, tirar, tirar.",
+      "translation_az": "Dart, dart, dart, dart, dart."
+    },
+    {
+      "line_id": "l3",
+      "text": "Como sin darse cuenta, rozar un poco más,",
+      "translation_az": "Fərqinə varmadan bir az daha toxunmaq,"
+    },
+    {
+      "line_id": "l4",
+      "text": "Los ojos han cerrado para no afrontar,",
+      "translation_az": "Gözlər üzləşməmək üçün bağlanıb,"
+    },
+    {
+      "line_id": "l5",
+      "text": "Que el aire es de cristal, que puede estallar,",
+      "translation_az": "Havanın şüşə kimi, partlaya biləcəyini,"
+    },
+    {
+      "line_id": "l6",
+      "text": "Que aunque parezca extraño te quiero devorar.",
+      "translation_az": "Qəribə görünsə də, səni yemək istəyirəm."
+    },
+    {
+      "line_id": "l7",
+      "text": "Tu silencio es la más elocuente forma de mentir,",
+      "translation_az": "Sənin suskunluğun yalan deməyin ən aydın yoludur,"
+    },
+    {
+      "line_id": "l8",
+      "text": "En tu silencio habita el mío,",
+      "translation_az": "Sənin suskunluğunda mənimki yaşayır,"
+    },
+    {
+      "line_id": "l9",
+      "text": "Y en alguna parte de mi cuerpo habitó un trozo de tu olor,",
+      "translation_az": "Bədənimin bir yerində qoxunun parçası qaldı,"
+    },
+    {
+      "line_id": "l10",
+      "text": "Y en alguna parte de mis ojos habitó un trozo de dolor.",
+      "translation_az": "Gözlərimin bir yerində acının parçası qaldı."
+    },
+    {
+      "line_id": "l11",
+      "text": "Ahora estás aquí, ahora estoy aquí,",
+      "translation_az": "İndi buradasan, indi mən buradayam,"
+    },
+    {
+      "line_id": "l12",
+      "text": "Abrázame para que piense alguna vez en ti.",
+      "translation_az": "Bir gün sənə düşüm deyə, qucaqla məni."
+    }
+  ]
+}

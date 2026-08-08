@@ -29,8 +29,8 @@ class EveningQuizScreen extends StatelessWidget {
       final packId = key.substring(0, separator);
       final wordText = key.substring(separator + 1);
       final pack = packRepository.byId(packId);
-      if (pack == null) continue;
-      final word = pack.words.where((w) => w.word == wordText).firstOrNull;
+      final word = pack?.words.where((w) => w.word == wordText).firstOrNull ??
+          reviewRepository.wordForKey(key);
       if (word == null) continue;
       entries.add(SessionEntry(wordKey: key, word: word));
     }

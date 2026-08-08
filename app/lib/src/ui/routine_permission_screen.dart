@@ -104,7 +104,7 @@ class _RoutinePermissionScreenState extends State<RoutinePermissionScreen> {
                 style: theme.textTheme.headlineSmall),
             const SizedBox(height: 12),
             const Text(
-              'İcazə versən, DilDostu arxa planda tez-tez getdiyin yerləri '
+              'İcazə versən, LachinGo arxa planda tez-tez getdiyin yerləri '
               '(kafe, market, park...) öyrənəcək və oraya çatanda sənə uyğun '
               'sözləri özü təklif edəcək — proqram bağlı olsa belə.\n\n'
               'Məkan məlumatın anonimdir (adın saxlanmır).',

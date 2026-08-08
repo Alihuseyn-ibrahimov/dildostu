@@ -26,7 +26,8 @@ class FakeClient:
 
 _MALL = {
     "results": [
-        {"name": "28 Mall", "categories": [{"name": "Shopping Mall"}]}
+        {"name": "28 Mall", "categories": [{"name": "Shopping Mall"}],
+         "distance": 42}
     ]
 }
 
@@ -40,6 +41,7 @@ class TestPlaceLookup:
             "name": "28 Mall",
             "category": "Shopping Mall",
             "pack_id": "market",
+            "distance_m": 42,
         }
 
     def test_sends_bearer_auth_and_version_header(self):
@@ -68,6 +70,72 @@ class TestPlaceLookup:
         result = PlaceLookup("k", client=client).resolve(0, 0)
         assert result["pack_id"] is None
         assert result["name"] == "City Hall"
+
+
+class TestNearestMappableSelection:
+    """2026-08-07 — əvvəllər YALNIZ ən yaxın nəticə götürülürdü (`limit=1`).
+
+    Ən yaxın POI tez-tez paketə uyğun gəlmirdi (ofis/park) və istifadəçi
+    30 m-dəki kafeni itirirdi. İndi məsafə sırası ilə uyğunlaşan ilk yer seçilir.
+    """
+
+    def test_asks_for_more_than_one_result(self):
+        client = FakeClient(FakeResponse(200, _MALL))
+        PlaceLookup("k", client=client).resolve(40.0, 49.0)
+        assert client.calls[0]["params"]["limit"] > 1
+
+    def test_skips_unmappable_nearest_and_picks_next(self):
+        payload = {"results": [
+            {"name": "Nazirlik", "categories": [{"name": "Government Building"}],
+             "distance": 8},
+            {"name": "Parkda skamya", "categories": [{"name": "Park"}],
+             "distance": 15},
+            {"name": "Kofe Evi", "categories": [{"name": "Coffee Shop"}],
+             "distance": 34},
+        ]}
+        client = FakeClient(FakeResponse(200, payload))
+        result = PlaceLookup("k", client=client).resolve(0, 0)
+        assert result["pack_id"] == "cafe"
+        assert result["name"] == "Kofe Evi"
+        assert result["distance_m"] == 34
+
+    def test_prefers_nearest_when_several_map(self):
+        payload = {"results": [
+            {"name": "Yaxın kafe", "categories": [{"name": "Café"}],
+             "distance": 12},
+            {"name": "Uzaq market", "categories": [{"name": "Supermarket"}],
+             "distance": 90},
+        ]}
+        client = FakeClient(FakeResponse(200, payload))
+        result = PlaceLookup("k", client=client).resolve(0, 0)
+        assert result["name"] == "Yaxın kafe"
+
+    def test_all_unmappable_returns_nearest_with_none_pack(self):
+        payload = {"results": [
+            {"name": "Nazirlik", "categories": [{"name": "Government Building"}],
+             "distance": 8},
+            {"name": "Xəstəxana", "categories": [{"name": "Hospital"}],
+             "distance": 20},
+        ]}
+        client = FakeClient(FakeResponse(200, payload))
+        result = PlaceLookup("k", client=client).resolve(0, 0)
+        assert result["pack_id"] is None
+        assert result["name"] == "Nazirlik"
+        assert result["distance_m"] == 8
+
+    def test_missing_distance_is_none_not_crash(self):
+        payload = {"results": [
+            {"name": "Kafe", "categories": [{"name": "Café"}]},
+        ]}
+        client = FakeClient(FakeResponse(200, payload))
+        assert PlaceLookup("k", client=client).resolve(0, 0)["distance_m"] is None
+
+    def test_invalid_distance_ignored(self):
+        payload = {"results": [
+            {"name": "Kafe", "categories": [{"name": "Café"}], "distance": "yaxın"},
+        ]}
+        client = FakeClient(FakeResponse(200, payload))
+        assert PlaceLookup("k", client=client).resolve(0, 0)["distance_m"] is None
 
     def test_http_error_raises(self):
         client = FakeClient(FakeResponse(401, {}))
