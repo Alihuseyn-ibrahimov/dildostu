@@ -1236,7 +1236,13 @@ class _BootstrapState extends State<_Bootstrap> with WidgetsBindingObserver {
             onOpenEssentialWords: () =>
                 _openEssentialWords(profile, data.reviews),
             onOpenAudiobooks: () => _openAudiobooks(profile),
-            onOpenMusic: () => _openMusic(profile),
+            // Musiqi Play buraxılışında GİZLİDİR: mahnı sözləri lisenziyasız
+            // göstərilir, bu isə Play-in əqli mülkiyyət siyasətinə görə rədd/
+            // silinmə riski yaradır (bax .planning/2026-08-03-dildostu-playstore).
+            // Kod tam qalır — təsdiqdən sonra lisenziya və ya ictimai domen
+            // məzmunla açılacaq (geofence ilə eyni yanaşma).
+            onOpenMusic:
+                data.isPlayBuild ? null : () => _openMusic(profile),
             loadDayPlan: ({forceRefresh = false}) =>
                 _loadDayPlan(data, forceRefresh: forceRefresh),
             onOpenDayPlanWord: (words, index) =>

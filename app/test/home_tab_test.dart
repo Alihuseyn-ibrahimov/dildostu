@@ -41,6 +41,7 @@ void main() {
     ResolveLivePlace? resolveLivePlace,
     LoadDayPlan? loadDayPlan,
     OpenDayPlanWord? onOpenDayPlanWord,
+    VoidCallback? onOpenMusic,
   }) {
     return AppLocaleScope(
       language: UiLanguage.az,
@@ -61,6 +62,7 @@ void main() {
         resolveLivePlace: resolveLivePlace,
         loadDayPlan: loadDayPlan,
         onOpenDayPlanWord: onOpenDayPlanWord,
+        onOpenMusic: onOpenMusic,
         ),
       ),
     );
@@ -302,6 +304,24 @@ void main() {
 
       await tester.tap(find.text('Kofe Evi'));
       expect(opened, 'cafe');
+    });
+  });
+
+  group('Musiqi kartı', () {
+    testWidgets('callback veriləndə kart görünür', (tester) async {
+      await tester.pumpWidget(wrap(onOpenMusic: () {}));
+      await tester.pumpAndSettle();
+      expect(find.text('Musiqi'), findsOneWidget);
+    });
+
+    testWidgets('callback null olanda kart GİZLİDİR (Play buraxılışı)',
+        (tester) async {
+      // Play buraxılışında lisenziyasız mahnı sözləri göstərilmir —
+      // main.dart `isPlayBuild` olanda `onOpenMusic: null` ötürür
+      // (bax .planning/2026-08-03-dildostu-playstore, tapıntı D).
+      await tester.pumpWidget(wrap(onOpenMusic: null));
+      await tester.pumpAndSettle();
+      expect(find.text('Musiqi'), findsNothing);
     });
   });
 }

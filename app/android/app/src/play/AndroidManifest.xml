@@ -10,6 +10,18 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"
         tools:node="remove"/>
 
+    <!-- Play-in "məhdud icazə" siyahısındadır: batareya optimallaşdırmasından
+         çıxma yalnız dar istisnalarda qəbul edilir. Arxa fon rutin toplama
+         Play buraxılışında onsuz da yoxdur, ona görə icazə də lazımsızdır. -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"
+        tools:node="remove"/>
+
+    <!-- Play "Exact Alarm" siyasəti bu icazəni yalnız zəngli saat/təqvim
+         tipli tətbiqlərə verir. Kod 2026-08-10-dan `inexactAllowWhileIdle`
+         işlədir (bax notification_service.dart) — icazə artıq lazım deyil. -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"
+        tools:node="remove"/>
+
     <application
         android:usesCleartextTraffic="false"
         tools:replace="android:usesCleartextTraffic">

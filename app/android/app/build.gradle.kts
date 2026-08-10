@@ -32,8 +32,14 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.dildostu.dildostu"
+        // Google Play-də tətbiqin ƏBƏDİ kimliyi — dərcdən sonra DƏYİŞDİRİLƏ
+        // BİLMƏZ (dəyişsə yeni tətbiq sayılır, bütün istifadəçi/rəy itir).
+        // Ona görə brend LachinGo-ya keçəndə (2026-08-10), dərcdən ƏVVƏL
+        // düzəldildi. `namespace` qəsdən köhnə qalır: o, yalnız daxili
+        // R/BuildConfig sinif yoludur, Play ona baxmır — dəyişdirmək Kotlin
+        // fayllarını köçürmək demək olardı, əlavə risk. MethodChannel adları
+        // sətir sabitidir, paketdən asılı deyil.
+        applicationId = "com.lachingo.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
