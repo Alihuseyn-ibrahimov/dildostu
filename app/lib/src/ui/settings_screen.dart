@@ -10,6 +10,7 @@ import '../models/audiobook.dart';
 import '../models/chat_quota.dart';
 import '../models/settings.dart';
 import '../services/audiobook_downloader.dart';
+import '../services/notification_service.dart';
 import 'update_banner.dart';
 import 'unlock_screen.dart';
 
@@ -39,6 +40,8 @@ class SettingsScreen extends StatefulWidget {
     this.loadChatQuota,
     this.lockRepo,
     this.onRescheduleNotifications,
+    this.diagnoseNotifications,
+    this.onSendTestNotification,
     this.onClearChatHistory,
     this.onClearChatPortrait,
     this.onUiLanguageChanged,
@@ -98,6 +101,14 @@ class SettingsScreen extends StatefulWidget {
 
   /// Oyanma/yatma/say dəyişəndə bildiriş cədvəlini yeniləyir.
   final Future<void> Function()? onRescheduleNotifications;
+
+  /// Bildiriş sisteminin faktiki vəziyyəti (növbədə neçə bildiriş var,
+  /// icazələr, sonuncu xəta) — "bildiriş gəlmir" şikayətini araşdırmaq üçün.
+  /// Null olsa bölmə göstərilmir.
+  final Future<NotificationDiagnostics> Function()? diagnoseNotifications;
+
+  /// Dərhal sınaq bildirişi göndərir.
+  final Future<void> Function()? onSendTestNotification;
 
   /// Söhbət tarixçəsini serverdə silir (portret qalır).
   final Future<bool> Function()? onClearChatHistory;
@@ -330,6 +341,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           if (widget.lockRepo != null) ...[
             const Divider(),
             _DeviceLockSection(lockRepo: widget.lockRepo!),
+          ],
+          if (widget.diagnoseNotifications != null) ...[
+            const Divider(),
+            _NotificationDiagnosticsTile(
+              diagnose: widget.diagnoseNotifications!,
+              onSendTest: widget.onSendTestNotification,
+            ),
           ],
           if (widget.ttsTelemetry != null) ...[
             const Divider(),
@@ -777,6 +795,117 @@ class _OfflineAudiobooksSectionState extends State<_OfflineAudiobooksSection> {
           trailing: trailing,
         );
       },
+    );
+  }
+}
+
+/// Bildiriş sisteminin FAKTİKİ vəziyyəti — "bildiriş gəlmir" şikayətini
+/// təxminlə yox, OS növbəsindəki real rəqəmlə araşdırmaq üçün.
+///
+/// Bu bölmə qəsdən `FutureBuilder`-siz, sabit strukturludur (yükləmə/nəticə
+/// eyni widget ağacında) — `setState` ilə ListView-a YENİ element əlavə
+/// etmək Samsung S926B-də sənədləşmiş "NEEDS-LAYOUT əbədi qalır" bug-ını
+/// təkrarladır (bax bu fayldakı UpdateBanner izahı).
+class _NotificationDiagnosticsTile extends StatefulWidget {
+  const _NotificationDiagnosticsTile({
+    required this.diagnose,
+    this.onSendTest,
+  });
+
+  final Future<NotificationDiagnostics> Function() diagnose;
+  final Future<void> Function()? onSendTest;
+
+  @override
+  State<_NotificationDiagnosticsTile> createState() =>
+      _NotificationDiagnosticsTileState();
+}
+
+class _NotificationDiagnosticsTileState
+    extends State<_NotificationDiagnosticsTile> {
+  bool _loading = true;
+  NotificationDiagnostics? _result;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _run();
+  }
+
+  Future<void> _run() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+    try {
+      final r = await widget.diagnose();
+      if (!mounted) return;
+      setState(() {
+        _result = r;
+        _loading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _error = '$e';
+        _loading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final r = _result;
+    final subtitle = _loading
+        ? 'Yoxlanılır…'
+        : _error != null
+            ? 'Yoxlama alınmadı: $_error'
+            : r!.summary;
+    final bad = !_loading && (_error != null || (r?.hasProblem ?? false));
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          title: const Text('Bildiriş diaqnostikası'),
+          subtitle: Text(
+            subtitle,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: bad ? theme.colorScheme.error : theme.colorScheme.outline,
+            ),
+          ),
+          trailing: _loading
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2.4),
+                )
+              : IconButton(
+                  icon: const Icon(Icons.refresh),
+                  tooltip: 'Yenidən yoxla',
+                  onPressed: _run,
+                ),
+        ),
+        if (widget.onSendTest != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 16, bottom: 8),
+            child: OutlinedButton.icon(
+              icon: const Icon(Icons.notifications_active_outlined),
+              label: const Text('Sınaq bildirişi göndər'),
+              onPressed: () async {
+                await widget.onSendTest!.call();
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Sınaq bildirişi göndərildi — '
+                        'bildiriş panelini yoxlayın'),
+                  ),
+                );
+              },
+            ),
+          ),
+      ],
     );
   }
 }

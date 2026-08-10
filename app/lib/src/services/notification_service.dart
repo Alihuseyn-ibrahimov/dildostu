@@ -29,6 +29,53 @@ const _maxChatNotifs = 10;
 /// Neçə gün əvvəlcədən planlaşdırılsın (bugün + sabah).
 const _scheduleDaysAhead = 2;
 
+/// DƏQİQ (`exactAllowWhileIdle`) YOX — `inexact` (2026-08-10-da dəyişdi):
+/// 1. Android 14+-da dəqiq alarm `SCHEDULE_EXACT_ALARM` icazəsi tələb edir;
+///    icazə verilməsə `zonedSchedule` istisna atır və HEÇ bir bildiriş
+///    planlaşdırılmır (istifadəçi heç nə görmür — səssiz uğursuzluq).
+/// 2. Google Play "Exact Alarm" siyasəti bu icazəni yalnız zəngli saat/təqvim
+///    tipli tətbiqlərə verir — öyrənmə xatırlatması bu kateqoriyaya girmir,
+///    Play buraxılışını bloklayırdı (bax .planning/2026-08-03-dildostu-playstore).
+/// Öyrənmə xatırlatması üçün bir neçə dəqiqəlik sürüşmə tamamilə qəbul
+/// ediləndir, ona görə `inexact` həm daha etibarlı, həm siyasətə uyğundur.
+const _scheduleMode = AndroidScheduleMode.inexactAllowWhileIdle;
+
+/// Bildiriş sisteminin real vəziyyəti — "bildiriş gəlmir" şikayətini
+/// təxminlə yox, FAKTLA araşdırmaq üçün (bax dildostu/CLAUDE.md-dəki
+/// "səssiz uğursuzluq" dərsi: öz-yenilənmə zolağı da aylarla belə itmişdi).
+class NotificationDiagnostics {
+  const NotificationDiagnostics({
+    required this.pendingCount,
+    required this.canScheduleExact,
+    required this.lastError,
+  });
+
+  /// OS növbəsində FAKTİKİ gözləyən bildiriş sayı (kodun nə etdiyi yox,
+  /// sistemin nəyi qəbul etdiyi).
+  final int pendingCount;
+
+  /// Android 14+-da "Zəngli saatlar və xatırlatmalar" icazəsi.
+  final bool canScheduleExact;
+
+  /// Sonuncu planlaşdırma/init xətası (varsa).
+  final String? lastError;
+
+  bool get hasProblem =>
+      pendingCount == 0 || !canScheduleExact || lastError != null;
+
+  String get summary {
+    if (lastError != null) return 'Xəta: $lastError';
+    if (!canScheduleExact) {
+      return 'Dəqiq alarm icazəsi yoxdur — Ayarlar → Zəngli saatlar və '
+          'xatırlatmalar açılmalıdır.';
+    }
+    if (pendingCount == 0) {
+      return 'Növbədə bildiriş yoxdur — planlaşdırma baş tutmayıb.';
+    }
+    return 'Qaydasındadır: növbədə $pendingCount bildiriş var.';
+  }
+}
+
 /// Cihazın yerli bildiriş sistemi ilə işləyir: icazə istəyir, bugünkü
 /// bildiriş vaxtlarını (notification_scheduler.dart) planlaşdırır.
 ///
@@ -41,6 +88,9 @@ class NotificationService {
 
   final FlutterLocalNotificationsPlugin _plugin;
   bool _tzInitialized = false;
+
+  /// Sonuncu init/planlaşdırma xətası — udulmur, diaqnostikada göstərilir.
+  String? _lastError;
 
   Future<void> init({void Function(String? payload)? onTap}) async {
     if (!_tzInitialized) {
@@ -102,6 +152,48 @@ class NotificationService {
         ),
       ),
       payload: packId,
+    );
+  }
+
+  /// Bildiriş sisteminin FAKTİKİ vəziyyəti (Ayarlar → diaqnostika).
+  Future<NotificationDiagnostics> diagnose() async {
+    var pending = 0;
+    var canExact = true;
+    try {
+      pending = (await _plugin.pendingNotificationRequests()).length;
+      final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      canExact = await androidPlugin?.canScheduleExactNotifications() ?? true;
+    } catch (e) {
+      return NotificationDiagnostics(
+        pendingCount: 0,
+        canScheduleExact: false,
+        lastError: '$e',
+      );
+    }
+    return NotificationDiagnostics(
+      pendingCount: pending,
+      canScheduleExact: canExact,
+      lastError: _lastError,
+    );
+  }
+
+  /// Dərhal sınaq bildirişi — planlaşdırmadan asılı olmadan bildiriş
+  /// kanalının/icazənin işlədiyini yoxlamaq üçün.
+  Future<void> showTestNow() async {
+    await _plugin.show(
+      id: 9999,
+      title: 'LachinGo — sınaq',
+      body: 'Bildirişlər işləyir ✅',
+      notificationDetails: const NotificationDetails(
+        android: AndroidNotificationDetails(
+          _chatChannelId,
+          _chatChannelName,
+          channelDescription: _chatChannelDescription,
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+      ),
     );
   }
 
@@ -174,23 +266,30 @@ class NotificationService {
             : pickPackForSlot(slotIndex, allTimes.length, packIds);
         firstScheduled = true;
 
-        await _plugin.zonedSchedule(
-          id: _wordNotifIdBase + notifId,
-          title: 'LachinGo',
-          body: '${titleFor(packId)} — yeni sözlərə baxın',
-          scheduledDate: tz.TZDateTime.from(when, tz.local),
-          notificationDetails: const NotificationDetails(
-            android: AndroidNotificationDetails(
-              _wordChannelId,
-              _wordChannelName,
-              channelDescription: _wordChannelDescription,
-              importance: Importance.high,
-              priority: Priority.high,
+        // Bir slotun uğursuzluğu QALANLARINI dayandırmamalıdır (məs. dəqiq
+        // alarm icazəsi yoxdursa) — xəta udulmur, `_lastError`-a yazılır və
+        // Ayarlar → diaqnostikada görünür.
+        try {
+          await _plugin.zonedSchedule(
+            id: _wordNotifIdBase + notifId,
+            title: 'LachinGo',
+            body: '${titleFor(packId)} — yeni sözlərə baxın',
+            scheduledDate: tz.TZDateTime.from(when, tz.local),
+            notificationDetails: const NotificationDetails(
+              android: AndroidNotificationDetails(
+                _wordChannelId,
+                _wordChannelName,
+                channelDescription: _wordChannelDescription,
+                importance: Importance.high,
+                priority: Priority.high,
+              ),
             ),
-          ),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-          payload: packId,
-        );
+            androidScheduleMode: _scheduleMode,
+            payload: packId,
+          );
+        } catch (e) {
+          _lastError = '$e';
+        }
         notifId++;
       }
     }
@@ -206,23 +305,27 @@ class NotificationService {
 
     for (var i = 0; i < slots.length && i < _maxChatNotifs; i++) {
       final nudge = nudges[i % nudges.length];
-      await _plugin.zonedSchedule(
-        id: _chatNotifIdBase + i,
-        title: 'LachinGo 💬',
-        body: nudge.body,
-        scheduledDate: tz.TZDateTime.from(slots[i], tz.local),
-        notificationDetails: const NotificationDetails(
-          android: AndroidNotificationDetails(
-            _chatChannelId,
-            _chatChannelName,
-            channelDescription: _chatChannelDescription,
-            importance: Importance.high,
-            priority: Priority.high,
+      try {
+        await _plugin.zonedSchedule(
+          id: _chatNotifIdBase + i,
+          title: 'LachinGo 💬',
+          body: nudge.body,
+          scheduledDate: tz.TZDateTime.from(slots[i], tz.local),
+          notificationDetails: const NotificationDetails(
+            android: AndroidNotificationDetails(
+              _chatChannelId,
+              _chatChannelName,
+              channelDescription: _chatChannelDescription,
+              importance: Importance.high,
+              priority: Priority.high,
+            ),
           ),
-        ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        payload: encodeChatNudgePayload(nudge.quickPrompt),
-      );
+          androidScheduleMode: _scheduleMode,
+          payload: encodeChatNudgePayload(nudge.quickPrompt),
+        );
+      } catch (e) {
+        _lastError = '$e';
+      }
     }
   }
 }

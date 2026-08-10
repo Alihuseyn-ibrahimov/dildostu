@@ -1149,6 +1149,8 @@ class _BootstrapState extends State<_Bootstrap> with WidgetsBindingObserver {
         loadChatQuota: _chat.fetchQuota,
         lockRepo: widget.lockRepo,
         onRescheduleNotifications: () => _scheduleAllNotifications(data),
+        diagnoseNotifications: _notifications.diagnose,
+        onSendTestNotification: _notifications.showTestNow,
         onClearChatHistory: _chat.clearHistory,
         onClearChatPortrait: _chat.clearPortrait,
         onUiLanguageChanged: (lang) async {
