@@ -28,7 +28,8 @@ GROQ_API_KEY=...
 ANTHROPIC_API_KEY=...        # istəyə görə
 FOURSQUARE_API_KEY=...       # məkan tanıma (pulsuz service key)
 JWT_SECRET=...               # MƏCBURİ — giriş tokenləri (≥32 simvol)
-GROQ_MODEL=llama-3.3-70b-versatile
+# llama-3.3-70b-versatile Groq-dan çıxarılıb (404) — köhnə .env-də bu sətri dəyiş
+GROQ_MODEL=openai/gpt-oss-120b
 CLAUDE_MODEL=claude-sonnet-5
 ```
 

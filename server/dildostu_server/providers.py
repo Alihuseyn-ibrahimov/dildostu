@@ -15,7 +15,9 @@ from dotenv import load_dotenv
 Completer = Callable[[str, str], str]  # (system, user) -> text
 ChatCompleter = Callable[[str, list], str]  # (system, messages) -> text
 
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+# llama-3.3-70b-versatile Groq-dan çıxarılıb (404 model_not_found) — Groq çağırışı uğursuz olub fallback-a (Claude/Gemini/statik) düşür.
+DEFAULT_GROQ_MODEL = "openai/gpt-oss-120b"
+GROQ_MODEL = os.environ.get("GROQ_MODEL") or DEFAULT_GROQ_MODEL
 CLAUDE_MODEL = os.environ.get("CLAUDE_MODEL", "claude-sonnet-5")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
@@ -103,6 +105,14 @@ def build_chat_completers() -> dict[str, ChatCompleter]:
 AI_TEMPERATURE = float(os.environ.get("AI_TEMPERATURE", "0.5"))
 
 
+def _groq_extra(model: str) -> dict:
+    """gpt-oss "düşünən" modeldir: default (medium) canlı app üçün yavaşdır → low.
+    extra_body ilə ötürülür — köhnə groq SDK-sı da qəbul edir (yeni kwarg TypeError verərdi)."""
+    if model.startswith("openai/gpt-oss"):
+        return {"extra_body": {"reasoning_effort": "low"}}
+    return {}
+
+
 def _groq_chat_completer(model: str) -> ChatCompleter:
     import groq
 
@@ -113,6 +123,7 @@ def _groq_chat_completer(model: str) -> ChatCompleter:
             model=model,
             temperature=AI_TEMPERATURE,
             messages=[{"role": "system", "content": system}, *messages],
+            **_groq_extra(model),
         )
         return resp.choices[0].message.content
 
@@ -213,6 +224,7 @@ def _groq_completer(model: str) -> Completer:
                 {"role": "system", "content": system},
                 {"role": "user", "content": user},
             ],
+            **_groq_extra(model),
         )
         return resp.choices[0].message.content
 
